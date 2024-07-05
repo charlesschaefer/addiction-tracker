@@ -4,6 +4,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSliderModule } from '@angular/material/slider';
 import { DateTime } from 'luxon';
 
 import { SubstanceService } from '../services/substance.service';
@@ -17,7 +19,8 @@ import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
     MatButtonModule,
     MatSelectModule,
     MatCardModule,
-    ReactiveFormsModule
+    MatSliderModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './usage-add.component.html',
   styleUrl: './usage-add.component.scss'
@@ -35,7 +38,8 @@ export class UsageAddComponent implements OnInit {
 
   constructor(
     private substanceService: SubstanceService<SubstanceDto>,
-    private substanceAddService: SubstanceService<SubstanceAddDto>
+    private substanceAddService: SubstanceService<SubstanceAddDto>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +49,27 @@ export class UsageAddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    alert('Thanks!');
+    if (!this.usageForm.valid) {
+      this.snackBar.open("Verifique os erros do formulário", "Fechar");
+      return;
+    }
+  }
+
+  formatSliderLabel(value: number): string {
+    let ret = "";
+    switch (value) {
+      case 1:
+        ret = ':-(';
+        break;
+      case 5: 
+        ret = ":-|";
+        break;
+      case 10:
+        ret = ":-D";
+        break;
+      default:
+        ret = value as unknown as string;
+    }
+    return ret;
   }
 }
