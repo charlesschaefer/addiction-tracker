@@ -2,27 +2,37 @@ import { Component, inject } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PanelModule } from 'primeng/panel';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { MatCardModule } from '@angular/material/card';
 
 import { SubstanceAddDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
+import { Message } from 'primeng/api';
 
 @Component({
     selector: 'app-substance-add',
     standalone: true,
     imports: [
         MatInputModule,
-        MatButtonModule,
-        MatCardModule,
         ReactiveFormsModule,
+        PanelModule,
+        InputTextModule,
+        ButtonModule,
+        MessagesModule,
+        MatCardModule,
+        FloatLabelModule,
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss'
 })
 export class SubstanceAddComponent {
     private fb = inject(FormBuilder);
+    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os campos do formulário"}];
     substanceForm = this.fb.group({
         name: [null, Validators.required],
     });

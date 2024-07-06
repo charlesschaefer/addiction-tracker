@@ -1,22 +1,18 @@
-<form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
-    <mat-card class="shipping-card">
-      <mat-card-header>
-        <mat-card-title>Adicionar Substância</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="row">
-            <div class="col">
-              <mat-form-field class="full-width">
-                <input matInput placeholder="Nome" formControlName="name">
-                @if (substanceForm.controls['name'].hasError('required')) {
-                    <mat-error>Nome é <strong>obrigatório</strong></mat-error>
-                }
-              </mat-form-field>
-            </div>
-        </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-      </mat-card-actions>
-    </mat-card>
+<p-panel class="shipping-card" header="Adicionar Substância">
+
+  <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
+    <div class="field">
+      @if (!substanceForm.valid && substanceForm.touched) {
+          <p-messages [enableService]="false" [(value)]="errorMessage" />
+      }
+      <p-floatLabel>
+        <input id="name" pInputText type="text" formControlName="name">
+        <label for="name">Nome</label>
+      </p-floatLabel>
+    </div>
+    <div class="field">
+      <p-button type="submit">Submit</p-button>
+    </div>
   </form>
+</p-panel>
+  

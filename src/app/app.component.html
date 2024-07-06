@@ -1,20 +1,16 @@
-<mat-toolbar color="accent">
-  <mat-toolbar-row>
-    <h2>Controle de vícios</h2>
-    <span class="example-fill-remaining-space"></span>
-    <nav>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <a routerLink="/" mat-menu-item>Home</a>
-        <a routerLink="/usage-add" mat-menu-item>Novo Registro</a>
-        <a routerLink="/usage-track" mat-menu-item>Acompanhar Registros</a>
-        <a routerLink="/substance-add" mat-menu-item>Adicionar Substância</a>
-      </mat-menu>
-    </nav>
-  </mat-toolbar-row>
-</mat-toolbar>
+
+
+<p-toolbar >
+  <div class="p-toolbar-group-start">
+    <h2>Controle de Vícios</h2>
+  </div>
+  <div class="p-toolbar-group-center">
+  </div>
+  <div class="p-toolbar-group-end">
+    <p-menu #menu [popup]="true" [model]="items" />      
+    <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
+  </div>
+</p-toolbar>
 
 <section class="main">
   <router-outlet />

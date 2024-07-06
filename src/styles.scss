@@ -1,5 +1,9 @@
 //@import '@angular/material/pre';
 
 
-html, body { height: 100%; background: #fffbff; }
+html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.field {
+    padding: 10px;
+}
