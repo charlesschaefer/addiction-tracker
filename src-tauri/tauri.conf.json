@@ -1,17 +1,17 @@
 {
-  "productName": "controle-vicio",
+  "productName": "addiction-tracker",
   "version": "0.0.0",
   "identifier": "com.tauri.dev",
   "build": {
     "beforeDevCommand": "npm run start -- --host $HOST --public-host $HOST",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist/controle-vicio/browser"
+    "frontendDist": "../dist/addiction-tracker/browser"
   },
   "app": {
     "windows": [
       {
-        "title": "controle-vicio",
+        "title": "addiction-tracker",
         "width": 800,
         "height": 600
       }

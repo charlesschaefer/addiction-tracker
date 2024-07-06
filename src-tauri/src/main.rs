@@ -2,5 +2,5 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    controle_vicio_lib::run()
+    addiction_tracker_lib::run()
 }
