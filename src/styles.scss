@@ -1,8 +1,5 @@
 //@import '@angular/material/pre';
-@use '@angular/material' as mat;
-
-@include mat.core();
 
 
-html, body { height: 100%; background: #191c1c; color: white;}
+html, body { height: 100%; background: #fffbff; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,60 +1,50 @@
-
 <form [formGroup]="usageForm" novalidate (ngSubmit)="onSubmit()">
-    <mat-card class="shipping-card">
-      <mat-card-header>
-        <mat-card-title>Registro de uso</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="row">
-            <div class="col">
-                <mat-form-field class="full-width">
-                  <mat-select placeholder="Substância" formControlName="substance">
-                  @for (substance of substances; track substance) {
-                      <mat-option [value]="substance.id">{{ substance.name }}</mat-option>
-                  }
-                  </mat-select>
-                  @if (usageForm.controls['substance'].hasError('required')) {
-                    <mat-error>Substância é <strong>obrigatório</strong></mat-error>
-                  }
-                  </mat-form-field>
-            </div>
-            <div class="col">
+  <mat-card class="usage-add-card">
+    <mat-card-header>
+      <mat-card-title>Registro de uso</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="row">
+          <div class="col">
               <mat-form-field class="full-width">
-                <input matInput placeholder="Quantidade" formControlName="quantity" type="number">
-                @if (usageForm.controls['quantity'].hasError('required')) {
-                    <mat-error>Quantidade é <strong>obrigatório</strong></mat-error>
+                <mat-select placeholder="Substância" formControlName="substance">
+                @for (substance of substances; track substance) {
+                    <mat-option [value]="substance.id">{{ substance.name }}</mat-option>
                 }
-              </mat-form-field>
-            </div>
-            
-        </div>
-        <div class="row">
+                </mat-select>
+                @if (usageForm.controls['substance'].hasError('required')) {
+                  <mat-error>Substância é <strong>obrigatório</strong></mat-error>
+                }
+                </mat-form-field>
+          </div>
           <div class="col">
             <mat-form-field class="full-width">
-              <input matInput type="datetime-local" placeholder="Data e horário" formControlName="datetime">
+              <input matInput placeholder="Quantidade" formControlName="quantity" type="number">
+              @if (usageForm.controls['quantity'].hasError('required')) {
+                  <mat-error>Quantidade é <strong>obrigatório</strong></mat-error>
+              }
             </mat-form-field>
           </div>
+          
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-form-field class="full-width">
+            <input matInput type="datetime-local" placeholder="Data e horário" formControlName="datetime">
+          </mat-form-field>
         </div>
-<!--         <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <mat-slider showTickMarks min="1" max="10" step="1">
-                <input matSliderThumb value="5">
-              </mat-slider>
-            </mat-form-field>
-          </div>
-        </div> -->
-        <div class="row">
-          <div class="col">
-            <mat-slider showTickMarks min="1" max="10" step="1" discrete [displayWith]="formatSliderLabel">
-              <input matSliderThumb value="5">
-            </mat-slider>
-          </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <mat-slider showTickMarks min="1" max="10" step="1" discrete [displayWith]="formatSliderLabel">
+            <input matSliderThumb value="5" formControlName="sentiment">
+          </mat-slider>
         </div>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit">Submit</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
   

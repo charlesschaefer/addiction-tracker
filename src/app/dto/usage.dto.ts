@@ -4,7 +4,7 @@ export interface UsageDto {
     id: number;
     substance: number;
     quantity: number;
-    datetime: DateTime;
+    datetime: Date;
     sentiment: number;
 }
 
