@@ -30,7 +30,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/rose-red.css",
+              "@angular/material/prebuilt-themes/magenta-violet.css",
               "node_modules/primeng/resources/themes/saga-purple/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",

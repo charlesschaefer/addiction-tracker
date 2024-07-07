@@ -10,6 +10,9 @@ interface ChartDataset {
     data: number[];
     fill?: boolean;
     borderDash?: [number, number];
+    backgroundColor?: string;
+    borderColor?: string;
+    tension?: number;
 }
 
 interface ChartData {
@@ -43,22 +46,29 @@ export class UsageTrackComponent implements OnInit {
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
+            const documentStyle = getComputedStyle(document.documentElement);
             let usageChartData: ChartData = {
                 labels: result.map(usage => usage.datetime.toLocaleDateString()),
                 datasets: [
                     {
                         label: 'Consumo',
-                        data: result.map(usage => usage.quantity)
+                        data: result.map(usage => usage.quantity),
+                        tension: 0.3,
+                        borderColor: documentStyle.getPropertyValue('--blue-500')
                     },
                     {
                         label: 'Sentimento',
                         data: result.map(usage => usage.sentiment),
-                        fill: true
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(156, 39, 176, 0.4)'
                     },
                     {
                         label: 'Fissura',
                         data: result.map(usage => usage.craving),
-                        borderDash: [5, 5]
+                        tension: 0.3,
+                        borderDash: [5, 5],
+                        borderColor: documentStyle.getPropertyValue('--orange-500')
                     }
                 ]
             };
@@ -70,7 +80,8 @@ export class UsageTrackComponent implements OnInit {
                 datasets: [
                     {
                         label: 'Consumo',
-                        data: triggerData.map(triggerUsage => triggerUsage.usage)
+                        data: triggerData.map(triggerUsage => triggerUsage.usage),
+                        backgroundColor: 'rgba(156, 39, 176, 0.4)'
                     }
                 ]
             }

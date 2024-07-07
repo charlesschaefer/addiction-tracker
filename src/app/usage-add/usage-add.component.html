@@ -60,7 +60,9 @@
         <p-button icon="pi pi-plus" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
       </p-floatLabel>
     </div>
-    <button mat-raised-button color="primary" type="submit">Submit</button>
+    <div class="field">
+      <p-button type="submit">Salvar</p-button>
+    </div>
   </form>
 </p-panel>
 <p-dialog header="Adicionar Gatilho" [modal]="true" [(visible)]="showAddTriggerDialog" [style]="{ width: '25rem' }">
