@@ -43,6 +43,10 @@ export class UsageTrackComponent implements OnInit {
                     {
                         label: 'Sentimento',
                         data: result.map(usage => usage.sentiment)
+                    },
+                    {
+                        label: 'Fissura',
+                        data: result.map(usage => usage.craving)
                     }
                 ]
             };

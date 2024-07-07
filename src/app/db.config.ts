@@ -2,7 +2,7 @@ import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
 
 export const dbConfig: DBConfig = {
     name: 'usage-control',
-    version: 1,
+    version: 2,
     objectStoresMeta: [
         {
             store: 'substance',

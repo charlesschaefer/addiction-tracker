@@ -12,21 +12,65 @@
         
     </div>
     <div class="field">
-        <input pInputText placeholder="Quantidade" formControlName="quantity" type="number">
+      <p-floatLabel>
+        <input pInputText formControlName="quantity" type="number">
+        <label for="quantity">Quantidade</label>
+      </p-floatLabel>
     </div>
     
     <div class="field">
+      <p-floatLabel>
         <p-calendar
           inputId="datetime" 
           formControlName="datetime"
           [showTime]="true" 
           [hourFormat]="'24'" />
+        <label for="datetime">Data e hora</label>
+      </p-floatLabel>
+    </div>
+    <div class="field ">
+      <p-dropdown 
+        [options]="sentiments"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sentimento" />
     </div>
     <div class="field " >
-      <mat-slider showTickMarks class="sentiment-slider" min="1" max="10" step="1" discrete [displayWith]="formatSliderLabel">
-        <input matSliderThumb value="5" formControlName="sentiment">
-      </mat-slider>
+      <label>Fissura:</label>
+      <div>
+        <mat-slider showTickMarks class="craving-slider" min="1" max="10" step="1" discrete>
+          <input matSliderThumb value="1" formControlName="craving">
+        </mat-slider>
+      </div>
+    </div>
+    <div class="field ">
+      <p-floatLabel>
+        <p-autoComplete 
+          formControlName="trigger"
+          [suggestions]="filteredTriggers"
+          [virtualScroll]="true"
+          [dropdown]="true"
+          field="name"
+          (completeMethod)="triggerSearch($event)" 
+          [multiple]="true"
+          id="trigger" />
+        <label for="trigger">Gatilho</label>
+        <p-button icon="pi pi-plus" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
+      </p-floatLabel>
     </div>
     <button mat-raised-button color="primary" type="submit">Submit</button>
   </form>
+</p-panel>
+<p-dialog header="Adicionar Gatilho" [modal]="true" [(visible)]="showAddTriggerDialog" [style]="{ width: '25rem' }">
+  <form [formGroup]="triggerForm" novalidate>
+    <div class="field">
+        <label for="username" class="font-semibold w-6rem">Gatilho:</label>
+        <input pInputText id="trigger" class="flex-auto" autocomplete="off" formControlName="name" />
+    </div>
+    <div class="field">
+        <p-button label="Cancelar" severity="secondary" (click)="showAddTriggerDialog = false" />
+        <p-button label="Salvar" (click)="saveTrigger() && showAddTriggerDialog = false" />
+    </div>
+  </form>
+</p-dialog>
   
