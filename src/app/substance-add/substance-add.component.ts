@@ -7,10 +7,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { Toast, ToastModule } from 'primeng/toast';
 
 import { SubstanceAddDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
-import { Message } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-substance-add',
@@ -22,13 +23,15 @@ import { Message } from 'primeng/api';
         ButtonModule,
         MessagesModule,
         FloatLabelModule,
+        ToastModule,
     ],
     templateUrl: './substance-add.component.html',
-    styleUrl: './substance-add.component.scss'
+    styleUrl: './substance-add.component.scss',
+    providers: [MessageService],
 })
 export class SubstanceAddComponent {
     private fb = inject(FormBuilder);
-    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os campos do formulário"}];
+    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os valores do formulário"}];
     substanceForm = this.fb.group({
         name: [null, Validators.required],
     });
@@ -37,17 +40,23 @@ export class SubstanceAddComponent {
         private substanceService: SubstanceService<SubstanceAddDto>,
         private snackBar: MatSnackBar,
         private router: Router,
+        private messageService: MessageService,
     ) {}
     
-    onSubmit() {
+    async onSubmit() {
         if (!this.substanceForm.valid) {
-            this.snackBar.open("Verifique todos os valores do formulário", "Fechar");
+            this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Verifique todos os valores do formulário", life: 3000 });
             return;
         }
         let data: SubstanceAddDto = {
             name: this.substanceForm.value.name || ''
         };
-        this.substanceService.add(data).subscribe(values => console.log(`Values: ${values}`));
-        this.router.navigate(['/']);
+        this.substanceService.add(data).subscribe(values => {
+            this.messageService.add({ severity: 'success', summary: 'Tudo certo', detail: 'Substância salva com sucesso!', life: 3000})
+            setTimeout(() => {
+                this.router.navigate(['/']);
+            }, 3000);
+        });
+        
     }
 }

@@ -7,22 +7,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
-import { DateTime } from 'luxon';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
+import { Messages, MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+import { Message, MessageService } from 'primeng/api';
+
 
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { UsageService } from '../services/usage.service';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
-import { Message } from 'primeng/api';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
 
@@ -45,9 +46,11 @@ import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
         CalendarModule,
         AutoCompleteModule,
         DialogModule,
+        ToastModule,
     ],
     templateUrl: './usage-add.component.html',
-    styleUrl: './usage-add.component.scss'
+    styleUrl: './usage-add.component.scss',
+    providers: [MessageService],
 })
 export class UsageAddComponent implements OnInit {
     private fb = inject(FormBuilder);
@@ -62,7 +65,7 @@ export class UsageAddComponent implements OnInit {
     triggerForm = this.fb.group({
        name: [null, Validators.required] ,
     });
-    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os campos"}];
+    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os valores do formulário"}];
     showAddTriggerDialog = false;
     
     substances: SubstanceDto[] = [];
@@ -76,7 +79,7 @@ export class UsageAddComponent implements OnInit {
         private triggerAddService: TriggerService<TriggerAddDto>,
         private usageService: UsageService<UsageDto>,
         private usageAddService: UsageService<UsageAddDto>,
-        private snackBar: MatSnackBar,
+        private messageService: MessageService,
         private router: Router,
     ) {}
     
@@ -101,7 +104,12 @@ export class UsageAddComponent implements OnInit {
     
     onSubmit(): void {
         if (!this.usageForm.valid) {
-            this.snackBar.open("Verifique os erros do formulário", "Fechar");
+            this.messageService.add({ 
+                severity: 'error', 
+                summary: 'Erro', 
+                detail: "Verifique todos os valores do formulário", 
+                life: 3000,
+            });
             console.log("Erros do formulário: ", this.usageForm.value)
             return;
         }
@@ -118,8 +126,13 @@ export class UsageAddComponent implements OnInit {
 
         this.usageAddService.add(usageData).subscribe(result => {
             this.usageService.clearCache();
-            this.snackBar.open("Dados de uso salvos com sucesso. Você já pode vê-lo no dashboard", "Fechar");
-            setTimeout(() => this.router.navigate(['/']), 1000);
+            this.messageService.add({ 
+                severity: 'success',
+                summary: 'Tudo certo',
+                detail: "Dados de uso salvos com sucesso. Você já pode vê-lo no dashboard. Redirecionando...",
+                life: 3000,
+            });
+            setTimeout(() => this.router.navigate(['/']), 3000);
         });
     }
     
