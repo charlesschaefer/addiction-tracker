@@ -52,6 +52,7 @@
           formControlName="trigger"
           [suggestions]="filteredTriggers"
           [virtualScroll]="true"
+          [virtualScrollItemSize]="50" 
           [dropdown]="true"
           field="name"
           (completeMethod)="triggerSearch($event)" 

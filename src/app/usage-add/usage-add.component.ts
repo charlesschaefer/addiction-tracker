@@ -157,7 +157,11 @@ export class UsageAddComponent implements OnInit {
     saveTrigger(): boolean {
         let data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
         
-        this.triggerAddService.add(data).subscribe(values => console.log("Valores após inserir: ", values));
+        this.triggerAddService.add(data).subscribe(values => {
+            this.triggerAddService.clearCache();
+            this.triggers.push(values);
+            this.filteredTriggers = this.triggers;
+        });
 
         return true;
     }

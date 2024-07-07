@@ -52,10 +52,12 @@ export class SubstanceAddComponent {
             name: this.substanceForm.value.name || ''
         };
         this.substanceService.add(data).subscribe(values => {
+            this.substanceService.clearCache();
             this.messageService.add({ severity: 'success', summary: 'Tudo certo', detail: 'Substância salva com sucesso!', life: 3000})
             setTimeout(() => {
                 this.router.navigate(['/']);
             }, 3000);
+            
         });
         
     }

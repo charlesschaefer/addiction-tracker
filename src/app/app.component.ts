@@ -7,6 +7,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
+import {
+    isPermissionGranted,
+    requestPermission,
+    sendNotification,
+  } from '@tauri-apps/plugin-notification';
     
     
 @Component({
@@ -32,7 +37,18 @@ export class AppComponent implements OnInit {
         { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
         { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
     ]
-    ngOnInit(): void {
-        
+    async ngOnInit() {
+        // Do you have permission to send a notification?
+        let permissionGranted = await isPermissionGranted();
+        // If not we need to request it
+        if (!permissionGranted) {
+            const permission = await requestPermission();
+            permissionGranted = permission === 'granted';
+        }
+        console.log("permission", permissionGranted);
+        // Once permission has been granted we can send the notification
+        if (permissionGranted) {
+            sendNotification({ title: 'Addiction Tracker', body: 'Olá usuário, este é um exemplo de notificação' });
+        }
     }
 }
