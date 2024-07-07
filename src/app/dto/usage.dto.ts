@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { TriggerAddDto } from "./trigger.dto";
 
 export interface UsageDto {
     id: number;
@@ -7,7 +7,7 @@ export interface UsageDto {
     datetime: Date;
     sentiment: number;
     craving: number;
-    trigger: string[];
+    trigger: TriggerAddDto[] | null;
 }
 
 export type UsageAddDto = Omit<UsageDto, "id">;

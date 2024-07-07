@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { ChartModule } from 'primeng/chart';
+import { ChartModule, UIChart } from 'primeng/chart';
+import { PanelModule } from 'primeng/panel';
+
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 
 interface ChartDataset {
     label: string;
     data: number[];
+    fill?: boolean;
+    borderDash?: [number, number];
 }
 
 interface ChartData {
@@ -14,15 +17,22 @@ interface ChartData {
     datasets: ChartDataset[];
 }
 
+interface TriggerUsage {
+    trigger: string;
+    usage: number;
+}
+
 @Component({
     selector: 'app-usage-track',
     standalone: true,
-    imports: [ChartModule, MatCardModule],
+    imports: [ChartModule, PanelModule],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
 })
 export class UsageTrackComponent implements OnInit {
-    data: ChartData;
+    usageChartData: ChartData;
+    triggerChartData: ChartData;
+
     options = {
         animation: true
     };
@@ -33,7 +43,7 @@ export class UsageTrackComponent implements OnInit {
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
-            let data: ChartData = {
+            let usageChartData: ChartData = {
                 labels: result.map(usage => usage.datetime.toLocaleDateString()),
                 datasets: [
                     {
@@ -42,18 +52,58 @@ export class UsageTrackComponent implements OnInit {
                     },
                     {
                         label: 'Sentimento',
-                        data: result.map(usage => usage.sentiment)
+                        data: result.map(usage => usage.sentiment),
+                        fill: true
                     },
                     {
                         label: 'Fissura',
-                        data: result.map(usage => usage.craving)
+                        data: result.map(usage => usage.craving),
+                        borderDash: [5, 5]
                     }
                 ]
             };
+            this.usageChartData = usageChartData;
+            
+            let triggerData = this.consolidateTriggerData(result);
+            let triggerChartData: ChartData = {
+                labels: triggerData.map(triggerUsage => triggerUsage.trigger),
+                datasets: [
+                    {
+                        label: 'Consumo',
+                        data: triggerData.map(triggerUsage => triggerUsage.usage)
+                    }
+                ]
+            }
 
-            console.log("final Data: ", data);
-
-            this.data = data;
-        })
+            this.triggerChartData = triggerChartData;
+            console.log(triggerChartData)
+        });
     }
+
+    consolidateTriggerData(data: UsageDto[]): TriggerUsage[] {
+        let triggerMap = new Map();
+         data.forEach((currentValue, currIdx, data) => {
+            // loops all the usage's triggers to count them
+            currentValue.trigger?.map(trigger => {
+                if (!triggerMap.has(trigger.name)) {
+                    triggerMap.set(trigger.name, 0);
+                }
+                triggerMap.set(trigger.name, triggerMap.get(trigger.name) + currentValue.quantity);
+            });
+        });
+
+        let key;
+        let keys = triggerMap.keys();
+        let triggerUsage: TriggerUsage[] = [];
+
+        console.log("triggerMap", triggerMap)
+        while (!(key = keys.next()).done) {
+            triggerUsage.push({
+                trigger: key.value,
+                usage: triggerMap.get(key.value)
+            });
+        }
+        return triggerUsage;
+    }
+
 }

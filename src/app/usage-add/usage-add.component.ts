@@ -113,7 +113,7 @@ export class UsageAddComponent implements OnInit {
             datetime: form.datetime || new Date(),
             sentiment: form.sentiment || 0,
             craving: form.craving || 0,
-            trigger: form.trigger || ['']
+            trigger: form.trigger || null
         };
 
         this.usageAddService.add(usageData).subscribe(result => {
