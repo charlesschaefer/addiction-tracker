@@ -1,7 +1,7 @@
 {
   "productName": "addiction-tracker",
-  "version": "0.0.0",
-  "identifier": "com.tauri.dev",
+  "version": "0.0.1",
+  "identifier": "com.addictiontracker",
   "build": {
     "beforeDevCommand": "npm run start -- --host $HOST --public-host $HOST",
     "devUrl": "http://localhost:1420",

@@ -6,7 +6,7 @@
     "analytics": false
   },
   "projects": {
-    "controle-vicio": {
+    "addiction-tracker": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/controle-vicio",
+            "outputPath": "dist/addiction-tracker",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -42,8 +42,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -68,10 +68,10 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "controle-vicio:build:production"
+              "buildTarget": "addiction-tracker:build:production"
             },
             "development": {
-              "buildTarget": "controle-vicio:build:development"
+              "buildTarget": "addiction-tracker:build:development"
             }
           },
           "defaultConfiguration": "development"

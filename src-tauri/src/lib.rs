@@ -1,24 +1,31 @@
-use tauri::menu::{ContextMenu, MenuBuilder, MenuItem};
+use tauri::{Manager};
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
-use tauri::{Manager, WindowEvent};
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
+use tauri::menu::{MenuBuilder, MenuItem};
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut};
 
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        
         .setup(|app| {
-            let item = MenuItem::new(app, "Exibir", true, Some("E")).unwrap();
+            let item_show = MenuItem::new(app, "Exibir", true, Some("E")).unwrap();
+            let item_quit = MenuItem::new(app, "Sair", true, Some("R")).unwrap();
             let menu = MenuBuilder::new(app)
-                .item(&item)
+                .item(&item_show)
+                .item(&item_quit)
                 .build()
                 .unwrap();
-            
+
             let window = app.get_webview_window("main").unwrap();
             let window_hider = window.clone();
-            
+
             let _ = TrayIconBuilder::new()
                 .tooltip("Personal Addiction Tracker App")
                 .icon(app.default_window_icon().unwrap().clone())
@@ -28,7 +35,7 @@ pub fn run() {
                         match button {
                             MouseButton::Left => {
                             
-                                dbg!("system tray received a left click");
+                                /* dbg!("system tray received a left click");
 
                                 let window = tray_icon.app_handle().get_webview_window("main").unwrap();
                                 let _ = window.show().unwrap();
@@ -45,14 +52,14 @@ pub fn run() {
                                 let logical_pos: tauri::Position =
                                     tauri::Position::Logical(logical_position);
                                 let _ = window.set_position(logical_pos);
-                                let _ = window.set_focus();
+                                let _ = window.set_focus(); 
                             },
-                            MouseButton::Right => {
+                            MouseButton::Right => {*/
                                 dbg!("system tray received a right click");
                                 let window = tray_icon.app_handle().get_webview_window("main").unwrap();
                                 window.hide().unwrap();
                             },
-                            MouseButton::Middle => {
+                            _ => {
                                 //menu.popup(window_hider);
                                 dbg!("system tray received a middle click");
                             }
@@ -62,10 +69,37 @@ pub fn run() {
                         dbg!("system tray received an unknow event");
                     }
                 })
+                .on_menu_event(move |app, event| {
+                    let quit = item_quit.clone();
+                    let show = item_show.clone();
+                    if event.id() == quit.id() {
+                        std::process::exit(0);
+                    } else if event.id() == show.id() {
+                        let window = app.get_webview_window("main").unwrap();
+                        window.show().unwrap();
+                    }
+
+                })
                 .build(app);
 
             Ok(())
         })
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn greet(name: &str) -> String {
+    format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+#[cfg(any(target_os = "android", target_os = "ios"))]
+pub fn run() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_notification::init())
+        .invoke_handler(tauri::generate_handler![greet])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
