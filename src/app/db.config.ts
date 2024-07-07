@@ -8,7 +8,7 @@ export const dbConfig: DBConfig = {
             store: 'substance',
             storeConfig: { keyPath: 'id', autoIncrement: true},
             storeSchema: [
-                { name: 'name', keypath: 'name', options: { unique: false }}
+                { name: 'name', keypath: 'name', options: { unique: true }}
             ]
         },
         {
@@ -19,6 +19,15 @@ export const dbConfig: DBConfig = {
                 { name: 'quantity', keypath: 'quantity', options: { unique: false }},
                 { name: 'datetime', keypath: 'datetime', options: { unique: false }},
                 { name: 'sentiment', keypath: 'sentiment', options: { unique: false }},
+                { name: 'craving', keypath: 'craving', options: { unique: false }},
+                { name: 'trigger', keypath: 'trigger', options: { unique: false }}
+            ]
+        },
+        {
+            store: 'trigger',
+            storeConfig: { keyPath: 'id', autoIncrement: true },
+            storeSchema: [
+                { name: 'name', keypath: 'name', options: { unique: true }}
             ]
         }
     ]

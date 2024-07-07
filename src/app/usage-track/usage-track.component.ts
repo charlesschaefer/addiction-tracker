@@ -47,6 +47,8 @@ export class UsageTrackComponent implements OnInit {
                 ]
             };
 
+            console.log("final Data: ", data);
+
             this.data = data;
         })
     }

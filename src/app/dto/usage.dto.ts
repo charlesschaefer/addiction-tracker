@@ -6,6 +6,8 @@ export interface UsageDto {
     quantity: number;
     datetime: Date;
     sentiment: number;
+    craving: number;
+    trigger: string[];
 }
 
 export type UsageAddDto = Omit<UsageDto, "id">;

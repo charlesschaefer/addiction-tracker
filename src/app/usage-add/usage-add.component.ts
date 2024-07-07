@@ -17,10 +17,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 
 import { SubstanceService } from '../services/substance.service';
-import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
+import { SubstanceDto } from '../dto/substance.dto';
 import { UsageService } from '../services/usage.service';
 import { UsageAddDto } from '../dto/usage.dto';
 import { Message } from 'primeng/api';
+import { TriggerService } from '../services/trigger.service';
+import { TriggerDto } from '../dto/trigger.dto';
 
 @Component({
     selector: 'app-usage-add',
@@ -50,14 +52,17 @@ export class UsageAddComponent implements OnInit {
         quantity: [null, Validators.required],
         datetime: [DateTime.fromJSDate(new Date()), Validators.required],
         sentiment: [null, Validators.required],
+        craving: [null, Validators.required],
+        trigger: [[], Validators.required],
     });
     errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os campos"}];
     
     substances: SubstanceDto[] = [];
+    triggers: TriggerDto[] = [];
     
     constructor(
         private substanceService: SubstanceService<SubstanceDto>,
-        private substanceAddService: SubstanceService<SubstanceAddDto>,
+        private triggerService: TriggerService<TriggerDto>,
         private usageAddService: UsageService<UsageAddDto>,
         private snackBar: MatSnackBar,
         private router: Router,
@@ -82,6 +87,8 @@ export class UsageAddComponent implements OnInit {
             quantity: form.quantity || 0,
             datetime: DateTime.fromFormat(dateStr.split("T").join(" "), "yyyy-MM-dd HH:mm").toJSDate(),
             sentiment: form.sentiment || 0,
+            craving: form.craving || 0,
+            trigger: form.trigger || ['']
         };
 
         this.usageAddService.add(usageData).subscribe(result => {
