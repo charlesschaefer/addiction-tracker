@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,12 +8,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { DateTime } from 'luxon';
+import { PanelModule } from 'primeng/panel';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
 
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { UsageService } from '../services/usage.service';
 import { UsageAddDto } from '../dto/usage.dto';
-import { Router } from '@angular/router';
+import { Message } from 'primeng/api';
 
 @Component({
     selector: 'app-usage-add',
@@ -24,6 +32,13 @@ import { Router } from '@angular/router';
         MatCardModule,
         MatSliderModule,
         ReactiveFormsModule,
+        PanelModule,
+        InputTextModule,
+        ButtonModule,
+        MessagesModule,
+        FloatLabelModule,
+        DropdownModule,
+        CalendarModule,
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss'
@@ -36,6 +51,7 @@ export class UsageAddComponent implements OnInit {
         datetime: [DateTime.fromJSDate(new Date()), Validators.required],
         sentiment: [null, Validators.required],
     });
+    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os campos"}];
     
     substances: SubstanceDto[] = [];
     

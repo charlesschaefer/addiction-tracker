@@ -29,8 +29,8 @@ export class AppComponent implements OnInit {
     items: MenuItem[] = [
         { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
         { label: "Novo Registro", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
-        { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-chart" } as MenuItem,
-        { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-pill" } as MenuItem,
+        { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
+        { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
     ]
     ngOnInit(): void {
         
