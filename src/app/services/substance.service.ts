@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
-import { SubstanceDto } from '../dto/substance.dto';
 
 @Injectable({
     providedIn: 'root'

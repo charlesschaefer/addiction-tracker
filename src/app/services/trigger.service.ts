@@ -5,6 +5,6 @@ import { ServiceAbstract } from './service.abstract';
     providedIn: 'root'
 })
 export class TriggerService<T> extends ServiceAbstract<T> {
-    storeName: 'trigger';
+    storeName = 'trigger';
     
 }

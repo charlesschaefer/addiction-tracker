@@ -21,7 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { UsageService } from '../services/usage.service';
-import { UsageAddDto } from '../dto/usage.dto';
+import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { Message } from 'primeng/api';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
@@ -54,10 +54,10 @@ export class UsageAddComponent implements OnInit {
     usageForm = this.fb.group({
         substance: [null, Validators.required],
         quantity: [null, Validators.required],
-        datetime: [DateTime.fromJSDate(new Date()), Validators.required],
+        datetime: [new Date(), Validators.required],
         sentiment: [null, Validators.required],
         craving: [null, Validators.required],
-        trigger: [[], Validators.required],
+        trigger: [[]],
     });
     triggerForm = this.fb.group({
        name: [null, Validators.required] ,
@@ -74,6 +74,7 @@ export class UsageAddComponent implements OnInit {
         private substanceService: SubstanceService<SubstanceDto>,
         private triggerService: TriggerService<TriggerDto>,
         private triggerAddService: TriggerService<TriggerAddDto>,
+        private usageService: UsageService<UsageDto>,
         private usageAddService: UsageService<UsageAddDto>,
         private snackBar: MatSnackBar,
         private router: Router,
@@ -101,21 +102,22 @@ export class UsageAddComponent implements OnInit {
     onSubmit(): void {
         if (!this.usageForm.valid) {
             this.snackBar.open("Verifique os erros do formulário", "Fechar");
+            console.log("Erros do formulário: ", this.usageForm.value)
             return;
         }
         let form = this.usageForm.value;
-        let dateStr = form.datetime as unknown as string;
-        ;
+
         let usageData: UsageAddDto = {
             substance: form.substance || 0,
             quantity: form.quantity || 0,
-            datetime: DateTime.fromFormat(dateStr.split("T").join(" "), "yyyy-MM-dd HH:mm").toJSDate(),
+            datetime: form.datetime || new Date(),
             sentiment: form.sentiment || 0,
             craving: form.craving || 0,
             trigger: form.trigger || ['']
         };
 
         this.usageAddService.add(usageData).subscribe(result => {
+            this.usageService.clearCache();
             this.snackBar.open("Dados de uso salvos com sucesso. Você já pode vê-lo no dashboard", "Fechar");
             setTimeout(() => this.router.navigate(['/']), 1000);
         });
@@ -130,6 +132,9 @@ export class UsageAddComponent implements OnInit {
                 filtered.push(trigger);
             }
         });
+
+        this.filteredTriggers = filtered;
+        console.log("Lista filtrada: ", this.filteredTriggers)
     }
 
     showDialog() {
@@ -139,7 +144,8 @@ export class UsageAddComponent implements OnInit {
     saveTrigger(): boolean {
         let data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
         
+        this.triggerAddService.add(data).subscribe(values => console.log("Valores após inserir: ", values));
 
-        return this.triggerAddService.add(data) as unknown as boolean;
+        return true;
     }
 }

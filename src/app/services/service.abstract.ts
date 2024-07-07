@@ -8,8 +8,6 @@ export abstract class ServiceAbstract<T> {
     private useCache: boolean = true;
     abstract storeName: string;
 
-
-
     constructor(
         protected dbService: NgxIndexedDBService
     ) {}
