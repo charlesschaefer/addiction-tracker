@@ -1,5 +1,5 @@
 {
-  "productName": "addiction-tracker",
+  "productName": "Addiction Tracker",
   "version": "0.0.1",
   "identifier": "com.addictiontracker",
   "build": {
@@ -11,7 +11,7 @@
   "app": {
     "windows": [
       {
-        "title": "addiction-tracker",
+        "title": "Addiction Tracker",
         "width": 500,
         "height": 750
       }

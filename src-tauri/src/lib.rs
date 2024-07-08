@@ -129,6 +129,18 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
+        .setup(|app| {
+            // An example of how to run a notification from Tauri Rust code
+            //use tauri_plugin_notification::NotificationExt;
+            //app.notification()
+            //    .builder()
+            //    .title("Nova notificação")
+            //    .body("Você recebeu uma nova notificação")
+            //    .show()
+            //    .unwrap();
+
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
