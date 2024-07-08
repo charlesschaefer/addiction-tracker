@@ -3,7 +3,6 @@ use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
-use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut};
 
 use tauri::{Manager, WindowEvent};
 
@@ -12,9 +11,7 @@ use tauri::{Manager, WindowEvent};
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
 
-
     tauri::Builder::default()
-        //.plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             // An example of how to run a notification from Tauri Rust code
