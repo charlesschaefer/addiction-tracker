@@ -34,8 +34,10 @@ import {
 export class AppComponent implements AfterViewInit {
     items: MenuItem[] = [
         { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
-        { label: "Novo Registro", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
         { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
+        { label: "Adicionar Registro", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
+        { label: "Acompanhar Custos", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
+        { label: "Adicionar Custo", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
         { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
     ];
 

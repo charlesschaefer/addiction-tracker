@@ -2,7 +2,7 @@ import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
 
 export const dbConfig: DBConfig = {
     name: 'usage-control',
-    version: 2,
+    version: 3,
     objectStoresMeta: [
         {
             store: 'substance',
@@ -28,6 +28,15 @@ export const dbConfig: DBConfig = {
             storeConfig: { keyPath: 'id', autoIncrement: true },
             storeSchema: [
                 { name: 'name', keypath: 'name', options: { unique: true }}
+            ]
+        },
+        {
+            store: 'cost',
+            storeConfig: { keyPath: 'id', autoIncrement: true },
+            storeSchema: [
+                { name: 'substance', keypath: 'substance', options: { unique: false }},
+                { name: 'value', keypath: 'value', options: { unique: false }},
+                { name: 'date', keypath: 'date', options: { unique: false }}
             ]
         }
     ]
