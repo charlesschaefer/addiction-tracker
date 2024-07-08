@@ -26,6 +26,7 @@ import { UsageService } from '../services/usage.service';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-usage-add',
@@ -65,8 +66,8 @@ export class UsageAddComponent implements OnInit {
     triggerForm = this.fb.group({
        name: [null, Validators.required] ,
     });
-    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os valores do formulário"}];
     showAddTriggerDialog = false;
+    formSubmitted = false;
     
     substances: SubstanceDto[] = [];
     triggers: TriggerDto[] = [];
@@ -103,6 +104,7 @@ export class UsageAddComponent implements OnInit {
     }
     
     onSubmit(): void {
+        this.formSubmitted = true;
         if (!this.usageForm.valid) {
             this.messageService.add({ 
                 severity: 'error', 
@@ -110,7 +112,6 @@ export class UsageAddComponent implements OnInit {
                 detail: "Verifique todos os valores do formulário", 
                 life: 3000,
             });
-            console.log("Erros do formulário: ", this.usageForm.value)
             return;
         }
         let form = this.usageForm.value;
@@ -129,10 +130,10 @@ export class UsageAddComponent implements OnInit {
             this.messageService.add({ 
                 severity: 'success',
                 summary: 'Tudo certo',
-                detail: "Dados de uso salvos com sucesso. Você já pode vê-lo no dashboard. Redirecionando...",
+                detail: "Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Redirecionando...",
                 life: 3000,
             });
-            setTimeout(() => this.router.navigate(['/']), 3000);
+            setTimeout(() => this.router.navigate(['/usage-track']), 3000);
         });
     }
     
@@ -147,22 +148,42 @@ export class UsageAddComponent implements OnInit {
         });
 
         this.filteredTriggers = filtered;
-        console.log("Lista filtrada: ", this.filteredTriggers)
     }
 
     showDialog() {
         this.showAddTriggerDialog = true;
     }
 
-    saveTrigger(): boolean {
+    async saveTrigger() {
         let data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
-        
-        this.triggerAddService.add(data).subscribe(values => {
-            this.triggerAddService.clearCache();
-            this.triggers.push(values);
-            this.filteredTriggers = this.triggers;
-        });
 
-        return true;
+        let triggers = await firstValueFrom(this.triggerAddService.getByField('name', data.name));
+        if (triggers.length) {
+            this.messageService.add({ 
+                severity: 'error', 
+                summary: 'Entrada duplicada', 
+                detail: 'Já existe esse gatilho', 
+                life: 3000
+            });
+            return;
+        }
+        
+        this.triggerAddService.add(data).subscribe({
+            next: values => {
+                this.triggerAddService.clearCache();
+                this.triggers.push(values);
+                this.filteredTriggers = this.triggers;
+                
+                this.showAddTriggerDialog = false
+            },
+            error: error => {
+                this.messageService.add({ 
+                    severity: 'error', 
+                    summary: 'Erro', 
+                    detail: 'Houve um erro ao salvar a substância!', 
+                    life: 2000
+                });
+            }
+        });
     }
 }
