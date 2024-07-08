@@ -1,1 +1,29 @@
-<p>usage works!</p>
+@for (usage of usages; track usage.name) {
+
+    <p-panel header="Consumos de {{usage.name}}">
+        <p-table [value]="usage.usages">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Data</th>
+                    <th>Substância</th>
+                    <th>Sentimento</th>
+                    <th>Fissura</th>
+                    <th>Gatilhos</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-usage>
+                <tr>
+                    <td>{{ usage.datetime.toLocaleString() }}</td>
+                    <td>{{ substances.get(usage.substance) }}</td>
+                    <td>{{ sentiments.get(usage.sentiment) }}</td>
+                    <td>{{ usage.craving }}</td>
+                    <td>
+                        @for (trigger of usage.trigger; track trigger.name) {
+                            <p-tag [value]="trigger.name" [severity]="tagSeverity[$index % tagSeverity.length -1]" />
+                        }
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-panel>
+}
