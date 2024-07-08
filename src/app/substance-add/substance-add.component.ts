@@ -32,11 +32,10 @@ import { Message, MessageService } from 'primeng/api';
 })
 export class SubstanceAddComponent {
     private fb = inject(FormBuilder);
-    errorMessage: Message[] = [{severity: "error", detail: "Verifique todos os valores do formulário"}];
     substanceForm = this.fb.group({
         name: [null, Validators.required],
     });
-    formValid = this.substanceForm.valid || !this.substanceForm.touched;
+    formSubmitted = false;
     
     constructor(
         private substanceService: SubstanceService<SubstanceAddDto>,
@@ -46,37 +45,14 @@ export class SubstanceAddComponent {
     ) {}
     
     async onSubmit() {
+        this.formSubmitted = true;
         if (!this.substanceForm.valid) {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Verifique todos os valores do formulário", life: 3000 });
             return;
         }
-        /* this.substanceService.getByField('name', this.substanceForm.value.name).subscribe(result => {
-            let substance = result.pop() as SubstanceDto;
-            if (substance.name == this.substanceForm.value.name as unknown as string) {
-                this.messageService.add({ severity: 'error', summary: 'Entrada duplicada', detail: 'Já existe essa substância', life: 3000});
-                return;
-            }
 
-            let data: SubstanceAddDto = {
-                name: this.substanceForm.value.name || ''
-            };
-            this.substanceService.add(data).subscribe(values => {
-                this.substanceService.clearCache();
-                this.messageService.add({ severity: 'success', summary: 'Tudo certo', detail: 'Substância salva com sucesso!', life: 3000});
-    
-                this.substanceForm.patchValue({name: null});
-    
-                setTimeout(() => {
-                    this.router.navigate(['/']);
-                }, 3000);
-                
-            });
-        }); */
         let substances = await firstValueFrom(this.substanceService.getByField('name', this.substanceForm.value.name));
-        if (
-            substances.length 
-            && (substances.pop() as SubstanceDto).name == this.substanceForm.value.name as unknown as string
-        ) {
+        if (substances.length) {
             this.messageService.add({ 
                 severity: 'error', 
                 summary: 'Entrada duplicada', 
@@ -95,21 +71,19 @@ export class SubstanceAddComponent {
                     severity: 'success', 
                     summary: 'Tudo certo', 
                     detail: 'Substância salva com sucesso!', 
-                    life: 3000
+                    life: 2000
                 });
-
-                this.substanceForm.patchValue({name: null});
 
                 setTimeout(() => {
                     this.router.navigate(['/']);
-                }, 3000);
-            }, 
+                }, 2000);
+            },
             error: (error) => {
                 this.messageService.add({ 
                     severity: 'error', 
                     summary: 'Erro', 
                     detail: 'Houve um erro ao salvar a substância! ' + error, 
-                    life: 3000
+                    life: 2000
                 });
             }
         });

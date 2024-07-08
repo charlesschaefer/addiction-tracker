@@ -1,9 +1,6 @@
 <p-panel class="shipping-card" header="Adicionar registro de Consumo">
   <p-toast />
   <form [formGroup]="usageForm" novalidate (ngSubmit)="onSubmit()">
-    @if (!usageForm.valid && usageForm.touched) {
-      <p-messages [enableService]="false" [(value)]="errorMessage" />
-    }
     <div class="field">
       <p-dropdown 
         [options]="substances"
@@ -75,7 +72,7 @@
     </div>
     <div class="field">
         <p-button label="Cancelar" severity="secondary" (click)="showAddTriggerDialog = false" />
-        <p-button label="Salvar" (click)="saveTrigger() && showAddTriggerDialog = false" />
+        <p-button label="Salvar" (click)="saveTrigger()" />
     </div>
   </form>
   

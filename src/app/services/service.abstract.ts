@@ -26,7 +26,6 @@ export abstract class ServiceAbstract<T> {
         }
         let cached = this.dbService.getAll<T>(this.storeName);
         cached.subscribe(value => this.cache  = new BehaviorSubject<T[]>(value));
-        console.log("Valor do cache: ", this.cache);
         return cached;
     }
 

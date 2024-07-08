@@ -87,7 +87,6 @@ export class UsageTrackComponent implements OnInit {
             }
 
             this.triggerChartData = triggerChartData;
-            console.log(triggerChartData)
         });
     }
 
@@ -107,7 +106,6 @@ export class UsageTrackComponent implements OnInit {
         let keys = triggerMap.keys();
         let triggerUsage: TriggerUsage[] = [];
 
-        console.log("triggerMap", triggerMap)
         while (!(key = keys.next()).done) {
             triggerUsage.push({
                 trigger: key.value,

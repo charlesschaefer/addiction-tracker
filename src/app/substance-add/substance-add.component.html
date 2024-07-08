@@ -1,10 +1,7 @@
 <p-panel class="shipping-card" header="Adicionar Substância">
-
+  <p-toast />
   <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
     <div class="field">
-      @if (!formValid) {
-          <p-messages [enableService]="false" [(value)]="errorMessage" />
-      }
       <p-floatLabel>
         <input id="name" pInputText type="text" formControlName="name">
         <label for="name">Nome</label>
@@ -13,7 +10,6 @@
     <div class="field">
       <p-button type="submit">Salvar</p-button>
     </div>
-    <p-toast />
   </form>
 </p-panel>
   
