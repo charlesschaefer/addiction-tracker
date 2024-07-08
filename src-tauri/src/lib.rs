@@ -9,6 +9,10 @@ use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut}
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    use std::os::windows::io::HandleOrInvalid;
+
+    use tauri::WindowEvent;
+
     tauri::Builder::default()
         //.plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
@@ -22,7 +26,7 @@ pub fn run() {
             //    .show()
             //    .unwrap();
 
-            let item_show = MenuItem::new(app, "Exibir", true, Some("E")).unwrap();
+            let item_show = MenuItem::new(app, "Exibir/Ocultar", true, Some("E")).unwrap();
             let item_quit = MenuItem::new(app, "Sair", true, Some("R")).unwrap();
             let menu = MenuBuilder::new(app)
                 .item(&item_show)
@@ -31,7 +35,24 @@ pub fn run() {
                 .unwrap();
 
             let window = app.get_webview_window("main").unwrap();
-            // let window_hider = window.clone();
+            let window_hider = window.clone();
+            window.on_window_event(move |event| {
+                match event {
+                    WindowEvent::CloseRequested { api, .. } => {
+                        api.prevent_close();
+                        window_hider.hide().unwrap();
+                        
+                        use tauri_plugin_notification::NotificationExt;
+                        window_hider.app_handle().notification()
+                            .builder()
+                            .title("Não fechamos")
+                            .body("O addiction-tracker não fechou, só está oculto na sua bandeja do sistema.")
+                            .show()
+                            .unwrap();
+                    },
+                    _ => {}
+                }
+            });
 
             let _ = TrayIconBuilder::new()
                 .tooltip("Personal Addiction Tracker App")
@@ -86,11 +107,14 @@ pub fn run() {
                     let quit = item_quit.clone();
                     let show = item_show.clone();
                     if event.id() == quit.id() {
-                        //std::process::exit(0);
                         app.exit(0);
                     } else if event.id() == show.id() {
                         let window = app.get_webview_window("main").unwrap();
-                        window.show().unwrap();
+                        if window.is_visible().unwrap_or(false) {
+                            window.hide().unwrap();
+                        } else {
+                            window.show().unwrap();
+                        }
                     }
                 })
                 .build(app);
