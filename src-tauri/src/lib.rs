@@ -2,16 +2,16 @@
 use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
-use tauri::Manager;
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut};
+
+use tauri::{Manager, WindowEvent};
+
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    use std::os::windows::io::HandleOrInvalid;
 
-    use tauri::WindowEvent;
 
     tauri::Builder::default()
         //.plugin(tauri_plugin_shell::init())
