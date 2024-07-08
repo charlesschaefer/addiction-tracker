@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartModule, UIChart } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -35,7 +37,7 @@ interface TriggerUsage {
 @Component({
     selector: 'app-usage-track',
     standalone: true,
-    imports: [ChartModule, PanelModule],
+    imports: [ChartModule, PanelModule, CardModule, DividerModule],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
 })
@@ -106,7 +108,7 @@ export class UsageTrackComponent implements OnInit {
                 labels: triggerData.map(triggerUsage => triggerUsage.trigger),
                 datasets: [
                     {
-                        label: 'Consumo',
+                        label: 'Consumo total',
                         data: triggerData.map(triggerUsage => triggerUsage.usage),
                         backgroundColor: 'rgba(156, 39, 176, 0.4)'
                     }
