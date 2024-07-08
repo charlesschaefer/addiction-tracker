@@ -4,6 +4,8 @@ import { PanelModule } from 'primeng/panel';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
+import { SubstanceService } from '../services/substance.service';
+import { SubstanceDto } from '../dto/substance.dto';
 
 interface ChartDataset {
     label: string;
@@ -20,6 +22,11 @@ interface ChartData {
     datasets: ChartDataset[];
 }
 
+interface UsageChart {
+    substanceId: number;
+    chart: ChartData;
+}
+
 interface TriggerUsage {
     trigger: string;
     usage: number;
@@ -33,8 +40,9 @@ interface TriggerUsage {
     styleUrl: './usage-track.component.scss'
 })
 export class UsageTrackComponent implements OnInit {
-    usageChartData: ChartData;
+    usageChartData: UsageChart[];
     triggerChartData: ChartData;
+    substances: Map<number, SubstanceDto> = new Map();
 
     options = {
         animation: true
@@ -42,36 +50,55 @@ export class UsageTrackComponent implements OnInit {
 
     constructor(
         private usageService: UsageService<UsageDto>,
+        private substanceService: SubstanceService<SubstanceDto>,
     ) {}
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
             const documentStyle = getComputedStyle(document.documentElement);
-            let usageChartData: ChartData = {
-                labels: result.map(usage => usage.datetime.toLocaleDateString()),
-                datasets: [
-                    {
-                        label: 'Consumo',
-                        data: result.map(usage => usage.quantity),
-                        tension: 0.3,
-                        borderColor: documentStyle.getPropertyValue('--blue-500')
-                    },
-                    {
-                        label: 'Sentimento',
-                        data: result.map(usage => usage.sentiment),
-                        tension: 0.3,
-                        fill: true,
-                        backgroundColor: 'rgba(156, 39, 176, 0.4)'
-                    },
-                    {
-                        label: 'Fissura',
-                        data: result.map(usage => usage.craving),
-                        tension: 0.3,
-                        borderDash: [5, 5],
-                        borderColor: documentStyle.getPropertyValue('--orange-500')
-                    }
-                ]
-            };
+            let usageChartData: UsageChart[] = [];
+            let registeredSubstances = new Map;
+            result.map(usage => {
+                if (!registeredSubstances.has(usage.substance)) {
+                    usageChartData.push({
+                        substanceId: usage.substance,
+                        chart: {
+                            labels: [],
+                            datasets: [
+                                {
+                                    label: 'Consumo',
+                                    data: [],
+                                    tension: 0.3,
+                                    borderColor: documentStyle.getPropertyValue('--blue-500')
+                                },
+                                {
+                                    label: 'Sentimento',
+                                    data: [],
+                                    tension: 0.3,
+                                    fill: true,
+                                    backgroundColor: 'rgba(156, 39, 176, 0.4)'
+                                },
+                                {
+                                    label: 'Fissura',
+                                    data: [],
+                                    tension: 0.3,
+                                    borderDash: [5, 5],
+                                    borderColor: documentStyle.getPropertyValue('--orange-500')
+                                }
+                            ]
+                        }
+                    });
+                    // register the index where the substance was added.
+                    registeredSubstances.set(usage.substance, usageChartData.length - 1);
+                }
+                let usageIdx = registeredSubstances.get(usage.substance);
+                let usageChart = usageChartData[usageIdx].chart;
+                usageChart.labels.push(usage.datetime.toLocaleDateString());
+                usageChart.datasets[0].data.push(usage.quantity);
+                usageChart.datasets[1].data.push(usage.sentiment);
+                usageChart.datasets[2].data.push(usage.craving);
+            });
+
             this.usageChartData = usageChartData;
             
             let triggerData = this.consolidateTriggerData(result);
@@ -88,6 +115,12 @@ export class UsageTrackComponent implements OnInit {
 
             this.triggerChartData = triggerChartData;
         });
+
+        this.substanceService.list().subscribe(result => {
+            result.map(substance => {
+                this.substances.set(substance.id, substance);
+            });
+        })
     }
 
     consolidateTriggerData(data: UsageDto[]): TriggerUsage[] {
