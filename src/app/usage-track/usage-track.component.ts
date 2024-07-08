@@ -3,6 +3,7 @@ import { ChartModule, UIChart } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { SplitterModule } from 'primeng/splitter';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -37,7 +38,7 @@ interface TriggerUsage {
 @Component({
     selector: 'app-usage-track',
     standalone: true,
-    imports: [ChartModule, PanelModule, CardModule, DividerModule],
+    imports: [ChartModule, PanelModule, CardModule, DividerModule, SplitterModule],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
 })
@@ -45,6 +46,7 @@ export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
     triggerChartData: ChartData;
     substances: Map<number, SubstanceDto> = new Map();
+    chartLayout = window.innerWidth < 500 ? 'vertical' : 'horizontal';
 
     options = {
         animation: true

@@ -1,11 +1,15 @@
 @for (chartData of usageChartData; track chartData.chart) {
   <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
-    <p-card class="shipping-card" header="Acompanhamento de consumo">
-      <p-chart type="line" [data]="chartData.chart" [options]="options" />
-    </p-card>
-    <p-divider />
-    <p-card class="shipping-card" header="Gatilhos de consumo">
-      <p-chart type="bar" [data]="triggerChartData" [options]="options" />
-    </p-card>
+    <div class="inline-cards">
+      <p-card 
+        class="chart-card" 
+        header="Acompanhamento de consumo" 
+      >
+        <p-chart type="line" [data]="chartData.chart" [options]="options" />
+      </p-card>
+      <p-card class="chart-card" header="Gatilhos de consumo">
+        <p-chart type="bar" [data]="triggerChartData" [options]="options" />
+      </p-card>
+    </div>
   </p-panel>
 }

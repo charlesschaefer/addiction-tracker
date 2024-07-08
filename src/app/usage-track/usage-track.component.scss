@@ -1,0 +1,14 @@
+:host ::ng-deep .inline-cards .p-card {
+    max-width: 800px;
+}
+
+
+@media (min-width: 1000px) {
+    .inline-cards {
+        display: flex;
+        flex-direction: row;
+    }
+    :host ::ng-deep .inline-cards .p-card {
+        width: 500px;
+    }
+}
