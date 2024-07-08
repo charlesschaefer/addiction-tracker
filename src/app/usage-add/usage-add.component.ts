@@ -10,13 +10,13 @@ import { MatSliderModule } from '@angular/material/slider';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { Messages, MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import { Messages, MessagesModule } from 'primeng/messages';
 import { Message, MessageService } from 'primeng/api';
 
 
