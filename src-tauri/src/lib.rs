@@ -10,10 +10,18 @@ use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut}
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_shell::init())
+        //.plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|app| {
+            // An example of how to run a notification from Tauri Rust code
+            //use tauri_plugin_notification::NotificationExt;
+            //app.notification()
+            //    .builder()
+            //    .title("Nova notificação")
+            //    .body("Você recebeu uma nova notificação")
+            //    .show()
+            //    .unwrap();
+
             let item_show = MenuItem::new(app, "Exibir", true, Some("E")).unwrap();
             let item_quit = MenuItem::new(app, "Sair", true, Some("R")).unwrap();
             let menu = MenuBuilder::new(app)
@@ -78,7 +86,8 @@ pub fn run() {
                     let quit = item_quit.clone();
                     let show = item_show.clone();
                     if event.id() == quit.id() {
-                        std::process::exit(0);
+                        //std::process::exit(0);
+                        app.exit(0);
                     } else if event.id() == show.id() {
                         let window = app.get_webview_window("main").unwrap();
                         window.show().unwrap();

@@ -40,9 +40,10 @@ export class AppComponent implements AfterViewInit {
     ];
 
     ngAfterViewInit() {
-        this.notify().then((value) => console.log(value));
+        
     }
 
+    // An example of how to add notifications from tauri javascript code
     async notify() {
         // Do you have permission to send a notification?
         let permissionGranted = await isPermissionGranted();
