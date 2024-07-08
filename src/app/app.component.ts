@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
@@ -11,7 +11,8 @@ import {
     isPermissionGranted,
     requestPermission,
     sendNotification,
-  } from '@tauri-apps/plugin-notification';
+    type Options as NotificationOptions,
+  } from "@tauri-apps/plugin-notification";
     
     
 @Component({
@@ -30,14 +31,19 @@ import {
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
     items: MenuItem[] = [
         { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
         { label: "Novo Registro", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
         { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
         { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
-    ]
-    async ngOnInit() {
+    ];
+
+    ngAfterViewInit() {
+        this.notify().then((value) => console.log(value));
+    }
+
+    async notify() {
         // Do you have permission to send a notification?
         let permissionGranted = await isPermissionGranted();
         // If not we need to request it
@@ -48,6 +54,7 @@ export class AppComponent implements OnInit {
         console.log("permission", permissionGranted);
         // Once permission has been granted we can send the notification
         if (permissionGranted) {
+            sendNotification("Tauri is awesome");
             sendNotification({ title: 'Addiction Tracker', body: 'Olá usuário, este é um exemplo de notificação' });
         }
     }
