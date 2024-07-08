@@ -46,6 +46,10 @@ export abstract class ServiceAbstract<T> {
         return this.dbService.getByID<T>(this.storeName, id);
     }
 
+    getByField(field: string, value: any) {
+        return this.dbService.getAllByIndex(this.storeName, field, IDBKeyRange.only(value));
+    }
+
     remove(id: number): Observable<any> {
         return this.dbService.deleteByKey(this.storeName, id);
     }

@@ -2,7 +2,7 @@
 
   <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
     <div class="field">
-      @if (!substanceForm.valid && substanceForm.touched) {
+      @if (!formValid) {
           <p-messages [enableService]="false" [(value)]="errorMessage" />
       }
       <p-floatLabel>

@@ -7,9 +7,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { Toast, ToastModule } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
+import { EMPTY, Observable, concatMap, firstValueFrom } from 'rxjs';
 
-import { SubstanceAddDto } from '../dto/substance.dto';
+import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
 import { Message, MessageService } from 'primeng/api';
 
@@ -35,6 +36,7 @@ export class SubstanceAddComponent {
     substanceForm = this.fb.group({
         name: [null, Validators.required],
     });
+    formValid = this.substanceForm.valid || !this.substanceForm.touched;
     
     constructor(
         private substanceService: SubstanceService<SubstanceAddDto>,
@@ -48,17 +50,68 @@ export class SubstanceAddComponent {
             this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Verifique todos os valores do formulário", life: 3000 });
             return;
         }
+        /* this.substanceService.getByField('name', this.substanceForm.value.name).subscribe(result => {
+            let substance = result.pop() as SubstanceDto;
+            if (substance.name == this.substanceForm.value.name as unknown as string) {
+                this.messageService.add({ severity: 'error', summary: 'Entrada duplicada', detail: 'Já existe essa substância', life: 3000});
+                return;
+            }
+
+            let data: SubstanceAddDto = {
+                name: this.substanceForm.value.name || ''
+            };
+            this.substanceService.add(data).subscribe(values => {
+                this.substanceService.clearCache();
+                this.messageService.add({ severity: 'success', summary: 'Tudo certo', detail: 'Substância salva com sucesso!', life: 3000});
+    
+                this.substanceForm.patchValue({name: null});
+    
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 3000);
+                
+            });
+        }); */
+        let substances = await firstValueFrom(this.substanceService.getByField('name', this.substanceForm.value.name));
+        if (
+            substances.length 
+            && (substances.pop() as SubstanceDto).name == this.substanceForm.value.name as unknown as string
+        ) {
+            this.messageService.add({ 
+                severity: 'error', 
+                summary: 'Entrada duplicada', 
+                detail: 'Já existe essa substância', 
+                life: 3000
+            });
+            return;
+        }
         let data: SubstanceAddDto = {
             name: this.substanceForm.value.name || ''
         };
-        this.substanceService.add(data).subscribe(values => {
-            this.substanceService.clearCache();
-            this.messageService.add({ severity: 'success', summary: 'Tudo certo', detail: 'Substância salva com sucesso!', life: 3000})
-            setTimeout(() => {
-                this.router.navigate(['/']);
-            }, 3000);
-            
+        this.substanceService.add(data).subscribe({
+            next: (values) => {
+                this.substanceService.clearCache();
+                this.messageService.add({ 
+                    severity: 'success', 
+                    summary: 'Tudo certo', 
+                    detail: 'Substância salva com sucesso!', 
+                    life: 3000
+                });
+
+                this.substanceForm.patchValue({name: null});
+
+                setTimeout(() => {
+                    this.router.navigate(['/']);
+                }, 3000);
+            }, 
+            error: (error) => {
+                this.messageService.add({ 
+                    severity: 'error', 
+                    summary: 'Erro', 
+                    detail: 'Houve um erro ao salvar a substância! ' + error, 
+                    life: 3000
+                });
+            }
         });
-        
     }
 }
