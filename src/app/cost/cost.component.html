@@ -1,1 +1,30 @@
-<p>cost works!</p>
+@if (costs.length > 1) {
+    <p-panel header="Gastos totais" class="cost-chart">
+        <p-chart type="pie" [data]="chartData" [options]="chartOptions" />
+    </p-panel>
+}
+
+
+@for (cost of costs; track cost.name) {
+
+    <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}">
+        <p-table [value]="cost.costs">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Data</th>
+                    <th>Substância</th>
+                    <th>Custo</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-cost>
+                <tr>
+                    <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
+                    <td>{{ substances.get(cost.substance) }}</td>
+                    <td>{{ cost.value | currency }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-panel>
+} @empty {
+    <p>Não há dados para serem exibidos.</p>
+}

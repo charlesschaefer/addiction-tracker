@@ -1,12 +1,15 @@
-import { ApplicationConfig, importProvidersFrom, LOCALE_ID } from "@angular/core";
+import { ApplicationConfig, DEFAULT_CURRENCY_CODE, importProvidersFrom, LOCALE_ID } from "@angular/core";
 import { provideRouter } from "@angular/router";
+import { registerLocaleData } from "@angular/common";
+import localePt from "@angular/common/locales/pt";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
-import { MAT_DATE_LOCALE } from "@angular/material/core";
+
+registerLocaleData(localePt);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,5 +29,9 @@ export const appConfig: ApplicationConfig = {
       provide: LOCALE_ID,
       useValue: 'pt-BR'
     },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
+    }
   ],
 };

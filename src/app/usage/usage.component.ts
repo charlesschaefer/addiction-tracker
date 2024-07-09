@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Tag, TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
+import { DateTime } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -32,7 +33,8 @@ export class UsageComponent implements OnInit {
         [4, ':)'],
         [5, ':D'],
     ]);
-    
+    DateTime = DateTime;
+
     tagSeverity:("success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined)[] = [
         'success',
         'warning',

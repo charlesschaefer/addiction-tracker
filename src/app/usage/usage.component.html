@@ -13,7 +13,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-usage>
                 <tr>
-                    <td>{{ usage.datetime.toLocaleString() }}</td>
+                    <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM/yyyy HH:mm') }}</td>
                     <td>{{ substances.get(usage.substance) }}</td>
                     <td>{{ sentiments.get(usage.sentiment) }}</td>
                     <td>{{ usage.craving }}</td>

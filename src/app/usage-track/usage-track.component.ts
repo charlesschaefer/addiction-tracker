@@ -9,26 +9,8 @@ import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
+import { ChartData, ChartDataset, UsageChart} from '../chart-types';
 
-interface ChartDataset {
-    label: string;
-    data: number[];
-    fill?: boolean;
-    borderDash?: [number, number];
-    backgroundColor?: string;
-    borderColor?: string;
-    tension?: number;
-}
-
-interface ChartData {
-    labels: string[];
-    datasets: ChartDataset[];
-}
-
-interface UsageChart {
-    substanceId: number;
-    chart: ChartData;
-}
 
 interface TriggerUsage {
     trigger: string;
@@ -46,7 +28,7 @@ export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
     triggerChartData: ChartData;
     substances: Map<number, SubstanceDto> = new Map();
-    chartLayout = window.innerWidth < 500 ? 'vertical' : 'horizontal';
+
 
     options = {
         animation: true
