@@ -34,13 +34,28 @@ import { ThemeService } from './services/theme.service';
 })
 export class AppComponent {
     items: MenuItem[] = [
-        { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
-        { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
-        { label: "Adicionar Registro", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
-        { label: "Acompanhar Custos", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
-        { label: "Adicionar Custo", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
-        { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
-        { label: "", command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
+        { 
+            label: 'Consumo',
+            items: [
+                { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
+                { label: "Acompanhar", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
+                { label: "Adicionar", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
+            ]
+        },
+        {
+            label: 'Gastos',
+            items: [
+                { label: "Acompanhar", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
+                { label: "Adicionar", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
+            ]
+        },
+        {
+            label: 'Configurações',
+            items: [
+                { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
+                { label: "Mudar tema", command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
+            ]
+        }
     ];
 
 
