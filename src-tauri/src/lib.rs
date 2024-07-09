@@ -13,7 +13,7 @@ pub fn run() {
 
     tauri::Builder::default()
         .plugin(tauri_plugin_notification::init())
-        .setup(|app| {
+        .setup(|_app| {
             // An example of how to run a notification from Tauri Rust code
             //use tauri_plugin_notification::NotificationExt;
             //app.notification()
