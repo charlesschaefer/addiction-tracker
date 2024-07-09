@@ -14,6 +14,7 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
+import { lastValueFrom } from 'rxjs';
 
 
 interface SubstanceUsage {
@@ -99,13 +100,14 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     }
 
     calculateTimeWithoutUsage(usages: UsageDto[]) {
+        let baseDate = new Date('1970-01-01');
         let lastUsage = usages.reduce((prev, curr) => {
             if (curr.datetime > prev.datetime) {
                 return curr;
             }
             return prev;
         }, {
-            datetime: new Date('1970-01-01'),
+            datetime: baseDate,
             craving: 0,
             id: 0,
             quantity: 0,
@@ -113,9 +115,11 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
             substance: 0,
             trigger: []
         });
+        if (lastUsage.datetime == baseDate) {
+            lastUsage.datetime = new Date;
+        }
         
         let duration = DateTime.fromJSDate(new Date).diff(DateTime.fromJSDate(lastUsage.datetime)).rescale();
-        console.log(duration);
         this.timeWithoutUsage = duration;
     }
 

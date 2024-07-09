@@ -1,22 +1,22 @@
 <p-toast />
 
-<p-panel>
-    @if (timeWithoutUsage?.minutes && timeWithoutUsage.minutes > 1) {
-    <p-card>
-        <i class="pi pi-star pi-spin" style="color: goldenrod; font-size: 20px;"></i>
-        Você está há
-        @if (timeWithoutUsage?.days) {
-            {{timeWithoutUsage.days}} dias,
-        }
-        @if (timeWithoutUsage?.hours) {
-            {{timeWithoutUsage.hours}} horas e
-        }
-        
-        {{timeWithoutUsage.minutes}} minutos
-        sem consumir nada. Parabéns!
-    </p-card>
-    }
-</p-panel>
+@if (timeWithoutUsage && timeWithoutUsage.as('minutes')) {
+    <p-panel>
+        <p-card>
+            <i class="pi pi-star pi-spin" style="color: goldenrod; font-size: 20px;"></i>
+            Você está há
+            @if (timeWithoutUsage?.days) {
+                {{timeWithoutUsage.days}} dias,
+            }
+            @if (timeWithoutUsage?.hours) {
+                {{timeWithoutUsage.hours}} horas e
+            }
+            
+            {{timeWithoutUsage.minutes}} minutos
+            sem consumir nada. Parabéns!
+        </p-card>
+    </p-panel>
+}
 <p-accordion >
 @for (usage of paginatedItems; track usage.name) {
 
