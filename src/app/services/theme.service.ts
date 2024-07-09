@@ -10,7 +10,7 @@ export class ThemeService {
     let themeLink = window.document.getElementById('app-theme') as HTMLLinkElement;
 
     if (themeLink) {
-      if (themeLink.href == 'aura-dark.css') {
+      if (themeLink.href.match('aura-dark.css')) {
         themeLink.href = 'aura-light.css';
       } else {
         themeLink.href = 'aura-dark.css';
