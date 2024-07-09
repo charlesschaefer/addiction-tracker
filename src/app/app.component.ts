@@ -13,7 +13,8 @@ import {
     sendNotification,
     type Options as NotificationOptions,
   } from "@tauri-apps/plugin-notification";
-    
+
+import { ThemeService } from './services/theme.service';
     
 @Component({
     selector: 'app-root',
@@ -31,7 +32,7 @@ import {
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
     items: MenuItem[] = [
         { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
         { label: "Acompanhar Registros", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
@@ -39,11 +40,13 @@ export class AppComponent implements AfterViewInit {
         { label: "Acompanhar Custos", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
         { label: "Adicionar Custo", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
         { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
+        { label: "", command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
     ];
 
-    ngAfterViewInit() {
-        
-    }
+
+    constructor(
+        private themeService: ThemeService,
+    ) {}
 
     // An example of how to add notifications from tauri javascript code
     async notify() {
@@ -60,5 +63,9 @@ export class AppComponent implements AfterViewInit {
             sendNotification("Tauri is awesome");
             sendNotification({ title: 'Addiction Tracker', body: 'Olá usuário, este é um exemplo de notificação' });
         }
+    }
+
+    switchTheme() {
+        this.themeService.switchTheme();
     }
 }
