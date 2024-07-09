@@ -1,3 +1,5 @@
+<p-toast />
+
 <p-panel>
     @if (timeWithoutUsage?.minutes && timeWithoutUsage.minutes > 1) {
     <p-card>
@@ -19,10 +21,11 @@
 @for (usage of paginatedItems; track usage.name) {
 
     <!-- <p-panel header="Consumos de {{usage.name}}"> -->
-    <p-accordionTab header="Consumos de {{usage.name}}">
+    <p-accordionTab header="Consumos de {{usage.name}} ({{allItems[$index].items.length}})">
         <p-table [value]="usage.items">
             <ng-template pTemplate="header">
                 <tr>
+                    <th></th>
                     <th>Data</th>
                     <th>Substância</th>
                     <th>Sentimento</th>
@@ -32,6 +35,9 @@
             </ng-template>
             <ng-template pTemplate="body" let-usage>
                 <tr>
+                    <td>
+                        <a class="pi pi-trash" (click)="removeUsage(usage.id)"></a>
+                    </td>
                     <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM/yyyy HH:mm') }}</td>
                     <td>{{ substances.get(usage.substance) }}</td>
                     <td>{{ sentiments.get(usage.sentiment) }}</td>

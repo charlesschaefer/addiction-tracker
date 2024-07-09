@@ -1,3 +1,4 @@
+<p-toast />
 @if (allItems.length > 1) {
     <p-panel header="Gastos totais" class="cost-chart">
     
@@ -12,6 +13,7 @@
             <p-table [value]="cost.items">
                 <ng-template pTemplate="header">
                     <tr>
+                        <th></th>
                         <th>Data</th>
                         <th>Substância</th>
                         <th>Custo</th>
@@ -19,6 +21,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-cost>
                     <tr>
+                        <td>
+                            <a (click)="removeCost(cost.id)" class="pi pi-trash"></a>
+                        </td>
                         <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
                         <td>{{ substances.get(cost.substance) }}</td>
                         <td>{{ cost.value | currency }}</td>

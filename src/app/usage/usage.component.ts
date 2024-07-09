@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Tag, TagModule } from 'primeng/tag';
+import { TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
 import { PaginatorModule } from 'primeng/paginator';
-import { Card, CardModule } from 'primeng/card';
+import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { DateTime, Duration } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
-import { TriggerService } from '../services/trigger.service';
-import { TriggerDto } from '../dto/trigger.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
@@ -24,9 +24,18 @@ interface SubstanceUsage {
 @Component({
     selector: 'app-usage',
     standalone: true,
-    imports: [TableModule, TagModule, PanelModule, PaginatorModule, CardModule, AccordionModule],
+    imports: [
+        TableModule,
+        TagModule,
+        PanelModule,
+        PaginatorModule,
+        CardModule,
+        AccordionModule,
+        ToastModule,
+    ],
     templateUrl: './usage.component.html',
-    styleUrl: './usage.component.scss'
+    styleUrl: './usage.component.scss',
+    providers: [MessageService]
 })
 export class UsageComponent extends PaginatedComponent<UsageDto> implements OnInit {
     substances: Map<number, string> = new Map;
@@ -50,6 +59,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     constructor(
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
+        private messageService: MessageService,
     ) {
         super();
     }
@@ -108,5 +118,26 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         console.log(duration);
         this.timeWithoutUsage = duration;
     }
-   
+
+    removeUsage(id: number) {
+        this.usageService.remove(id).subscribe({
+            next: value => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Tudo certo',
+                    detail: 'Consumo removido com sucesso!',
+                    life: 2000
+                });
+                setTimeout(() => window.location.reload(), 2000);
+            },
+            error: err => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Erro',
+                    detail: 'Não foi possível remover o registro!',
+                    life: 2000
+                });
+            }
+        })
+    }
 }

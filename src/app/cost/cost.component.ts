@@ -5,6 +5,8 @@ import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
 import { PaginatorModule } from 'primeng/paginator';
 import { AccordionModule } from 'primeng/accordion';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { DateTime } from 'luxon';
 
 
@@ -25,9 +27,11 @@ import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-comp
         ChartModule,
         PaginatorModule,
         AccordionModule,
+        ToastModule,
     ],
     templateUrl: './cost.component.html',
-    styleUrl: './cost.component.scss'
+    styleUrl: './cost.component.scss',
+    providers: [MessageService]
 })
 export class CostComponent extends PaginatedComponent<CostDto> implements OnInit {
     DateTime = DateTime
@@ -45,6 +49,7 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
     constructor(
         private costService: CostService<CostDto>,
         private substanceService: SubstanceService<SubstanceDto>,
+        private messageService: MessageService,
     ) {
         super();
     }
@@ -118,5 +123,27 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
         }
         this.chartData = {datasets: [datasets], labels};
         console.dir(this.chartData);
+    }
+
+    removeCost(id: number) {
+        this.costService.remove(id).subscribe({
+            next: values => {
+                this.messageService.add({
+                    severity: "success",
+                    summary: "Tudo certo",
+                    detail: "Gasto removido com sucesso!",
+                    life: 2000
+                });
+                setTimeout(() => window.location.reload(), 2000);
+            },
+            error: err => {
+                this.messageService.add({
+                    severity: "error",
+                    summary: "Erro",
+                    detail: "Não foi possível remover o gasto",
+                    life: 2000
+                });
+            }
+        })
     }
 }
