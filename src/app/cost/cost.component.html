@@ -1,11 +1,11 @@
-@if (costs.length > 1) {
+@if (allCosts.length > 1) {
     <p-panel header="Gastos totais" class="cost-chart">
         <p-chart type="pie" [data]="chartData" [options]="chartOptions" />
     </p-panel>
 }
 
 
-@for (cost of costs; track cost.name) {
+@for (cost of paginatedCosts; track cost.name) {
 
     <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}">
         <p-table [value]="cost.costs">
@@ -24,6 +24,12 @@
                 </tr>
             </ng-template>
         </p-table>
+        <p-paginator 
+            (onPageChange)="changePage($event, cost.substanceId)" 
+            [first]="firstItem[cost.substanceId]"
+            [rows]="rowsToShow[cost.substanceId]" 
+            [totalRecords]="totalRecords[cost.substanceId]" 
+            [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
     </p-panel>
 } @empty {
     <p>Não há dados para serem exibidos.</p>

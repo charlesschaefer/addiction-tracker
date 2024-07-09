@@ -3,6 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
+import { PaginatorModule } from 'primeng/paginator';
 import { DateTime } from 'luxon';
 
 
@@ -18,16 +19,30 @@ interface SubstanceCost {
     costs: CostDto[];
 }
 
+interface PageEvent {
+    first?: number;
+    rows?: number;
+    page?: number;
+    pageCount?: number;
+}
+
 @Component({
     selector: 'app-cost',
     standalone: true,
-    imports: [TableModule, PanelModule, CurrencyPipe, ChartModule],
+    imports: [
+        TableModule,
+        PanelModule,
+        CurrencyPipe,
+        ChartModule,
+        PaginatorModule
+    ],
     templateUrl: './cost.component.html',
     styleUrl: './cost.component.scss'
 })
 export class CostComponent implements OnInit {
     DateTime = DateTime
-    costs: SubstanceCost[] = [];
+    allCosts: SubstanceCost[] = [];
+    paginatedCosts: SubstanceCost[] = [];
     // substance_id and total_cost
     calculatedCosts: Map<number, number> = new Map();
     
@@ -36,6 +51,12 @@ export class CostComponent implements OnInit {
         animation: true
     };
     chartData: ChartData;
+
+    /* pagination */
+    firstItem: number[] = [];
+    rowsToShow: number[] = [];
+    totalRecords: number[] = [];
+
 
     constructor(
         private costService: CostService<CostDto>,
@@ -51,29 +72,32 @@ export class CostComponent implements OnInit {
            this.groupCostBySubstance(costs); 
            this.calculateTotalCosts();
            this.prepareChartData();
+
+           this.initializePagination();
+           this.generatePaginatedCosts();
         });
     }
 
     groupCostBySubstance(costs: CostDto[]) {
         let registeredSubstances = new Map();
         // creates an array of cost grouped by substance
-        costs.map(cost => {
+        costs.forEach(cost => {
             if (!registeredSubstances.has(cost.substance)) {
                 let substanceCost: SubstanceCost = {
                     name: this.substances.get(cost.substance) as unknown as string,
                     substanceId: cost.substance,
                     costs: [cost]
                 };
-                this.costs.push(substanceCost);
-                registeredSubstances.set(cost.substance, this.costs.length - 1);
+                this.allCosts.push(substanceCost);
+                registeredSubstances.set(cost.substance, this.allCosts.length - 1);
                 return;
             }
-            this.costs[registeredSubstances.get(cost.substance)].costs.push(cost);
+            this.allCosts[registeredSubstances.get(cost.substance)].costs.push(cost);
         });
     }
 
     calculateTotalCosts() {
-        this.costs.map(substanceCost => {
+        this.allCosts.map(substanceCost => {
             let totalCost = substanceCost
                 .costs
                 .reduce(
@@ -108,5 +132,40 @@ export class CostComponent implements OnInit {
         }
         this.chartData = {datasets: [datasets], labels};
         console.dir(this.chartData);
+    }
+
+    initializePagination() {
+        this.allCosts.forEach(costs => {
+            this.firstItem[costs.substanceId] = 0;
+            this.rowsToShow[costs.substanceId] = 10;
+            this.totalRecords[costs.substanceId] = costs.costs.length;
+        })
+    }
+
+    changePage(event: PageEvent, substanceId: number) {
+        this.firstItem[substanceId] = event.first as unknown as number;
+        this.rowsToShow[substanceId] = event.rows as unknown as number;
+        console.log("Event", event);
+
+        this.generatePaginatedCosts();
+    }
+
+    generatePaginatedCosts() {
+        let paginatedCosts: SubstanceCost[] = [];
+        
+        this.allCosts.forEach((substanceCost, idx) => {
+            let firstItem = this.firstItem[substanceCost.substanceId] as unknown as number;
+            let rowsToShow = this.rowsToShow[substanceCost.substanceId] as unknown as number;
+            paginatedCosts[idx] = {
+                name: substanceCost.name,
+                substanceId: substanceCost.substanceId,
+                costs: substanceCost.costs.slice(
+                    firstItem,
+                    firstItem + rowsToShow
+                )
+            };
+            this.totalRecords[substanceCost.substanceId] = substanceCost.costs.length;
+        });
+        this.paginatedCosts = paginatedCosts;
     }
 }
