@@ -32,7 +32,7 @@ import { ThemeService } from './services/theme.service';
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     items: MenuItem[] = [
         { 
             label: 'Consumo',
@@ -43,11 +43,17 @@ export class AppComponent {
             ]
         },
         {
+            separator: true
+        },
+        {
             label: 'Gastos',
             items: [
                 { label: "Acompanhar", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
                 { label: "Adicionar", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
             ]
+        },
+        {
+            separator: true
         },
         {
             label: 'Configurações',
@@ -62,6 +68,18 @@ export class AppComponent {
     constructor(
         private themeService: ThemeService,
     ) {}
+
+    ngOnInit(): void {
+        let currentTheme = this.themeService.getCurrentTheme();
+        let userTheme = localStorage.getItem('theme');
+        if (!userTheme) {
+            userTheme = currentTheme;
+        }
+        if (userTheme != currentTheme) {
+            console.log(userTheme, currentTheme);
+            this.themeService.switchTheme(userTheme);
+        }
+    }
 
     // An example of how to add notifications from tauri javascript code
     async notify() {
@@ -82,5 +100,8 @@ export class AppComponent {
 
     switchTheme() {
         this.themeService.switchTheme();
+
+        let currentTheme = this.themeService.getCurrentTheme();
+        localStorage.setItem('theme', currentTheme);
     }
 }
