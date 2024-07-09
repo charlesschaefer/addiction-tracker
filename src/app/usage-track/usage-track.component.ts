@@ -4,6 +4,7 @@ import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { SplitterModule } from 'primeng/splitter';
+import { AccordionModule } from 'primeng/accordion';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -20,7 +21,7 @@ interface TriggerUsage {
 @Component({
     selector: 'app-usage-track',
     standalone: true,
-    imports: [ChartModule, PanelModule, CardModule, DividerModule, SplitterModule],
+    imports: [ChartModule, PanelModule, CardModule, DividerModule, SplitterModule, AccordionModule],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
 })

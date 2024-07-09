@@ -4,6 +4,7 @@ import { Tag, TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
 import { PaginatorModule } from 'primeng/paginator';
 import { Card, CardModule } from 'primeng/card';
+import { AccordionModule } from 'primeng/accordion';
 import { DateTime, Duration } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
@@ -23,7 +24,7 @@ interface SubstanceUsage {
 @Component({
     selector: 'app-usage',
     standalone: true,
-    imports: [TableModule, TagModule, PanelModule, PaginatorModule, CardModule],
+    imports: [TableModule, TagModule, PanelModule, PaginatorModule, CardModule, AccordionModule],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss'
 })

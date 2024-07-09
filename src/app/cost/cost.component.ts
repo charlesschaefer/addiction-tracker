@@ -4,6 +4,7 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { ChartModule } from 'primeng/chart';
 import { PaginatorModule } from 'primeng/paginator';
+import { AccordionModule } from 'primeng/accordion';
 import { DateTime } from 'luxon';
 
 
@@ -22,7 +23,8 @@ import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-comp
         PanelModule,
         CurrencyPipe,
         ChartModule,
-        PaginatorModule
+        PaginatorModule,
+        AccordionModule,
     ],
     templateUrl: './cost.component.html',
     styleUrl: './cost.component.scss'

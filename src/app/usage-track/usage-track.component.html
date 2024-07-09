@@ -1,5 +1,7 @@
+<p-accordion>
 @for (chartData of usageChartData; track chartData.chart) {
-  <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
+  <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
+  <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
     <div class="inline-cards">
       <p-card 
         class="chart-card" 
@@ -11,7 +13,8 @@
         <p-chart type="bar" [data]="triggerChartData" [options]="options" />
       </p-card>
     </div>
-  </p-panel>
+  </p-accordionTab>
 } @empty {
   <p>Não há dados para serem exibidos.</p>
 }
+</p-accordion>

@@ -15,10 +15,11 @@
     </p-card>
     }
 </p-panel>
-
+<p-accordion >
 @for (usage of paginatedItems; track usage.name) {
 
-    <p-panel header="Consumos de {{usage.name}}">
+    <!-- <p-panel header="Consumos de {{usage.name}}"> -->
+    <p-accordionTab header="Consumos de {{usage.name}}">
         <p-table [value]="usage.items">
             <ng-template pTemplate="header">
                 <tr>
@@ -49,7 +50,8 @@
             [rows]="rowsToShow[usage.substanceId]" 
             [totalRecords]="totalRecords[usage.substanceId]" 
             [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
-    </p-panel>
+    </p-accordionTab>
 } @empty {
     <p>Não há dados para serem exibidos.</p>
 }
+</p-accordion>

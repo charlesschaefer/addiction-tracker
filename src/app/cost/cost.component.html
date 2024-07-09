@@ -1,36 +1,38 @@
 @if (allItems.length > 1) {
     <p-panel header="Gastos totais" class="cost-chart">
+    
         <p-chart type="pie" [data]="chartData" [options]="chartOptions" />
-    </p-panel>
-}
+    </p-panel>}
 
+<p-accordion>
+    @for (cost of paginatedItems; track cost.name) {
 
-@for (cost of paginatedItems; track cost.name) {
-
-    <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}">
-        <p-table [value]="cost.items">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th>Data</th>
-                    <th>Substância</th>
-                    <th>Custo</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-cost>
-                <tr>
-                    <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
-                    <td>{{ substances.get(cost.substance) }}</td>
-                    <td>{{ cost.value | currency }}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-        <p-paginator 
-            (onPageChange)="changePage($event, cost.substanceId)" 
-            [first]="firstItem[cost.substanceId]"
-            [rows]="rowsToShow[cost.substanceId]" 
-            [totalRecords]="totalRecords[cost.substanceId]" 
-            [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
-    </p-panel>
-} @empty {
-    <p>Não há dados para serem exibidos.</p>
-}
+        <!-- <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}"> -->
+        <p-accordionTab header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}">
+            <p-table [value]="cost.items">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Data</th>
+                        <th>Substância</th>
+                        <th>Custo</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-cost>
+                    <tr>
+                        <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
+                        <td>{{ substances.get(cost.substance) }}</td>
+                        <td>{{ cost.value | currency }}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-paginator 
+                (onPageChange)="changePage($event, cost.substanceId)" 
+                [first]="firstItem[cost.substanceId]"
+                [rows]="rowsToShow[cost.substanceId]" 
+                [totalRecords]="totalRecords[cost.substanceId]" 
+                [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
+        </p-accordionTab>
+    } @empty {
+        <p>Não há dados para serem exibidos.</p>
+    }
+</p-accordion>
