@@ -9,7 +9,7 @@ import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
-import { ChartData, ChartDataset, UsageChart} from '../chart-types';
+import { ChartData, ChartDataset, UsageChart} from '../util/chart-types';
 
 
 interface TriggerUsage {
