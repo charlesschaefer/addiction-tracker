@@ -7,6 +7,7 @@ import { CardModule } from 'primeng/card';
 import { AccordionModule } from 'primeng/accordion';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { KnobModule } from 'primeng/knob';
 import { DateTime, Duration } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
@@ -33,6 +34,7 @@ interface SubstanceUsage {
         CardModule,
         AccordionModule,
         ToastModule,
+        KnobModule,
     ],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss',

@@ -1,6 +1,6 @@
 <p-toast />
 
-@if (timeWithoutUsage && timeWithoutUsage.as('minutes')) {
+@if (timeWithoutUsage && timeWithoutUsage.as('minutes') >= 5) {
     <p-panel>
         <p-card>
             <i class="pi pi-star pi-spin" style="color: goldenrod; font-size: 20px;"></i>
@@ -39,9 +39,17 @@
                         <a class="pi pi-trash" (click)="removeUsage(usage.id)"></a>
                     </td>
                     <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM/yyyy HH:mm') }}</td>
-                    <td>{{ substances.get(usage.substance) }}</td>
-                    <td>{{ sentiments.get(usage.sentiment) }}</td>
-                    <td>{{ usage.craving }}</td>
+                    <td>{{ usage.quantity }} {{ substances.get(usage.substance) }}</td>
+                    <td><strong>{{ sentiments.get(usage.sentiment) }}</strong></td>
+                    <td>
+                        <p-knob 
+                            [ngModel]="usage.craving" 
+                            [readonly]="true" 
+                            [max]="10" 
+                            [valueColor]="usage.craving < 3 ? 'MediumTurquoise' : (usage.craving > 7 ? 'Red' : 'Blue')"
+                            [size]="50"
+                        />
+                    </td>
                     <td>
                         @for (trigger of usage.trigger; track trigger.name) {
                             <p-tag [value]="trigger.name" [severity]="tagSeverity[$index % tagSeverity.length -1]" />
