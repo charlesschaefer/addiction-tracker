@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ToolbarModule } from 'primeng/toolbar';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
+import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuItem } from 'primeng/api';
 import {
     isPermissionGranted,
@@ -27,13 +28,14 @@ import { ThemeService } from './services/theme.service';
         RouterLink,
         ToolbarModule,
         MenuModule,
-        ButtonModule
+        ButtonModule,
+        SpeedDialModule,
     ],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-    items: MenuItem[] = [
+    menuItems: MenuItem[] = [
         { 
             label: 'Consumo',
             items: [
@@ -63,6 +65,29 @@ export class AppComponent implements OnInit {
             ]
         }
     ];
+
+    speedDialItems: MenuItem[] = [
+        {
+            icon: 'pi pi-plus',
+            routerLink: ['usage-add']
+        },
+        {
+            icon: 'pi pi-wave-pulse',
+            routerLink: ['/usage-track']
+        },
+        {
+            icon: 'pi pi-home',
+            routerLink: ['/']
+        },
+        {
+            icon: 'pi pi-money-bill',
+            routerLink: "/cost-add"
+        },
+        {
+            icon: 'pi pi-wallet',
+            routerLink: ['/cost']
+        }
+    ]
 
 
     constructor(
