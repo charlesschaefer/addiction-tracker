@@ -16,6 +16,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { Messages, MessagesModule } from 'primeng/messages';
 import { Message, MessageService } from 'primeng/api';
 
@@ -48,6 +50,8 @@ import { firstValueFrom } from 'rxjs';
         AutoCompleteModule,
         DialogModule,
         ToastModule,
+        RadioButtonModule,
+        MultiSelectModule,
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
@@ -57,7 +61,7 @@ export class UsageAddComponent implements OnInit {
     private fb = inject(FormBuilder);
     usageForm = this.fb.group({
         substance: [null, Validators.required],
-        quantity: [null, Validators.required],
+        quantity: [0, Validators.required],
         datetime: [new Date(), Validators.required],
         sentiment: [null, Validators.required],
         craving: [null, Validators.required],
@@ -95,11 +99,11 @@ export class UsageAddComponent implements OnInit {
         });
 
         this.sentiments = [
-            { id: 1, name: ':('},
-            { id: 2, name: ':\\'},
-            { id: 3, name: ':|'},
-            { id: 4, name: ':)'},
-            { id: 5, name: ':D'},
+            { id: 1, name: '😔'},
+            { id: 2, name: '😟'},
+            { id: 3, name: '😕'},
+            { id: 4, name: '🙂‍'},
+            { id: 5, name: '😃'},
         ]
     }
     
@@ -115,7 +119,7 @@ export class UsageAddComponent implements OnInit {
             return;
         }
         let form = this.usageForm.value;
-
+console.dir(form); return;
         let usageData: UsageAddDto = {
             substance: form.substance || 0,
             quantity: form.quantity || 0,
@@ -184,6 +188,12 @@ export class UsageAddComponent implements OnInit {
                     life: 2000
                 });
             }
+        });
+    }
+
+    increaseQuantity() {
+        this.usageForm.patchValue({
+            quantity: this.usageForm.value.quantity as number + 1
         });
     }
 }

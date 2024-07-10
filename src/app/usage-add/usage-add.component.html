@@ -2,18 +2,23 @@
   <p-toast />
   <form [formGroup]="usageForm" novalidate (ngSubmit)="onSubmit()">
     <div class="field">
-      <p-dropdown 
-        [options]="substances"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Substância"
-        formControlName="substance" />
-        
+      @for (substance of substances; track substance.name) {
+        <label for="substance_{{substance.id}}">
+          <p-radioButton 
+            value="{{substance.id}}" 
+            inputId="substance_{{substance.id}}"
+            formControlName="substance" 
+            class="substance-radio-button"
+          />
+            {{ substance.name }}
+        </label>
+      }
     </div>
     <div class="field">
       <p-floatLabel>
         <input pInputText formControlName="quantity" type="number">
         <label for="quantity">Quantidade</label>
+        <p-button icon="pi pi-plus" class="quantity-plus-button" [rounded]="true" (onClick)="increaseQuantity()" title="Adiciona um novo gatilho" />
       </p-floatLabel>
     </div>
     
@@ -28,12 +33,18 @@
       </p-floatLabel>
     </div>
     <div class="field ">
-      <p-dropdown 
-        [options]="sentiments"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Sentimento"
-        formControlName="sentiment" />
+      <div>Sentimento: </div><br />
+      @for (sentiment of sentiments; track sentiment.name) {
+        <p-radioButton 
+            value="{{sentiment.id}}" 
+            inputId="sentiment_{{sentiment.id}}"
+            formControlName="sentiment" 
+            class="sentiment-radio-button"
+          />
+        <label for="sentiment_{{sentiment.id}}" class="sentiment-radio-label">
+            {{ sentiment.name }}
+        </label>
+      }
     </div>
     <div class="field " >
       <label>Fissura:</label>
@@ -45,6 +56,13 @@
     </div>
     <div class="field ">
       <p-floatLabel>
+        <!-- <p-multiSelect
+          formControlName="trigger"
+          [options]="filteredTriggers"
+          optionLabel="name"
+          optionValue="id"
+          id="trigger" /> -->
+
         <p-autoComplete 
           formControlName="trigger"
           [suggestions]="filteredTriggers"
