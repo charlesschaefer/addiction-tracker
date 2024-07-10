@@ -5,6 +5,7 @@ import { UsageTrackComponent } from "./usage-track/usage-track.component";
 import { SubstanceAddComponent } from "./substance-add/substance-add.component";
 import { CostAddComponent } from "./cost-add/cost-add.component";
 import { CostComponent } from "./cost/cost.component";
+import { VersionComponent } from "./version/version.component";
 
 export const routes: Routes = [
     {path: '', component: UsageComponent},
@@ -12,5 +13,6 @@ export const routes: Routes = [
     {path: 'usage-track', component: UsageTrackComponent},
     {path: 'substance-add', component: SubstanceAddComponent},
     {path: 'cost-add', component: CostAddComponent},
-    {path: 'cost', component: CostComponent}
+    {path: 'cost', component: CostComponent},
+    {path: 'about', component: VersionComponent},
 ];

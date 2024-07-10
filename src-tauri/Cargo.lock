@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "addiction-tracker"
-version = "0.0.1"
+version = "0.0.3"
 dependencies = [
  "serde",
  "serde_json",

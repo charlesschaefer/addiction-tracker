@@ -20,7 +20,8 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
