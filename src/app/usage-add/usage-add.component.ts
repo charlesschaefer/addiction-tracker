@@ -119,7 +119,7 @@ export class UsageAddComponent implements OnInit {
             return;
         }
         let form = this.usageForm.value;
-console.dir(form); return;
+
         let usageData: UsageAddDto = {
             substance: form.substance || 0,
             quantity: form.quantity || 0,

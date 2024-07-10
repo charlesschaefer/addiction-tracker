@@ -30,7 +30,7 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
 })
 export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
-    triggerChartData: Map<number, ChartData>;
+    triggerChartData: Map<number, ChartData> = new Map;
     substances: Map<number, SubstanceDto> = new Map();
 
 
@@ -92,18 +92,20 @@ export class UsageTrackComponent implements OnInit {
             this.usageChartData = usageChartData;
             
             let triggerData = this.consolidateTriggerData(result);
-            let triggerChartData: ChartData = {
-                labels: triggerData.map(triggerUsage => triggerUsage.trigger),
-                datasets: [
-                    {
-                        label: 'Consumo total',
-                        data: triggerData.map(triggerUsage => triggerUsage.usage),
-                        backgroundColor: 'rgba(156, 39, 176, 0.4)'
-                    }
-                ]
-            }
 
-            this.triggerChartData = triggerChartData;
+            triggerData.forEach((triggerUsage, substanceId) => {
+                let chartData: ChartData = {
+                    labels: triggerUsage.map(usage => usage.trigger),
+                    datasets: [
+                        {
+                            label: 'Consumo total',
+                            data: triggerUsage.map(usage => usage.usage),
+                            backgroundColor: 'rgba(156, 39, 176, 0.4)'
+                        }
+                    ]
+                };
+                this.triggerChartData.set(substanceId, chartData);
+            });
         });
 
         this.substanceService.list().subscribe(result => {
@@ -116,41 +118,43 @@ export class UsageTrackComponent implements OnInit {
     // @TODO: finish to mount the map separated by substance, instead of 
     // counting every trigger of every usage of every substance at the same time
     // triggerMap = Map<substanceId, Map<trigger_name, count>>
-    consolidateTriggerData(data: UsageDto[]): TriggerUsage[] {
-        let triggerMap: Map<number, Map<string, number>> = new Map();
+    // triggerChatData = Map<substanceId, ChartData>
+    consolidateTriggerData(data: UsageDto[]): SubstanceTriggerUsage {
+        let substanceTriggerMap: Map<number, Map<string, number>> = new Map();
          data.forEach(currentValue => {
-            if (!triggerMap.has(currentValue.substance)) {
-                triggerMap.set(currentValue.substance, new Map());
+            if (!substanceTriggerMap.has(currentValue.substance)) {
+                substanceTriggerMap.set(currentValue.substance, new Map());
             }
+            let triggerMap = substanceTriggerMap.get(currentValue.substance);
             // loops all the usage's triggers to count them
             currentValue.trigger?.forEach(trigger => {
-                if (!triggerMap.get(currentValue.substance)?.has(trigger.name)) {
-                    triggerMap.get(currentValue.substance)?.set(trigger.name, 0);
+                if (!triggerMap?.has(trigger.name)) {
+                    triggerMap?.set(trigger.name, 0);
                 }
                 triggerMap
-                    .get(currentValue.substance)
                     ?.set(
                         trigger.name, 
                         triggerMap
-                            .get(currentValue.substance)
                             ?.get(trigger.name) as unknown as number
                             + currentValue.quantity
                     );
             });
+            substanceTriggerMap.set(currentValue.substance, triggerMap as Map<string, number>);
         });
 
-        let key;
-        let keys = triggerMap.keys();
-        let triggerUsage: TriggerUsage[] = [];
-
-        for (let [key, map] of triggerMap) {
-        //while (!(key = keys.next()).done) {
-            triggerUsage.push({
-                trigger: key,
-                usage: triggerMap.get(key.value)
+        let triggerChartData: SubstanceTriggerUsage = new Map;
+        substanceTriggerMap.forEach((triggerData, substanceId) => {
+            let triggerUsage: TriggerUsage[] = [];
+            triggerData.forEach((triggerCount, triggerName) => {
+                triggerUsage.push({
+                    trigger: triggerName,
+                    usage: triggerCount
+                });
             });
-        }
-        return triggerUsage;
+            triggerChartData.set(substanceId, triggerUsage);
+        });
+
+        return triggerChartData;
     }
 
 }

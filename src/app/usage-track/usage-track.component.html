@@ -10,7 +10,7 @@
         <p-chart type="line" [data]="chartData.chart" [options]="options" />
       </p-card>
       <p-card class="chart-card" header="Gatilhos de consumo">
-        <p-chart type="bar" [data]="triggerChartData" [options]="options" />
+        <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
       </p-card>
     </div>
   </p-accordionTab>
