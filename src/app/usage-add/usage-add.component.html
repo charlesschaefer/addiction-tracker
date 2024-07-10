@@ -45,18 +45,20 @@
     </div>
     <div class="field ">
       <p-floatLabel>
-        <p-autoComplete 
-          formControlName="trigger"
-          [suggestions]="filteredTriggers"
-          [virtualScroll]="true"
-          [virtualScrollItemSize]="50" 
-          [dropdown]="true"
-          field="name"
-          (completeMethod)="triggerSearch($event)" 
-          [multiple]="true"
-          id="trigger" />
-        <label for="trigger">Gatilho</label>
-        <p-button icon="pi pi-plus" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
+        <div style="display: flex;">
+          <p-autoComplete 
+            formControlName="trigger"
+            [suggestions]="filteredTriggers"
+            [virtualScroll]="true"
+            [virtualScrollItemSize]="50" 
+            [dropdown]="true"
+            field="name"
+            (completeMethod)="triggerSearch($event)" 
+            [multiple]="true"
+            id="trigger" />
+          <label for="trigger">Gatilho</label>
+          <p-button icon="pi pi-plus" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
+        </div>
       </p-floatLabel>
     </div>
     <div class="field">
