@@ -2,8 +2,26 @@
     flex: 1 1 auto;
 }
 
+:host ::ng-deep .dial-menu {
+    display: none;
+}
+
 @media (max-width: 600px) {
     h2.title {
         font-size: 5vw;
     }
+    .dial-menu {
+        position: fixed;
+        margin: auto;
+        height: 45px;
+        width: 100%;
+        bottom: 0px;
+        display: flex;
+        justify-content: center;
+    }
+    .dial-menu p-speedDial {
+        margin-left: -35px;
+    }
 }
+
+

@@ -7,7 +7,7 @@
   <div class="p-toolbar-group-center">
   </div>
   <div class="p-toolbar-group-end">
-    <p-menu #menu [popup]="true" [model]="items" />      
+    <p-menu #menu [popup]="true" [model]="menuItems" />
     <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
   </div>
 </p-toolbar>
@@ -15,3 +15,11 @@
 <section class="main">
   <router-outlet />
 </section>
+
+<footer class="dial-menu">
+  <p-speedDial 
+      [model]="speedDialItems" 
+      direction="up" 
+      [radius]="80" 
+      type="semi-circle" />
+</footer>

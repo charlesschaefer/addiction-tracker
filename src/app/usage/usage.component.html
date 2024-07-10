@@ -38,7 +38,7 @@
                     <td>
                         <a class="pi pi-trash" (click)="removeUsage(usage.id)"></a>
                     </td>
-                    <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM/yyyy HH:mm') }}</td>
+                    <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm') }}</td>
                     <td>{{ usage.quantity }} {{ substances.get(usage.substance) }}</td>
                     <td><strong>{{ sentiments.get(usage.sentiment) }}</strong></td>
                     <td>
