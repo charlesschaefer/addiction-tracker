@@ -11,6 +11,7 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { ChartData, ChartDataset, UsageChart} from '../util/chart-types';
+import { DateTime } from 'luxon';
 
 
 interface TriggerUsage {
@@ -80,7 +81,7 @@ export class UsageTrackComponent implements OnInit {
                 }
                 let usageIdx = registeredSubstances.get(usage.substance);
                 let usageChart = usageChartData[usageIdx].chart;
-                usageChart.labels.push(usage.datetime.toLocaleDateString());
+                usageChart.labels.push(DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm'));
                 usageChart.datasets[0].data.push(usage.quantity);
                 usageChart.datasets[1].data.push(usage.sentiment);
                 usageChart.datasets[2].data.push(usage.craving);
