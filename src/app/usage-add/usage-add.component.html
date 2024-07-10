@@ -5,7 +5,7 @@
       @for (substance of substances; track substance.name) {
         <label for="substance_{{substance.id}}">
           <p-radioButton 
-            value="{{substance.id}}" 
+            [value]=substance.id 
             inputId="substance_{{substance.id}}"
             formControlName="substance" 
             class="substance-radio-button"
@@ -36,7 +36,7 @@
       <div>Sentimento: </div><br />
       @for (sentiment of sentiments; track sentiment.name) {
         <p-radioButton 
-            value="{{sentiment.id}}" 
+            [value]=sentiment.id
             inputId="sentiment_{{sentiment.id}}"
             formControlName="sentiment" 
             class="sentiment-radio-button"

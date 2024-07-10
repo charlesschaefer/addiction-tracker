@@ -43,11 +43,11 @@ interface SubstanceUsage {
 export class UsageComponent extends PaginatedComponent<UsageDto> implements OnInit {
     substances: Map<number, string> = new Map;
     sentiments: Map<number, string> = new Map([
-        [1, ':('],
-        [2, ':/'],
-        [3, ':|'],
-        [4, ':)'],
-        [5, ':D'],
+        [1, '😔'],
+        [2, '😟'],
+        [3, '😕'],
+        [4, '🙂‍'],
+        [5, '😃'],
     ]);
     DateTime = DateTime;
     timeWithoutUsage: Duration;
@@ -69,7 +69,8 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     
     ngOnInit(): void {
         this.substanceService.list().subscribe(substances => {
-            substances.map(substance => this.substances.set(substance.id, substance.name));
+            console.log(substances);
+            substances.forEach(substance => this.substances.set(substance.id, substance.name));
         });
 
         this.usageService.list().subscribe(usages => {
@@ -88,8 +89,9 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         // creates an array of usage grouped by substance
         usages.map(usage => {
             if (!registeredSubstances.has(usage.substance)) {
+                console.log("Substance", this.substances, usage);
                 let substanceUsage: SubstanceGroupedItem<UsageDto> = {
-                    name: this.substances.get(usage.substance) as unknown as string,
+                    name: this.substances.get(usage.substance as number) as unknown as string,
                     items: [usage],
                     substanceId: usage.substance
                 };
