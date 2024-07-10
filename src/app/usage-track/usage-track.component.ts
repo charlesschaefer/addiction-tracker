@@ -19,6 +19,8 @@ interface TriggerUsage {
     usage: number;
 }
 
+type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
+
 @Component({
     selector: 'app-usage-track',
     standalone: true,
@@ -28,7 +30,7 @@ interface TriggerUsage {
 })
 export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
-    triggerChartData: ChartData;
+    triggerChartData: Map<number, ChartData>;
     substances: Map<number, SubstanceDto> = new Map();
 
 
@@ -46,7 +48,7 @@ export class UsageTrackComponent implements OnInit {
             const documentStyle = getComputedStyle(document.documentElement);
             let usageChartData: UsageChart[] = [];
             let registeredSubstances = new Map;
-            result.map(usage => {
+            result.forEach(usage => {
                 if (!registeredSubstances.has(usage.substance)) {
                     usageChartData.push({
                         substanceId: usage.substance,
@@ -111,15 +113,29 @@ export class UsageTrackComponent implements OnInit {
         })
     }
 
+    // @TODO: finish to mount the map separated by substance, instead of 
+    // counting every trigger of every usage of every substance at the same time
+    // triggerMap = Map<substanceId, Map<trigger_name, count>>
     consolidateTriggerData(data: UsageDto[]): TriggerUsage[] {
-        let triggerMap = new Map();
-         data.forEach((currentValue, currIdx, data) => {
+        let triggerMap: Map<number, Map<string, number>> = new Map();
+         data.forEach(currentValue => {
+            if (!triggerMap.has(currentValue.substance)) {
+                triggerMap.set(currentValue.substance, new Map());
+            }
             // loops all the usage's triggers to count them
-            currentValue.trigger?.map(trigger => {
-                if (!triggerMap.has(trigger.name)) {
-                    triggerMap.set(trigger.name, 0);
+            currentValue.trigger?.forEach(trigger => {
+                if (!triggerMap.get(currentValue.substance)?.has(trigger.name)) {
+                    triggerMap.get(currentValue.substance)?.set(trigger.name, 0);
                 }
-                triggerMap.set(trigger.name, triggerMap.get(trigger.name) + currentValue.quantity);
+                triggerMap
+                    .get(currentValue.substance)
+                    ?.set(
+                        trigger.name, 
+                        triggerMap
+                            .get(currentValue.substance)
+                            ?.get(trigger.name) as unknown as number
+                            + currentValue.quantity
+                    );
             });
         });
 
@@ -127,9 +143,10 @@ export class UsageTrackComponent implements OnInit {
         let keys = triggerMap.keys();
         let triggerUsage: TriggerUsage[] = [];
 
-        while (!(key = keys.next()).done) {
+        for (let [key, map] of triggerMap) {
+        //while (!(key = keys.next()).done) {
             triggerUsage.push({
-                trigger: key.value,
+                trigger: key,
                 usage: triggerMap.get(key.value)
             });
         }
