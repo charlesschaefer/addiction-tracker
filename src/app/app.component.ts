@@ -73,25 +73,26 @@ export class AppComponent implements OnInit {
 
     speedDialItems: MenuItem[] = [
         {
-            icon: 'pi pi-plus',
-            routerLink: ['usage-add']
+            icon: 'pi pi-wallet',
+            routerLink: ['/cost']
         },
         {
-            icon: 'pi pi-wave-pulse',
-            routerLink: ['/usage-track']
+            icon: 'pi pi-money-bill',
+            routerLink: "/cost-add",
+            title: "Adicionar gasto"
         },
         {
             icon: 'pi pi-home',
             routerLink: ['/']
         },
         {
-            icon: 'pi pi-money-bill',
-            routerLink: "/cost-add"
+            icon: 'pi pi-wave-pulse',
+            routerLink: ['/usage-track']
         },
         {
-            icon: 'pi pi-wallet',
-            routerLink: ['/cost']
-        }
+            icon: 'pi pi-plus',
+            routerLink: ['usage-add']
+        },
     ]
 
 

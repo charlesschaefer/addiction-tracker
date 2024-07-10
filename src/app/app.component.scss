@@ -6,6 +6,10 @@
     display: none;
 }
 
+:host ::ng-deep .dial-menu a {
+    text-decoration: none;
+}
+
 @media (max-width: 600px) {
     h2.title {
         font-size: 5vw;
