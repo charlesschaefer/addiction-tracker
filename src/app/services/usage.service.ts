@@ -15,6 +15,7 @@ export interface FinalUsage {
     craving: number;
     sentiment: number;
     datetime: Date;
+    substance: number;
 };
 
 @Injectable({
@@ -23,16 +24,17 @@ export interface FinalUsage {
 export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
     storeName = 'usage';
 
-    goupByHour(usages: T[]): Map<Date, FinalUsage> {
+    goupByHour(usages: T[]): Map<number, Map<Date, FinalUsage>> {
         return this.groupBy(usages, 'hour');
     }
 
-    groupByDay(usages: T[]): Map<Date, FinalUsage> {
+    groupByDay(usages: T[]): Map<number, Map<Date, FinalUsage>> {
         return this.groupBy(usages, 'day');
     }
 
     private groupBy(usages: T[], groupType: "hour" | "day"): Map<number, Map<Date, FinalUsage>> {
-        let substance: Map<number, Map<Date, IntermediaryUsage>>;
+        let substance: Map<number, Map<Date, IntermediaryUsage>> = new Map();
+        // create a map with data vectors, without calculating yet
         usages.forEach(usage => {
             let hour = DateTime.fromJSDate(usage.datetime).endOf(groupType).toJSDate();
             if (!substance.has(usage.substance)) {
@@ -44,7 +46,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
                 group?.set(hour, {
                     quantity: [usage.quantity],
                     craving: [usage.craving],
-                    sentiment: [usage.sentiment]
+                    sentiment: [usage.sentiment],
                 });
                 substance.set(usage.substance, group as Map<Date, IntermediaryUsage>);
                 return;
@@ -58,15 +60,25 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
             group.set(hour, previousUsage as IntermediaryUsage);
             substance.set(usage.substance, group);
         });
-        let finalGroup = new Map;
-        group.forEach((usage, hour) => {
-            let newUsage: FinalUsage = {
-                quantity: usage.quantity.reduce((prev, curr) => prev + curr, 0),
-                craving: usage.craving.reduce((prev, curr) => curr + prev, 0) / usage.craving.length,
-                sentiment: usage.sentiment.reduce((prev, curr) => curr + prev, 0) / usage.sentiment.length,
-                datetime: hour
-            };
-            finalGroup.set(hour, newUsage);
+
+
+        // calculates averages and sums of data
+        let finalGroup: Map<number, Map<Date, FinalUsage>> = new Map;
+        substance.forEach((usage, substanceId) => {
+            if (!finalGroup.has(substanceId)) {
+                finalGroup.set(substanceId, new Map);
+            }
+            usage.forEach((intermediary, hour) => {
+                let newUsage: FinalUsage = {
+                    quantity: intermediary.quantity.reduce((prev, curr) => prev + curr, 0),
+                    craving: intermediary.craving.reduce((prev, curr) => curr + prev, 0) / intermediary.craving.length,
+                    sentiment: intermediary.sentiment.reduce((prev, curr) => curr + prev, 0) / intermediary.sentiment.length,
+                    datetime: hour,
+                    substance: substanceId
+                };
+
+                finalGroup.get(substanceId)?.set(hour, newUsage);
+            });
         });
 
         return finalGroup;
