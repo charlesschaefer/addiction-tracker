@@ -35,6 +35,7 @@ import { ThemeService } from './services/theme.service';
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+    title = 'Controle de Vícios';
     menuItems: MenuItem[] = [
         { 
             label: 'Consumo',

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { version } from '../../../package.json';
+import packageJson from '../../../package.json';
 
 @Component({
   selector: 'app-version',
@@ -9,5 +9,5 @@ import { version } from '../../../package.json';
   styleUrl: './version.component.scss'
 })
 export class VersionComponent {
-  version: string = version;
+  version: string = packageJson.version;
 }
