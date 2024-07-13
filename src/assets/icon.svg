@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="101"
+   height="101"
+   viewBox="0 0 101 101"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="..\..\..\..\..\..\Users\charles\Desktop\LOGO_ADDICTION_TRACKER.png"
+   inkscape:export-xdpi="25.6"
+   inkscape:export-ydpi="25.6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="0.4912919"
+     inkscape:cx="1146.976"
+     inkscape:cy="226.95265"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-1184.0277,-616.95129)">
+    <path
+       id="rect2-6"
+       d="m 1198.1358,638.24423 h 36.1416 v 29.16223 l -36.1416,26.96971 z"
+       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="rect2-1-5"
+       d="m 1234.2693,667.24166 36.6504,-26.71528 v 56.13194 h -36.6504 z"
+       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
+       sodipodi:nodetypes="ccccc" />
+    <rect
+       style="fill:none;stroke:#ffffff;stroke-opacity:1"
+       id="rect3"
+       width="100"
+       height="100"
+       x="1184.5277"
+       y="617.45129" />
+  </g>
+</svg>

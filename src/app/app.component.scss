@@ -10,6 +10,14 @@
     text-decoration: none;
 }
 
+img#logo-icon {
+    display:none;
+}
+
+img#logo {
+    width: 20vw;
+}
+
 @media (max-width: 600px) {
     h2.title {
         font-size: 5vw;
@@ -25,6 +33,15 @@
     }
     .dial-menu p-speedDial {
         margin-left: -35px;
+    }
+
+    img#logo {
+        display: none;
+    }
+
+    img#logo-icon {
+        display:block;
+        width: 50px;
     }
 }
 
