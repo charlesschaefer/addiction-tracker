@@ -3,6 +3,9 @@ import { ServiceAbstract } from './service.abstract';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { UsageAddComponent } from '../usage-add/usage-add.component';
+import { group } from '@angular/animations';
+
+export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
 export interface IntermediaryUsage {
     quantity: number[];
@@ -24,21 +27,21 @@ export interface FinalUsage {
 export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
     storeName = 'usage';
 
-    goupByHour(usages: T[]): Map<number, Map<Date, FinalUsage>> {
+    groupByHour(usages: T[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'hour');
     }
 
-    groupByDay(usages: T[]): Map<number, Map<Date, FinalUsage>> {
+    groupByDay(usages: T[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'day');
     }
 
-    private groupBy(usages: T[], groupType: "hour" | "day"): Map<number, Map<Date, FinalUsage>> {
-        let substance: Map<number, Map<Date, IntermediaryUsage>> = new Map();
+    private groupBy(usages: T[], groupType: "hour" | "day"): Map<number, Map<string, FinalUsage>> {
+        let substance: Map<number, Map<string, IntermediaryUsage>> = new Map();
         // create a map with data vectors, without calculating yet
         usages.forEach(usage => {
-            let hour = DateTime.fromJSDate(usage.datetime).endOf(groupType).toJSDate();
+            let hour = DateTime.fromJSDate(usage.datetime).endOf(groupType).toFormat(DATE_FORMAT);
             if (!substance.has(usage.substance)) {
-                let group: Map<Date, IntermediaryUsage> = new Map;
+                let group: Map<string, IntermediaryUsage> = new Map;
                 substance.set(usage.substance, group);
             }
             let group = substance.get(usage.substance);
@@ -48,7 +51,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
                     craving: [usage.craving],
                     sentiment: [usage.sentiment],
                 });
-                substance.set(usage.substance, group as Map<Date, IntermediaryUsage>);
+                substance.set(usage.substance, group as Map<string, IntermediaryUsage>);
                 return;
             }
             
@@ -63,7 +66,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
 
 
         // calculates averages and sums of data
-        let finalGroup: Map<number, Map<Date, FinalUsage>> = new Map;
+        let finalGroup: Map<number, Map<string, FinalUsage>> = new Map;
         substance.forEach((usage, substanceId) => {
             if (!finalGroup.has(substanceId)) {
                 finalGroup.set(substanceId, new Map);
@@ -71,16 +74,36 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
             usage.forEach((intermediary, hour) => {
                 let newUsage: FinalUsage = {
                     quantity: intermediary.quantity.reduce((prev, curr) => prev + curr, 0),
-                    craving: intermediary.craving.reduce((prev, curr) => curr + prev, 0) / intermediary.craving.length,
-                    sentiment: intermediary.sentiment.reduce((prev, curr) => curr + prev, 0) / intermediary.sentiment.length,
-                    datetime: hour,
+                    craving: Math.round(intermediary.craving.reduce((prev, curr) => curr + prev, 0) / intermediary.craving.length),
+                    sentiment: Math.round(intermediary.sentiment.reduce((prev, curr) => curr + prev, 0) / intermediary.sentiment.length),
+                    datetime: DateTime.fromFormat(hour, DATE_FORMAT).toJSDate(),
                     substance: substanceId
                 };
-
-                finalGroup.get(substanceId)?.set(hour, newUsage);
+                let group = finalGroup.get(substanceId);
+                group?.set(hour, newUsage);
+                finalGroup.set(substanceId, group as Map<string, FinalUsage>);
             });
         });
 
         return finalGroup;
+    }
+
+    groupMapToUsageDto(groupMap: Map<number, Map<string, FinalUsage>>): UsageDto[] {
+        let usageDtos: UsageDto[] = [];
+        groupMap.forEach((usages) => {
+            usages.forEach((finalUsage) => {
+                usageDtos.push({
+                    id: Math.random(),
+                    craving: finalUsage.craving,
+                    datetime: finalUsage.datetime,
+                    quantity: finalUsage.quantity,
+                    sentiment: finalUsage.sentiment,
+                    substance: finalUsage.substance,
+                    trigger: []
+                } as UsageDto);
+            })
+        });
+
+        return usageDtos;
     }
 }

@@ -3,11 +3,13 @@ import { NgxIndexedDBModule, NgxIndexedDBService } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
 import { dbConfig } from "../db.config";
 
-import { FinalUsage, UsageService } from './usage.service';
+import { FinalUsage, UsageService, DATE_FORMAT } from './usage.service';
 import { UsageDto } from '../dto/usage.dto';
+import { DateTime } from 'luxon';
 
 describe('UsageService', () => {
   let service: UsageService<UsageDto>;
+  let usages: UsageDto[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,31 +18,54 @@ describe('UsageService', () => {
       ],
     });
     service = TestBed.inject(UsageService<UsageDto>);
+
+    usages = [
+      {id: 1, substance: 1, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 10:10'), quantity: 2, trigger: [{name: "trigger 1"}]},
+      {id: 2, substance: 1, sentiment: 4, craving: 4, datetime: new Date('2024-01-01 10:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
+      {id: 3, substance: 1, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 11:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
+      {id: 4, substance: 2, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 10:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
+      {id: 5, substance: 2, sentiment: 4, craving: 4, datetime: new Date('2024-01-01 10:10'), quantity: 2, trigger: [{name: "trigger 1"}]},
+      {id: 6, substance: 2, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 11:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
+    ];
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should group by substance and date', () => {
-    let usages: UsageDto[] = [
-      {id: 1, substance: 1, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 10:10'), quantity: 2, trigger: [{name: "trigger 1"}]},
-      {id: 2, substance: 1, sentiment: 4, craving: 4, datetime: new Date('2024-01-01 10:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
-      {id: 3, substance: 2, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 10:20'), quantity: 2, trigger: [{name: "trigger 1"}]},
-      {id: 4, substance: 2, sentiment: 4, craving: 4, datetime: new Date('2024-01-01 10:10'), quantity: 2, trigger: [{name: "trigger 1"}]},
-    ];
-    let grouped = service.goupByHour(usages);
-    let date = new Date('2024-01-01 10:59:59');
-    let substanceMap: Map<number, Map<Date, FinalUsage>> = new Map;
-    let groupedMap: Map<Date, FinalUsage> = new Map;
-    groupedMap.set(date, {quantity: 4, craving: 3, sentiment: 3, datetime: date, substance: 1});
+  it('should group by substance and hour', () => {
+    let grouped = service.groupByHour(usages);
+    let date1 = new Date('2024-01-01 10:59:59');
+    let substanceMap: Map<number, Map<string, FinalUsage>> = new Map;
+    let groupedMap: Map<string, FinalUsage> = new Map;
+    groupedMap.set(DateTime.fromJSDate(date1).toFormat(DATE_FORMAT), {quantity: 4, craving: 3, sentiment: 3, datetime: date1, substance: 1});
+
+    let date2 = new Date('2024-01-01 11:59:59');
+    groupedMap.set(DateTime.fromJSDate(date2).toFormat(DATE_FORMAT), {quantity: 2, craving: 2, sentiment: 2, datetime: date2, substance: 1});
+
     substanceMap.set(1, groupedMap);
 
     groupedMap = new Map;
-    groupedMap.set(date, {quantity: 4, craving: 3, sentiment: 3, datetime: date, substance: 2});
+    groupedMap.set(DateTime.fromJSDate(date1).toFormat(DATE_FORMAT), {quantity: 4, craving: 3, sentiment: 3, datetime: date1, substance: 2});
+    groupedMap.set(DateTime.fromJSDate(date2).toFormat(DATE_FORMAT), {quantity: 2, craving: 2, sentiment: 2, datetime: date2, substance: 2});
     substanceMap.set(2, groupedMap);
 
-    expect(grouped).toEqual(groupedMap);
+    expect(grouped).toEqual(substanceMap);
+  });
+
+  it('should group by substance and day', () => {
+    let grouped = service.groupByDay(usages);
+    let date = new Date('2024-01-01 23:59:59');
+    let substanceMap: Map<number, Map<string, FinalUsage>> = new Map;
+    let groupedMap: Map<string, FinalUsage> = new Map;
+    groupedMap.set(DateTime.fromJSDate(date).toFormat(DATE_FORMAT), {quantity: 6, craving: 3, sentiment: 3, datetime: date, substance: 1});
+    substanceMap.set(1, groupedMap);
+
+    groupedMap = new Map;
+    groupedMap.set(DateTime.fromJSDate(date).toFormat(DATE_FORMAT), {quantity: 6, craving: 3, sentiment: 3, datetime: date, substance: 2});
+    substanceMap.set(2, groupedMap);
+
+    expect(grouped).toEqual(substanceMap);
   })
 });
 

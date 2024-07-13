@@ -15,7 +15,6 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
-import { lastValueFrom } from 'rxjs';
 
 
 interface SubstanceUsage {

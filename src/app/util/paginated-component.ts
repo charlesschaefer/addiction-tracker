@@ -23,7 +23,7 @@ export abstract class PaginatedComponent<T> {
     initializePagination() {
         this.allItems.forEach(items => {
             this.firstItem[items.substanceId] = 0;
-            this.rowsToShow[items.substanceId] = 5;
+            this.rowsToShow[items.substanceId] = 10;
             this.totalRecords[items.substanceId] = items.items.length;
         })
     }

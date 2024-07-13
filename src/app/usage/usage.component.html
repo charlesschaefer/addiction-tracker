@@ -46,7 +46,7 @@
                             [ngModel]="usage.craving" 
                             [readonly]="true" 
                             [max]="10" 
-                            [valueColor]="usage.craving < 3 ? 'MediumTurquoise' : (usage.craving > 7 ? 'Red' : 'Blue')"
+                            [valueColor]="usage.craving <= 3 ? 'MediumTurquoise' : (usage.craving >= 7 ? 'Red' : 'Blue')"
                             [size]="50"
                         />
                     </td>

@@ -59,6 +59,7 @@ export class UsageTrackComponent implements OnInit {
     ngOnInit() {
         this.usageService.list().subscribe(result => {
             this.prepareChartData(result);
+            this.prepareTriggerChart(result);
         });
 
         this.substanceService.list().subscribe(result => {
@@ -114,7 +115,9 @@ export class UsageTrackComponent implements OnInit {
         });
 
         this.usageChartData = usageChartData;
-        
+    }
+
+    prepareTriggerChart(result: UsageDto[]) {
         let triggerData = this.consolidateTriggerData(result);
 
         triggerData.forEach((triggerUsage, substanceId) => {
@@ -132,8 +135,6 @@ export class UsageTrackComponent implements OnInit {
         });
     }
 
-    // @TODO: finish to mount the map separated by substance, instead of 
-    // counting every trigger of every usage of every substance at the same time
     // triggerMap = Map<substanceId, Map<trigger_name, count>>
     // triggerChatData = Map<substanceId, ChartData>
     consolidateTriggerData(data: UsageDto[]): SubstanceTriggerUsage {
@@ -175,9 +176,22 @@ export class UsageTrackComponent implements OnInit {
     }
 
     groupBy(by: "hour" | "day") {
-        // TODO: call the service that groups data by hour or day
-        this.usageService.list().subscribe(result => {
+        this.usageService.list().subscribe((result: UsageDto[]) => {
+            if (this.groupByHour) {
             
-        })
+                let data; 
+                if (by == 'hour') {
+                    data = this.usageService.groupByHour(result);
+                } else {
+                    data = this.usageService.groupByDay(result);
+                }
+
+                this.prepareChartData(this.usageService.groupMapToUsageDto(data));
+            } else {
+                this.prepareChartData(result);
+            }
+
+            this.prepareTriggerChart(result);
+        });
     }
 }

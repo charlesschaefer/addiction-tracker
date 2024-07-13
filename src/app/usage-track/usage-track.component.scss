@@ -7,6 +7,14 @@
     color: white;
 }
 
+.group-by-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.group-by-buttons label {
+    margin-right: 10px;
+}
 
 @media (min-width: 1000px) {
     .inline-cards {
