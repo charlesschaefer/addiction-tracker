@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ChartModule, UIChart } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { SplitterModule } from 'primeng/splitter';
 import { AccordionModule } from 'primeng/accordion';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -24,7 +26,16 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
 @Component({
     selector: 'app-usage-track',
     standalone: true,
-    imports: [ChartModule, PanelModule, CardModule, DividerModule, SplitterModule, AccordionModule],
+    imports: [
+        ChartModule,
+        PanelModule,
+        CardModule,
+        DividerModule,
+        SplitterModule,
+        AccordionModule,
+        ToggleButtonModule,
+        FormsModule
+    ],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
 })
@@ -32,6 +43,8 @@ export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
     triggerChartData: Map<number, ChartData> = new Map;
     substances: Map<number, SubstanceDto> = new Map();
+
+    groupByHour: boolean = false;
 
 
     options = {
@@ -45,67 +58,7 @@ export class UsageTrackComponent implements OnInit {
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
-            const documentStyle = getComputedStyle(document.documentElement);
-            let usageChartData: UsageChart[] = [];
-            let registeredSubstances = new Map;
-            result.forEach(usage => {
-                if (!registeredSubstances.has(usage.substance)) {
-                    usageChartData.push({
-                        substanceId: usage.substance,
-                        chart: {
-                            labels: [],
-                            datasets: [
-                                {
-                                    label: 'Consumo',
-                                    data: [],
-                                    tension: 0.3,
-                                    borderColor: documentStyle.getPropertyValue('--blue-500')
-                                },
-                                {
-                                    label: 'Sentimento',
-                                    data: [],
-                                    tension: 0.3,
-                                    fill: true,
-                                    backgroundColor: 'rgba(156, 39, 176, 0.4)'
-                                },
-                                {
-                                    label: 'Fissura',
-                                    data: [],
-                                    tension: 0.3,
-                                    borderDash: [5, 5],
-                                    borderColor: documentStyle.getPropertyValue('--orange-500')
-                                }
-                            ]
-                        }
-                    });
-                    // register the index where the substance was added.
-                    registeredSubstances.set(usage.substance, usageChartData.length - 1);
-                }
-                let usageIdx = registeredSubstances.get(usage.substance);
-                let usageChart = usageChartData[usageIdx].chart;
-                usageChart.labels.push(DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm'));
-                usageChart.datasets[0].data.push(usage.quantity);
-                usageChart.datasets[1].data.push(usage.sentiment);
-                usageChart.datasets[2].data.push(usage.craving);
-            });
-
-            this.usageChartData = usageChartData;
-            
-            let triggerData = this.consolidateTriggerData(result);
-
-            triggerData.forEach((triggerUsage, substanceId) => {
-                let chartData: ChartData = {
-                    labels: triggerUsage.map(usage => usage.trigger),
-                    datasets: [
-                        {
-                            label: 'Consumo total',
-                            data: triggerUsage.map(usage => usage.usage),
-                            backgroundColor: 'rgba(156, 39, 176, 0.4)'
-                        }
-                    ]
-                };
-                this.triggerChartData.set(substanceId, chartData);
-            });
+            this.prepareChartData(result);
         });
 
         this.substanceService.list().subscribe(result => {
@@ -113,6 +66,70 @@ export class UsageTrackComponent implements OnInit {
                 this.substances.set(substance.id, substance);
             });
         })
+    }
+
+    prepareChartData(result: UsageDto[]) {
+        const documentStyle = getComputedStyle(document.documentElement);
+        let usageChartData: UsageChart[] = [];
+        let registeredSubstances = new Map;
+        result.forEach(usage => {
+            if (!registeredSubstances.has(usage.substance)) {
+                usageChartData.push({
+                    substanceId: usage.substance,
+                    chart: {
+                        labels: [],
+                        datasets: [
+                            {
+                                label: 'Consumo',
+                                data: [],
+                                tension: 0.3,
+                                borderColor: documentStyle.getPropertyValue('--blue-500')
+                            },
+                            {
+                                label: 'Sentimento',
+                                data: [],
+                                tension: 0.3,
+                                fill: true,
+                                backgroundColor: 'rgba(156, 39, 176, 0.4)'
+                            },
+                            {
+                                label: 'Fissura',
+                                data: [],
+                                tension: 0.3,
+                                borderDash: [5, 5],
+                                borderColor: documentStyle.getPropertyValue('--orange-500')
+                            }
+                        ]
+                    }
+                });
+                // register the index where the substance was added.
+                registeredSubstances.set(usage.substance, usageChartData.length - 1);
+            }
+            let usageIdx = registeredSubstances.get(usage.substance);
+            let usageChart = usageChartData[usageIdx].chart;
+            usageChart.labels.push(DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm'));
+            usageChart.datasets[0].data.push(usage.quantity);
+            usageChart.datasets[1].data.push(usage.sentiment);
+            usageChart.datasets[2].data.push(usage.craving);
+        });
+
+        this.usageChartData = usageChartData;
+        
+        let triggerData = this.consolidateTriggerData(result);
+
+        triggerData.forEach((triggerUsage, substanceId) => {
+            let chartData: ChartData = {
+                labels: triggerUsage.map(usage => usage.trigger),
+                datasets: [
+                    {
+                        label: 'Consumo total',
+                        data: triggerUsage.map(usage => usage.usage),
+                        backgroundColor: 'rgba(156, 39, 176, 0.4)'
+                    }
+                ]
+            };
+            this.triggerChartData.set(substanceId, chartData);
+        });
     }
 
     // @TODO: finish to mount the map separated by substance, instead of 
@@ -157,4 +174,10 @@ export class UsageTrackComponent implements OnInit {
         return triggerChartData;
     }
 
+    groupBy(by: "hour" | "day") {
+        // TODO: call the service that groups data by hour or day
+        this.usageService.list().subscribe(result => {
+            
+        })
+    }
 }

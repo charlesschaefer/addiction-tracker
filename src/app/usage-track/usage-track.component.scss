@@ -2,6 +2,11 @@
     max-width: 800px;
 }
 
+:host ::ng-deep .p-togglebutton.p-highlight .p-button-label {
+    background-color: var(--primary-color);
+    color: white;
+}
+
 
 @media (min-width: 1000px) {
     .inline-cards {

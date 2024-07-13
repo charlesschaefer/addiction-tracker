@@ -1,3 +1,12 @@
+<div>
+  <label for="group-by-hour">Agrupar por hora?</label>
+  <p-toggleButton 
+    id="group-by-hour"
+    onLabel="On" 
+    [(ngModel)]="groupByHour"
+    offLabel="Off"
+    (onChange)="groupBy('hour')" />
+</div>
 <p-accordion>
 @for (chartData of usageChartData; track chartData.chart) {
   <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
