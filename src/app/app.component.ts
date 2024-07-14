@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
             items: [
                 { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
                 { label: "Acompanhar", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
+                { label: "Intervalos de Consumo", routerLink: "/usage-interval", icon: "pi pi-clock" } as MenuItem,
                 { label: "Adicionar", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
             ]
         },
@@ -137,3 +138,4 @@ export class AppComponent implements OnInit {
         localStorage.setItem('theme', currentTheme);
     }
 }
+

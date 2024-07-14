@@ -86,7 +86,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     groupUsageBySubstance(usages: UsageDto[]) {
         let registeredSubstances = new Map();
         // creates an array of usage grouped by substance
-        usages.map(usage => {
+        usages.forEach(usage => {
             if (!registeredSubstances.has(usage.substance)) {
                 console.log("Substance", this.substances, usage);
                 let substanceUsage: SubstanceGroupedItem<UsageDto> = {
