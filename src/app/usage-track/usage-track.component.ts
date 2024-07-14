@@ -66,7 +66,9 @@ export class UsageTrackComponent implements OnInit {
             result.map(substance => {
                 this.substances.set(substance.id, substance);
             });
-        })
+        });
+
+        window.addEventListener('resize', (event) => this.reRenderOnResize(event));
     }
 
     prepareChartData(result: UsageDto[]) {
@@ -194,4 +196,16 @@ export class UsageTrackComponent implements OnInit {
             this.prepareTriggerChart(result);
         });
     }
+
+    reRenderOnResize(event: UIEvent) {
+        console.log("Resizando", event);
+        // forces a re-render
+        if (this.usageChartData.length) {
+            let usageChart = this.usageChartData;
+            this.usageChartData = [];
+            setTimeout(() => this.usageChartData = usageChart, 100);
+        }
+        //this.usageChartData[0].chart.datasets.push(item as ChartDataset);
+    }
+
 }

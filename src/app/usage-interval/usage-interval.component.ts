@@ -52,7 +52,9 @@ export class UsageIntervalComponent implements OnInit {
         this.usageService.list().subscribe(results => {
             this.calculateIntervalBySubstance(results);
             this.prepareChartData();
-        })
+        });
+
+        window.addEventListener('resize', (event) => this.reRenderOnResize(event));
     }
 
     calculateIntervalBySubstance(usages: UsageDto[]) {
@@ -141,5 +143,16 @@ export class UsageIntervalComponent implements OnInit {
         });
 
         this.usageChartData = usageChartData;
+    }
+
+    reRenderOnResize(event: UIEvent) {
+        console.log("Resizando", event);
+        // forces a re-render
+        if (this.usageChartData.length) {
+            let usageChart = this.usageChartData;
+            this.usageChartData = [];
+            setTimeout(() => this.usageChartData = usageChart, 100);
+        }
+        //this.usageChartData[0].chart.datasets.push(item as ChartDataset);
     }
 }
