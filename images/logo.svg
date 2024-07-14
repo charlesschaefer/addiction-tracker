@@ -27,8 +27,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
      inkscape:zoom="1.3895833"
-     inkscape:cx="1222.3088"
-     inkscape:cy="660.9895"
+     inkscape:cx="841.25939"
+     inkscape:cy="460.20991"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -76,26 +76,32 @@
        d="m 1022.7875,329.29801 36.6504,-26.71528 v 56.13194 h -36.6504 z"
        style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
        sodipodi:nodetypes="ccccc" />
-    <path
-       id="rect2-6"
-       d="m 1198.1358,638.24423 h 36.1416 v 29.16223 l -36.1416,26.96971 z"
-       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534"
-       sodipodi:nodetypes="ccccc"
+    <g
+       id="g1"
        inkscape:export-filename="..\src-tauri\app-icon.png"
-       inkscape:export-xdpi="973.30695"
-       inkscape:export-ydpi="973.30695" />
-    <path
-       id="rect2-1-5"
-       d="m 1234.2693,667.24166 36.6504,-26.71528 v 56.13194 h -36.6504 z"
-       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
-       sodipodi:nodetypes="ccccc" />
-    <rect
-       style="fill:none;stroke:#ffffff;stroke-opacity:1"
-       id="rect3"
-       width="100"
-       height="100"
-       x="1184.5277"
-       y="617.45129" />
+       inkscape:export-xdpi="983.03998"
+       inkscape:export-ydpi="983.03998">
+      <path
+         id="rect2-6"
+         d="m 1198.1358,638.24423 h 36.1416 v 29.16223 l -36.1416,26.96971 z"
+         style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534"
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-filename="..\src-tauri\app-icon.png"
+         inkscape:export-xdpi="973.30695"
+         inkscape:export-ydpi="973.30695" />
+      <path
+         id="rect2-1-5"
+         d="m 1234.2693,667.24166 36.6504,-26.71528 v 56.13194 h -36.6504 z"
+         style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
+         sodipodi:nodetypes="ccccc" />
+      <rect
+         style="fill:none;stroke:none;stroke-opacity:1"
+         id="rect3"
+         width="100"
+         height="100"
+         x="1184.5277"
+         y="617.45129" />
+    </g>
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.998514;stroke-opacity:1"
        id="rect4"
