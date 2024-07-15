@@ -38,6 +38,14 @@ export const dbConfig: DBConfig = {
                 { name: 'value', keypath: 'value', options: { unique: false }},
                 { name: 'date', keypath: 'date', options: { unique: false }}
             ]
+        },
+        {
+            store: 'recommendations',
+            storeConfig: { keyPath: 'id', autoIncrement: true },
+            storeSchema: [
+                { name: 'trigger', keypath: 'trigger', options: { unique: true }},
+                { name: 'text', keypath: 'text', options: { unique: false }}
+            ]
         }
     ]
 };
