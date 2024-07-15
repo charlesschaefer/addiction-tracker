@@ -26,9 +26,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="1.3895833"
-     inkscape:cx="841.25939"
-     inkscape:cy="460.20991"
+     inkscape:zoom="1"
+     inkscape:cx="1339"
+     inkscape:cy="653.5"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -43,7 +43,7 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333;stroke:#ffffff;stroke-opacity:1;stroke-width:3;stroke-dasharray:none"
        x="580.61688"
        y="358.29163"
        id="text1"
@@ -54,10 +54,10 @@
          id="tspan1"
          x="580.61688"
          y="358.29163"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Addiction</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333;stroke:#ffffff;stroke-opacity:1;stroke-width:3;stroke-dasharray:none">Addiction</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:74.6667px;fill:#333333"
+       style="font-size:74.6667px;fill:#333333;stroke:#ffffff;stroke-opacity:1;stroke-width:3;stroke-dasharray:none"
        x="1083.8535"
        y="359.91644"
        id="text2"><tspan
@@ -65,7 +65,7 @@
          id="tspan2"
          x="1083.8535"
          y="359.91644"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Tracker</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333;stroke:#ffffff;stroke-opacity:1;stroke-width:3;stroke-dasharray:none">Tracker</tspan></text>
     <path
        id="rect2"
        d="m 986.65398,300.30058 h 36.14162 v 29.16223 l -36.14162,26.96971 z"
@@ -202,38 +202,79 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#6a6a6a;stroke:none;stroke-opacity:1;stroke-width:1;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;fill-opacity:1"
        x="108.54517"
        y="628.27515"
        id="text1-7"
-       inkscape:export-filename="..\src\assets\logo.svg"
+       inkscape:export-filename="..\src\assets\logo.png"
        inkscape:export-xdpi="58.294346"
        inkscape:export-ydpi="58.294346"><tspan
          sodipodi:role="line"
          id="tspan1-0"
          x="108.54517"
          y="628.27515"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Addiction</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#6a6a6a;stroke:none;stroke-opacity:1;stroke-width:1;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;fill-opacity:1">Addiction</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:74.6667px;fill:#333333"
+       style="font-size:74.6667px;fill:#6a6a6a;stroke:none;stroke-opacity:1;stroke-width:1;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;fill-opacity:1"
        x="611.78186"
        y="629.89996"
-       id="text2-6"><tspan
+       id="text2-6"
+       inkscape:export-filename="..\src\assets\logo.png"
+       inkscape:export-xdpi="14.60151"
+       inkscape:export-ydpi="14.60151"><tspan
          sodipodi:role="line"
          id="tspan2-5"
          x="611.78186"
          y="629.89996"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Tracker</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#6a6a6a;stroke:none;stroke-opacity:1;stroke-width:1;stroke-dasharray:none;stroke-linejoin:round;stroke-linecap:round;fill-opacity:1">Tracker</tspan></text>
     <path
        id="rect2-5"
        d="m 514.58225,570.28411 h 36.1417 v 29.16223 l -36.1417,26.96971 z"
-       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534"
+       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534;stroke-linejoin:miter;stroke-linecap:butt"
        sodipodi:nodetypes="ccccc" />
     <path
        id="rect2-1-7"
        d="m 550.71585,599.28154 36.6504,-26.71528 v 56.13194 h -36.6504 z"
-       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
+       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062;stroke-linejoin:miter;stroke-linecap:butt"
+       sodipodi:nodetypes="ccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-972.21643"
+       y="390.09082"
+       id="text1-7-7"
+       inkscape:export-filename="..\src\assets\logo.png"
+       inkscape:export-xdpi="58.294346"
+       inkscape:export-ydpi="58.294346"><tspan
+         sodipodi:role="line"
+         id="tspan1-0-5"
+         x="-972.21643"
+         y="390.09082"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1">Addiction</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:74.6667px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-468.97977"
+       y="391.71564"
+       id="text2-6-6"
+       inkscape:export-filename="..\src\assets\logo.png"
+       inkscape:export-xdpi="58.294346"
+       inkscape:export-ydpi="58.294346"><tspan
+         sodipodi:role="line"
+         id="tspan2-5-8"
+         x="-468.97977"
+         y="391.71564"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1">Tracker</tspan></text>
+    <path
+       id="rect2-5-1"
+       d="m -566.17937,332.09979 h 36.1417 v 29.16223 l -36.1417,26.96971 z"
+       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534;stroke-linecap:butt;stroke-linejoin:miter"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="rect2-1-7-1"
+       d="m -530.04577,361.09722 36.6504,-26.71528 v 56.13194 h -36.6504 z"
+       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062;stroke-linecap:butt;stroke-linejoin:miter"
        sodipodi:nodetypes="ccccc" />
   </g>
 </svg>
