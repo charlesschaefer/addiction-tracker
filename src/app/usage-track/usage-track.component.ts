@@ -7,16 +7,18 @@ import { DividerModule } from 'primeng/divider';
 import { SplitterModule } from 'primeng/splitter';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { DateTime } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { ChartData, ChartDataset, UsageChart} from '../util/chart-types';
-import { DateTime } from 'luxon';
 import { RecommendationService } from '../services/recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
-import { firstValueFrom } from 'rxjs';
+import { RecommendationComponent } from '../recommendation/recommendation.component';
 
 
 interface TriggerUsage {
@@ -37,7 +39,10 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
         SplitterModule,
         AccordionModule,
         ToggleButtonModule,
-        FormsModule
+        FormsModule,
+        DialogModule,
+        ButtonModule,
+        RecommendationComponent,
     ],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
@@ -49,7 +54,10 @@ export class UsageTrackComponent implements OnInit {
 
     groupByHour: boolean = false;
 
+    originalUsages: UsageDto[];
+
     recommendationText: string;
+    showRecommendationDialog: boolean = false;
 
 
     options = {
@@ -64,6 +72,8 @@ export class UsageTrackComponent implements OnInit {
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
+            this.originalUsages = result;
+
             this.prepareChartData(result);
             this.prepareTriggerChart(result);
 
@@ -215,26 +225,11 @@ export class UsageTrackComponent implements OnInit {
         //this.usageChartData[0].chart.datasets.push(item as ChartDataset);
     }
 
-    getMostUsedTrigger(result: UsageDto[]): [string, number] {
-        let usageTriggers: Map<string, number> = new Map();
-        result.forEach(usage => {
-            usage.trigger?.forEach(trigger => {
-                if (!usageTriggers.has(trigger.name)) {
-                    usageTriggers.set(trigger.name, 0);
-                }
-                usageTriggers.set(trigger.name, usageTriggers.get(trigger.name) as number + usage.quantity);
-            });
-        });
-
-        usageTriggers = new Map([...usageTriggers.entries()].sort((a, b) => a[1] <= b[1] ? 1 : -1));
-
-        return usageTriggers.entries().next().value;
-    }
-
     async getRecommendations(result: UsageDto[]) {
-        let [trigger, total] = this.getMostUsedTrigger(result);
+        let [trigger, total] = this.usageService.getMostUsedTrigger(result);
         const recommendation = await this.recommendationService.fetchRecommendation(trigger);
         this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
+        this.showRecommendationDialog = true;
     }
 
 }

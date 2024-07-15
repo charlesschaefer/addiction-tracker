@@ -8,6 +8,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { KnobModule } from 'primeng/knob';
+import { DialogModule } from 'primeng/dialog';
 import { DateTime, Duration } from 'luxon';
 
 import { UsageService } from '../services/usage.service';
@@ -15,6 +16,9 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
+import { RecommendationService } from '../services/recommendation.service';
+import { RecommendationDto } from '../dto/recommendation.dto';
+import { RecommendationComponent } from '../recommendation/recommendation.component';
 
 
 interface SubstanceUsage {
@@ -26,15 +30,17 @@ interface SubstanceUsage {
     selector: 'app-usage',
     standalone: true,
     imports: [
-        TableModule,
-        TagModule,
-        PanelModule,
-        PaginatorModule,
-        CardModule,
-        AccordionModule,
-        ToastModule,
-        KnobModule,
-    ],
+    TableModule,
+    TagModule,
+    PanelModule,
+    PaginatorModule,
+    CardModule,
+    AccordionModule,
+    ToastModule,
+    KnobModule,
+    DialogModule,
+    RecommendationComponent
+],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss',
     providers: [MessageService]
@@ -51,6 +57,11 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     DateTime = DateTime;
     timeWithoutUsage: Duration;
 
+    originalUsages: UsageDto[];
+
+    recommendationText: string;
+    showRecommendationDialog: boolean = false;
+
     tagSeverity:("success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined)[] = [
         'success',
         'warning',
@@ -62,6 +73,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
         private messageService: MessageService,
+        private recommendationService: RecommendationService<RecommendationDto>,
     ) {
         super();
     }
@@ -73,12 +85,15 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         });
 
         this.usageService.list().subscribe(usages => {
+            this.originalUsages = usages;
             this.groupUsageBySubstance(usages);
 
             this.initializePagination();
             this.generatePaginatedItems();
 
             this.calculateTimeWithoutUsage(usages);
+
+            this.getRecommendations(usages);
         });
         
     }
@@ -146,5 +161,13 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
                 });
             }
         })
+    }
+
+    
+    async getRecommendations(result: UsageDto[]) {
+        let [trigger, total] = this.usageService.getMostUsedTrigger(result);
+        const recommendation = await this.recommendationService.fetchRecommendation(trigger);
+        this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
+        this.showRecommendationDialog = true;
     }
 }

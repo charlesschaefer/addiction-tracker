@@ -106,4 +106,20 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
 
         return usageDtos;
     }
+
+    getMostUsedTrigger(result: UsageDto[]): [string, number] {
+        let usageTriggers: Map<string, number> = new Map();
+        result.forEach(usage => {
+            usage.trigger?.forEach(trigger => {
+                if (!usageTriggers.has(trigger.name)) {
+                    usageTriggers.set(trigger.name, 0);
+                }
+                usageTriggers.set(trigger.name, usageTriggers.get(trigger.name) as number + usage.quantity);
+            });
+        });
+
+        usageTriggers = new Map([...usageTriggers.entries()].sort((a, b) => a[1] <= b[1] ? 1 : -1));
+
+        return usageTriggers.entries().next().value;
+    }
 }
