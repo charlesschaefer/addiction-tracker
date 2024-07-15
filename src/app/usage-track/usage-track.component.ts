@@ -14,6 +14,9 @@ import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { ChartData, ChartDataset, UsageChart} from '../util/chart-types';
 import { DateTime } from 'luxon';
+import { RecommendationService } from '../services/recommendation.service';
+import { RecommendationDto } from '../dto/recommendation.dto';
+import { firstValueFrom } from 'rxjs';
 
 
 interface TriggerUsage {
@@ -46,6 +49,8 @@ export class UsageTrackComponent implements OnInit {
 
     groupByHour: boolean = false;
 
+    recommendationText: string;
+
 
     options = {
         animation: true
@@ -54,12 +59,15 @@ export class UsageTrackComponent implements OnInit {
     constructor(
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
+        private recommendationService: RecommendationService<RecommendationDto>,
     ) {}
 
     ngOnInit() {
         this.usageService.list().subscribe(result => {
             this.prepareChartData(result);
             this.prepareTriggerChart(result);
+
+            this.getRecommendations(result);
         });
 
         this.substanceService.list().subscribe(result => {
@@ -198,7 +206,6 @@ export class UsageTrackComponent implements OnInit {
     }
 
     reRenderOnResize(event: UIEvent) {
-        console.log("Resizando", event);
         // forces a re-render
         if (this.usageChartData.length) {
             let usageChart = this.usageChartData;
@@ -206,6 +213,28 @@ export class UsageTrackComponent implements OnInit {
             setTimeout(() => this.usageChartData = usageChart, 100);
         }
         //this.usageChartData[0].chart.datasets.push(item as ChartDataset);
+    }
+
+    getMostUsedTrigger(result: UsageDto[]): [string, number] {
+        let usageTriggers: Map<string, number> = new Map();
+        result.forEach(usage => {
+            usage.trigger?.forEach(trigger => {
+                if (!usageTriggers.has(trigger.name)) {
+                    usageTriggers.set(trigger.name, 0);
+                }
+                usageTriggers.set(trigger.name, usageTriggers.get(trigger.name) as number + usage.quantity);
+            });
+        });
+
+        usageTriggers = new Map([...usageTriggers.entries()].sort((a, b) => a[1] <= b[1] ? 1 : -1));
+
+        return usageTriggers.entries().next().value;
+    }
+
+    async getRecommendations(result: UsageDto[]) {
+        let [trigger, total] = this.getMostUsedTrigger(result);
+        const recommendation = await this.recommendationService.fetchRecommendation(trigger);
+        this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
     }
 
 }

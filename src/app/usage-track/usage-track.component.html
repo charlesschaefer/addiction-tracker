@@ -29,3 +29,11 @@
   <p>Não há dados para serem exibidos.</p>
 }
 </p-accordion>
+
+@if (recommendationText) {
+  <p-accordion>
+    <p-accordionTab header="Você tem recomendações para lidar com seus gatilhos">
+      <div [innerHTML]="recommendationText"></div>
+    </p-accordionTab>
+  </p-accordion>
+}

@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NgxIndexedDBModule, NgxIndexedDBService } from "ngx-indexed-db";
+import { importProvidersFrom } from '@angular/core';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { dbConfig } from "../db.config";
 
 import { UsageIntervalComponent } from './usage-interval.component';
 
@@ -8,7 +12,11 @@ describe('UsageIntervalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UsageIntervalComponent]
+      imports: [UsageIntervalComponent],
+      providers: [
+        provideAnimationsAsync(),
+        importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+      ]
     })
     .compileComponents();
 

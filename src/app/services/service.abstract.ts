@@ -45,8 +45,8 @@ export abstract class ServiceAbstract<T> {
         return this.dbService.getByID<T>(this.storeName, id);
     }
 
-    getByField(field: string, value: any) {
-        return this.dbService.getAllByIndex(this.storeName, field, IDBKeyRange.only(value));
+    getByField(field: string, value: any): Observable<T[]> {
+        return this.dbService.getAllByIndex(this.storeName, field, IDBKeyRange.only(value)) as Observable<T[]>;
     }
 
     remove(id: number): Observable<any> {

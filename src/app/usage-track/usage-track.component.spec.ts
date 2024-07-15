@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { dbConfig } from "../db.config";
 
 import { UsageTrackComponent } from './usage-track.component';
+import { UsageDto } from '../dto/usage.dto';
 
 describe('UsageTrackComponent', () => {
   let component: UsageTrackComponent;
@@ -28,4 +29,15 @@ describe('UsageTrackComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return the most used trigger', () => {
+    let usages: UsageDto[] = [
+      {id: 1, craving: 1, datetime: new Date, quantity: 2, sentiment: 1, substance: 1, trigger: [{name: "trigger1"}, {name: 'trigger2'}]},
+      {id: 2, craving: 1, datetime: new Date, quantity: 2, sentiment: 1, substance: 1, trigger: [{name: 'trigger2'}]},
+    ];
+
+    let mostUsed = component.getMostUsedTrigger(usages);
+    expect(mostUsed).toEqual(["trigger2", 4]);
+  })
+
 });
