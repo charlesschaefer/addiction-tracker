@@ -9,3 +9,13 @@
 .sentiment-radio-label {
     font-size: 20px;
 }
+
+@media (max-width: 360px) {
+    .field input {
+        width: 60vw;
+    }
+
+    .sentiment-radio-label {
+        font-size: 15px;
+    }
+}
