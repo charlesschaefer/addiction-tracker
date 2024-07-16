@@ -31,18 +31,18 @@ interface SubstanceUsage {
     selector: 'app-usage',
     standalone: true,
     imports: [
-    TableModule,
-    TagModule,
-    PanelModule,
-    PaginatorModule,
-    CardModule,
-    AccordionModule,
-    ToastModule,
-    KnobModule,
-    DialogModule,
+        TableModule,
+        TagModule,
+        PanelModule,
+        PaginatorModule,
+        CardModule,
+        AccordionModule,
+        ToastModule,
+        KnobModule,
+        DialogModule,
         RecommendationComponent,
         RouterLink
-],
+    ],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss',
     providers: [MessageService]
@@ -76,6 +76,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         private substanceService: SubstanceService<SubstanceDto>,
         private messageService: MessageService,
         private recommendationService: RecommendationService<RecommendationDto>,
+        private route: Router,
     ) {
         super();
     }
@@ -90,6 +91,8 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         });
 
         this.usageService.list().subscribe(usages => {
+            usages.sort((a, b) => a.datetime < b.datetime ? 1 : -1);
+
             this.originalUsages = usages;
             this.groupUsageBySubstance(usages);
 
