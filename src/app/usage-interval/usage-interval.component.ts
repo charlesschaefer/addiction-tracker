@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
@@ -19,7 +20,7 @@ interface UsageInterval {
 @Component({
     selector: 'app-usage-interval',
     standalone: true,
-    imports: [AccordionModule, CardModule, ChartModule],
+    imports: [AccordionModule, CardModule, ChartModule, RouterLink],
     templateUrl: './usage-interval.component.html',
     styleUrl: './usage-interval.component.scss'
 })
@@ -36,10 +37,15 @@ export class UsageIntervalComponent implements OnInit {
     constructor(
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
+        private route: Router,
     ) {}
 
     ngOnInit(): void {
         this.substanceService.list().subscribe(results => {
+            if (!results.length) {
+                this.route.navigate(['/substance-add']);
+                return;
+            }
             let substanceMap = new Map();
             results.forEach(substance => {
                 if (!substanceMap.has(substance.id)) {

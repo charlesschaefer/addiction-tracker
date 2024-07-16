@@ -16,6 +16,7 @@ import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { ChartDataset, ChartData } from '../util/chart-types';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-cost',
@@ -28,6 +29,7 @@ import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-comp
         PaginatorModule,
         AccordionModule,
         ToastModule,
+        RouterLink
     ],
     templateUrl: './cost.component.html',
     styleUrl: './cost.component.scss',

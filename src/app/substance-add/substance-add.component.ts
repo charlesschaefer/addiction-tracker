@@ -8,11 +8,12 @@ import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { Message, MessageService } from 'primeng/api';
 import { EMPTY, Observable, concatMap, firstValueFrom } from 'rxjs';
 
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
-import { Message, MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-substance-add',
@@ -25,6 +26,7 @@ import { Message, MessageService } from 'primeng/api';
         MessagesModule,
         FloatLabelModule,
         ToastModule,
+        TooltipModule,
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss',

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
@@ -39,7 +40,8 @@ interface SubstanceUsage {
     ToastModule,
     KnobModule,
     DialogModule,
-    RecommendationComponent
+        RecommendationComponent,
+        RouterLink
 ],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss',
@@ -80,7 +82,10 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     
     ngOnInit(): void {
         this.substanceService.list().subscribe(substances => {
-            console.log(substances);
+            if (!substances.length) {
+                this.route.navigate(["/substance-add"]);
+                return;
+            }
             substances.forEach(substance => this.substances.set(substance.id, substance.name));
         });
 

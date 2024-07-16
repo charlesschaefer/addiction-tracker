@@ -1,33 +1,35 @@
-<p-card>
-  <div class="group-by-buttons">
-    <label for="group-by-hour">Agrupar por hora?</label>
-      <p-toggleButton 
-        id="group-by-hour"
-        onLabel="On" 
-        [(ngModel)]="groupByHour"
-        offLabel="Off"
-        (onChange)="groupBy('hour')" />
-  </div>
-</p-card>
-<p-accordion>
+
 @for (chartData of usageChartData; track chartData.chart) {
-  <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
-  <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
-    <div class="inline-cards">
-      <p-card 
-        class="chart-card" 
-        header="Acompanhamento de consumo" 
-      >
-        <p-chart type="line" [data]="chartData.chart" [options]="options" />
-      </p-card>
-      <p-card class="chart-card" header="Gatilhos de consumo">
-        <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
-      </p-card>
+  <p-card>
+    <div class="group-by-buttons">
+      <label for="group-by-hour">Agrupar por hora?</label>
+        <p-toggleButton 
+          id="group-by-hour"
+          onLabel="On" 
+          [(ngModel)]="groupByHour"
+          offLabel="Off"
+          (onChange)="groupBy('hour')" />
     </div>
-  </p-accordionTab>
+  </p-card>
+  <p-accordion>
+    <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
+    <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
+      <div class="inline-cards">
+        <p-card 
+          class="chart-card" 
+          header="Acompanhamento de consumo" 
+        >
+          <p-chart type="line" [data]="chartData.chart" [options]="options" />
+        </p-card>
+        <p-card class="chart-card" header="Gatilhos de consumo">
+          <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
+        </p-card>
+      </div>
+    </p-accordionTab>
+  </p-accordion>
 } @empty {
   <p>Não há dados para serem exibidos.</p>
+  <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
 }
-</p-accordion>
 
 <app-recommendation [usages]="originalUsages"></app-recommendation>

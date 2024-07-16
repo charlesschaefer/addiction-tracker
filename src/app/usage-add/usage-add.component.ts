@@ -90,6 +90,10 @@ export class UsageAddComponent implements OnInit {
     
     ngOnInit(): void {
         this.substanceService.list().subscribe(substances => {
+            if (!substances.length) {
+                this.router.navigate(['/substance-add']);
+                return;
+            }
             this.substances = substances;
         });
 

@@ -1,10 +1,12 @@
 <p-panel class="shipping-card" header="Adicionar Substância">
+  
+  <p class="substance-add-subtitle">Adicione uma substância que gostaria de parar de usar.</p>
   <p-toast />
   <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
     <div class="field">
       <p-floatLabel>
         <input id="name" pInputText type="text" formControlName="name">
-        <label for="name">Nome</label>
+        <label for="name">Substância</label>
       </p-floatLabel>
     </div>
     <div class="field">

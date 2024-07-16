@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ChartModule, UIChart } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
@@ -43,6 +44,7 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
         DialogModule,
         ButtonModule,
         RecommendationComponent,
+        RouterLink,
     ],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
@@ -68,9 +70,20 @@ export class UsageTrackComponent implements OnInit {
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
         private recommendationService: RecommendationService<RecommendationDto>,
+        private route: Router,
     ) {}
 
     ngOnInit() {
+        this.substanceService.list().subscribe(result => {
+            if (!result.length) {
+                this.route.navigate(['/substance-add']);
+                return;
+            }
+            result.map(substance => {
+                this.substances.set(substance.id, substance);
+            });
+        });
+
         this.usageService.list().subscribe(result => {
             this.originalUsages = result;
 
@@ -78,12 +91,6 @@ export class UsageTrackComponent implements OnInit {
             this.prepareTriggerChart(result);
 
             this.getRecommendations(result);
-        });
-
-        this.substanceService.list().subscribe(result => {
-            result.map(substance => {
-                this.substances.set(substance.id, substance);
-            });
         });
 
         window.addEventListener('resize', (event) => this.reRenderOnResize(event));
