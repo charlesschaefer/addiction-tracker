@@ -1,0 +1,19 @@
+<p-panel header="Recomendações para Gatilhos">
+    <p-table [value]="triggers">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Gatilho</th>
+                <th>Ações</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-trigger>
+            <tr>
+                <td>{{ trigger.name}} </td>
+                <td>
+                    <p-button class="recommendation-button" icon="pi pi-search" label="Ver recomendação" (onClick)="showRecommendation(trigger.name)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>
+<app-recommendation [trigger]="trigger" *ngIf="trigger" />

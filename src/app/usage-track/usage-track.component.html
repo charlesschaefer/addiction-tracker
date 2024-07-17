@@ -1,5 +1,4 @@
-
-@for (chartData of usageChartData; track chartData.chart) {
+@if (usageChartData.length) {
   <p-card>
     <div class="group-by-buttons">
       <label for="group-by-hour">Agrupar por hora?</label>
@@ -11,6 +10,9 @@
           (onChange)="groupBy('hour')" />
     </div>
   </p-card>
+}
+
+@for (chartData of usageChartData; track chartData.chart) {
   <p-accordion>
     <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
     <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
@@ -32,4 +34,4 @@
   <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
 }
 
-<app-recommendation [usages]="originalUsages"></app-recommendation>
+<!-- <app-recommendation [usages]="originalUsages"></app-recommendation> -->

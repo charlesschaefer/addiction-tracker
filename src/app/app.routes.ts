@@ -7,6 +7,7 @@ import { CostAddComponent } from "./cost-add/cost-add.component";
 import { CostComponent } from "./cost/cost.component";
 import { VersionComponent } from "./version/version.component";
 import { UsageIntervalComponent } from "./usage-interval/usage-interval.component";
+import { RecommendationsComponent } from "./recommendations/recommendations.component";
 
 export const routes: Routes = [
     {path: '', component: UsageComponent},
@@ -15,6 +16,7 @@ export const routes: Routes = [
     {path: 'substance-add', component: SubstanceAddComponent},
     {path: 'cost-add', component: CostAddComponent},
     {path: 'cost', component: CostComponent},
+    {path: 'recommendations', component: RecommendationsComponent},
     {path: 'usage-interval', component: UsageIntervalComponent},
     {path: 'about', component: VersionComponent},
 ];

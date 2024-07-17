@@ -17,7 +17,8 @@ import { RecommendationDto } from '../dto/recommendation.dto';
 })
 export class RecommendationComponent implements OnChanges {
 
-    @Input() usages: UsageDto[];
+    //@Input() usages: UsageDto[];
+    @Input() trigger: string;
 
     recommendationText: string;
     showRecommendationDialog: boolean = false;
@@ -27,7 +28,23 @@ export class RecommendationComponent implements OnChanges {
         private recommendationService: RecommendationService<RecommendationDto>,
     ) {}
 
+
+    async getRecommendation(trigger: string) {
+        const recommendation = await this.recommendationService.fetchRecommendation(trigger);
+        this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
+        this.showRecommendationDialog = true;
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
+        for (const property in changes) {
+            if (property == 'trigger') {
+                const updated = changes[property].currentValue;
+                updated && this.getRecommendation(updated);
+            }
+        }
+    }
+
+    /* ngOnChanges(changes: SimpleChanges): void {
         for (const property in changes) {
             if (property == 'usages') {
                 const updated = changes[property].currentValue;
@@ -41,6 +58,6 @@ export class RecommendationComponent implements OnChanges {
         const recommendation = await this.recommendationService.fetchRecommendation(trigger);
         this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
         this.showRecommendationDialog = true;
-    }
+    } */
 
 }
