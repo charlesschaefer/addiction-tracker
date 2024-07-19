@@ -95,13 +95,6 @@ export class UsageAddComponent implements OnInit {
                 return;
             }
             this.substances = substances;
-
-            this.messageService.add({
-                detail: "Um texto suficientemente grande para poder extender por um pedaço grande da tela.",
-                summary: "Sucesso total",
-                severity: 'success',
-                life: 100000,
-            });
         });
 
         this.triggerService.list().subscribe(triggers => {
