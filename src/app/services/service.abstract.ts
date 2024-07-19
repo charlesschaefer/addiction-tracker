@@ -33,6 +33,10 @@ export abstract class ServiceAbstract<T> {
         return this.dbService.add(this.storeName, data);
     }
 
+    bulkAdd(data: T[]): Observable<number[]> {
+        return this.dbService.bulkAdd(this.storeName, data as T & {key?: any}[]);
+    }
+
     edit(data: T): Observable<T> {
         return this.dbService.update(this.storeName, data)
             .pipe(
@@ -51,6 +55,10 @@ export abstract class ServiceAbstract<T> {
 
     remove(id: number): Observable<any> {
         return this.dbService.deleteByKey(this.storeName, id);
+    }
+
+    clear(): Observable<any> {
+        return this.dbService.clear(this.storeName);
     }
 
     deactivateCache(): void {
