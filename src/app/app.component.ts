@@ -41,9 +41,18 @@ export class AppComponent implements OnInit {
             label: 'Consumo',
             items: [
                 { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
-                { label: "Acompanhar", routerLink: "/usage-track", icon: "pi pi-wave-pulse" } as MenuItem,
+                { label: "Acompanhar", routerLink: "/usage-track", icon: "pi pi-chart-line" } as MenuItem,
                 { label: "Intervalos de Consumo", routerLink: "/usage-interval", icon: "pi pi-clock" } as MenuItem,
                 { label: "Adicionar", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
+            ]
+        },
+        {
+            separator: true
+        },
+        { 
+            label: 'Recomendações',
+            items: [
+                { label: "Recomendações", routerLink: "/recommendations", icon: "pi pi-book" } as MenuItem,
             ]
         },
         {
