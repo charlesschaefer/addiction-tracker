@@ -3,15 +3,13 @@ use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
-
 use tauri::{Manager, WindowEvent};
-
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             // An example of how to run a notification from Tauri Rust code
@@ -122,12 +120,12 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 #[cfg(any(target_os = "android", target_os = "ios"))]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_dialog::init())
+        //.plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|_app| {
             // An example of how to run a notification from Tauri Rust code

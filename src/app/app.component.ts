@@ -15,6 +15,8 @@ import {
     type Options as NotificationOptions,
   } from "@tauri-apps/plugin-notification";
 
+import { save } from "@tauri-apps/plugin-dialog";
+
 import { ThemeService } from './services/theme.service';
     
 @Component({
@@ -105,7 +107,9 @@ export class AppComponent implements OnInit {
             icon: 'pi pi-plus',
             routerLink: ['usage-add']
         },
-    ]
+    ];
+
+    testPath: string;
 
 
     constructor(
@@ -146,6 +150,18 @@ export class AppComponent implements OnInit {
 
         let currentTheme = this.themeService.getCurrentTheme();
         localStorage.setItem('theme', currentTheme);
+    }
+
+    async saveFile() {
+        const path = await save({
+            filters: [
+                {
+                    name: 'My Filter',
+                    extensions: ['png', 'jpg']
+                }
+            ]
+        });
+        this.testPath = path as string;
     }
 }
 

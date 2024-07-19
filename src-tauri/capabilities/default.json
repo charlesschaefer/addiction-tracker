@@ -15,6 +15,7 @@
     "menu:default",
     "tray:default",
     "image:default",
-    "notification:default"
+    "notification:default",
+    "dialog:default"
   ]
 }
