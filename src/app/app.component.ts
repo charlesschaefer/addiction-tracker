@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
             routerLink: ['/']
         },
         {
-            icon: 'pi pi-wave-pulse',
+            icon: 'pi pi-chart-line',
             routerLink: ['/usage-track']
         },
         {
