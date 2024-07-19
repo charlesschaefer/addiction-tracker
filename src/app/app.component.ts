@@ -16,6 +16,7 @@ import {
   } from "@tauri-apps/plugin-notification";
 
 import { save } from "@tauri-apps/plugin-dialog";
+import { BaseDirectory, exists, writeFile } from "@tauri-apps/plugin-fs";
 
 import { ThemeService } from './services/theme.service';
     
@@ -157,11 +158,16 @@ export class AppComponent implements OnInit {
             filters: [
                 {
                     name: 'My Filter',
-                    extensions: ['png', 'jpg']
+                    extensions: ['txt']
                 }
             ]
         });
         this.testPath = path as string;
+        console.log("Vamos escrever no arquivo")
+        let encoder = new TextEncoder;
+        await writeFile(this.testPath, encoder.encode("Eu quero é botar meu bloco na rua"));
+        alert("Arquivo existe?");
+        alert(await exists(this.testPath));
     }
 }
 
