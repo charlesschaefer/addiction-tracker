@@ -63,6 +63,11 @@ export class BackupComponent {
     generateBackup() {
         let backupObj: BackupData;
 
+        this.costService.clearCache();
+        this.substanceService.clearCache();
+        this.usageService.clearCache();
+        this.triggerService.clearCache();
+
         const backupData$ = forkJoin({
             cost: this.costService.list(),
             substance: this.substanceService.list(),
@@ -78,6 +83,9 @@ export class BackupComponent {
                 const jsonBackup = JSON.stringify(backupObj);
                 const encryptedBackup = AES.encrypt(jsonBackup, this.encriptKey);
                 this.encryptedBackup = encryptedBackup.toString();
+            },
+            error: (err) => {
+                console.error(err);
             }
         });
         console.log("Backup generated");
@@ -110,6 +118,7 @@ export class BackupComponent {
         let jsonBackup;
         try {
             const decryptedBackup = AES.decrypt(this.backupString, this.decriptKey);
+            console.log(decryptedBackup.toString(enc.Utf8));
             jsonBackup = JSON.parse(decryptedBackup.toString(enc.Utf8)) as BackupData;
         } catch (error) {
             this.messageService.add({
@@ -118,6 +127,7 @@ export class BackupComponent {
                 severity: "error",
                 life: 4000,
             });
+            console.error(error);
             return;
         }
         jsonBackup = this.rehydrateDateFields(jsonBackup);
