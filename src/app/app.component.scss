@@ -50,3 +50,11 @@ img#logo {
 }
 
 
+@media (max-width: 420px) {
+    :host ::ng-deep p-toastitem .p-toast-message {
+        width: 95vw;
+    }
+    :host ::ng-deep .p-toast-top-right {
+        left: 0px;
+    }
+}
