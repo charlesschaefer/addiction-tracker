@@ -18,10 +18,19 @@
 
 <section class="main">
   <router-outlet />
+  <p
+    joyrideStep="firstStep"
+    title="Boas vindas"
+    text="O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso."
+    stepPosition="center"
+  ></p>
 </section>
 
 <footer class="dial-menu">
   <p-speedDial 
+      joyrideStep="dialMenu"
+      title="Menu de acesso rápido"
+      text="Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos."
       [model]="speedDialItems" 
       direction="up" 
       [radius]="80" 

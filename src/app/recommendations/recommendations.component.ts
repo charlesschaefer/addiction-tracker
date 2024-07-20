@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
+import { PanelModule } from 'primeng/panel';
+import { JoyrideModule } from 'ngx-joyride';
 
 import { TriggerService } from '../services/trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
-import { PanelModule } from 'primeng/panel';
 import { RecommendationComponent } from '../recommendation/recommendation.component';
 
 
@@ -18,7 +19,8 @@ import { RecommendationComponent } from '../recommendation/recommendation.compon
         PanelModule,
         NgComponentOutlet,
         RecommendationComponent,
-        CommonModule
+        CommonModule,
+        JoyrideModule,
     ],
     templateUrl: './recommendations.component.html',
     styleUrl: './recommendations.component.scss'

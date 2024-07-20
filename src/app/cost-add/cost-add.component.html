@@ -1,4 +1,9 @@
-<p-panel class="cost-card" header="Adicionar Custo">
+<div 
+  joyrideStep="costAdd"
+  title="Gastos"
+  text="Na área de gastos você pode adicionar quanto tem gastado com seu vício para saber como ele tem impactado nas suas finanças"
+>
+  <p-panel class="cost-card" header="Adicionar Custo">
     <p-toast />
     <form [formGroup]="costForm" novalidate (ngSubmit)="onSubmit()">
       <div class="field">
@@ -28,3 +33,4 @@
       </div>
     </form>
   </p-panel>
+</div>

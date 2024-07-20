@@ -5,6 +5,7 @@ import localePt from "@angular/common/locales/pt";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
+import { JoyrideModule, JoyrideService } from 'ngx-joyride';
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideAnimationsAsync(),
     provideLuxonDateAdapter(),
+    importProvidersFrom(JoyrideModule.forRoot()),
     importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
     /* {
       provide: LOCALE_ID,

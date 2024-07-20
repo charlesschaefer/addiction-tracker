@@ -20,6 +20,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { Messages, MessagesModule } from 'primeng/messages';
 import { Message, MessageService } from 'primeng/api';
+import { JoyrideModule } from 'ngx-joyride';
 
 
 import { SubstanceService } from '../services/substance.service';
@@ -52,6 +53,7 @@ import { firstValueFrom } from 'rxjs';
         ToastModule,
         RadioButtonModule,
         MultiSelectModule,
+        JoyrideModule,
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
@@ -108,7 +110,7 @@ export class UsageAddComponent implements OnInit {
             { id: 3, name: '😕'},
             { id: 4, name: '🙂‍'},
             { id: 5, name: '😃'},
-        ]
+        ];
     }
     
     onSubmit(): void {

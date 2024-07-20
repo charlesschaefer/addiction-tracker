@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -8,6 +8,8 @@ import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuItem } from 'primeng/api';
+import { JoyrideModule, JoyrideService } from 'ngx-joyride';
+import { CookieService } from 'ngx-cookie-service';
 import {
     isPermissionGranted,
     requestPermission,
@@ -19,6 +21,7 @@ import { save } from "@tauri-apps/plugin-dialog";
 import { BaseDirectory, exists, writeFile } from "@tauri-apps/plugin-fs";
 
 import { ThemeService } from './services/theme.service';
+import { BrowserModule } from '@angular/platform-browser';
     
 @Component({
     selector: 'app-root',
@@ -33,7 +36,9 @@ import { ThemeService } from './services/theme.service';
         MenuModule,
         ButtonModule,
         SpeedDialModule,
+        JoyrideModule,
     ],
+    providers: [CookieService],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -101,7 +106,7 @@ export class AppComponent implements OnInit {
             routerLink: ['/']
         },
         {
-            icon: 'pi pi-wave-pulse',
+            icon: 'pi pi-chart-line',
             routerLink: ['/usage-track']
         },
         {
@@ -115,6 +120,8 @@ export class AppComponent implements OnInit {
 
     constructor(
         private themeService: ThemeService,
+        private joyrideService: JoyrideService,
+        private cookieService: CookieService,
     ) {}
 
     ngOnInit(): void {
@@ -126,6 +133,11 @@ export class AppComponent implements OnInit {
         if (userTheme != currentTheme) {
             console.log(userTheme, currentTheme);
             this.themeService.switchTheme(userTheme);
+        }
+
+        const sawGuidedTour = this.cookieService.get('sawGuidedTour');
+        if (!sawGuidedTour) {
+            this.initializeGuidedTour();
         }
     }
 
@@ -151,6 +163,27 @@ export class AppComponent implements OnInit {
 
         let currentTheme = this.themeService.getCurrentTheme();
         localStorage.setItem('theme', currentTheme);
+    }
+
+    initializeGuidedTour() {
+        this.joyrideService.startTour({
+            steps: [
+                'firstStep', 
+                'substanceAdd@substance-add', 
+                'dialMenu',  
+                'usageAdd@usage-add', 
+                "triggerAdd@usage-add",
+                "usageTrack@usage-track", 
+                "costAdd@cost-add",
+                "recommendations@recommendations",
+                "substanceAddStart@substance-add",
+            ]
+        }).subscribe({
+            complete: () => {
+                // save in cookies that the user saw the guided tour
+                this.cookieService.set('sawGuidedTour', '1');
+            }
+        });
     }
 }
 

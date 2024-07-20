@@ -1,37 +1,43 @@
-@if (usageChartData.length) {
-  <p-card>
-    <div class="group-by-buttons">
-      <label for="group-by-hour">Agrupar por hora?</label>
-        <p-toggleButton 
-          id="group-by-hour"
-          onLabel="On" 
-          [(ngModel)]="groupByHour"
-          offLabel="Off"
-          (onChange)="groupBy('hour')" />
-    </div>
-  </p-card>
-}
-
-@for (chartData of usageChartData; track chartData.chart) {
-  <p-accordion>
-    <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
-    <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
-      <div class="inline-cards">
-        <p-card 
-          class="chart-card" 
-          header="Acompanhamento de consumo" 
-        >
-          <p-chart type="line" [data]="chartData.chart" [options]="options" />
-        </p-card>
-        <p-card class="chart-card" header="Gatilhos de consumo">
-          <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
-        </p-card>
+<div
+  joyrideStep="usageTrack"
+  title="Acompanhamento"
+  text="Depois de adicionar quando você consome uma substância, o aplicativo irá te apresentar um gráfico relacionando a quantidade consumida com o nível de fissura e suas emoções, além de mostrar um gráfico com os gatilhos que mais te levam a consumir a substância. É aqui que você começa a ganhar mais consciência sobre o seu vício."
+  stepPosition="bottom"
+>
+  @if (usageChartData?.length) {
+    <p-card>
+      <div class="group-by-buttons">
+        <label for="group-by-hour">Agrupar por hora?</label>
+          <p-toggleButton 
+            id="group-by-hour"
+            onLabel="On" 
+            [(ngModel)]="groupByHour"
+            offLabel="Off"
+            (onChange)="groupBy('hour')" />
       </div>
-    </p-accordionTab>
-  </p-accordion>
-} @empty {
-  <p>Não há dados para serem exibidos.</p>
-  <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
-}
+    </p-card>
+  }
 
+  @for (chartData of usageChartData; track chartData.chart) {
+    <p-accordion>
+      <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
+      <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}">
+        <div class="inline-cards">
+          <p-card 
+            class="chart-card" 
+            header="Acompanhamento de consumo" 
+          >
+            <p-chart type="line" [data]="chartData.chart" [options]="options" />
+          </p-card>
+          <p-card class="chart-card" header="Gatilhos de consumo">
+            <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
+          </p-card>
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  } @empty {
+    <p>Não há dados para serem exibidos.</p>
+    <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
+  }
+</div>
 <!-- <app-recommendation [usages]="originalUsages"></app-recommendation> -->

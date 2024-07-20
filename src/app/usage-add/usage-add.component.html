@@ -1,4 +1,10 @@
-<p-panel class="shipping-card" header="Adicionar registro de Consumo">
+<p-panel 
+  header="Adicionar registro de Consumo"
+  joyrideStep="usageAdd"
+  title="Adicionar consumo"
+  text="Sempre que você fizer o uso da substância, você pode usar a tela Adicionar Consumo para registrar o consumo. Reserve alguns segundos para pensar bem sobre qual o nível de fissura você está, quais foram os gatilhos que te levaram ao uso e como estão suas emoções."
+  stepPosition="center"
+>
   <p-toast />
   <form [formGroup]="usageForm" novalidate (ngSubmit)="onSubmit()">
     <div class="field">
@@ -66,7 +72,11 @@
             field="name"
             (completeMethod)="triggerSearch($event)" 
             [multiple]="true"
-            id="trigger" />
+            id="trigger"
+            joyrideStep="triggerAdd"
+            title="Gatilhos"
+            text="No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso."
+          />
           <label for="trigger">Gatilho</label>
           <p-button icon="pi pi-pencil" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
         </div>

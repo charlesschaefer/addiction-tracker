@@ -1,6 +1,6 @@
 {
   "name": "addiction-tracker",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -33,7 +33,9 @@
     "chart.js": "^4.4.3",
     "crypto-js": "^4.2.0",
     "luxon": "^3.4.4",
+    "ngx-cookie-service": "^18.0.0",
     "ngx-indexed-db": "^18.0.0",
+    "ngx-joyride": "^2.5.0",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.3",
     "rxjs": "~7.8.0",
