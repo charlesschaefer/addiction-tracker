@@ -141,6 +141,17 @@ pub fn run() {
 
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![save_backup_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+
+#[tauri::command]
+fn save_backup_file(backup_str: String) {
+    // tries to save data to a file
+    match std::fs::write("/storage/emulated/0/Documents/backup_file.txt", backup_str.as_str()) {
+        Ok(_) => { println!("Sucesso escrevendo no arquivo"); }
+        Err(e) => { println!("Erro: {}", e) }
+    }
 }

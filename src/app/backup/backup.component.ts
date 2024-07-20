@@ -10,6 +10,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+import { invoke } from '@tauri-apps/api/core';
+
 
 import { CostService } from '../services/cost.service';
 import { CostDto } from '../dto/cost.dto';
@@ -45,10 +47,10 @@ interface BackupData {
 })
 export class BackupComponent {
 
-    encriptKey: string;
+    encryptKey: string;
     encryptedBackup: string;
 
-    decriptKey: string;
+    decryptKey: string;
     backupString: string;
 
     constructor(
@@ -81,7 +83,7 @@ export class BackupComponent {
             },
             complete: () => {
                 const jsonBackup = JSON.stringify(backupObj);
-                const encryptedBackup = AES.encrypt(jsonBackup, this.encriptKey);
+                const encryptedBackup = AES.encrypt(jsonBackup, this.encryptKey);
                 this.encryptedBackup = encryptedBackup.toString();
             },
             error: (err) => {
@@ -102,6 +104,15 @@ export class BackupComponent {
         })
     }
 
+    saveToFile() {
+        invoke("save_backup_file", { backupStr: this.encryptedBackup});
+        this.messageService.add({
+            detail: "Backup criptografado salvo com sucesso.",
+            summary: "Salvo!",
+            severity: "success"
+        })
+    }
+
     restoreBackupDialog(event: Event) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
@@ -117,7 +128,7 @@ export class BackupComponent {
     restoreBackup() {
         let jsonBackup;
         try {
-            const decryptedBackup = AES.decrypt(this.backupString, this.decriptKey);
+            const decryptedBackup = AES.decrypt(this.backupString, this.decryptKey);
             console.log(decryptedBackup.toString(enc.Utf8));
             jsonBackup = JSON.parse(decryptedBackup.toString(enc.Utf8)) as BackupData;
         } catch (error) {

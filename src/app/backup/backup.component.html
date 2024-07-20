@@ -6,7 +6,7 @@
     <form novalidate (ngSubmit)="generateBackup()">
       <div class="field">
         <p-floatLabel>
-            <input type="password" pInputText [(ngModel)]="encriptKey" name="key" id="key" />
+            <input type="password" pInputText [(ngModel)]="encryptKey" name="key" id="key" />
             <label for="key">Senha</label>
         </p-floatLabel>
       </div>
@@ -22,6 +22,7 @@
         </div>
         <div class="field">
             <p-button label="Copiar" (click)="copyToClipboard(userinput)" />
+            <p-button label="Salvar" (click)="saveToFile()" />
         </div>
     </form>
     }
@@ -37,7 +38,7 @@
         </div>
         <div class="field">
             <p-floatLabel>
-                <input type="password" pInputText [(ngModel)]="decriptKey" name="key" />
+                <input type="password" pInputText [(ngModel)]="decryptKey" name="key" />
                 <label for="value">Senha</label>
             </p-floatLabel>
           </div>

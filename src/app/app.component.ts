@@ -152,22 +152,5 @@ export class AppComponent implements OnInit {
         let currentTheme = this.themeService.getCurrentTheme();
         localStorage.setItem('theme', currentTheme);
     }
-
-    async saveFile() {
-        const path = await save({
-            filters: [
-                {
-                    name: 'My Filter',
-                    extensions: ['txt']
-                }
-            ]
-        });
-        this.testPath = path as string;
-        console.log("Vamos escrever no arquivo")
-        let encoder = new TextEncoder;
-        await writeFile(this.testPath, encoder.encode("Eu quero é botar meu bloco na rua"));
-        alert("Arquivo existe?");
-        alert(await exists(this.testPath));
-    }
 }
 
