@@ -1,6 +1,6 @@
 {
   "productName": "Addiction Tracker",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "identifier": "com.addictiontracker",
   "build": {
     "beforeDevCommand": "npm run start -- --host $HOST --public-host $HOST",

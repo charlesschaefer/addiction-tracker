@@ -11,6 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { Message, MessageService } from 'primeng/api';
 import { EMPTY, Observable, concatMap, firstValueFrom } from 'rxjs';
+import { JoyrideModule } from 'ngx-joyride';
 
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
@@ -27,6 +28,7 @@ import { SubstanceService } from '../services/substance.service';
         FloatLabelModule,
         ToastModule,
         TooltipModule,
+        JoyrideModule,
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss',

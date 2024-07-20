@@ -11,12 +11,12 @@ import { ToastModule } from 'primeng/toast';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageService } from 'primeng/api';
+import { JoyrideModule } from 'ngx-joyride';
 
 import { SubstanceDto } from '../dto/substance.dto';
 import { CostAddDto, CostDto } from '../dto/cost.dto';
 import { SubstanceService } from '../services/substance.service';
 import { CostService } from '../services/cost.service';
-import { DateTime } from 'luxon';
 
 @Component({
     selector: 'app-cost-add',
@@ -32,6 +32,7 @@ import { DateTime } from 'luxon';
         ToastModule,
         InputNumberModule,
         InputMaskModule,
+        JoyrideModule,
     ],
     providers: [MessageService],
     templateUrl: './cost-add.component.html',

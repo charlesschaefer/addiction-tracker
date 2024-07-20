@@ -11,6 +11,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { DateTime } from 'luxon';
+import { JoyrideModule } from 'ngx-joyride';
 
 import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -45,6 +46,7 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
         ButtonModule,
         RecommendationComponent,
         RouterLink,
+        JoyrideModule,
     ],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
