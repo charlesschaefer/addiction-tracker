@@ -44,7 +44,6 @@
         <div class="field">
             <label for="restore-backup">Selecionar Arquivo</label><br />
             <input name="backup-file" type="file" [(ngModel)]="filePointer" (change)="onFileChange($event)" />
-            {{filePointer}}
         </div>
         <div class="field">
             <p-floatLabel>
