@@ -22,6 +22,7 @@ import { BaseDirectory, exists, writeFile } from "@tauri-apps/plugin-fs";
 
 import { ThemeService } from './services/theme.service';
 import { BrowserModule } from '@angular/platform-browser';
+import { invoke } from '@tauri-apps/api/core';
     
 @Component({
     selector: 'app-root',
@@ -125,6 +126,8 @@ export class AppComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        invoke("set_frontend_complete");
+
         let currentTheme = this.themeService.getCurrentTheme();
         let userTheme = localStorage.getItem('theme');
         if (!userTheme) {

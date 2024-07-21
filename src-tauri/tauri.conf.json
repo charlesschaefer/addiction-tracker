@@ -13,7 +13,18 @@
       {
         "title": "Addiction Tracker",
         "width": 500,
-        "height": 750
+        "height": 750,
+        "label": "main",
+        "x": 200,
+        "y": 200
+      },
+      {
+        "label": "splashscreen",
+        "url": "/assets/splashscreen.html",
+        "width": 500,
+        "height": 750,
+        "x": 200,
+        "y": 200
       }
     ],
     "security": {

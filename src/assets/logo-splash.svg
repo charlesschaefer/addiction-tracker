@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1024.0001"
+   height="500"
+   viewBox="0 0 1024.0001 500"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="..\..\..\..\..\..\Users\charles\Desktop\LOGO_ADDICTION_TRACKER.png"
+   inkscape:export-xdpi="25.6"
+   inkscape:export-ydpi="25.6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="1"
+     inkscape:cx="1339"
+     inkscape:cy="653.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(1121.3837,-979.79761)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.998514;stroke-opacity:1"
+       id="rect4"
+       width="1023.0015"
+       height="499.0015"
+       x="-1120.8844"
+       y="980.29688"
+       inkscape:export-filename="..\src\assets\logo-splash.svg"
+       inkscape:export-xdpi="95.999992"
+       inkscape:export-ydpi="95.999992" />
+    <g
+       id="g6"
+       transform="translate(-1194.04,422.95006)">
+      <path
+         id="rect2-18"
+         d="m 566.88429,744.12982 h 36.14163 v 29.16223 l -36.14163,26.96971 z"
+         style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534"
+         sodipodi:nodetypes="ccccc" />
+      <g
+         id="g5"
+         transform="translate(11.358784)">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333"
+           x="160.84718"
+           y="802.12085"
+           id="text1-8"
+           inkscape:export-filename="..\..\..\..\..\..\Users\charles\Desktop\text1.png"
+           inkscape:export-xdpi="118.43869"
+           inkscape:export-ydpi="118.43869"><tspan
+             sodipodi:role="line"
+             id="tspan1-4"
+             x="160.84718"
+             y="802.12085"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Addiction</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-size:74.6667px;fill:#333333"
+           x="664.08386"
+           y="803.74567"
+           id="text2-3"><tspan
+             sodipodi:role="line"
+             id="tspan2-6"
+             x="664.08386"
+             y="803.74567"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#333333">Tracker</tspan></text>
+        <g
+           id="g3-6"
+           transform="translate(-419.76969,443.82924)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:48px;font-family:'Source Sans 3';-inkscape-font-specification:'Source Sans 3, ';fill:#333333;fill-opacity:1"
+             x="788.49487"
+             y="425.40903"
+             id="text3-6"><tspan
+               sodipodi:role="line"
+               id="tspan3-4"
+               x="788.49487"
+               y="425.40903"
+               style="font-size:48px">Seu vício controlado</tspan></text>
+          <path
+             style="fill:none;stroke:#000000;stroke-opacity:1"
+             d="m 578.06774,408.05703 h 197.43863 -0.25443"
+             id="path1-7" />
+          <path
+             style="fill:none;stroke:#000000;stroke-opacity:1"
+             d="m 1210.6282,408.05703 h 197.4386 -0.2544"
+             id="path1-6-8" />
+        </g>
+        <path
+           id="rect2-1-9"
+           d="m 603.01782,773.12725 36.6504,-26.71528 v 56.13194 h -36.6504 z"
+           style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062"
+           sodipodi:nodetypes="ccccc" />
+      </g>
+    </g>
+  </g>
+</svg>

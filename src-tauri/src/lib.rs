@@ -1,11 +1,20 @@
 use serde::{Deserialize, Serialize};
+use tauri::AppHandle;
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
-use tauri::{Manager, WindowEvent};
+use tauri::{WindowEvent, Manager};
+
+
+#[derive(Deserialize, Serialize)]
+struct Return {
+    path: String,
+    msg: String,
+    result: bool,
+}
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -119,6 +128,7 @@ pub fn run() {
 
             Ok(())
         })
+        .invoke_handler(tauri::generate_handler![set_frontend_complete])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -126,6 +136,7 @@ pub fn run() {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 #[cfg(any(target_os = "android", target_os = "ios"))]
 pub fn run() {
+
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
@@ -143,17 +154,11 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![save_backup_file])
+        .invoke_handler(tauri::generate_handler![save_backup_file, set_frontend_complete])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
-#[derive(Deserialize, Serialize)]
-struct Return {
-    path: String,
-    msg: String,
-    result: bool,
-}
 
 #[tauri::command]
 fn save_backup_file(backup_str: String) -> Return {
@@ -177,4 +182,16 @@ fn save_backup_file(backup_str: String) -> Return {
             };
         }
     }
+}
+
+#[tauri::command]
+fn set_frontend_complete(
+    app: AppHandle,
+) -> Result<(), ()> {
+    let splash_window = app.get_webview_window("splashscreen").unwrap();
+    let main_window = app.get_webview_window("main").unwrap();
+    splash_window.close().unwrap();
+    main_window.show().unwrap();
+
+    Ok(())
 }

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            flex-direction: column;
+        }
+        img {
+            width: 100%;
+        }
+    </style>
+    <title>Tauri App</title>
+</head>
+<body>
+    <div class="container">
+        <img src="logo-splash.svg">
+    </div>
+    <div class="colorful"></div>
+
+<style>
+.colorful {
+   width: 44.8px;
+   height: 44.8px;
+   border-radius: 50%;
+   background: radial-gradient(farthest-side,#8b5cf6 94%,#0000),
+          radial-gradient(farthest-side,#f68e5e 94%,#0000),
+          radial-gradient(farthest-side,#8b5cf6 94%,#0000),
+          radial-gradient(farthest-side,#f68e5e 94%,#0000),
+          #8b5cf6;
+   background-size: 105% 105%;
+   background-repeat: no-repeat;
+   animation: colorful-7utelwmd 2s infinite;
+}
+
+@keyframes colorful-7utelwmd {
+   0% {
+      background-position: 50% -56px,-44.8px 50%, 50% calc(100% + 56px),calc(100% + 56px) 50%;
+   }
+
+   20%, 25% {
+      background-position: 50% -56px,-56px 50%, 50% calc(100% + 56px),50% 50%;
+   }
+
+   45%, 50% {
+      background-position: 50% -56px,-56px 50%, 50% 50% ,50% 50%;
+   }
+
+   75%, 75% {
+      background-position: 50% -56px, 50%  50%, 50% 50%,50% 50%;
+   }
+
+   95%, 100% {
+      background-position: 50%  50% , 50%  50%, 50% 50%,50% 50%;
+   }
+}
+</style>
+</body>
+</html>
