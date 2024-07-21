@@ -16,6 +16,14 @@
     margin-right: 10px;
 }
 
+:host ::ng-deep .group-by-container .p-card-content {
+    display: flex;
+}
+
+.group-by-buttons {
+    margin-right: 10px;
+}
+
 @media (min-width: 1000px) {
     .inline-cards {
         display: flex;

@@ -5,17 +5,28 @@
   stepPosition="bottom"
 >
   @if (usageChartData?.length) {
-    <p-card>
-      <div class="group-by-buttons">
-        <label for="group-by-hour">Agrupar por hora?</label>
-          <p-toggleButton 
-            id="group-by-hour"
-            onLabel="On" 
-            [(ngModel)]="groupByHour"
-            offLabel="Off"
-            (onChange)="groupBy('hour')" />
-      </div>
-    </p-card>
+    <div class="group-by-container">
+      <p-card>
+        <div class="group-by-buttons">
+          <label for="group-by-hour">Agrupar por hora?</label>
+            <p-toggleButton 
+              id="group-by-hour"
+              onLabel="On" 
+              [(ngModel)]="groupByHour"
+              offLabel="Off"
+              (onChange)="groupBy('hour')" />
+        </div>
+        <div class="group-by-buttons">
+          <label for="group-by-day">Agrupar por dia?</label>
+            <p-toggleButton 
+              id="group-by-day"
+              onLabel="On" 
+              [(ngModel)]="groupByDay"
+              offLabel="Off"
+              (onChange)="groupBy('day')" />
+        </div>
+      </p-card>
+    </div>
   }
 
   @for (chartData of usageChartData; track chartData.chart) {

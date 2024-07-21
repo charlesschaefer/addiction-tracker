@@ -57,6 +57,7 @@ export class UsageTrackComponent implements OnInit {
     substances: Map<number, SubstanceDto> = new Map();
 
     groupByHour: boolean = false;
+    groupByDay: boolean = false;
 
     originalUsages: UsageDto[];
 
@@ -205,8 +206,13 @@ export class UsageTrackComponent implements OnInit {
     }
 
     groupBy(by: "hour" | "day") {
+        if (by == "hour") {
+            this.groupByDay = false;
+        } else {
+            this.groupByHour = false;
+        }
         this.usageService.list().subscribe((result: UsageDto[]) => {
-            if (this.groupByHour) {
+            if (this.groupByHour || this.groupByDay) {
             
                 let data; 
                 if (by == 'hour') {
