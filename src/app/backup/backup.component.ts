@@ -29,6 +29,12 @@ interface BackupData {
     trigger: TriggerDto[];
 }
 
+interface SaveFileResult {
+    path: string;
+    msg: string;
+    result: boolean;
+}
+
 @Component({
     selector: 'app-backup',
     standalone: true,
@@ -52,6 +58,10 @@ export class BackupComponent {
 
     decryptKey: string;
     backupString: string;
+
+    filePathDownload: string;
+
+    filePointer: any;
 
     constructor(
         private costService: CostService<CostDto>,
@@ -104,13 +114,34 @@ export class BackupComponent {
         })
     }
 
-    saveToFile() {
-        invoke("save_backup_file", { backupStr: this.encryptedBackup});
-        this.messageService.add({
-            detail: "Backup criptografado salvo com sucesso.",
-            summary: "Salvo!",
-            severity: "success"
-        })
+    async saveToFile() {
+        const result = await invoke("save_backup_file", { backupStr: this.encryptedBackup}) as SaveFileResult;
+        if (result.result) {
+            this.messageService.add({
+                detail: `Backup criptografado salvo em ${result.path}.`,
+                summary: result.msg,
+                severity: "success"
+            });
+            this.filePathDownload = result.path;
+        } else {
+            this.messageService.add({
+                detail: `Erro ao salvar ${result.path}: ${result.msg}`,
+                summary: "Erro ao salvar arquivo",
+                severity: "error"
+            });
+        }
+    }
+
+    onFileChange(event: Event) {
+        const fileElement = event.target as HTMLInputElement;
+        const fileList: FileList | null = fileElement.files;
+        if (fileList) {
+            const reader = new FileReader();
+            reader.readAsText(fileList[0], "UTF-8");
+            reader.onload = (evt) => {
+                this.backupString = evt.target?.result as string;
+            }
+        }
     }
 
     restoreBackupDialog(event: Event) {

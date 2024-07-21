@@ -24,6 +24,11 @@
             <p-button label="Copiar" (click)="copyToClipboard(userinput)" />
             <p-button label="Salvar" (click)="saveToFile()" />
         </div>
+        <div class="field">
+            @if (filePathDownload) {
+                <a href="file://{{filePathDownload}}">Acessar</a>
+            }
+        </div>
     </form>
     }
 </p-panel>
@@ -35,6 +40,11 @@
         <div class="field">
             <label for="restore-backup">Backup criptografado</label><br />
             <textarea name="restore-backup" class="backup-area" [(ngModel)]="backupString"></textarea>
+        </div>
+        <div class="field">
+            <label for="restore-backup">Selecionar Arquivo</label><br />
+            <input name="backup-file" type="file" [(ngModel)]="filePointer" (change)="onFileChange($event)" />
+            {{filePointer}}
         </div>
         <div class="field">
             <p-floatLabel>
