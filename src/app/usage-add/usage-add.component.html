@@ -20,11 +20,12 @@
         </label>
       }
     </div>
-    <div class="field">
+    <div class="field quantity-field">
       <p-floatLabel>
-        <input pInputText formControlName="quantity" type="number">
+        <input pInputText formControlName="quantity" type="number" class="quantity-input" min="0" step="1">
         <label for="quantity">Quantidade</label>
-        <p-button icon="pi pi-plus" class="quantity-plus-button" [rounded]="true" (onClick)="increaseQuantity()" title="Adiciona um novo gatilho" />
+        <p-button icon="pi pi-minus" class="quantity-minus-button" [rounded]="true" (onClick)="decreaseQuantity()" />
+        <p-button icon="pi pi-plus" class="quantity-plus-button" [rounded]="true" (onClick)="increaseQuantity()" />
       </p-floatLabel>
     </div>
     
@@ -34,7 +35,8 @@
           inputId="datetime" 
           formControlName="datetime"
           [showTime]="true" 
-          [hourFormat]="'24'" />
+          [hourFormat]="'24'"
+          showIcon="true" />
         <label for="datetime">Data e hora</label>
       </p-floatLabel>
     </div>
@@ -53,11 +55,9 @@
       }
     </div>
     <div class="field " >
-      <label>Fissura:</label>
-      <div>
-        <mat-slider showTickMarks class="craving-slider" min="1" max="10" step="1" discrete>
-          <input matSliderThumb value="1" formControlName="craving">
-        </mat-slider>
+      <label>Fissura: <strong>{{usageForm.value.craving}}</strong></label>
+      <div class="craving-slider">
+        <p-slider formControlName="craving" [step]="1" min="0" max="10"  /> 
       </div>
     </div>
     <div class="field ">

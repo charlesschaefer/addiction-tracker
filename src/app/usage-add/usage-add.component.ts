@@ -18,6 +18,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { SliderModule } from 'primeng/slider';
 import { Messages, MessagesModule } from 'primeng/messages';
 import { Message, MessageService } from 'primeng/api';
 import { JoyrideModule } from 'ngx-joyride';
@@ -54,6 +55,7 @@ import { firstValueFrom } from 'rxjs';
         RadioButtonModule,
         MultiSelectModule,
         JoyrideModule,
+        SliderModule,
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
@@ -66,7 +68,7 @@ export class UsageAddComponent implements OnInit {
         quantity: [0, Validators.required],
         datetime: [new Date(), Validators.required],
         sentiment: [0, Validators.required],
-        craving: [0, Validators.required],
+        craving: [1, Validators.required],
         trigger: [[]],
     });
     triggerForm = this.fb.group({
@@ -200,6 +202,17 @@ export class UsageAddComponent implements OnInit {
     increaseQuantity() {
         this.usageForm.patchValue({
             quantity: this.usageForm.value.quantity as number + 1
+        });
+    }
+
+    decreaseQuantity() {
+        const qtt = this.usageForm.value.quantity as number;
+        let new_qtt = 0;
+        if (qtt > 0) {
+            new_qtt = qtt - 1;
+        }
+        this.usageForm.patchValue({
+            quantity: new_qtt
         });
     }
 }

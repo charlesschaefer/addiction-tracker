@@ -2,17 +2,35 @@
     width: 210px;
 }
 
-.add-trigger-button, .quantity-plus-button, .substance-radio-button {
+.add-trigger-button, .quantity-plus-button, .substance-radio-button, .quantity-minus-button {
     margin-left: 10px
+}
+
+:host ::ng-deep .quantity-minus-button button.p-button, 
+:host ::ng-deep .quantity-plus-button button.p-button {
+    height: 30px;
+    width: 30px;
+}
+
+.field input.quantity-input {
+    max-width: 190px;
 }
 
 .sentiment-radio-label {
     font-size: 20px;
 }
 
+.craving-slider {
+    margin-top: 20px;
+}
+
 @media (max-width: 360px) {
     .field input {
         width: 60vw;
+    }
+
+    .field input.quantity-input {
+        width: 40vw;
     }
 
     .sentiment-radio-label {
