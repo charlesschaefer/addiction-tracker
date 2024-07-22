@@ -60,7 +60,7 @@
         <p-slider formControlName="craving" [step]="1" min="0" max="10"  /> 
       </div>
     </div>
-    <div class="field ">
+    <!-- <div class="field ">
       <p-floatLabel>
         <div style="display: flex;">
           <p-autoComplete 
@@ -81,6 +81,23 @@
           <p-button icon="pi pi-pencil" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
         </div>
       </p-floatLabel>
+    </div> -->
+    <div class="field ">
+      <label for="trigger">Gatilhos</label>
+      <div style="display: flex;">
+        <p-listbox
+          [options]="filteredTriggers"
+          optionLabel="name"
+          formControlName="trigger"
+          [multiple]="true"
+          id="trigger2"
+          joyrideStep="triggerAdd"
+          title="Gatilhos"
+          text="No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso."
+        />
+        
+        <p-button icon="pi pi-pencil" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
+      </div>
     </div>
     <div class="field">
       <p-button type="submit">Salvar</p-button>

@@ -19,6 +19,7 @@ import { ToastModule } from 'primeng/toast';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SliderModule } from 'primeng/slider';
+import { ListboxModule } from 'primeng/listbox';
 import { Messages, MessagesModule } from 'primeng/messages';
 import { Message, MessageService } from 'primeng/api';
 import { JoyrideModule } from 'ngx-joyride';
@@ -56,6 +57,7 @@ import { firstValueFrom } from 'rxjs';
         MultiSelectModule,
         JoyrideModule,
         SliderModule,
+        ListboxModule,
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
