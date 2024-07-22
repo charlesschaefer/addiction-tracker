@@ -36,6 +36,8 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
+src-tauri/.cargo
+src-tauri/gen
 
 # System files
 .DS_Store
