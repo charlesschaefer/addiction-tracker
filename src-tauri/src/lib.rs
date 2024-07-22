@@ -1,12 +1,11 @@
 use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
+use tauri::{WindowEvent, Manager};
 
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
-#[cfg(not(any(target_os = "android", target_os = "ios")))]
-use tauri::{WindowEvent, Manager};
 
 
 #[derive(Deserialize, Serialize)]
@@ -154,7 +153,7 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![save_backup_file, set_frontend_complete])
+        .invoke_handler(tauri::generate_handler![save_backup_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -184,6 +183,7 @@ fn save_backup_file(backup_str: String) -> Return {
     }
 }
 
+#[cfg(not(any(target_os = "android", target_os = "ios")))]
 #[tauri::command]
 fn set_frontend_complete(
     app: AppHandle,
