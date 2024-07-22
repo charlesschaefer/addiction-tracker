@@ -15,9 +15,6 @@
     "menu:default",
     "tray:default",
     "image:default",
-    "notification:default",
-    "dialog:default",
-    "fs:default",
-    "fs:write-files"
+    "notification:default"
   ]
 }

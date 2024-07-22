@@ -1,13 +1,15 @@
 use serde::{Deserialize, Serialize};
-use tauri::AppHandle;
-use tauri::{WindowEvent, Manager};
 
-#[cfg(not(any(target_os = "android", target_os = "ios")))]
+#[cfg(desktop)]
+use tauri::AppHandle;
+#[cfg(desktop)]
+use tauri::{WindowEvent, Manager};
+#[cfg(desktop)]
 use tauri::menu::{MenuBuilder, MenuItem};
-#[cfg(not(any(target_os = "android", target_os = "ios")))]
+#[cfg(desktop)]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 
-
+#[cfg(desktop)]
 #[derive(Deserialize, Serialize)]
 struct Return {
     path: String,
@@ -15,12 +17,11 @@ struct Return {
     result: bool,
 }
 
-#[cfg(not(any(target_os = "android", target_os = "ios")))]
+//#[cfg(not(any(target_os = "android", target_os = "ios")))]
+#[cfg(desktop)]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             // An example of how to run a notification from Tauri Rust code
@@ -31,6 +32,10 @@ pub fn run() {
             //    .body("Você recebeu uma nova notificação")
             //    .show()
             //    .unwrap();
+
+            // hiddens the main window before the app loads
+            app.get_webview_window("main").unwrap().hide().unwrap();
+            app.get_webview_window("splashscreen").unwrap().show().unwrap();
 
             let item_show = MenuItem::new(app, "Exibir/Ocultar", true, Some("E")).unwrap();
             let item_quit = MenuItem::new(app, "Sair", true, Some("R")).unwrap();
@@ -132,14 +137,11 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 
+#[cfg(not(desktop))]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
-#[cfg(any(target_os = "android", target_os = "ios"))]
 pub fn run() {
 
     tauri::Builder::default()
-        .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_fs::init())
-        //.plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|_app| {
             // An example of how to run a notification from Tauri Rust code
@@ -183,13 +185,14 @@ fn save_backup_file(backup_str: String) -> Return {
     }
 }
 
-#[cfg(not(any(target_os = "android", target_os = "ios")))]
+#[cfg(desktop)]
 #[tauri::command]
 fn set_frontend_complete(
     app: AppHandle,
 ) -> Result<(), ()> {
     let splash_window = app.get_webview_window("splashscreen").unwrap();
     let main_window = app.get_webview_window("main").unwrap();
+    
     splash_window.close().unwrap();
     main_window.show().unwrap();
 
