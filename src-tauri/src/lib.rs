@@ -9,7 +9,7 @@ use tauri::menu::{MenuBuilder, MenuItem};
 #[cfg(desktop)]
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 
-#[cfg(desktop)]
+#[cfg(not(desktop))]
 #[derive(Deserialize, Serialize)]
 struct Return {
     path: String,
@@ -160,7 +160,7 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 
-
+#[cfg(not(desktop))]
 #[tauri::command]
 fn save_backup_file(backup_str: String) -> Return {
     let path = "/storage/emulated/0/Android/data/com.addictiontracker/files/backup.txt";
@@ -190,7 +190,12 @@ fn save_backup_file(backup_str: String) -> Return {
 fn set_frontend_complete(
     app: AppHandle,
 ) -> Result<(), ()> {
-    let splash_window = app.get_webview_window("splashscreen").unwrap();
+    let splash_window;
+    if app.get_webview_window("splashscreen").is_some() {
+        splash_window = app.get_webview_window("splashscreen").unwrap();
+    } else {
+        return Err(());
+    }
     let main_window = app.get_webview_window("main").unwrap();
     
     splash_window.close().unwrap();
