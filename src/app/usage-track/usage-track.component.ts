@@ -79,6 +79,7 @@ export class UsageTrackComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.usageService.clearCache();
         this.substanceService.list().subscribe(result => {
             if (!result.length) {
                 this.route.navigate(['/substance-add']);
