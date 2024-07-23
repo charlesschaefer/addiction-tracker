@@ -60,28 +60,6 @@
         <p-slider formControlName="craving" [step]="1" min="0" max="10"  /> 
       </div>
     </div>
-    <!-- <div class="field ">
-      <p-floatLabel>
-        <div style="display: flex;">
-          <p-autoComplete 
-            formControlName="trigger"
-            [suggestions]="filteredTriggers"
-            [virtualScroll]="true"
-            [virtualScrollItemSize]="50" 
-            [dropdown]="true"
-            field="name"
-            (completeMethod)="triggerSearch($event)" 
-            [multiple]="true"
-            id="trigger"
-            joyrideStep="triggerAdd"
-            title="Gatilhos"
-            text="No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso."
-          />
-          <label for="trigger">Gatilho</label>
-          <p-button icon="pi pi-pencil" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" title="Adiciona um novo gatilho" />
-        </div>
-      </p-floatLabel>
-    </div> -->
     <div class="field ">
       <label for="trigger">Gatilhos</label>
       <div style="display: flex;">
@@ -115,6 +93,15 @@
         <p-button label="Salvar" (click)="saveTrigger()" />
     </div>
   </form>
-  
 </p-dialog>
-  
+<p-dialog header="Exercício de Respiração" [modal]="true" [(visible)]="showRespirationExerciseDialog" [style]="{ width: '25rem' }" >
+  <div>
+    <p>
+      Que tal tentar um exercício de respiração para te ajudar a não usar agora?
+    </p>
+    <div class="field">
+      <p-button label="Não, já usei" severity="secondary" (click)="showRespirationExerciseDialog = false" />
+      <p-button label="Claro" (click)="router.navigate(['/respiration'])" />
+    </div>
+  </div>
+</p-dialog>

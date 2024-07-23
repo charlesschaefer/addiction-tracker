@@ -15,13 +15,14 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SliderModule } from 'primeng/slider';
 import { ListboxModule } from 'primeng/listbox';
-import { Messages, MessagesModule } from 'primeng/messages';
-import { Message, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { MessageService } from 'primeng/api';
 import { JoyrideModule } from 'ngx-joyride';
 
 
@@ -52,6 +53,7 @@ import { firstValueFrom } from 'rxjs';
         CalendarModule,
         AutoCompleteModule,
         DialogModule,
+        ConfirmDialogModule,
         ToastModule,
         RadioButtonModule,
         MultiSelectModule,
@@ -83,6 +85,8 @@ export class UsageAddComponent implements OnInit {
     triggers: TriggerDto[] = [];
     filteredTriggers: TriggerDto[] = [];
     sentiments: {name: string, id: number}[] = [];
+
+    showRespirationExerciseDialog = true;
     
     constructor(
         private substanceService: SubstanceService<SubstanceDto>,
@@ -91,7 +95,7 @@ export class UsageAddComponent implements OnInit {
         private usageService: UsageService<UsageDto>,
         private usageAddService: UsageService<UsageAddDto>,
         private messageService: MessageService,
-        private router: Router,
+        protected router: Router,
     ) {}
     
     ngOnInit(): void {

@@ -10,6 +10,7 @@ import { VersionComponent } from "./version/version.component";
 import { UsageIntervalComponent } from "./usage-interval/usage-interval.component";
 import { RecommendationsComponent } from "./recommendations/recommendations.component";
 import { BackupComponent } from "./backup/backup.component";
+import { RespirationComponent } from './respiration/respiration.component';
 
 export const routes: Routes = [
     {path: '', component: UsageComponent},
@@ -21,5 +22,6 @@ export const routes: Routes = [
     {path: 'recommendations', component: RecommendationsComponent},
     {path: 'usage-interval', component: UsageIntervalComponent},
     {path: 'backup', component: BackupComponent},
+    {path: 'respiration', component: RespirationComponent},
     {path: 'about', component: VersionComponent},
 ];
