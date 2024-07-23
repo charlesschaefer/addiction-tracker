@@ -16,8 +16,18 @@
     margin-right: 10px;
 }
 
+.group-by-container {
+    position: fixed;
+    width: 100%;
+    z-index: 999;
+}
+
 :host ::ng-deep .group-by-container .p-card-content {
     display: flex;
+}
+
+.usage-track-accordions {
+    padding-top: 90px;
 }
 
 .group-by-buttons {

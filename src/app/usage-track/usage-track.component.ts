@@ -56,6 +56,8 @@ export class UsageTrackComponent implements OnInit {
     triggerChartData: Map<number, ChartData> = new Map;
     substances: Map<number, SubstanceDto> = new Map();
 
+    activeCharts: number[] = [0,1];
+
     groupByHour: boolean = false;
     groupByDay: boolean = false;
 

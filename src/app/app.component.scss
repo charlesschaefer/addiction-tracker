@@ -20,6 +20,18 @@ img#logo {
 
 .main {
     padding-bottom: 40px;
+    padding-top: 62px;
+}
+
+p-toolbar {
+    position: fixed;
+    width: 100%;
+    margin-bottom: 20px;
+    z-index: 1000;
+}
+
+:host ::ng-deep p-menu div.p-menu {
+    top: 51px !important;
 }
 
 @media (max-width: 600px) {
