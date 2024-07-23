@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -96,9 +96,14 @@ export class UsageAddComponent implements OnInit {
         private usageAddService: UsageService<UsageAddDto>,
         private messageService: MessageService,
         protected router: Router,
+        private activatedRoute: ActivatedRoute,
     ) {}
     
     ngOnInit(): void {
+        let returning = this.activatedRoute.snapshot.queryParamMap.get('returning');
+        if (returning) {
+            this.showRespirationExerciseDialog = false;
+        }
         this.substanceService.list().subscribe(substances => {
             if (!substances.length) {
                 this.router.navigate(['/substance-add']);

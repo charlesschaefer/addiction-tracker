@@ -1,0 +1,51 @@
+.respiration {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+}
+
+.start-animation {
+    position: fixed;
+    z-index: 1000;
+    color: white;
+}
+
+.respiration-circle {
+    background-color: #8b5cf6;
+    border-radius: 100%;
+    width: 80px;
+    height: 80px;
+    animation: pulse 8s linear 0s 1 normal forwards;
+    animation-play-state: paused;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+
+    25% {
+        transform: scale(1);
+    }
+
+	50% {
+		transform: scale(6);
+	}
+
+    75% {
+        transform: scale(6);
+    }
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+
+
+:host ::ng-deep p-toolbar {
+    display: none;
+}
