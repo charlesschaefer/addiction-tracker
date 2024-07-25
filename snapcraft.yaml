@@ -21,11 +21,16 @@ layout:
 
 apps:
   addiction-tracker:
+    extensions:
+      - gnome
     command: usr/bin/addiction-tracker
     desktop: usr/share/applications/addiction-tracker.desktop
-    plugs:
+    plugs: 
       - wayland
-      - X11
+      - x11
+      - home
+      - desktop
+      - unity7
 
 package-repositories:
   - type: apt
@@ -64,3 +69,8 @@ parts:
       npm run tauri build -- --bundles deb
       dpkg -x src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb $SNAPCRAFT_PART_INSTALL/
       sed -i -e "s|Icon=addiction-tracker|Icon=/usr/share/icons/hicolor/32x32/apps/addiction-tracker.png|g" $SNAPCRAFT_PART_INSTALL/usr/share/applications/addiction-tracker.desktop
+slots:
+  dbus-daemon:
+    interface: dbus
+    bus: session
+    name: com.addictiontracker
