@@ -38,6 +38,7 @@ testem.log
 /typings
 src-tauri/.cargo
 src-tauri/gen
+*.snap
 
 # System files
 .DS_Store
