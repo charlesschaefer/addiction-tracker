@@ -1,3 +1,13 @@
 :host ::ng-deep p-tag {
     margin-right: 4px;
 }
+
+:host ::ng-deep .usage-table .p-datatable-table {
+    font-size: small;
+}
+
+:host ::ng-deep .usage-table .p-datatable-table th,
+:host ::ng-deep .usage-table .p-datatable-table td {
+    padding: 10px;
+    text-align: center;
+}

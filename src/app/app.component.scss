@@ -32,6 +32,8 @@ p-toolbar {
 
 :host ::ng-deep p-menu div.p-menu {
     top: 51px !important;
+    width: 240px;
+    font-size: 0.9em;
 }
 
 @media (max-width: 600px) {

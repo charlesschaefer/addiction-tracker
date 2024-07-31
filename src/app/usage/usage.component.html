@@ -22,7 +22,7 @@
 
     <!-- <p-panel header="Consumos de {{usage.name}}"> -->
     <p-accordionTab header="Consumos de {{usage.name}} ({{allItems[$index].items.length}})">
-        <p-table [value]="usage.items">
+        <p-table [value]="usage.items" class="usage-table">
             <ng-template pTemplate="header">
                 <tr>
                     <th></th>

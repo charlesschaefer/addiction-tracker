@@ -1,8 +1,40 @@
 //@import '@angular/material/pre';
 
+@font-face {
+    font-family: 'Segoe UI Regular';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Regular'), url('assets/fonts/Segoe UI.woff') format('woff');
+}
+    
 
+@font-face {
+    font-family: 'Segoe UI Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Italic'), url('assets/fonts/Segoe UI Italic.woff') format('woff');
+}
+    
+
+@font-face {
+    font-family: 'Segoe UI Bold';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Bold'), url('assets/fonts/Segoe UI Bold.woff') format('woff');
+}
+    
+
+@font-face {
+    font-family: 'Segoe UI Bold Italic';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Segoe UI Bold Italic'), url('assets/fonts/Segoe UI Bold Italic.woff') format('woff');
+}
+
+* { font-family: "Segoe UI Regular", Roboto, "Helvetica Neue", sans-serif; }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; }
+
 
 .field {
     padding: 10px;
