@@ -68,12 +68,12 @@ import { firstValueFrom } from 'rxjs';
 export class UsageAddComponent implements OnInit {
     private fb = inject(FormBuilder);
     usageForm = this.fb.group({
-        substance: [0, Validators.required],
-        quantity: [0, Validators.required],
+        substance: [0, Validators.min(1)],
+        quantity: [0, Validators.min(1)],
         datetime: [new Date(), Validators.required],
-        sentiment: [0, Validators.required],
+        sentiment: [0, Validators.min(1)],
         craving: [1, Validators.required],
-        trigger: [[]],
+        trigger: [[], [Validators.required, Validators.minLength(1)]],
     });
     triggerForm = this.fb.group({
        name: [null, Validators.required] ,
