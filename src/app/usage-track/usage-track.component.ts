@@ -91,6 +91,9 @@ export class UsageTrackComponent implements OnInit {
         });
 
         this.usageService.list().subscribe(result => {
+            if (result.length > 100) {
+                result = result.slice(-100);
+            }
             this.originalUsages = result;
 
             this.prepareChartData(result);
