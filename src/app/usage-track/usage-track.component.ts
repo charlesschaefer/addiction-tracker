@@ -227,7 +227,12 @@ export class UsageTrackComponent implements OnInit {
                     data = this.usageService.groupByDay(result);
                 }
 
-                this.prepareChartData(this.usageService.groupMapToUsageDto(data));
+                let finalData = this.usageService.groupMapToUsageDto(data);
+                if (finalData.length > 100) {
+                    finalData = finalData.slice(-100);
+                }
+
+                this.prepareChartData(finalData);
             } else {
                 this.prepareChartData(result);
             }
