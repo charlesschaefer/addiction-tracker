@@ -153,10 +153,10 @@ export class UsageAddComponent implements OnInit {
             this.messageService.add({ 
                 severity: 'success',
                 summary: 'Tudo certo',
-                detail: "Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Redirecionando...",
-                life: 3000,
+                detail: "Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Abrindo...",
+                life: 2000,
             });
-            setTimeout(() => this.router.navigate(['/usage-track']), 3000);
+            setTimeout(() => this.router.navigate(['/usage-track']), 2000);
         });
     }
     

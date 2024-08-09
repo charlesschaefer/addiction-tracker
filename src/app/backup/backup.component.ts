@@ -21,13 +21,7 @@ import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
-
-interface BackupData {
-    cost: CostDto[];
-    substance: SubstanceDto[];
-    usage: UsageDto[];
-    trigger: TriggerDto[];
-}
+import { BackupService, BackupData } from '../services/backup.service';
 
 interface SaveFileResult {
     path: string;
@@ -70,35 +64,12 @@ export class BackupComponent {
         private triggerService: TriggerService<TriggerDto>,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
+        private backupService: BackupService,
     ) {}
     
     generateBackup() {
-        let backupObj: BackupData;
-
-        this.costService.clearCache();
-        this.substanceService.clearCache();
-        this.usageService.clearCache();
-        this.triggerService.clearCache();
-
-        const backupData$ = forkJoin({
-            cost: this.costService.list(),
-            substance: this.substanceService.list(),
-            usage: this.usageService.list(),
-            trigger: this.triggerService.list(),
-        });
-
-        backupData$.subscribe({
-            next: (result) => {
-                backupObj = result as BackupData;
-            },
-            complete: () => {
-                const jsonBackup = JSON.stringify(backupObj);
-                const encryptedBackup = AES.encrypt(jsonBackup, this.encryptKey);
-                this.encryptedBackup = encryptedBackup.toString();
-            },
-            error: (err) => {
-                console.error(err);
-            }
+        this.backupService.backupData(this.encryptKey).subscribe((encryptedBackup) => {
+            this.encryptedBackup = encryptedBackup;
         });
         console.log("Backup generated");
     }
@@ -157,69 +128,25 @@ export class BackupComponent {
     }
     
     restoreBackup() {
-        let jsonBackup;
-        try {
-            const decryptedBackup = AES.decrypt(this.backupString, this.decryptKey);
-            console.log(decryptedBackup.toString(enc.Utf8));
-            jsonBackup = JSON.parse(decryptedBackup.toString(enc.Utf8)) as BackupData;
-        } catch (error) {
-            this.messageService.add({
-                summary: "Erro no backup",
-                detail: "Não foi possível restaurar seu backup. Tem certeza de que a senha está correta?",
-                severity: "error",
-                life: 4000,
+        this.backupService
+            .restoreBackup(this.backupString, this.decryptKey)
+            .subscribe({
+                complete: () =>  {
+                    this.messageService.add({
+                        summary: "Restaurado com sucesso!",
+                        detail: "Seu backup foi restaurado com sucesso! Seus dados já estão disponíveis para consulta.",
+                        severity: "success",
+                        life: 4000,
+                    });
+                },
+                error: () => {
+                    this.messageService.add({
+                        summary: "Erro no backup",
+                        detail: "Não foi possível restaurar seu backup. Por favor, tente novamente!",
+                        severity: "error",
+                        life: 4000,
+                    });
+                }
             });
-            console.error(error);
-            return;
-        }
-        jsonBackup = this.rehydrateDateFields(jsonBackup);
-        console.log("Resultado: ", jsonBackup);
-        
-        // everything ok, lets restore the backup
-        this.triggerService.clear();
-        this.usageService.clear();
-        this.substanceService.clear();
-        this.costService.clear();
-
-        const savedData$ = forkJoin({
-            substance: this.substanceService.bulkAdd(jsonBackup.substance),
-            trigger: this.triggerService.bulkAdd(jsonBackup.trigger),
-            usage: this.usageService.bulkAdd(jsonBackup.usage),
-            cost: this.costService.bulkAdd(jsonBackup.cost)
-        });
-
-        savedData$.subscribe({
-            next: (result) => {
-                console.log("Emitindo o próximo", result);
-            },
-            complete: () =>  {
-                this.messageService.add({
-                    summary: "Restaurado com sucesso!",
-                    detail: "Seu backup foi restaurado com sucesso! Seus dados já estão disponíveis para consulta.",
-                    severity: "success",
-                    life: 4000,
-                });
-            },
-            error: () => {
-                this.messageService.add({
-                    summary: "Erro no backup",
-                    detail: "Não foi possível restaurar seu backup. Por favor, tente novamente!",
-                    severity: "error",
-                    life: 4000,
-                });
-            }
-        })
-    }
-
-    rehydrateDateFields(jsonBackup: BackupData): BackupData {
-        jsonBackup.cost.forEach((value, index) => {
-            jsonBackup.cost[index].date = new Date(value.date);
-        });
-
-        jsonBackup.usage.forEach((value, index) => {
-            jsonBackup.usage[index].datetime = new Date(value.datetime);
-        });
-
-        return jsonBackup;
     }
 }

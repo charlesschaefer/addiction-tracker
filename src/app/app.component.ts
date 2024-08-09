@@ -82,6 +82,7 @@ export class AppComponent implements OnInit {
             items: [
                 { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
                 { label: "Backup", routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
+                { label: "Sincronizar dispositivos", routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
                 { label: "Mudar tema", command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
                 {
                     separator: true

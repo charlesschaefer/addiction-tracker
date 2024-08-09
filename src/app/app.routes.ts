@@ -11,6 +11,7 @@ import { UsageIntervalComponent } from "./usage-interval/usage-interval.componen
 import { RecommendationsComponent } from "./recommendations/recommendations.component";
 import { BackupComponent } from "./backup/backup.component";
 import { RespirationComponent } from './respiration/respiration.component';
+import { SynchronizationComponent } from "./synchronization/synchronization.component";
 
 export const routes: Routes = [
     {path: '', component: UsageComponent},
@@ -24,4 +25,5 @@ export const routes: Routes = [
     {path: 'backup', component: BackupComponent},
     {path: 'respiration', component: RespirationComponent},
     {path: 'about', component: VersionComponent},
+    {path: 'sync', component: SynchronizationComponent}
 ];

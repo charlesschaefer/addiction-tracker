@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { JoyrideModule, JoyrideService } from 'ngx-joyride';
+import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes), 
     provideAnimationsAsync(),
+    provideHttpClient(),
     provideLuxonDateAdapter(),
     importProvidersFrom(JoyrideModule.forRoot()),
     importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),

@@ -1,0 +1,43 @@
+<h2>Synchronize data with other devices</h2>
+<p-dialog header="Get data from other device" [modal]="true" [(visible)]="getFromOthersVisible">
+  <div class="sync-container-client">
+    <p class="help">
+      Open the app on other device, click the button "Send data to other devices" and click the button "Make device discoverable".
+    </p>
+    <p class="help">
+      Then click the button below to look for the device in the network.
+    </p>
+    <p-button label="Search devices" (onClick)="discoverDevices()" [disabled]="!enableDiscoverButton" />
+    <div class="sync-otp-field" *ngIf="showOTPField">
+      <form novalidate [formGroup]="otpForm" (ngSubmit)="sendEncryptedOTP($event)">
+        <label for="otp">Type the code below</label>
+        <p-inputOtp formControlName="otp" [length]="6" />
+        <p-button label="Send" type="submit" />
+      </form>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog header="Send data to other device" [modal]="true" [(visible)]="sendToOthersVisible">
+  <div class="sync-container-server">
+    <p class="help">
+      Open the app on other device, click the button "Get data from other devices" and follow instructions. Then, click the button bellow.
+    </p>
+    <p-button label="Make device discoverable" (onClick)="makeDeviceDiscoverable()" />
+    <div class="sync-otp" *ngIf="otpData">
+      <p class="sync-otp-help">
+        Type the code below on your other device:
+      </p>
+      <div class="sync-otp-data">
+        {{ otpData }}
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<div class="sync-buttons flex gap-2">
+  <p-button label="Get data from other devices" (onClick)="openFromOthers()" />
+  <p-button label="Send data to other devices" (onClick)="openToOthers()" />
+</div>
+
+<p-toast />
