@@ -1,3 +1,5 @@
+use tauri::Emitter;
+
 #[cfg(desktop)]
 mod desktop;
 
@@ -31,10 +33,28 @@ pub fn run() {
             desktop::set_frontend_complete,
             #[cfg(not(desktop))]
             android::save_backup_file,
+            add_notification,
         ]
     );
     
     builder
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+
+#[tauri::command]
+fn add_notification(app_handle: tauri::AppHandle, title: String, body: String) {
+    use tauri_plugin_notification::NotificationExt;
+    let _ = app_handle.emit("msg", "Building the notification").unwrap();
+    let mut notification = app_handle.notification().builder();
+    let _ = app_handle.emit("msg", "Let's add title").unwrap();
+    notification = notification.title(title);
+    let _ = app_handle.emit("msg", "Now let's add body").unwrap();
+    notification = notification.body(body);
+    let _ = app_handle.emit("msg", "Notification built. Lets show it").unwrap();
+    let results = notification.show();
+    let _ = app_handle.emit("msg", "Notification showed. Let's check its results").unwrap();
+    results.unwrap();
+    let _ = app_handle.emit("msg", "Everything ok with notifications").unwrap();
 }

@@ -16,6 +16,7 @@ import {
     sendNotification,
     type Options as NotificationOptions,
   } from "@tauri-apps/plugin-notification";
+import { listen } from '@tauri-apps/api/event';
 
 import { save } from "@tauri-apps/plugin-dialog";
 import { BaseDirectory, exists, writeFile } from "@tauri-apps/plugin-fs";
@@ -143,6 +144,8 @@ export class AppComponent implements OnInit {
         if (!sawGuidedTour) {
             this.initializeGuidedTour();
         }
+
+        this.listenToTauriEvents();
     }
 
     // An example of how to add notifications from tauri javascript code
@@ -188,6 +191,34 @@ export class AppComponent implements OnInit {
                 this.cookieService.set('sawGuidedTour', '1');
             }
         });
+    }
+
+    async addNotification() {
+        // Do you have permission to send a notification?
+        let permissionGranted = await isPermissionGranted();
+    
+        // If not we need to request it
+        if (!permissionGranted) {
+            const permission = await requestPermission();
+            permissionGranted = permission === 'granted';
+        }
+        //alert(`Permission granted: ${permissionGranted}`);
+
+        invoke('add_notification', {title: 'Tauri', body: 'Tauri is awesome!'});
+    
+        // Once permission has been granted we can send the notification
+        if (permissionGranted) {
+            //sendNotification({ title: 'Tauri', body: 'Tauri is awesome!' });
+        }
+    }
+
+    msgs: string[] = [];
+
+    async listenToTauriEvents() {
+        listen('msg', (event) => {
+            this.msgs.push(event.payload as string);
+        });
+        this.msgs.push("Início do log aberto");
     }
 }
 

@@ -89,28 +89,50 @@ export class BackupService {
         this.substanceService.clear();
         this.costService.clear();
 
-        const savedData$ = forkJoin({
-            substance: this.substanceService.bulkAdd(jsonBackup.substance),
-            trigger: this.triggerService.bulkAdd(jsonBackup.trigger),
-            usage: this.usageService.bulkAdd(jsonBackup.usage),
-            cost: this.costService.bulkAdd(jsonBackup.cost)
-        });
-
+        // const savedData$ = forkJoin({
+        //     substance: this.substanceService.bulkAdd(jsonBackup.substance),
+        //     trigger: this.triggerService.bulkAdd(jsonBackup.trigger),
+        //     usage: this.usageService.bulkAdd(jsonBackup.usage),
+        //     cost: this.costService.bulkAdd(jsonBackup.cost)
+        // });
         const backupResponse$ = new Subject();
 
-        savedData$.subscribe({
-            next: (result) => {
-                console.log("Emitindo o próximo", result);
-            },
-            complete: () =>  {
-                console.log("Finished restauring the backup");
-                backupResponse$.complete();
+        this.substanceService.bulkAdd(jsonBackup.substance).subscribe({
+            complete: () => {
+                console.log("Adicionou substance")
+                this.triggerService.bulkAdd(jsonBackup.trigger).subscribe(() => {
+                    console.log("Adicionou trigger")
+                    this.usageService.bulkAdd(jsonBackup.usage).subscribe(() => {
+                        console.log("Adicionou usage")
+                        this.costService.bulkAdd(jsonBackup.cost).subscribe(() => {
+                            console.log("Adicionou cost")
+                            backupResponse$.complete();
+                        })
+                    })
+                })
+            }, 
+            next: () => {
+                console.log("Chamou o next")
             },
             error: (err) => {
-                console.log("Couldn't save the backup: ", err);
-                backupResponse$.error(err);
+                console.log("Errro: ", err);
             }
         });
+
+
+        // savedData$.subscribe({
+        //     next: (result) => {
+        //         console.log("Emitindo o próximo", result);
+        //     },
+        //     complete: () =>  {
+        //         console.log("Finished restauring the backup");
+        //         backupResponse$.complete();
+        //     },
+        //     error: (err) => {
+        //         console.log("Couldn't save the backup: ", err);
+        //         backupResponse$.error(err);
+        //     }
+        // });
 
         return backupResponse$;
 

@@ -36,3 +36,11 @@
       [radius]="80" 
       type="semi-circle" />
 </footer>
+
+
+<button (click)="addNotification()">Testar Notificação</button>
+<div class="debug-msgs">
+  @for (msg of msgs; track msg) {
+    <p>{{ msg }}</p>
+  }
+</div>
