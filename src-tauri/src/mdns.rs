@@ -2,6 +2,7 @@ use mdns_sd::{ServiceDaemon, ServiceEvent, ServiceInfo};
 
 #[tauri::command]
 pub async fn search_network_sync_services() -> String {
+    dbg!("Let's call discover_service()");
     discover_service().await
 }
 
@@ -16,8 +17,10 @@ pub async fn discover_service() -> String {
     let mdns = ServiceDaemon::new().expect("Failed to create daemon");
 
     // Browse for a service type.
-    let service_type = "_addictiontracker._udp.local.";
+    let service_type = "_adt._udp.local.";
     let receiver = mdns.browse(service_type).expect("Failed to browse");
+
+    dbg!(format!("Searching services of type {:?}", service_type));
 
     let my_ip = local_ip_addr::get_local_ip_address().unwrap();
 
@@ -59,7 +62,7 @@ pub fn broadcast_service() {
     host_string.push_str(".local.");
 
     // Create a service info.
-    let service_type = "_addictiontracker._udp.local.";
+    let service_type = "_adt._udp.local.";
     let instance_name = "local";
     let ip = ip_string.as_str();
     let host_name = host_string.as_str();
@@ -76,6 +79,8 @@ pub fn broadcast_service() {
     ).unwrap();
     // Register with the daemon, which publishes the service.
     mdns.register(my_service).expect("Failed to register our service");
+
+    dbg!(format!("Broadcasting services of type {:?}", service_type));
 
 
     // Gracefully shutdown the daemon
