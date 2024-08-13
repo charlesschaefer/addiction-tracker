@@ -6,12 +6,18 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { JoyrideModule, JoyrideService } from 'ngx-joyride';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
 
 registerLocaleData(localePt);
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,14 +27,14 @@ export const appConfig: ApplicationConfig = {
     provideLuxonDateAdapter(),
     importProvidersFrom(JoyrideModule.forRoot()),
     importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
-    /* {
-      provide: LOCALE_ID,
-      useValue: 'pt-BR',
-    },
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'pt-BR',
-    }, */
+    importProvidersFrom(TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+      },
+      defaultLanguage: 'pt-BR'
+    })),
     {
       provide: LOCALE_ID,
       useValue: 'pt-BR'

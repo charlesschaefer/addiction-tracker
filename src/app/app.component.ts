@@ -8,6 +8,7 @@ import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { MenuItem } from 'primeng/api';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { JoyrideModule, JoyrideService } from 'ngx-joyride';
 import { CookieService } from 'ngx-cookie-service';
 import {
@@ -16,14 +17,11 @@ import {
     sendNotification,
     type Options as NotificationOptions,
   } from "@tauri-apps/plugin-notification";
-import { listen } from '@tauri-apps/api/event';
-
-import { save } from "@tauri-apps/plugin-dialog";
-import { BaseDirectory, exists, writeFile } from "@tauri-apps/plugin-fs";
 
 import { ThemeService } from './services/theme.service';
-import { BrowserModule } from '@angular/platform-browser';
 import { invoke } from '@tauri-apps/api/core';
+import { TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
     
 @Component({
     selector: 'app-root',
@@ -39,6 +37,7 @@ import { invoke } from '@tauri-apps/api/core';
         ButtonModule,
         SpeedDialModule,
         JoyrideModule,
+        TieredMenuModule,
     ],
     providers: [CookieService],
     templateUrl: './app.component.html',
@@ -46,53 +45,7 @@ import { invoke } from '@tauri-apps/api/core';
 })
 export class AppComponent implements OnInit {
     title = 'Controle de Vícios';
-    menuItems: MenuItem[] = [
-        { 
-            label: 'Consumo',
-            items: [
-                { label: "Home", routerLink: "/", icon: "pi pi-home" } as MenuItem,
-                { label: "Acompanhar", routerLink: "/usage-track", icon: "pi pi-chart-line" } as MenuItem,
-                { label: "Intervalos de Consumo", routerLink: "/usage-interval", icon: "pi pi-clock" } as MenuItem,
-                { label: "Adicionar", routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
-            ]
-        },
-        {
-            separator: true
-        },
-        { 
-            label: 'Recomendações',
-            items: [
-                { label: "Recomendações", routerLink: "/recommendations", icon: "pi pi-book" } as MenuItem,
-            ]
-        },
-        {
-            separator: true
-        },
-        {
-            label: 'Gastos',
-            items: [
-                { label: "Acompanhar", routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
-                { label: "Adicionar", routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
-            ]
-        },
-        {
-            separator: true
-        },
-        {
-            label: 'Configurações',
-            items: [
-                { label: "Adicionar Substância", routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
-                { label: "Backup", routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
-                { label: "Sincronizar dispositivos", routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
-                { label: "Mudar tema", command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
-                {
-                    separator: true
-                },
-                { label: "Sobre", routerLink: "/about", icon: "pi pi-info" } as MenuItem,
-                
-            ]
-        },
-    ];
+    menuItems!: MenuItem[];
 
     speedDialItems: MenuItem[] = [
         {
@@ -125,10 +78,23 @@ export class AppComponent implements OnInit {
         private themeService: ThemeService,
         private joyrideService: JoyrideService,
         private cookieService: CookieService,
-    ) {}
+        private translate: TranslateService,
+    ) {
+        translate.setDefaultLang('pt-BR');
+        //translate.use('en');
+
+
+        let userLanguage = localStorage.getItem('language');
+        if (!userLanguage) {
+            userLanguage = 'pt-BR';
+        }
+        this.translate.use(userLanguage);
+    }
 
     ngOnInit(): void {
         invoke("set_frontend_complete");
+        
+        this.setupMenu();
 
         let currentTheme = this.themeService.getCurrentTheme();
         let userTheme = localStorage.getItem('theme');
@@ -144,8 +110,6 @@ export class AppComponent implements OnInit {
         if (!sawGuidedTour) {
             this.initializeGuidedTour();
         }
-
-        this.listenToTauriEvents();
     }
 
     // An example of how to add notifications from tauri javascript code
@@ -172,6 +136,69 @@ export class AppComponent implements OnInit {
         localStorage.setItem('theme', currentTheme);
     }
 
+    switchLanguage(language: 'en' | 'pt-BR') {
+        console.log("Changing language to ", language)
+        this.translate.use(language);
+        localStorage.setItem('language', language);
+        this.setupMenu();
+    }
+
+    async setupMenu() {
+        this.menuItems = [
+            { 
+                label: 'Consumo',
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Home")), routerLink: "/", icon: "pi pi-home" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/usage-track", icon: "pi pi-chart-line" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Intervalos de Consumo")), routerLink: "/usage-interval", icon: "pi pi-clock" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
+                ]
+            },
+            {
+                separator: true
+            },
+            { 
+                label: await firstValueFrom(this.translate.get('Recomendações')),
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Recomendações")), routerLink: "/recommendations", icon: "pi pi-book" } as MenuItem,
+                ]
+            },
+            {
+                separator: true
+            },
+            {
+                label: await firstValueFrom(this.translate.get('Gastos')),
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
+                ]
+            },
+            {
+                separator: true
+            },
+            {
+                label: await firstValueFrom(this.translate.get('Configurações')),
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Adicionar Substância")), routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Backup")), routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Sincronizar dispositivos")), routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Mudar tema")), command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
+                ]
+            },
+            { 
+                label: await firstValueFrom(this.translate.get("Idioma")), icon: 'pi pi-flag', 
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
+                    { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },
+                ]
+            },
+            {
+                separator: true
+            },
+            { label: await firstValueFrom(this.translate.get("Sobre")), routerLink: "/about", icon: "pi pi-info" } as MenuItem,
+        ];
+    }
+
     initializeGuidedTour() {
         this.joyrideService.startTour({
             steps: [
@@ -191,34 +218,6 @@ export class AppComponent implements OnInit {
                 this.cookieService.set('sawGuidedTour', '1');
             }
         });
-    }
-
-    async addNotification() {
-        // Do you have permission to send a notification?
-        let permissionGranted = await isPermissionGranted();
-    
-        // If not we need to request it
-        if (!permissionGranted) {
-            const permission = await requestPermission();
-            permissionGranted = permission === 'granted';
-        }
-        //alert(`Permission granted: ${permissionGranted}`);
-
-        invoke('add_notification', {title: 'Tauri', body: 'Tauri is awesome!'});
-    
-        // Once permission has been granted we can send the notification
-        if (permissionGranted) {
-            //sendNotification({ title: 'Tauri', body: 'Tauri is awesome!' });
-        }
-    }
-
-    msgs: string[] = [];
-
-    async listenToTauriEvents() {
-        listen('msg', (event) => {
-            this.msgs.push(event.payload as string);
-        });
-        this.msgs.push("Início do log aberto");
     }
 }
 

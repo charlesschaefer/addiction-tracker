@@ -9,10 +9,6 @@ mod android;
 mod mdns;
 mod http;
 
-
-
-//#[cfg(not(any(target_os = "android", target_os = "ios")))]
-#[cfg(desktop)]
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let mut builder = tauri::Builder::default()
@@ -46,15 +42,12 @@ pub fn run() {
 #[tauri::command]
 fn add_notification(app_handle: tauri::AppHandle, title: String, body: String) {
     use tauri_plugin_notification::NotificationExt;
-    let _ = app_handle.emit("msg", "Building the notification").unwrap();
-    let mut notification = app_handle.notification().builder();
-    let _ = app_handle.emit("msg", "Let's add title").unwrap();
-    notification = notification.title(title);
-    let _ = app_handle.emit("msg", "Now let's add body").unwrap();
-    notification = notification.body(body);
-    let _ = app_handle.emit("msg", "Notification built. Lets show it").unwrap();
-    let results = notification.show();
-    let _ = app_handle.emit("msg", "Notification showed. Let's check its results").unwrap();
-    results.unwrap();
-    let _ = app_handle.emit("msg", "Everything ok with notifications").unwrap();
+    let _ = app_handle.emit("msg", "Starting to build the notification");
+    let mut builder = app_handle.notification().builder();
+    let _ = app_handle.emit("msg", "Notification built. Let's add title and body");
+    builder = builder.title(title)
+        .body(body);
+    let _ = app_handle.emit("msg", "Notification ready. Let's show it");
+    builder.show()
+        .unwrap();
 }

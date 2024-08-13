@@ -14,6 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { OtpGeneratorService } from '../services/otp-generator.service';
 import { BackupService } from '../services/backup.service';
 import { Messages } from 'primeng/messages';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-synchronization',
@@ -52,6 +53,7 @@ export class SynchronizationComponent {
         private backupService: BackupService,
         private httpClient: HttpClient,
         private messageService: MessageService,
+        private translate: TranslateService,
     ) {}
 
     openFromOthers() {
@@ -68,11 +70,8 @@ export class SynchronizationComponent {
         // generates OTP code
         let otp = this.otpGenerator.generateOTP();
         this.otpData = otp;
-        console.log("OTP Data: ", otp);
         this.backupService.backupData(otp).subscribe(cryptedBackup => {
-            console.log("Data backed up. broadcasting...", cryptedBackup);
             invoke('broadcast_network_sync_services').then(() => {
-                console.log("Service broadcasted. Starting http server...");
                 invoke('start_http_server', { otpCode: otp, backupData: cryptedBackup });
             });
         });
@@ -81,10 +80,15 @@ export class SynchronizationComponent {
     discoverDevices() {
         this.enableDiscoverButton = false;
         this.showOTPField = true;
-        console.log("Starting to discover devices...");
+        console.log("Let's search other devices...");
         // get devices with faire opened in the network
-        invoke('search_network_sync_services').then(ipv4 => {
-            console.log("Encountered the app in the machine with ip ", ipv4);
+        invoke('search_network_sync_services').then(async (ipv4) => {
+            console.log("Device found at ", ipv4);
+            this.messageService.add({
+                summary: await firstValueFrom(this.translate.get("Device found")),
+                detail: await firstValueFrom(this.translate.get("Your device was discovered with the IP: ")) + ipv4,
+                severity: "info"
+            });
             this.showOTPField = true;
             this.serverIp = ipv4 as string;
         });

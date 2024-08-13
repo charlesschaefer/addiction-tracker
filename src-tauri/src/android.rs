@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(not(desktop))]
 #[derive(Deserialize, Serialize)]
-struct Return {
+pub struct Return {
     path: String,
     msg: String,
     result: bool,
