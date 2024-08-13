@@ -81,13 +81,13 @@ export class AppComponent implements OnInit {
         private cookieService: CookieService,
         private translate: TranslateService,
     ) {
-        translate.setDefaultLang('pt-BR');
+        translate.setDefaultLang('en');
         //translate.use('en');
 
 
         let userLanguage = localStorage.getItem('language');
         if (!userLanguage) {
-            userLanguage = 'pt-BR';
+            userLanguage = 'en';
         }
         this.translate.use(userLanguage);
     }
