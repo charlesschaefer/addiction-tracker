@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "addiction-tracker"
-version = "0.0.7"
+version = "0.0.8"
 dependencies = [
  "hostname",
  "local-ip-addr",
