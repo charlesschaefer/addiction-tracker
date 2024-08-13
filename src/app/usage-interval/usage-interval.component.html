@@ -1,7 +1,7 @@
 <p-accordion>
     @for (chartData of usageChartData; track chartData.substanceId) {
       <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
-      <p-accordionTab [header]="'Dados de uso de {substance}' | translate: {substance: substances.get(chartData.substanceId)}">
+      <p-accordionTab [header]="('Dados de uso de ' | translate) + substances.get(chartData.substanceId)">
         <div class="inline-cards">
           <p-card 
             class="chart-card" 

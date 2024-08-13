@@ -20,7 +20,7 @@
 @for (usage of paginatedItems; track usage.name) {
 
     <!-- <p-panel header="Consumos de {{usage.name}}"> -->
-    <p-accordionTab [header]="'Consumos de {{name}} ({{qty}})' | translate: { name: usage.name, qty: allItems[$index].items.length }">
+    <p-accordionTab [header]="('Consumos de '| translate) + usage.name + ' (' + allItems[$index].items.length + ')'">
         <p-table [value]="usage.items" class="usage-table">
             <ng-template pTemplate="header">
                 <tr>

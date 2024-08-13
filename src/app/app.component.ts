@@ -146,10 +146,10 @@ export class AppComponent implements OnInit {
 
     async setupMenu() {
         this.menuItems = [
+            { label: await firstValueFrom(this.translate.get("Home")), routerLink: "/", icon: "pi pi-home" } as MenuItem,
             { 
                 label: 'Consumo',
                 items: [
-                    { label: await firstValueFrom(this.translate.get("Home")), routerLink: "/", icon: "pi pi-home" } as MenuItem,
                     { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/usage-track", icon: "pi pi-chart-line" } as MenuItem,
                     { label: await firstValueFrom(this.translate.get("Intervalos de Consumo")), routerLink: "/usage-interval", icon: "pi pi-clock" } as MenuItem,
                     { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/usage-add", icon: "pi pi-plus" } as MenuItem,
@@ -187,7 +187,7 @@ export class AppComponent implements OnInit {
                 ]
             },
             { 
-                label: await firstValueFrom(this.translate.get("Idioma")), icon: 'pi pi-flag', 
+                label: await firstValueFrom(this.translate.get("Idioma")), 
                 items: [
                     { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
                     { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },

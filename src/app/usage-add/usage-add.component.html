@@ -41,7 +41,7 @@
       </p-floatLabel>
     </div>
     <div class="field ">
-      <div translate>Sentimento: </div><br />
+      <div translate>Sentimento:</div><br />
       @for (sentiment of sentiments; track sentiment.name) {
         <p-radioButton 
             [value]=sentiment.id
@@ -100,8 +100,8 @@
       Que tal tentar um exercício de respiração para te ajudar a não usar agora?
     </p>
     <div class="field">
-      <p-button label="Não, já usei" severity="secondary" (click)="showRespirationExerciseDialog = false" />
-      <p-button label="Claro" (click)="router.navigate(['/respiration'])" />
+      <p-button [label]="'Não, já usei' | translate" severity="secondary" (click)="showRespirationExerciseDialog = false" />
+      <p-button [label]="'Claro' | translate" (click)="router.navigate(['/respiration'])" />
     </div>
   </div>
 </p-dialog>

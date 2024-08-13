@@ -109,11 +109,16 @@ export class UsageTrackComponent implements OnInit {
         window.addEventListener('resize', (event) => this.reRenderOnResize(event));
     }
 
-    prepareChartData(result: UsageDto[]) {
+    async prepareChartData(result: UsageDto[]) {
         const documentStyle = getComputedStyle(document.documentElement);
         let usageChartData: UsageChart[] = [];
         let registeredSubstances = new Map;
-        result.forEach(async usage => {
+        const [usageLabel, feelingLabel, cravingLabel] = [
+            await firstValueFrom(this.translate.get('Consumo')),
+            await firstValueFrom(this.translate.get('Sentimento')),
+            await firstValueFrom(this.translate.get('Fissura')),
+        ];
+        result.forEach(usage => {
             if (!registeredSubstances.has(usage.substance)) {
                 usageChartData.push({
                     substanceId: usage.substance,
@@ -121,20 +126,20 @@ export class UsageTrackComponent implements OnInit {
                         labels: [],
                         datasets: [
                             {
-                                label: await firstValueFrom(this.translate.get('Consumo')),
+                                label: usageLabel,
                                 data: [],
                                 tension: 0.3,
                                 borderColor: documentStyle.getPropertyValue('--blue-500')
                             },
                             {
-                                label: await firstValueFrom(this.translate.get('Sentimento')),
+                                label: feelingLabel,
                                 data: [],
                                 tension: 0.3,
                                 fill: true,
                                 backgroundColor: 'rgba(156, 39, 176, 0.4)'
                             },
                             {
-                                label: await firstValueFrom(this.translate.get('Fissura')),
+                                label: cravingLabel,
                                 data: [],
                                 tension: 0.3,
                                 borderDash: [5, 5],
@@ -157,15 +162,17 @@ export class UsageTrackComponent implements OnInit {
         this.usageChartData = usageChartData;
     }
 
-    prepareTriggerChart(result: UsageDto[]) {
+    async prepareTriggerChart(result: UsageDto[]) {
         let triggerData = this.consolidateTriggerData(result);
 
-        triggerData.forEach(async (triggerUsage, substanceId) => {
+        const totalUsage = await firstValueFrom(this.translate.get('Consumo total'));
+
+        triggerData.forEach((triggerUsage, substanceId) => {
             let chartData: ChartData = {
                 labels: triggerUsage.map(usage => usage.trigger),
                 datasets: [
                     {
-                        label: await firstValueFrom(this.translate.get('Consumo total')),
+                        label: totalUsage,
                         data: triggerUsage.map(usage => usage.usage),
                         backgroundColor: 'rgba(156, 39, 176, 0.4)'
                     }
