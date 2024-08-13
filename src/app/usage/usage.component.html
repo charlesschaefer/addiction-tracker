@@ -4,16 +4,15 @@
     <p-panel>
         <p-card>
             <i class="pi pi-star pi-spin" style="color: goldenrod; font-size: 20px;"></i>
-            Você está há
+            {{'Você está há' | translate}}
             @if (timeWithoutUsage?.days) {
-                {{timeWithoutUsage.days}} dias,
+                {{timeWithoutUsage.days}} {{' dias,' | translate}}
             }
             @if (timeWithoutUsage?.hours) {
-                {{timeWithoutUsage.hours}} horas e
+                {{timeWithoutUsage.hours}} {{' horas e' | translate}}
             }
             
-            {{timeWithoutUsage.minutes}} minutos
-            sem consumir nada. Parabéns!
+            {{timeWithoutUsage.minutes}} {{' minutos sem consumir nada. Parabéns!' | translate}}
         </p-card>
     </p-panel>
 }
@@ -21,16 +20,16 @@
 @for (usage of paginatedItems; track usage.name) {
 
     <!-- <p-panel header="Consumos de {{usage.name}}"> -->
-    <p-accordionTab header="Consumos de {{usage.name}} ({{allItems[$index].items.length}})">
+    <p-accordionTab [header]="'Consumos de {{name}} ({{qty}})' | translate: { name: usage.name, qty: allItems[$index].items.length }">
         <p-table [value]="usage.items" class="usage-table">
             <ng-template pTemplate="header">
                 <tr>
                     <th></th>
-                    <th>Data</th>
-                    <th>Substância</th>
-                    <th>Sentimento</th>
-                    <th>Fissura</th>
-                    <th>Gatilhos</th>
+                    <th translate>Data</th>
+                    <th translate>Substância</th>
+                    <th translate>Sentimento</th>
+                    <th translate>Fissura</th>
+                    <th translate>Gatilhos</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-usage>
@@ -66,8 +65,8 @@
             [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
     </p-accordionTab>
 } @empty {
-    <p>Não há dados para serem exibidos. </p>
-    <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
+    <p translate>Não há dados para serem exibidos. </p>
+    <p translate>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
 }
 </p-accordion>
 

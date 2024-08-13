@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "config": "ts-node src/environments/config-env.ts",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "i18n:init": "ngx-translate-extract --input ./src --output ./src/assets/i18n/template.json --key-as-default-value --replace --format json",
+    "i18n:extract": "ngx-translate-extract --input ./src --output ./src/assets/i18n/{en,pt-BR}.json --clean --format json"
   },
   "private": true,
   "dependencies": {
@@ -24,6 +26,8 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@google/generative-ai": "^0.14.1",
+    "@ngx-translate/core": "^15.0.0",
+    "@ngx-translate/http-loader": "^8.0.0",
     "@tauri-apps/api": ">=2.0.0-beta.8",
     "@tauri-apps/plugin-dialog": "^2.0.0-beta.7",
     "@tauri-apps/plugin-fs": "^2.0.0-beta.7",
@@ -41,14 +45,13 @@
     "primeng": "^17.18.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3",
-    "@ngx-translate/core": "^15.0.0",
-    "@ngx-translate/http-loader": "^8.0.0"
+    "zone.js": "~0.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.6",
     "@angular/cli": "^18.0.6",
     "@angular/compiler-cli": "^18.0.0",
+    "@bartholomej/ngx-translate-extract": "^8.0.2",
     "@tauri-apps/cli": ">=2.0.0-beta.13",
     "@types/jasmine": "~5.1.0",
     "@types/luxon": "^3.4.2",

@@ -33,6 +33,7 @@ import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
 import { firstValueFrom } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-usage-add',
@@ -60,6 +61,7 @@ import { firstValueFrom } from 'rxjs';
         JoyrideModule,
         SliderModule,
         ListboxModule,
+        TranslateModule
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
@@ -97,6 +99,7 @@ export class UsageAddComponent implements OnInit {
         private messageService: MessageService,
         protected router: Router,
         private activatedRoute: ActivatedRoute,
+        private translate: TranslateService
     ) {}
     
     ngOnInit(): void {
@@ -126,13 +129,13 @@ export class UsageAddComponent implements OnInit {
         ];
     }
     
-    onSubmit(): void {
+    async onSubmit() {
         this.formSubmitted = true;
         if (!this.usageForm.valid) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: 'Erro', 
-                detail: "Verifique todos os valores do formulário", 
+                summary: await firstValueFrom(this.translate.get('Erro')), 
+                detail: await firstValueFrom(this.translate.get("Verifique todos os valores do formulário")), 
                 life: 3000,
             });
             return;
@@ -148,12 +151,12 @@ export class UsageAddComponent implements OnInit {
             trigger: form.trigger || null
         };
 
-        this.usageAddService.add(usageData).subscribe(result => {
+        this.usageAddService.add(usageData).subscribe(async result => {
             this.usageService.clearCache();
             this.messageService.add({ 
                 severity: 'success',
-                summary: 'Tudo certo',
-                detail: "Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Abrindo...",
+                summary: await firstValueFrom(this.translate.get('Tudo certo')),
+                detail: await firstValueFrom(this.translate.get("Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Abrindo...")),
                 life: 2000,
             });
             setTimeout(() => this.router.navigate(['/usage-track']), 2000);
@@ -184,8 +187,8 @@ export class UsageAddComponent implements OnInit {
         if (triggers.length) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: 'Entrada duplicada', 
-                detail: 'Já existe esse gatilho', 
+                summary: await firstValueFrom(this.translate.get('Entrada duplicada')), 
+                detail: await firstValueFrom(this.translate.get('Já existe esse gatilho')), 
                 life: 3000
             });
             return;
@@ -199,11 +202,11 @@ export class UsageAddComponent implements OnInit {
                 
                 this.showAddTriggerDialog = false
             },
-            error: error => {
+            error: async error => {
                 this.messageService.add({ 
                     severity: 'error', 
-                    summary: 'Erro', 
-                    detail: 'Houve um erro ao salvar a substância!', 
+                    summary: await firstValueFrom(this.translate.get('Erro')), 
+                    detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância!')), 
                     life: 2000
                 });
             }

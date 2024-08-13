@@ -14,7 +14,7 @@ import { ToastModule } from 'primeng/toast';
 import { OtpGeneratorService } from '../services/otp-generator.service';
 import { BackupService } from '../services/backup.service';
 import { Messages } from 'primeng/messages';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-synchronization',
@@ -26,6 +26,7 @@ import { TranslateService } from '@ngx-translate/core';
         ReactiveFormsModule,
         InputOtpModule,
         ToastModule,
+        TranslateModule
     ],
     providers: [
         MessageService
@@ -113,8 +114,8 @@ export class SynchronizationComponent {
                 complete: async () => {
                     console.log("Backup restored. Showing messages");
                     this.messageService.add({
-                        summary: "Sincronizado com sucesso",
-                        detail: "Seus dados foram sincronizados com sucesso.",
+                        summary: await firstValueFrom(this.translate.get("Sincronizado com sucesso")),
+                        detail: await firstValueFrom(this.translate.get("Seus dados foram sincronizados com sucesso.")),
                         severity: "success",
                         life: 4000,
                     });
@@ -123,8 +124,8 @@ export class SynchronizationComponent {
                 error: async (err) => {
                     console.log("Error recovering backup. Showing messages...", err);
                     this.messageService.add({
-                        summary: "Erro Sincronizando",
-                        detail: `Erro ao tentar sincronizar os dados: ` + err.toString()
+                        summary: await firstValueFrom(this.translate.get("Erro Sincronizando")),
+                        detail: await firstValueFrom(this.translate.get(`Erro ao tentar sincronizar os dados: `)) + err.toString()
                     });
                 }
             });

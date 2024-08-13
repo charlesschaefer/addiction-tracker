@@ -1,18 +1,18 @@
 <p-accordion>
     @for (chartData of usageChartData; track chartData.substanceId) {
       <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
-      <p-accordionTab header="Dados de uso de {{ substances.get(chartData.substanceId) }}">
+      <p-accordionTab [header]="'Dados de uso de {substance}' | translate: {substance: substances.get(chartData.substanceId)}">
         <div class="inline-cards">
           <p-card 
             class="chart-card" 
-            header="Intervalo de consumo" 
+            [header]="'Intervalo de consumo' | translate" 
           >
             <p-chart type="line" [data]="chartData.chart" [options]="options" />
           </p-card>
         </div>
       </p-accordionTab>
     } @empty {
-      <p>Não há dados para serem exibidos.</p>
-      <p>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
+      <p translate>Não há dados para serem exibidos.</p>
+      <p translate>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
     }
     </p-accordion>

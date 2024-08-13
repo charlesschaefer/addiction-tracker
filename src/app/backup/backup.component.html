@@ -1,4 +1,4 @@
-<p-panel class="backup-card" header="Backup dos seus dados">
+<p-panel class="backup-card" [header]="'Backup dos seus dados' | translate">
     <p-toast />
     <p translate>
         Abaixo você poderá gerar um backup criptografado dos seus dados. Atenção com a senha utilizada. Você só poderá recuperar o backup com a mesma senha.
@@ -33,7 +33,7 @@
     }
 </p-panel>
 
-<p-panel class="backup-card" header="Recuperar Backup">
+<p-panel class="backup-card" [header]="'Recuperar Backup' | translate">
     <p translate>Cole abaixo o backup criptografado, insira a senha e pressione o botão para recuperar seus dados salvos no backup</p>
     <p-confirmDialog />
     <form novalidate>

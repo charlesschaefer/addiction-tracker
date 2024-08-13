@@ -9,7 +9,7 @@
     @for (cost of paginatedItems; track cost.name) {
 
         <!-- <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}"> -->
-        <p-accordionTab [header]="'Gastos com {name}: {cost}' | translate: {name: cost.name, cost: calculatedCosts.get(cost.substanceId) | currency}">
+        <p-accordionTab [header]="'Gastos com {{name}}: {{cost}}' | translate: {name: cost.name, cost: calculatedCosts.get(cost.substanceId) | currency}">
             <p-table [value]="cost.items">
                 <ng-template pTemplate="header">
                     <tr>

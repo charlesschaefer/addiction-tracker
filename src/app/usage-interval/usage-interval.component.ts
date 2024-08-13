@@ -11,6 +11,8 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { UsageChart } from '../util/chart-types';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 interface UsageInterval {
     datetime: Date;
@@ -20,7 +22,7 @@ interface UsageInterval {
 @Component({
     selector: 'app-usage-interval',
     standalone: true,
-    imports: [AccordionModule, CardModule, ChartModule, RouterLink],
+    imports: [AccordionModule, CardModule, ChartModule, RouterLink, TranslateModule],
     templateUrl: './usage-interval.component.html',
     styleUrl: './usage-interval.component.scss'
 })
@@ -38,6 +40,7 @@ export class UsageIntervalComponent implements OnInit {
         private usageService: UsageService<UsageDto>,
         private substanceService: SubstanceService<SubstanceDto>,
         private route: Router,
+        private translate: TranslateService
     ) {}
 
     ngOnInit(): void {
@@ -120,7 +123,7 @@ export class UsageIntervalComponent implements OnInit {
         const documentStyle = getComputedStyle(document.documentElement);
         let usageChartData: UsageChart[] = [];
         let registeredSubstances = new Map;
-        this.usageIntervals.forEach((usageIntervals, substanceId) => {
+        this.usageIntervals.forEach(async (usageIntervals, substanceId) => {
             if (!registeredSubstances.has(substanceId)) {
                 usageChartData.push({
                     substanceId: substanceId,
@@ -128,7 +131,7 @@ export class UsageIntervalComponent implements OnInit {
                         labels: [],
                         datasets: [
                             {
-                                label: 'Intervalo de Consumo (minutos)',
+                                label: await firstValueFrom(this.translate.get('Intervalo de Consumo (minutos)')),
                                 data: [],
                                 tension: 0.3,
                                 borderColor: documentStyle.getPropertyValue('--blue-500')

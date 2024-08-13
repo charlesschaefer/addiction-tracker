@@ -20,7 +20,7 @@ import {
 
 import { ThemeService } from './services/theme.service';
 import { invoke } from '@tauri-apps/api/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
     
 @Component({
@@ -38,6 +38,7 @@ import { firstValueFrom } from 'rxjs';
         SpeedDialModule,
         JoyrideModule,
         TieredMenuModule,
+        TranslateModule
     ],
     providers: [CookieService],
     templateUrl: './app.component.html',
