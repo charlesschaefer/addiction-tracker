@@ -12,6 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Message, MessageService } from 'primeng/api';
 import { EMPTY, Observable, concatMap, firstValueFrom } from 'rxjs';
 import { JoyrideModule } from 'ngx-joyride';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
@@ -29,6 +30,7 @@ import { SubstanceService } from '../services/substance.service';
         ToastModule,
         TooltipModule,
         JoyrideModule,
+        TranslateModule,
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss',
@@ -46,12 +48,18 @@ export class SubstanceAddComponent {
         private snackBar: MatSnackBar,
         private router: Router,
         private messageService: MessageService,
+        private translate: TranslateService,
     ) {}
     
     async onSubmit() {
         this.formSubmitted = true;
         if (!this.substanceForm.valid) {
-            this.messageService.add({ severity: 'error', summary: 'Erro', detail: "Verifique todos os valores do formulário", life: 3000 });
+            this.messageService.add({ 
+                severity: 'error', 
+                summary: await firstValueFrom(this.translate.get('Erro')), 
+                detail: await firstValueFrom(this.translate.get("Verifique todos os valores do formulário")), 
+                life: 3000 
+            });
             return;
         }
 
@@ -59,8 +67,8 @@ export class SubstanceAddComponent {
         if (substances.length) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: 'Entrada duplicada', 
-                detail: 'Já existe essa substância', 
+                summary: await firstValueFrom(this.translate.get('Entrada duplicada')), 
+                detail: await firstValueFrom(this.translate.get('Já existe essa substância')), 
                 life: 3000
             });
             return;
@@ -69,12 +77,12 @@ export class SubstanceAddComponent {
             name: this.substanceForm.value.name || ''
         };
         this.substanceService.add(data).subscribe({
-            next: (values) => {
+            next: async (values) => {
                 this.substanceService.clearCache();
                 this.messageService.add({ 
                     severity: 'success', 
-                    summary: 'Tudo certo', 
-                    detail: 'Substância salva com sucesso!', 
+                    summary: await firstValueFrom(this.translate.get('Tudo certo')), 
+                    detail: await firstValueFrom(this.translate.get('Substância salva com sucesso!')), 
                     life: 2000
                 });
 
@@ -82,11 +90,11 @@ export class SubstanceAddComponent {
                     this.router.navigate(['/']);
                 }, 2000);
             },
-            error: (error) => {
+            error: async (error) => {
                 this.messageService.add({ 
                     severity: 'error', 
-                    summary: 'Erro', 
-                    detail: 'Houve um erro ao salvar a substância! ' + error, 
+                    summary: await firstValueFrom(this.translate.get('Erro')), 
+                    detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância! ')) + error, 
                     life: 2000
                 });
             }

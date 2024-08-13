@@ -12,6 +12,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageService } from 'primeng/api';
 import { JoyrideModule } from 'ngx-joyride';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 import { SubstanceDto } from '../dto/substance.dto';
 import { CostAddDto, CostDto } from '../dto/cost.dto';
@@ -33,6 +35,7 @@ import { CostService } from '../services/cost.service';
         InputNumberModule,
         InputMaskModule,
         JoyrideModule,
+        TranslateModule,
     ],
     providers: [MessageService],
     templateUrl: './cost-add.component.html',
@@ -52,18 +55,19 @@ export class CostAddComponent implements OnInit {
         private costAddService: CostService<CostAddDto>,
         private messageService: MessageService,
         private router: Router,
+        private translate: TranslateService,
     ) {}
     
     ngOnInit() {
         this.substanceService.list().subscribe(substances => this.substances = substances);
     }
     
-    onSubmit() {
+    async onSubmit() {
         if (!this.costForm.valid) {
             this.messageService.add({
                 severity: 'error',
-                summary: 'Erro',
-                detail: 'Verifique todos os valores do formulário',
+                summary: await firstValueFrom(this.translate.get('Erro')),
+                detail: await firstValueFrom(this.translate.get('Verifique todos os valores do formulário')),
                 life: 3000
             });
             return;
@@ -77,12 +81,12 @@ export class CostAddComponent implements OnInit {
         };
 
         this.costAddService.add(data).subscribe({
-            next: value => {
+            next: async value => {
                 this.costAddService.clearCache();
                 this.messageService.add({ 
                     severity: 'success', 
-                    summary: 'Tudo certo', 
-                    detail: 'Gasto salvo com sucesso!', 
+                    summary: await firstValueFrom(this.translate.get('Tudo certo')), 
+                    detail: await firstValueFrom(this.translate.get('Gasto salvo com sucesso!')), 
                     life: 2000
                 });
 
@@ -90,11 +94,11 @@ export class CostAddComponent implements OnInit {
                     this.router.navigate(['/cost']);
                 }, 2000);
             },
-            error: error => {
+            error: async error => {
                 this.messageService.add({ 
                     severity: 'error', 
-                    summary: 'Erro', 
-                    detail: 'Houve um erro ao salvar o gasto!', 
+                    summary: await firstValueFrom(this.translate.get('Erro')), 
+                    detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar o gasto!')), 
                     life: 2000
                 });
             }

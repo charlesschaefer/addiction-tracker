@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-respiration',
@@ -9,6 +11,7 @@ import { Router } from '@angular/router';
     imports: [
         DialogModule,
         ButtonModule,
+        TranslateModule,
     ],
     templateUrl: './respiration.component.html',
     styleUrl: './respiration.component.scss'

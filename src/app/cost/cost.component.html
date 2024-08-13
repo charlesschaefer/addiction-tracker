@@ -1,6 +1,6 @@
 <p-toast />
 @if (allItems.length > 1) {
-    <p-panel header="Gastos totais" class="cost-chart">
+    <p-panel [header]="'Gastos totais' | translate" class="cost-chart">
     
         <p-chart type="pie" [data]="chartData" [options]="chartOptions" />
     </p-panel>}
@@ -9,14 +9,14 @@
     @for (cost of paginatedItems; track cost.name) {
 
         <!-- <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}"> -->
-        <p-accordionTab header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}">
+        <p-accordionTab [header]="'Gastos com {name}: {cost}' | translate: {name: cost.name, cost: calculatedCosts.get(cost.substanceId) | currency}">
             <p-table [value]="cost.items">
                 <ng-template pTemplate="header">
                     <tr>
                         <th></th>
-                        <th>Data</th>
-                        <th>Substância</th>
-                        <th>Custo</th>
+                        <th translate>Data</th>
+                        <th translate>Substância</th>
+                        <th translate>Custo</th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-cost>
@@ -38,7 +38,7 @@
                 [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
         </p-accordionTab>
     } @empty {
-        <p>Não há dados para serem exibidos.</p>
-        <p>Registre um novo gasto <a routerLink="/cost-add">por aqui</a>.</p>
+        <p translate>Não há dados para serem exibidos.</p>
+        <p translate>Registre um novo gasto <a routerLink="/cost-add">por aqui</a>.</p>
     }
 </p-accordion>

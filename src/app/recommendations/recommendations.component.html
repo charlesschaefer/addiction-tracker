@@ -1,22 +1,22 @@
 <div 
     joyrideStep="recommendations"
-    title="Recomendações personalizadas"
-    text="Por fim, você pode obter dicas personalizadas de como lidar com cada um dos seus gatilhos na nossa seção de recomendações."
+    [title]="'Recomendações personalizadas' | translate"
+    [text]="'Por fim, você pode obter dicas personalizadas de como lidar com cada um dos seus gatilhos na nossa seção de recomendações.' | translate"
     stepPosition="center"
 >
-    <p-panel header="Recomendações para Gatilhos">
+    <p-panel [header]="'Recomendações para Gatilhos' | translate">
         <p-table [value]="triggers">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Gatilho</th>
-                    <th>Ações</th>
+                    <th translate>Gatilho</th>
+                    <th translate>Ações</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-trigger>
                 <tr>
                     <td>{{ trigger.name}} </td>
                     <td>
-                        <p-button class="recommendation-button" icon="pi pi-search" label="Ver recomendação" (onClick)="showRecommendation(trigger.name)" />
+                        <p-button class="recommendation-button" icon="pi pi-search" [label]="'Ver recomendação' | translate" (onClick)="showRecommendation(trigger.name)" />
                     </td>
                 </tr>
             </ng-template>

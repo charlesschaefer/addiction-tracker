@@ -2,6 +2,8 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } fro
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { firstValueFrom } from 'rxjs';
 
 import { UsageDto } from '../dto/usage.dto';
 import { UsageService } from '../services/usage.service';
@@ -11,7 +13,7 @@ import { RecommendationDto } from '../dto/recommendation.dto';
 @Component({
     selector: 'app-recommendation',
     standalone: true,
-    imports: [DialogModule, ButtonModule, CardModule],
+    imports: [DialogModule, ButtonModule, CardModule, TranslateModule],
     templateUrl: './recommendation.component.html',
     styleUrl: './recommendation.component.scss'
 })
@@ -26,6 +28,7 @@ export class RecommendationComponent implements OnChanges {
     constructor(
         private usageService: UsageService<UsageDto>,
         private recommendationService: RecommendationService<RecommendationDto>,
+        private translate: TranslateService,
     ) {}
 
 

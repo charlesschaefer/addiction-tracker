@@ -1,9 +1,9 @@
 <div 
   joyrideStep="costAdd"
-  title="Gastos"
-  text="Na área de gastos você pode adicionar quanto tem gastado com seu vício para saber como ele tem impactado nas suas finanças"
+  [title]="'Gastos' | translate"
+  [text]="'Na área de gastos você pode adicionar quanto tem gastado com seu vício para saber como ele tem impactado nas suas finanças' | translate"
 >
-  <p-panel class="cost-card" header="Adicionar Custo">
+  <p-panel class="cost-card" [header]="'Adicionar Custo' | translate">
     <p-toast />
     <form [formGroup]="costForm" novalidate (ngSubmit)="onSubmit()">
       <div class="field">
@@ -11,13 +11,13 @@
         [options]="substances"
         optionLabel="name"
         optionValue="id"
-        placeholder="Substância"
+        [placeholder]="'Substância' | translate"
         formControlName="substance" />
       </div>
       <div class="field">
         <p-floatLabel>
           <p-inputNumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="value" formControlName="value" locale="pt-BR" />
-          <label for="value">Valor gasto</label>
+          <label for="value" translate>Valor gasto</label>
         </p-floatLabel>
       </div>
       <div class="field">
@@ -25,11 +25,11 @@
           <p-calendar
             inputId="date" 
             formControlName="date" />
-          <label for="date">Data da compra</label>
+          <label for="date" translate>Data da compra</label>
         </p-floatLabel>
       </div>
       <div class="field">
-        <p-button type="submit">Salvar</p-button>
+        <p-button type="submit" translate>Salvar</p-button>
       </div>
     </form>
   </p-panel>
