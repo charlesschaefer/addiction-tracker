@@ -1,4 +1,6 @@
 {
+  "Boas vindas": "Welcome",
+  "O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso.": "Addiction Tracker is a tool for gaining awareness about your addiction. Using it whenever you consume the substance you are addicted to will help you better understand what drives you to use and, therefore, plan strategies to reduce, control and, ultimately, stop using.",
   "Abaixo você poderá gerar um backup criptografado dos seus dados. Atenção com a senha utilizada. Você só poderá recuperar o backup com a mesma senha.": "Below you will be able to generate an encrypted backup of your data. Pay attention to the password used. You will only be able to recover the backup with the same password.",
   "Senha": "Password",
   "Gerar Backup": "Generate Backup",
@@ -110,6 +112,13 @@
   "Quantidade": "Quantity",
   "Data e hora": "Date and time",
   "Sentimento:": "Feeling:",
+  "Fissura: ": "Craving: ",
+  "Menu de acesso rápido": "Quick access menu",
+  "Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos.": "This is the quick access menu, with the main and most used options of the application: record consumption, record expenses and monitor consumption and expenses.",
+  "Adicionar consumo": "Add consumption",
+  "Sempre que você fizer o uso da substância, você pode usar a tela Adicionar Consumo para registrar o consumo. Reserve alguns segundos para pensar bem sobre qual o nível de fissura você está, quais foram os gatilhos que te levaram ao uso e como estão suas emoções.": "Whenever you use the substance, you can use the Add Use screen to record your consumption. Take a few seconds to think about your level of craving, what triggers led you to use, and how your emotions are.",
   "Gatilhos": "Triggers",
-  "Fissura: ": "Craving: "
+  "No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso.": "Initially, there are no triggers registered, but you can click on the icon next to it to include the triggers that lead you to consume the substance. You can choose more than one trigger at the same time. Some common triggers are stress, anxiety, frustration, etc. But you certainly have triggers that are unique to your case.",
+  "Acompanhamento": "Acompanhamento",
+  "Depois de adicionar quando você consome uma substância, o aplicativo irá te apresentar um gráfico relacionando a quantidade consumida com o nível de fissura e suas emoções, além de mostrar um gráfico com os gatilhos que mais te levam a consumir a substância. É aqui que você começa a ganhar mais consciência sobre o seu vício.": "After you add when you consume a substance, the app will show you a graph relating the amount consumed to your craving level and emotions, as well as a graph showing the triggers that most often lead you to consume the substance. This is where you start to gain more awareness about your addiction."
 }

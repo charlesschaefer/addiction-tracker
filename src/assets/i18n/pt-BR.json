@@ -1,4 +1,6 @@
 {
+  "Boas vindas": "Boas vindas",
+  "O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso.": "O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso.",
   "Abaixo você poderá gerar um backup criptografado dos seus dados. Atenção com a senha utilizada. Você só poderá recuperar o backup com a mesma senha.": "Abaixo você poderá gerar um backup criptografado dos seus dados. Atenção com a senha utilizada. Você só poderá recuperar o backup com a mesma senha.",
   "Senha": "Senha",
   "Gerar Backup": "Gerar Backup",
@@ -110,6 +112,13 @@
   "Quantidade": "Quantidade",
   "Data e hora": "Data e hora",
   "Sentimento:": "Sentimento:",
+  "Fissura: ": "Fissura: ",
+  "Menu de acesso rápido": "Menu de acesso rápido",
+  "Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos.": "Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos.",
+  "Adicionar consumo": "Adicionar consumo",
+  "Sempre que você fizer o uso da substância, você pode usar a tela Adicionar Consumo para registrar o consumo. Reserve alguns segundos para pensar bem sobre qual o nível de fissura você está, quais foram os gatilhos que te levaram ao uso e como estão suas emoções.": "Sempre que você fizer o uso da substância, você pode usar a tela Adicionar Consumo para registrar o consumo. Reserve alguns segundos para pensar bem sobre qual o nível de fissura você está, quais foram os gatilhos que te levaram ao uso e como estão suas emoções.",
   "Gatilhos": "Gatilhos",
-  "Fissura: ": "Fissura: "
+  "No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso.": "No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso.",
+  "Acompanhamento": "Acompanhamento",
+  "Depois de adicionar quando você consome uma substância, o aplicativo irá te apresentar um gráfico relacionando a quantidade consumida com o nível de fissura e suas emoções, além de mostrar um gráfico com os gatilhos que mais te levam a consumir a substância. É aqui que você começa a ganhar mais consciência sobre o seu vício.": "Depois de adicionar quando você consome uma substância, o aplicativo irá te apresentar um gráfico relacionando a quantidade consumida com o nível de fissura e suas emoções, além de mostrar um gráfico com os gatilhos que mais te levam a consumir a substância. É aqui que você começa a ganhar mais consciência sobre o seu vício."
 }
