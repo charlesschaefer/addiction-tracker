@@ -30,6 +30,11 @@ p-toolbar {
     z-index: 1000;
 }
 
+:host ::ng-deep .p-toolbar {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
 :host ::ng-deep p-menu div.p-menu {
     top: 51px !important;
     width: 240px;

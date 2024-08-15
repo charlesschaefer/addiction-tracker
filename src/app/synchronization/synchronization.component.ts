@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
+import { PanelModule } from 'primeng/panel';
 
 import { OtpGeneratorService } from '../services/otp-generator.service';
 import { BackupService } from '../services/backup.service';
@@ -26,7 +27,8 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         InputOtpModule,
         ToastModule,
-        TranslateModule
+        TranslateModule,
+        PanelModule
     ],
     providers: [
         MessageService

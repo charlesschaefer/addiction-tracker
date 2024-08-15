@@ -1,4 +1,10 @@
-<h2 translate>Synchronize data with other devices</h2>
+<p-panel [header]="'Synchronize data with other devices' | translate">
+  <div class="sync-buttons flex gap-2">
+    <p-button label="Get data from other devices" (onClick)="openFromOthers()" />
+    <p-button label="Send data to other devices" (onClick)="openToOthers()" />
+  </div>
+</p-panel>
+
 <p-dialog [header]="'Get data from other device' | translate" [modal]="true" [(visible)]="getFromOthersVisible">
   <div class="sync-container-client">
     <p class="help" translate>
@@ -34,10 +40,5 @@
     </div>
   </div>
 </p-dialog>
-
-<div class="sync-buttons flex gap-2">
-  <p-button label="Get data from other devices" (onClick)="openFromOthers()" />
-  <p-button label="Send data to other devices" (onClick)="openToOthers()" />
-</div>
 
 <p-toast />
