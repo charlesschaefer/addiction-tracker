@@ -1,6 +1,6 @@
 [package]
 name = "addiction-tracker"
-version = "0.0.8"
+version = "0.0.9"
 description = "Addiction Tracker"
 authors = ["Charles Schaefer"]
 edition = "2021"
