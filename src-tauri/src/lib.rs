@@ -1,4 +1,7 @@
 use tauri::Emitter;
+use serde::{Deserialize, Serialize};
+use std::env;
+
 
 #[cfg(desktop)]
 mod desktop;
@@ -30,8 +33,13 @@ pub fn run() {
             #[cfg(not(desktop))]
             android::save_backup_file,
             add_notification,
+            get_google_secrets
         ]
     );
+
+    let v1 = env!("GOOGLE_GEMINI_PROJECT_NAME").to_string();
+    let v2 = env!("GOOGLE_GEMINI_API").to_string();
+    println!("Valores da API: {} => {}", v1, v2);
     
     builder
         .run(tauri::generate_context!())
@@ -50,4 +58,18 @@ fn add_notification(app_handle: tauri::AppHandle, title: String, body: String) {
     let _ = app_handle.emit("msg", "Notification ready. Let's show it");
     builder.show()
         .unwrap();
+}
+
+#[derive(Deserialize, Serialize)]
+struct Secrets {
+    project: String,
+    api_key: String,
+}
+
+#[tauri::command]
+fn get_google_secrets() -> Secrets {
+    return Secrets {
+        project: env!("GOOGLE_GEMINI_PROJECT_NAME").to_string(),
+        api_key: env!("GOOGLE_GEMINI_API").to_string(),
+    }
 }
