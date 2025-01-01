@@ -1,4 +1,4 @@
-import { DBConfig, NgxIndexedDBModule } from "ngx-indexed-db";
+import { DBConfig } from "ngx-indexed-db";
 
 export const dbConfig: DBConfig = {
     name: 'usage-control',

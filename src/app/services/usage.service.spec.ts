@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule, NgxIndexedDBService } from "ngx-indexed-db";
+import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
 import { dbConfig } from "../db.config";
 
@@ -34,13 +34,13 @@ describe('UsageService', () => {
   });
 
   it('should group by substance and hour', () => {
-    let grouped = service.groupByHour(usages);
-    let date1 = new Date('2024-01-01 10:59:59');
-    let substanceMap: Map<number, Map<string, FinalUsage>> = new Map;
-    let groupedMap: Map<string, FinalUsage> = new Map;
+    const grouped = service.groupByHour(usages);
+    const date1 = new Date('2024-01-01 10:59:59');
+    const substanceMap = new Map<number, Map<string, FinalUsage>>();
+    let groupedMap = new Map<string, FinalUsage>();
     groupedMap.set(DateTime.fromJSDate(date1).toFormat(DATE_FORMAT), {quantity: 4, craving: 3, sentiment: 3, datetime: date1, substance: 1});
 
-    let date2 = new Date('2024-01-01 11:59:59');
+    const date2 = new Date('2024-01-01 11:59:59');
     groupedMap.set(DateTime.fromJSDate(date2).toFormat(DATE_FORMAT), {quantity: 2, craving: 2, sentiment: 2, datetime: date2, substance: 1});
 
     substanceMap.set(1, groupedMap);
@@ -54,10 +54,10 @@ describe('UsageService', () => {
   });
 
   it('should group by substance and day', () => {
-    let grouped = service.groupByDay(usages);
-    let date = new Date('2024-01-01 23:59:59');
-    let substanceMap: Map<number, Map<string, FinalUsage>> = new Map;
-    let groupedMap: Map<string, FinalUsage> = new Map;
+    const grouped = service.groupByDay(usages);
+    const date = new Date('2024-01-01 23:59:59');
+    const substanceMap = new Map<number, Map<string, FinalUsage>>();
+    let groupedMap = new Map<string, FinalUsage>();
     groupedMap.set(DateTime.fromJSDate(date).toFormat(DATE_FORMAT), {quantity: 6, craving: 3, sentiment: 3, datetime: date, substance: 1});
     substanceMap.set(1, groupedMap);
 

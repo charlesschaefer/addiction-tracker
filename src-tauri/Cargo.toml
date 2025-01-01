@@ -24,6 +24,36 @@ hostname = "0.4.0"
 tiny_http = "0.12.0"
 local-ip-addr = "0.1.1"
 
+[build]
+rustc-wrapper = "/usr/bin/sccache"
+
+
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = [
+    "-Zthreads=8",
+    "-C",
+    # Mold only supports x86_64
+    "link-arg=-fuse-ld=/usr/bin/mold",
+    "-Zcodegen-backend=cranelift",
+    # "-Zshare-generics=y",
+]
+
+[target.arm64-linux-android]
+rustflags = [
+    "-Zthreads=8",
+    "-C",
+    # Mold only supports x86_64
+    "link-arg=-fuse-ld=/usr/bin/mold",
+]
+[target.aarch64-linux-android]
+rustflags = [
+    "-Zthreads=8",
+    "-C",
+    # Mold only supports x86_64
+    "link-arg=-fuse-ld=/usr/bin/mold",
+]
+
 
 [profile.dev]
 opt-level = 1

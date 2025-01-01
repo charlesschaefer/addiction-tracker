@@ -5,7 +5,6 @@ import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { JoyrideModule } from 'ngx-joyride';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { firstValueFrom } from 'rxjs';
 
 import { TriggerService } from '../services/trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';

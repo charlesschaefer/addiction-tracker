@@ -14,7 +14,6 @@ import { PanelModule } from 'primeng/panel';
 
 import { OtpGeneratorService } from '../services/otp-generator.service';
 import { BackupService } from '../services/backup.service';
-import { Messages } from 'primeng/messages';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -71,7 +70,7 @@ export class SynchronizationComponent {
 
     makeDeviceDiscoverable() {
         // generates OTP code
-        let otp = this.otpGenerator.generateOTP();
+        const otp = this.otpGenerator.generateOTP();
         this.otpData = otp;
         this.backupService.backupData(otp).subscribe(cryptedBackup => {
             invoke('broadcast_network_sync_services').then(() => {
@@ -102,8 +101,8 @@ export class SynchronizationComponent {
         const otp = this.otpForm.value.otp as unknown as string;
         
         // encrypts the otp and sends to the server 
-        let encryptedOtp = AES.encrypt(otp , otp);
-        let options = {
+        const encryptedOtp = AES.encrypt(otp , otp);
+        const options = {
             headers: {
                 'X-SIGNED-TOKEN': encryptedOtp.toString()
             },

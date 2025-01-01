@@ -1,9 +1,8 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { firstValueFrom } from 'rxjs';
 
 import { UsageDto } from '../dto/usage.dto';
 import { UsageService } from '../services/usage.service';
@@ -23,7 +22,7 @@ export class RecommendationComponent implements OnChanges {
     @Input() trigger: string;
 
     recommendationText: string;
-    showRecommendationDialog: boolean = false;
+    showRecommendationDialog = false;
 
     constructor(
         private usageService: UsageService<UsageDto>,

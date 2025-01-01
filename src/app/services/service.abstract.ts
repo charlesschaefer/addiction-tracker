@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable, catchError, map, throwError } from "rxjs";
 @Injectable({ providedIn: 'root' })
 export abstract class ServiceAbstract<T> {
     private cache: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
-    private useCache: boolean = true;
+    private useCache = true;
     abstract storeName: string;
 
     constructor(
@@ -24,7 +24,7 @@ export abstract class ServiceAbstract<T> {
                 observer.next(this.cache.getValue());
             });
         }
-        let cached = this.dbService.getAll<T>(this.storeName);
+        const cached = this.dbService.getAll<T>(this.storeName);
         cached.subscribe(value => this.cache  = new BehaviorSubject<T[]>(value));
         return cached;
     }

@@ -16,7 +16,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 
 import { SubstanceDto } from '../dto/substance.dto';
-import { CostAddDto, CostDto } from '../dto/cost.dto';
+import { CostAddDto } from '../dto/cost.dto';
 import { SubstanceService } from '../services/substance.service';
 import { CostService } from '../services/cost.service';
 
@@ -72,9 +72,9 @@ export class CostAddComponent implements OnInit {
             });
             return;
         }
-        let form = this.costForm.value;
+        const form = this.costForm.value;
 
-        let data: CostAddDto = {
+        const data: CostAddDto = {
             value: form.value || 0,
             substance: form.substance || 0,
             date: form.date || new Date()

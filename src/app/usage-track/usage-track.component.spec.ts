@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule, NgxIndexedDBService } from "ngx-indexed-db";
+import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { dbConfig } from "../db.config";
@@ -31,7 +31,7 @@ describe('UsageTrackComponent', () => {
   });
 
   it('should return the most used trigger', () => {
-    let usages: UsageDto[] = [
+    const usages: UsageDto[] = [
       {id: 1, craving: 1, datetime: new Date, quantity: 2, sentiment: 1, substance: 1, trigger: [{name: "trigger1"}, {name: 'trigger2'}]},
       {id: 2, craving: 1, datetime: new Date, quantity: 2, sentiment: 1, substance: 1, trigger: [{name: 'trigger2'}]},
     ];

@@ -1,6 +1,6 @@
 import { AES, enc } from 'crypto-js';
 import { Injectable } from '@angular/core';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { CostService } from './cost.service';
 import { CostDto } from '../dto/cost.dto';
 import { SubstanceService } from './substance.service';
@@ -39,7 +39,7 @@ export class BackupService {
         this.usageService.clearCache();
         this.triggerService.clearCache();
 
-        let backupSubject$ = new Subject<string>();
+        const backupSubject$ = new Subject<string>();
 
         const backupData$ = forkJoin({
             cost: this.costService.list(),

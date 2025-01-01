@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { PanelModule } from 'primeng/panel';
@@ -51,8 +51,8 @@ interface SubstanceUsage {
     providers: [MessageService]
 })
 export class UsageComponent extends PaginatedComponent<UsageDto> implements OnInit {
-    substances: Map<number, string> = new Map;
-    sentiments: Map<number, string> = new Map([
+    substances = new Map<number, string>();
+    sentiments = new Map<number, string>([
         [1, '😔'],
         [2, '😟'],
         [3, '😕'],
@@ -65,7 +65,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     originalUsages: UsageDto[];
 
     recommendationText: string;
-    showRecommendationDialog: boolean = false;
+    showRecommendationDialog = false;
 
     tagSeverity:("success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined)[] = [
         'success',
@@ -111,12 +111,12 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     }
 
     groupUsageBySubstance(usages: UsageDto[]) {
-        let registeredSubstances = new Map();
+        const registeredSubstances = new Map();
         // creates an array of usage grouped by substance
         usages.forEach(usage => {
             if (!registeredSubstances.has(usage.substance)) {
                 console.log("Substance", this.substances, usage);
-                let substanceUsage: SubstanceGroupedItem<UsageDto> = {
+                const substanceUsage: SubstanceGroupedItem<UsageDto> = {
                     name: this.substances.get(usage.substance as number) as unknown as string,
                     items: [usage],
                     substanceId: usage.substance
@@ -130,8 +130,8 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     }
 
     calculateTimeWithoutUsage(usages: UsageDto[]) {
-        let baseDate = new Date('1970-01-01');
-        let lastUsage = usages.reduce((prev, curr) => {
+        const baseDate = new Date('1970-01-01');
+        const lastUsage = usages.reduce((prev, curr) => {
             if (curr.datetime > prev.datetime) {
                 return curr;
             }
@@ -149,7 +149,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
             lastUsage.datetime = new Date;
         }
         
-        let duration = DateTime.fromJSDate(new Date).diff(DateTime.fromJSDate(lastUsage.datetime)).rescale();
+        const duration = DateTime.fromJSDate(new Date).diff(DateTime.fromJSDate(lastUsage.datetime)).rescale();
         this.timeWithoutUsage = duration;
     }
 
@@ -177,7 +177,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
 
     
     async getRecommendations(result: UsageDto[]) {
-        let [trigger, total] = this.usageService.getMostUsedTrigger(result);
+        const [trigger, total] = this.usageService.getMostUsedTrigger(result);
         const recommendation = await this.recommendationService.fetchRecommendation(trigger);
         this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
         this.showRecommendationDialog = true;

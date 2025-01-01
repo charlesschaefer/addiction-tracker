@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -15,7 +15,6 @@ import {
     isPermissionGranted,
     requestPermission,
     sendNotification,
-    type Options as NotificationOptions,
   } from "@tauri-apps/plugin-notification";
 
 import { ThemeService } from './services/theme.service';
@@ -97,7 +96,7 @@ export class AppComponent implements OnInit {
         
         this.setupMenu();
 
-        let currentTheme = this.themeService.getCurrentTheme();
+        const currentTheme = this.themeService.getCurrentTheme();
         let userTheme = localStorage.getItem('theme');
         if (!userTheme) {
             userTheme = currentTheme;
@@ -133,7 +132,7 @@ export class AppComponent implements OnInit {
     switchTheme() {
         this.themeService.switchTheme();
 
-        let currentTheme = this.themeService.getCurrentTheme();
+        const currentTheme = this.themeService.getCurrentTheme();
         localStorage.setItem('theme', currentTheme);
     }
 

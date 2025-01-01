@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { firstValueFrom, forkJoin } from 'rxjs';
-import { AES, enc } from 'crypto-js';
+import { firstValueFrom } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
@@ -22,7 +21,7 @@ import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
-import { BackupService, BackupData } from '../services/backup.service';
+import { BackupService } from '../services/backup.service';
 
 interface SaveFileResult {
     path: string;

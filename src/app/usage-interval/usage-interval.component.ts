@@ -27,7 +27,7 @@ interface UsageInterval {
     styleUrl: './usage-interval.component.scss'
 })
 export class UsageIntervalComponent implements OnInit {
-    substances: Map<number, string> = new Map;
+    substances = new Map<number, string>();
 
     usageIntervals: Map<number, UsageInterval[]>;
     usageChartData: UsageChart[];
@@ -49,7 +49,7 @@ export class UsageIntervalComponent implements OnInit {
                 this.route.navigate(['/substance-add']);
                 return;
             }
-            let substanceMap = new Map();
+            const substanceMap = new Map();
             results.forEach(substance => {
                 if (!substanceMap.has(substance.id)) {
                     substanceMap.set(substance.id, substance.name);
@@ -67,14 +67,14 @@ export class UsageIntervalComponent implements OnInit {
     }
 
     calculateIntervalBySubstance(usages: UsageDto[]) {
-        let registeredSubstances = new Map();
+        const registeredSubstances = new Map();
         // creates an array of usage grouped by substance
         usages.forEach(usage => {
             if (!registeredSubstances.has(usage.substance)) {
                 registeredSubstances.set(usage.substance, [usage]);
                 return;
             }
-            let registeredUsages = registeredSubstances.get(usage.substance);
+            const registeredUsages = registeredSubstances.get(usage.substance);
             registeredUsages.push(usage);
             registeredSubstances.set(usage.substance, registeredUsages);
         });
@@ -88,7 +88,7 @@ export class UsageIntervalComponent implements OnInit {
             registeredSubstances.set(substanceId, usages);
         });
 
-        let registeredIntervals: Map<number, UsageInterval[]> = new Map();
+        const registeredIntervals = new Map<number, UsageInterval[]>();
         // calculates interval (in minutes) between each usage
         registeredSubstances.forEach((usages, substanceId) => {
             if (!registeredIntervals.has(substanceId)) {
@@ -103,12 +103,12 @@ export class UsageIntervalComponent implements OnInit {
                     // steps out the first item
                     return;
                 }
-                let interval: UsageInterval = {
+                const interval: UsageInterval = {
                     datetime: usage.datetime,
                     interval: DateTime.fromJSDate(usage.datetime).diff(DateTime.fromJSDate(lastUsage.datetime)).as('minutes')
                 };
 
-                let intervals = registeredIntervals.get(substanceId);
+                const intervals = registeredIntervals.get(substanceId);
                 intervals?.push(interval);
                 registeredIntervals.set(substanceId, intervals as UsageInterval[]);
 
@@ -121,8 +121,8 @@ export class UsageIntervalComponent implements OnInit {
 
     prepareChartData() {
         const documentStyle = getComputedStyle(document.documentElement);
-        let usageChartData: UsageChart[] = [];
-        let registeredSubstances = new Map;
+        const usageChartData: UsageChart[] = [];
+        const registeredSubstances = new Map;
         this.usageIntervals.forEach(async (usageIntervals, substanceId) => {
             if (!registeredSubstances.has(substanceId)) {
                 usageChartData.push({
@@ -142,8 +142,8 @@ export class UsageIntervalComponent implements OnInit {
                 // register the index where the substance was added.
                 registeredSubstances.set(substanceId, usageChartData.length - 1);
             }
-            let usageIdx = registeredSubstances.get(substanceId);
-            let usageChart = usageChartData[usageIdx].chart;
+            const usageIdx = registeredSubstances.get(substanceId);
+            const usageChart = usageChartData[usageIdx].chart;
             usageIntervals.forEach(usageInterval => {
                 usageChart.labels.push(DateTime.fromJSDate(usageInterval.datetime).toFormat('dd/MM HH:mm'));
                 usageChart.datasets[0].data.push(usageInterval.interval);
@@ -158,7 +158,7 @@ export class UsageIntervalComponent implements OnInit {
         console.log("Resizando", event);
         // forces a re-render
         if (this.usageChartData.length) {
-            let usageChart = this.usageChartData;
+            const usageChart = this.usageChartData;
             this.usageChartData = [];
             setTimeout(() => this.usageChartData = usageChart, 100);
         }

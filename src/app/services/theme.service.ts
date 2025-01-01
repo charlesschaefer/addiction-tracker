@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ThemeService {
-    currentTheme: string = 'light';
+    currentTheme = 'light';
     
     switchTheme(theme?: string) {
-        let themeLink = window.document.getElementById('app-theme') as HTMLLinkElement;
+        const themeLink = window.document.getElementById('app-theme') as HTMLLinkElement;
 
         if (theme) {
             themeLink.href = `aura-${theme}.css`;

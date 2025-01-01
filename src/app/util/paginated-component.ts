@@ -36,11 +36,11 @@ export abstract class PaginatedComponent<T> {
     }
 
     generatePaginatedItems() {
-        let paginatedItems: SubstanceGroupedItem<T>[] = [];
+        const paginatedItems: SubstanceGroupedItem<T>[] = [];
         
         this.allItems.forEach((substanceItem, idx) => {
-            let firstItem = this.firstItem[substanceItem.substanceId] as unknown as number;
-            let rowsToShow = this.rowsToShow[substanceItem.substanceId] as unknown as number;
+            const firstItem = this.firstItem[substanceItem.substanceId] as unknown as number;
+            const rowsToShow = this.rowsToShow[substanceItem.substanceId] as unknown as number;
             paginatedItems[idx] = {
                 name: substanceItem.name,
                 substanceId: substanceItem.substanceId,

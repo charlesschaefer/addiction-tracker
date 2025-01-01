@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { firstValueFrom } from 'rxjs';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { environment } from '../../environments/environment';
 import { invoke } from '@tauri-apps/api/core';
 
 interface ApiSecret {
@@ -21,9 +20,9 @@ export class RecommendationService<T> extends ServiceAbstract<T> {
         let recommendation: T[] = await firstValueFrom(this.getByField('trigger', trigger));
         if (!recommendation.length) {
             // looks for recommendation in google gemini and then stores it to cache
-            let text = await this.fetchRecommendationFromGemini(trigger);
+            const text = await this.fetchRecommendationFromGemini(trigger);
             
-            let success = await firstValueFrom(this.add({trigger, text} as T));
+            const success = await firstValueFrom(this.add({trigger, text} as T));
             if (success) {
                 recommendation = [success];
             }

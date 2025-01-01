@@ -5,7 +5,7 @@ import localePt from "@angular/common/locales/pt";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
-import { JoyrideModule, JoyrideService } from 'ngx-joyride';
+import { JoyrideModule } from 'ngx-joyride';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';

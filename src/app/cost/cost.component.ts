@@ -41,9 +41,9 @@ import { firstValueFrom } from 'rxjs';
 export class CostComponent extends PaginatedComponent<CostDto> implements OnInit {
     DateTime = DateTime
     // substance_id and total_cost
-    calculatedCosts: Map<number, number> = new Map();
+    calculatedCosts = new Map<number, number>();
     
-    substances: Map<number, string> = new Map;
+    substances = new Map<number, string>();
     chartOptions = {
         animation: true
     };
@@ -76,11 +76,11 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
     }
 
     groupCostBySubstance(costs: CostDto[]) {
-        let registeredSubstances = new Map();
+        const registeredSubstances = new Map();
         // creates an array of cost grouped by substance
         costs.forEach(cost => {
             if (!registeredSubstances.has(cost.substance)) {
-                let substanceCost: SubstanceGroupedItem<CostDto> = {
+                const substanceCost: SubstanceGroupedItem<CostDto> = {
                     name: this.substances.get(cost.substance) as unknown as string,
                     substanceId: cost.substance,
                     items: [cost]
@@ -95,11 +95,11 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
 
     calculateTotalCosts() {
         this.allItems.map(substanceCost => {
-            let totalCost = substanceCost
+            const totalCost = substanceCost
                 .items
                 .reduce(
                     (prev, curr) => {
-                        let total = prev.value + curr.value;
+                        const total = prev.value + curr.value;
                         return {
                             date: new Date(),
                             id: 0,
@@ -117,12 +117,12 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
     }
 
     prepareChartData() {
-        let labels: string[] = [];
-        let datasets: ChartDataset = {
+        const labels: string[] = [];
+        const datasets: ChartDataset = {
             data: []
         };
         let key;
-        let keys = this.calculatedCosts.keys();
+        const keys = this.calculatedCosts.keys();
         while (!(key = keys.next()).done) {
             labels.push(this.substances.get(key.value) as unknown as string);
             datasets.data.push(this.calculatedCosts.get(key.value) as unknown as number);

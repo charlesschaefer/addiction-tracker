@@ -5,7 +5,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSliderModule } from '@angular/material/slider';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -103,7 +102,7 @@ export class UsageAddComponent implements OnInit {
     ) {}
     
     ngOnInit(): void {
-        let returning = this.activatedRoute.snapshot.queryParamMap.get('returning');
+        const returning = this.activatedRoute.snapshot.queryParamMap.get('returning');
         if (returning) {
             this.showRespirationExerciseDialog = false;
         }
@@ -140,9 +139,9 @@ export class UsageAddComponent implements OnInit {
             });
             return;
         }
-        let form = this.usageForm.value;
+        const form = this.usageForm.value;
 
-        let usageData: UsageAddDto = {
+        const usageData: UsageAddDto = {
             substance: form.substance || 0,
             quantity: form.quantity || 0,
             datetime: form.datetime || new Date(),
@@ -164,8 +163,8 @@ export class UsageAddComponent implements OnInit {
     }
     
     triggerSearch(event: AutoCompleteCompleteEvent) {
-        let filtered: any[] = [];
-        let query = event.query;
+        const filtered: any[] = [];
+        const query = event.query;
 
         this.triggers.forEach((trigger) => {
             if (trigger.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
@@ -181,9 +180,9 @@ export class UsageAddComponent implements OnInit {
     }
 
     async saveTrigger() {
-        let data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
+        const data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
 
-        let triggers = await firstValueFrom(this.triggerAddService.getByField('name', data.name));
+        const triggers = await firstValueFrom(this.triggerAddService.getByField('name', data.name));
         if (triggers.length) {
             this.messageService.add({ 
                 severity: 'error', 

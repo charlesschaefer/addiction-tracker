@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
-import { UsageAddComponent } from '../usage-add/usage-add.component';
-import { group } from '@angular/animations';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -36,15 +34,15 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
     }
 
     private groupBy(usages: T[], groupType: "hour" | "day"): Map<number, Map<string, FinalUsage>> {
-        let substance: Map<number, Map<string, IntermediaryUsage>> = new Map();
+        const substance = new Map<number, Map<string, IntermediaryUsage>>();
         // create a map with data vectors, without calculating yet
         usages.forEach(usage => {
-            let hour = DateTime.fromJSDate(usage.datetime).endOf(groupType).toFormat(DATE_FORMAT);
+            const hour = DateTime.fromJSDate(usage.datetime).endOf(groupType).toFormat(DATE_FORMAT);
             if (!substance.has(usage.substance)) {
-                let group: Map<string, IntermediaryUsage> = new Map;
+                const group = new Map<string, IntermediaryUsage>();
                 substance.set(usage.substance, group);
             }
-            let group = substance.get(usage.substance);
+            const group = substance.get(usage.substance);
             if (!group?.has(hour)) {
                 group?.set(hour, {
                     quantity: [usage.quantity],
@@ -56,7 +54,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
             }
             
             
-            let previousUsage = group.get(hour);
+            const previousUsage = group.get(hour);
             previousUsage?.quantity.push(usage.quantity);
             previousUsage?.craving.push(usage.craving);
             previousUsage?.sentiment.push(usage.sentiment);
@@ -66,20 +64,20 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
 
 
         // calculates averages and sums of data
-        let finalGroup: Map<number, Map<string, FinalUsage>> = new Map;
+        const finalGroup = new Map<number, Map<string, FinalUsage>>();
         substance.forEach((usage, substanceId) => {
             if (!finalGroup.has(substanceId)) {
                 finalGroup.set(substanceId, new Map);
             }
             usage.forEach((intermediary, hour) => {
-                let newUsage: FinalUsage = {
+                const newUsage: FinalUsage = {
                     quantity: intermediary.quantity.reduce((prev, curr) => prev + curr, 0),
                     craving: Math.round(intermediary.craving.reduce((prev, curr) => curr + prev, 0) / intermediary.craving.length),
                     sentiment: Math.round(intermediary.sentiment.reduce((prev, curr) => curr + prev, 0) / intermediary.sentiment.length),
                     datetime: DateTime.fromFormat(hour, DATE_FORMAT).toJSDate(),
                     substance: substanceId
                 };
-                let group = finalGroup.get(substanceId);
+                const group = finalGroup.get(substanceId);
                 group?.set(hour, newUsage);
                 finalGroup.set(substanceId, group as Map<string, FinalUsage>);
             });
@@ -89,7 +87,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
     }
 
     groupMapToUsageDto(groupMap: Map<number, Map<string, FinalUsage>>): UsageDto[] {
-        let usageDtos: UsageDto[] = [];
+        const usageDtos: UsageDto[] = [];
         groupMap.forEach((usages) => {
             usages.forEach((finalUsage) => {
                 usageDtos.push({
@@ -108,7 +106,7 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
     }
 
     getMostUsedTrigger(result: UsageDto[]): [string, number] {
-        let usageTriggers: Map<string, number> = new Map();
+        let usageTriggers = new Map<string, number>();
         result.forEach(usage => {
             usage.trigger?.forEach(trigger => {
                 if (!usageTriggers.has(trigger.name)) {

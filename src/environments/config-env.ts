@@ -7,7 +7,7 @@ function configEnv() {
         path: 'src/environments/.env'
     });
 
-    let targetProdPath = './src/environments/environment.ts';
+    const targetProdPath = './src/environments/environment.ts';
     let envFile = `{
         "googleProjectName": "${process.env['GOOGLE_GEMINI_PROJECT_NAME']}",
         "googleApiKey": "${process.env['GOOGLE_GEMINI_API']}"

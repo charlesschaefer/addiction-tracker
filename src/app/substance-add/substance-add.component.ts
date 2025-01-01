@@ -9,12 +9,12 @@ import { MessagesModule } from 'primeng/messages';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { Message, MessageService } from 'primeng/api';
-import { EMPTY, Observable, concatMap, firstValueFrom } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { firstValueFrom } from 'rxjs';
 import { JoyrideModule } from 'ngx-joyride';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
-import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
+import { SubstanceAddDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
 
 @Component({
@@ -63,7 +63,7 @@ export class SubstanceAddComponent {
             return;
         }
 
-        let substances = await firstValueFrom(this.substanceService.getByField('name', this.substanceForm.value.name));
+        const substances = await firstValueFrom(this.substanceService.getByField('name', this.substanceForm.value.name));
         if (substances.length) {
             this.messageService.add({ 
                 severity: 'error', 
@@ -73,7 +73,7 @@ export class SubstanceAddComponent {
             });
             return;
         }
-        let data: SubstanceAddDto = {
+        const data: SubstanceAddDto = {
             name: this.substanceForm.value.name || ''
         };
         this.substanceService.add(data).subscribe({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ChartModule, UIChart } from 'primeng/chart';
+import { ChartModule } from 'primeng/chart';
 import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -17,7 +17,7 @@ import { UsageService } from '../services/usage.service';
 import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
-import { ChartData, ChartDataset, UsageChart} from '../util/chart-types';
+import { ChartData, UsageChart} from '../util/chart-types';
 import { RecommendationService } from '../services/recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
 import { RecommendationComponent } from '../recommendation/recommendation.component';
@@ -56,18 +56,18 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
 })
 export class UsageTrackComponent implements OnInit {
     usageChartData: UsageChart[];
-    triggerChartData: Map<number, ChartData> = new Map;
-    substances: Map<number, SubstanceDto> = new Map();
+    triggerChartData = new Map<number, ChartData>();
+    substances = new Map<number, SubstanceDto>();
 
     activeCharts: number[] = [0,1];
 
-    groupByHour: boolean = false;
-    groupByDay: boolean = false;
+    groupByHour = false;
+    groupByDay = false;
 
     originalUsages: UsageDto[];
 
     recommendationText: string;
-    showRecommendationDialog: boolean = false;
+    showRecommendationDialog = false;
 
 
     options = {
@@ -111,8 +111,8 @@ export class UsageTrackComponent implements OnInit {
 
     async prepareChartData(result: UsageDto[]) {
         const documentStyle = getComputedStyle(document.documentElement);
-        let usageChartData: UsageChart[] = [];
-        let registeredSubstances = new Map;
+        const usageChartData: UsageChart[] = [];
+        const registeredSubstances = new Map;
         const [usageLabel, feelingLabel, cravingLabel] = [
             await firstValueFrom(this.translate.get('Consumo')),
             await firstValueFrom(this.translate.get('Sentimento')),
@@ -151,8 +151,8 @@ export class UsageTrackComponent implements OnInit {
                 // register the index where the substance was added.
                 registeredSubstances.set(usage.substance, usageChartData.length - 1);
             }
-            let usageIdx = registeredSubstances.get(usage.substance);
-            let usageChart = usageChartData[usageIdx].chart;
+            const usageIdx = registeredSubstances.get(usage.substance);
+            const usageChart = usageChartData[usageIdx].chart;
             usageChart.labels.push(DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm'));
             usageChart.datasets[0].data.push(usage.quantity);
             usageChart.datasets[1].data.push(usage.sentiment);
@@ -163,12 +163,12 @@ export class UsageTrackComponent implements OnInit {
     }
 
     async prepareTriggerChart(result: UsageDto[]) {
-        let triggerData = this.consolidateTriggerData(result);
+        const triggerData = this.consolidateTriggerData(result);
 
         const totalUsage = await firstValueFrom(this.translate.get('Consumo total'));
 
         triggerData.forEach((triggerUsage, substanceId) => {
-            let chartData: ChartData = {
+            const chartData: ChartData = {
                 labels: triggerUsage.map(usage => usage.trigger),
                 datasets: [
                     {
@@ -185,12 +185,12 @@ export class UsageTrackComponent implements OnInit {
     // triggerMap = Map<substanceId, Map<trigger_name, count>>
     // triggerChatData = Map<substanceId, ChartData>
     consolidateTriggerData(data: UsageDto[]): SubstanceTriggerUsage {
-        let substanceTriggerMap: Map<number, Map<string, number>> = new Map();
+        const substanceTriggerMap = new Map<number, Map<string, number>>();
          data.forEach(currentValue => {
             if (!substanceTriggerMap.has(currentValue.substance)) {
                 substanceTriggerMap.set(currentValue.substance, new Map());
             }
-            let triggerMap = substanceTriggerMap.get(currentValue.substance);
+            const triggerMap = substanceTriggerMap.get(currentValue.substance);
             // loops all the usage's triggers to count them
             currentValue.trigger?.forEach(trigger => {
                 if (!triggerMap?.has(trigger.name)) {
@@ -207,9 +207,9 @@ export class UsageTrackComponent implements OnInit {
             substanceTriggerMap.set(currentValue.substance, triggerMap as Map<string, number>);
         });
 
-        let triggerChartData: SubstanceTriggerUsage = new Map;
+        const triggerChartData: SubstanceTriggerUsage = new Map;
         substanceTriggerMap.forEach((triggerData, substanceId) => {
-            let triggerUsage: TriggerUsage[] = [];
+            const triggerUsage: TriggerUsage[] = [];
             triggerData.forEach((triggerCount, triggerName) => {
                 triggerUsage.push({
                     trigger: triggerName,
@@ -255,7 +255,7 @@ export class UsageTrackComponent implements OnInit {
     reRenderOnResize(event: UIEvent) {
         // forces a re-render
         if (this.usageChartData.length) {
-            let usageChart = this.usageChartData;
+            const usageChart = this.usageChartData;
             this.usageChartData = [];
             setTimeout(() => this.usageChartData = usageChart, 100);
         }
@@ -263,7 +263,7 @@ export class UsageTrackComponent implements OnInit {
     }
 
     async getRecommendations(result: UsageDto[]) {
-        let [trigger, total] = this.usageService.getMostUsedTrigger(result);
+        const [trigger, total] = this.usageService.getMostUsedTrigger(result);
         const recommendation = await this.recommendationService.fetchRecommendation(trigger);
         this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
         this.showRecommendationDialog = true;

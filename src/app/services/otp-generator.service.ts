@@ -12,7 +12,7 @@ export class OtpGeneratorService {
         const end = 90;
         let otpDigits = "";
         for (let i = 0; i < 6; i++) {
-            let digit = this.getRandomDigit(start, end);
+            const digit = this.getRandomDigit(start, end);
             otpDigits += String.fromCharCode(digit);
         }
         return otpDigits;

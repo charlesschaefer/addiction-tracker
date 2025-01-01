@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule, NgxIndexedDBService } from "ngx-indexed-db";
+import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
 import { dbConfig } from "../db.config";
 
