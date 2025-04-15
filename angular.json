@@ -30,18 +30,6 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/magenta-violet.css",
-              {
-                "input": "node_modules/primeng/resources/themes/aura-light-purple/theme.css",
-                "bundleName": "aura-light",
-                "inject": false
-              },
-              {
-                "input": "node_modules/primeng/resources/themes/aura-dark-purple/theme.css",
-                "bundleName": "aura-dark",
-                "inject": false
-              },
-              "node_modules/primeng/resources/primeng.min.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeflex/primeflex.css",
               "src/styles.scss"
@@ -53,7 +41,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "1mb",
-                  "maximumError": "2.5mb"
+                  "maximumError": "3.5mb"
                 },
                 {
                   "type": "anyComponentStyle",

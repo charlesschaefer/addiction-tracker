@@ -28,6 +28,7 @@
     "@google/generative-ai": "^0.14.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
+    "@primeng/themes": "^19.0.10",
     "@tauri-apps/api": ">=2.0.0",
     "@tauri-apps/plugin-dialog": "^2.2.0",
     "@tauri-apps/plugin-fs": "^2.2.0",
@@ -37,15 +38,16 @@
     "chart.js": "^4.4.3",
     "crypto-js": "^4.2.0",
     "luxon": "^3.4.4",
+    "ngx-cookie-service": "^19.1.2",
     "ngx-indexed-db": "^18.0.0",
     "ngx-joyride": "^2.5.0",
+    "primeclt": "^0.1.5",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
+    "primeng": "^19.0.10",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0",
-    "ngx-cookie-service": "^19.1.2",
-    "primeng": "^19.0.10"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.7",

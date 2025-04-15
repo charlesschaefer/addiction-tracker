@@ -19,9 +19,9 @@ import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
 import { RecommendationService } from '../services/recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
-import { RecommendationComponent } from '../recommendation/recommendation.component';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 
 interface SubstanceUsage {
@@ -42,7 +42,7 @@ interface SubstanceUsage {
         ToastModule,
         KnobModule,
         DialogModule,
-        RecommendationComponent,
+        FormsModule,
         RouterLink,
         TranslateModule
     ],
@@ -67,9 +67,9 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     recommendationText: string;
     showRecommendationDialog = false;
 
-    tagSeverity:("success" | "secondary" | "info" | "warning" | "danger" | "contrast" | undefined)[] = [
+    tagSeverity:("success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined)[] = [
         'success',
-        'warning',
+        'warn',
         'info',
         'danger',
     ];

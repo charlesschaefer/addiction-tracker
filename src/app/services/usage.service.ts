@@ -118,6 +118,6 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
 
         usageTriggers = new Map([...usageTriggers.entries()].sort((a, b) => a[1] <= b[1] ? 1 : -1));
 
-        return usageTriggers.entries().next().value;
+        return usageTriggers.entries().next().value as [string, number];
     }
 }

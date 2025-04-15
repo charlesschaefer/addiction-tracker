@@ -23,7 +23,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
         DialogModule,
         ButtonModule,
         CommonModule,
-        //ReactiveFormsModule,
+        ReactiveFormsModule,
         InputOtpModule,
         ToastModule,
         TranslateModule,

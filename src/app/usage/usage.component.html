@@ -16,58 +16,59 @@
         </p-card>
     </p-panel>
 }
-<p-accordion >
+<p-accordion>
 @for (usage of paginatedItems; track usage.name) {
-
-    <!-- <p-panel header="Consumos de {{usage.name}}"> -->
-    <p-accordionTab [header]="('Consumos de '| translate) + usage.name + ' (' + allItems[$index].items.length + ')'">
-        <p-table [value]="usage.items" class="usage-table">
-            <ng-template pTemplate="header">
-                <tr>
-                    <th></th>
-                    <th translate>Data</th>
-                    <th translate>Substância</th>
-                    <th translate>Sentimento</th>
-                    <th translate>Fissura</th>
-                    <th translate>Gatilhos</th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-usage>
-                <tr>
-                    <td>
-                        <a class="pi pi-trash" (click)="removeUsage(usage.id)"></a>
-                    </td>
-                    <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm') }}</td>
-                    <td>{{ usage.quantity }} {{ substances.get(usage.substance) }}</td>
-                    <td><strong>{{ sentiments.get(usage.sentiment) }}</strong></td>
-                    <td>
-                        <p-knob 
-                            [ngModel]="usage.craving" 
-                            [readonly]="true" 
-                            [max]="10" 
-                            [valueColor]="usage.craving <= 3 ? 'MediumTurquoise' : (usage.craving >= 7 ? 'Red' : 'Blue')"
-                            [size]="50"
-                        />
-                    </td>
-                    <td>
-                        @for (trigger of usage.trigger; track trigger.name) {
-                            <p-tag [value]="trigger.name" [severity]="tagSeverity[$index % tagSeverity.length -1]" />
-                        }
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-        <p-paginator 
-            (onPageChange)="changePage($event, usage.substanceId)" 
-            [first]="firstItem[usage.substanceId]"
-            [rows]="rowsToShow[usage.substanceId]" 
-            [totalRecords]="totalRecords[usage.substanceId]" 
-            [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
-    </p-accordionTab>
+  <p-accordion-panel [value]="usage.substanceId">
+    <p-accordion-header>
+      {{ ('Consumos de ' | translate) + usage.name + ' (' + allItems[$index].items.length + ')' }}
+    </p-accordion-header>
+    <p-accordion-content>
+      <p-table [value]="usage.items" class="usage-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th></th>
+            <th translate>Data</th>
+            <th translate>Substância</th>
+            <th translate>Sentimento</th>
+            <th translate>Fissura</th>
+            <th translate>Gatilhos</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usage>
+          <tr>
+            <td>
+              <a class="pi pi-trash" (click)="removeUsage(usage.id)"></a>
+            </td>
+            <td>{{ DateTime.fromJSDate(usage.datetime).toFormat('dd/MM HH:mm') }}</td>
+            <td>{{ usage.quantity }} {{ substances.get(usage.substance) }}</td>
+            <td><strong>{{ sentiments.get(usage.sentiment) }}</strong></td>
+            <td>
+              <p-knob 
+                [ngModel]="usage.craving" 
+                [readonly]="true" 
+                [max]="10" 
+                [valueColor]="usage.craving <= 3 ? 'MediumTurquoise' : (usage.craving >= 7 ? 'Red' : 'Blue')"
+                [size]="50"
+              />
+            </td>
+            <td>
+              @for (trigger of usage.trigger; track trigger.name) {
+                <p-tag [value]="trigger.name" [severity]="tagSeverity[$index % tagSeverity.length -1]" />
+              }
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      <p-paginator 
+        (onPageChange)="changePage($event, usage.substanceId)" 
+        [first]="firstItem[usage.substanceId]"
+        [rows]="rowsToShow[usage.substanceId]" 
+        [totalRecords]="totalRecords[usage.substanceId]" 
+        [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
+    </p-accordion-content>
+  </p-accordion-panel>
 } @empty {
-    <p translate>Não há dados para serem exibidos. </p>
-    <p translate>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
+  <p translate>Não há dados para serem exibidos. </p>
+  <p translate>Registre um novo consumo <a routerLink="/usage-add">por aqui</a>.</p>
 }
 </p-accordion>
-
-<!-- <app-recommendation [usages]="originalUsages"></app-recommendation> -->

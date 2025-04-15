@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -37,9 +37,10 @@ import { firstValueFrom } from 'rxjs';
         SpeedDialModule,
         JoyrideModule,
         TieredMenuModule,
+        MenuModule,
         TranslateModule
     ],
-    providers: [CookieService],
+    providers: [CookieService, RouterLink],
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss'
 })
@@ -50,24 +51,24 @@ export class AppComponent implements OnInit {
     speedDialItems: MenuItem[] = [
         {
             icon: 'pi pi-wallet',
-            routerLink: ['/cost']
+            command: () => this.router.navigate(['/cost']),
         },
         {
             icon: 'pi pi-money-bill',
-            routerLink: "/cost-add",
+            command: () => this.router.navigate(["/cost-add"]),
             title: "Adicionar gasto"
         },
         {
             icon: 'pi pi-home',
-            routerLink: ['/']
+            command: () => this.router.navigate(['/']),
         },
         {
             icon: 'pi pi-chart-line',
-            routerLink: ['/usage-track']
+            command: () => this.router.navigate(['/usage-track']),
         },
         {
             icon: 'pi pi-plus',
-            routerLink: ['usage-add']
+            command: () => this.router.navigate(['/usage-add']),
         },
     ];
 
@@ -79,6 +80,7 @@ export class AppComponent implements OnInit {
         private joyrideService: JoyrideService,
         private cookieService: CookieService,
         private translate: TranslateService,
+        private router: Router
     ) {
         translate.setDefaultLang('en');
         //translate.use('en');
@@ -92,7 +94,10 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        invoke("set_frontend_complete");
+        let window = globalThis.window as Window & { __TAURI_INTERNALS__?: { invoke: (command: string) => void } };
+        if (window?.__TAURI_INTERNALS__?.invoke) {
+            invoke("set_frontend_complete");
+        }
         
         this.setupMenu();
 
@@ -163,39 +168,39 @@ export class AppComponent implements OnInit {
                     { label: await firstValueFrom(this.translate.get("Recomendações")), routerLink: "/recommendations", icon: "pi pi-book" } as MenuItem,
                 ]
             },
-            {
-                separator: true
-            },
-            {
-                label: await firstValueFrom(this.translate.get('Gastos')),
-                items: [
-                    { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
-                    { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
-                ]
-            },
-            {
-                separator: true
-            },
-            {
-                label: await firstValueFrom(this.translate.get('Configurações')),
-                items: [
-                    { label: await firstValueFrom(this.translate.get("Adicionar Substância")), routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
-                    { label: await firstValueFrom(this.translate.get("Backup")), routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
-                    { label: await firstValueFrom(this.translate.get("Sincronizar dispositivos")), routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
-                    { label: await firstValueFrom(this.translate.get("Mudar tema")), command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
-                ]
-            },
-            { 
-                label: await firstValueFrom(this.translate.get("Idioma")), 
-                items: [
-                    { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
-                    { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },
-                ]
-            },
-            {
-                separator: true
-            },
-            { label: await firstValueFrom(this.translate.get("Sobre")), routerLink: "/about", icon: "pi pi-info" } as MenuItem,
+            // {
+            //     separator: true
+            // },
+            // {
+            //     label: await firstValueFrom(this.translate.get('Gastos')),
+            //     items: [
+            //         { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
+            //         { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
+            //     ]
+            // },
+            // {
+            //     separator: true
+            // },
+            // {
+            //     label: await firstValueFrom(this.translate.get('Configurações')),
+            //     items: [
+            //         { label: await firstValueFrom(this.translate.get("Adicionar Substância")), routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
+            //         { label: await firstValueFrom(this.translate.get("Backup")), routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
+            //         { label: await firstValueFrom(this.translate.get("Sincronizar dispositivos")), routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
+            //         { label: await firstValueFrom(this.translate.get("Mudar tema")), command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
+            //     ]
+            // },
+            // { 
+            //     label: await firstValueFrom(this.translate.get("Idioma")), 
+            //     items: [
+            //         { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
+            //         { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },
+            //     ]
+            // },
+            // {
+            //     separator: true
+            // },
+            // { label: await firstValueFrom(this.translate.get("Sobre")), routerLink: "/about", icon: "pi pi-info" } as MenuItem,
         ];
     }
 

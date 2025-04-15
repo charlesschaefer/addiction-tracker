@@ -31,20 +31,24 @@
     <div class="usage-track-accordions">
       <p-accordion [multiple]="true" [(activeIndex)]="activeCharts">
       @for (chartData of usageChartData; track chartData.chart) {
-        <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
-        <p-accordionTab [header]="('Dados de uso de ' | translate) + substances.get(chartData.substanceId)?.name">
-          <div class="inline-cards">
-            <p-card 
-              class="chart-card" 
-              [header]="('Acompanhamento de consumo de ' | translate) + substances.get(chartData.substanceId)?.name" 
-            >
-              <p-chart type="line" [data]="chartData.chart" [options]="options" />
-            </p-card>
-            <p-card class="chart-card" [header]="('Gatilhos de consumo de ' | translate) + substances.get(chartData.substanceId)?.name ">
-              <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
-            </p-card>
-          </div>
-        </p-accordionTab>
+        <p-accordion-panel [value]="chartData.substanceId">
+          <p-accordion-header>
+            {{ ('Dados de uso de ' | translate) }} {{ substances.get(chartData.substanceId)?.name }}
+          </p-accordion-header>
+          <p-accordion-content>
+            <div class="inline-cards">
+              <p-card 
+                class="chart-card" 
+                [header]="('Acompanhamento de consumo de ' | translate) + substances.get(chartData.substanceId)?.name" 
+              >
+                <p-chart type="line" [data]="chartData.chart" [options]="options" />
+              </p-card>
+              <p-card class="chart-card" [header]="('Gatilhos de consumo de ' | translate) + substances.get(chartData.substanceId)?.name ">
+                <p-chart type="bar" [data]="triggerChartData.get(chartData.substanceId)" [options]="options" />
+              </p-card>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
       } 
       </p-accordion>
     </div>

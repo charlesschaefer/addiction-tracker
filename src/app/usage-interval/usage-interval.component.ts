@@ -155,13 +155,11 @@ export class UsageIntervalComponent implements OnInit {
     }
 
     reRenderOnResize(event: UIEvent) {
-        console.log("Resizando", event);
         // forces a re-render
         if (this.usageChartData.length) {
             const usageChart = this.usageChartData;
             this.usageChartData = [];
             setTimeout(() => this.usageChartData = usageChart, 100);
         }
-        //this.usageChartData[0].chart.datasets.push(item as ChartDataset);
     }
 }

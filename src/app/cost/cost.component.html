@@ -6,39 +6,43 @@
     </p-panel>}
 
 <p-accordion>
-    @for (cost of paginatedItems; track cost.name) {
-
-        <!-- <p-panel header="Gastos com {{cost.name}}: {{ calculatedCosts.get(cost.substanceId) | currency}}"> -->
-        <p-accordionTab [header]="'Gastos com {{name}}: {{cost}}' | translate: {name: cost.name, cost: calculatedCosts.get(cost.substanceId) | currency}">
-            <p-table [value]="cost.items">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th></th>
-                        <th translate>Data</th>
-                        <th translate>Substância</th>
-                        <th translate>Custo</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-cost>
-                    <tr>
-                        <td>
-                            <a (click)="removeCost(cost.id)" class="pi pi-trash"></a>
-                        </td>
-                        <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
-                        <td>{{ substances.get(cost.substance) }}</td>
-                        <td>{{ cost.value | currency }}</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-            <p-paginator 
-                (onPageChange)="changePage($event, cost.substanceId)" 
-                [first]="firstItem[cost.substanceId]"
-                [rows]="rowsToShow[cost.substanceId]" 
-                [totalRecords]="totalRecords[cost.substanceId]" 
-                [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
-        </p-accordionTab>
-    } @empty {
-        <p translate>Não há dados para serem exibidos.</p>
-        <p translate>Registre um novo gasto <a routerLink="/cost-add">por aqui</a>.</p>
-    }
+  @for (cost of paginatedItems; track cost.name) {
+    @let aNewCost = calculatedCosts.get(cost.substanceId) | currency;
+    <p-accordion-panel [value]="cost.substanceId">
+      <p-accordion-header>
+        {{ 'Gastos com {{name}}: {{cost}}' | translate: {name: cost.name, cost: aNewCost } }}
+      </p-accordion-header>
+      <p-accordion-content>
+        <p-table [value]="cost.items">
+          <ng-template pTemplate="header">
+            <tr>
+              <th></th>
+              <th translate>Data</th>
+              <th translate>Substância</th>
+              <th translate>Custo</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-cost>
+            <tr>
+              <td>
+                <a (click)="removeCost(cost.id)" class="pi pi-trash"></a>
+              </td>
+              <td>{{ DateTime.fromJSDate(cost.date).toFormat('dd/MM/yyyy') }}</td>
+              <td>{{ substances.get(cost.substance) }}</td>
+              <td>{{ cost.value | currency }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+        <p-paginator 
+          (onPageChange)="changePage($event, cost.substanceId)" 
+          [first]="firstItem[cost.substanceId]"
+          [rows]="rowsToShow[cost.substanceId]" 
+          [totalRecords]="totalRecords[cost.substanceId]" 
+          [rowsPerPageOptions]="[1, 5, 10, 20, 50]" />
+      </p-accordion-content>
+    </p-accordion-panel>
+  } @empty {
+    <p translate>Não há dados para serem exibidos.</p>
+    <p translate>Registre um novo gasto <a routerLink="/cost-add">por aqui</a>.</p>
+  }
 </p-accordion>

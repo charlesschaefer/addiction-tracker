@@ -9,6 +9,8 @@ import { JoyrideModule } from 'ngx-joyride';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { providePrimeNG } from 'primeng/config';
+import { AppTheme } from './app.theme';
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
@@ -42,6 +44,15 @@ export const appConfig: ApplicationConfig = {
     {
       provide: DEFAULT_CURRENCY_CODE,
       useValue: 'BRL'
-    }
+    },
+    providePrimeNG({
+      ripple: true,
+      theme: {
+        preset: AppTheme,
+        options: {
+          darkModeSelector: '.dark-mode'
+        }
+      }
+    })
   ],
 };

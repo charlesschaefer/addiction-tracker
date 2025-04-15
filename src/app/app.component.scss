@@ -19,26 +19,34 @@ img#logo {
 }
 
 .main {
+    // padding-top: 62px;
     padding-bottom: 40px;
-    padding-top: 62px;
 }
 
-p-toolbar {
-    position: fixed;
-    width: 100%;
-    margin-bottom: 20px;
-    z-index: 1000;
-}
+// p-toolbar {
+//     position: fixed;
+//     width: 100%;
+//     margin-bottom: 20px;
+//     z-index: 1000;
+// }
 
-:host ::ng-deep .p-toolbar {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
+// :host ::ng-deep .p-toolbar {
+//     padding-top: 5px;
+//     padding-bottom: 5px;
+// }
 
 :host ::ng-deep p-menu div.p-menu {
     top: 51px !important;
     width: 240px;
     font-size: 0.9em;
+}
+
+::ng-deep .p-tieredmenu-mobile {
+    position: absolute !important;
+}
+
+::ng-deep .p-tieredmenu-submenu {
+    left: -100% !important;
 }
 
 @media (max-width: 600px) {
@@ -47,16 +55,17 @@ p-toolbar {
     }
     .dial-menu {
         position: fixed;
-        margin: auto;
+        margin: 0;
+        padding: 0;
         height: 45px;
         width: 100%;
-        bottom: 0px;
+        bottom: 4px;
         display: flex;
         justify-content: center;
     }
-    .dial-menu p-speedDial {
-        margin-left: -35px;
-    }
+    // .dial-menu p-speedDial {
+    //     margin-left: -35px;
+    // }
 
     img#logo {
         display: none;
