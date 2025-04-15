@@ -39,7 +39,7 @@ import { CostService } from '../services/cost.service';
     ],
     providers: [MessageService],
     templateUrl: './cost-add.component.html',
-    styleUrl: './cost-add.component.scss',
+    styleUrl: './cost-add.component.scss'
 })
 export class CostAddComponent implements OnInit {
     private fb = inject(FormBuilder);

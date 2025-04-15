@@ -64,7 +64,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
-    providers: [MessageService],
+    providers: [MessageService]
 })
 export class UsageAddComponent implements OnInit {
     private fb = inject(FormBuilder);

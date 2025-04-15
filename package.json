@@ -15,17 +15,17 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^18.0.0",
+    "@angular/animations": "^19.2.6",
     "@angular/cdk": "^18.0.5",
-    "@angular/common": "^18.0.0",
-    "@angular/compiler": "^18.0.0",
-    "@angular/core": "^18.0.0",
-    "@angular/forms": "^18.0.0",
+    "@angular/common": "^19.2.6",
+    "@angular/compiler": "^19.2.6",
+    "@angular/core": "^19.2.6",
+    "@angular/forms": "^19.2.6",
     "@angular/material": "^18.0.5",
     "@angular/material-luxon-adapter": "^18.0.6",
-    "@angular/platform-browser": "^18.0.0",
-    "@angular/platform-browser-dynamic": "^18.0.0",
-    "@angular/router": "^18.0.0",
+    "@angular/platform-browser": "^19.2.6",
+    "@angular/platform-browser-dynamic": "^19.2.6",
+    "@angular/router": "^19.2.6",
     "@google/generative-ai": "^0.14.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
@@ -46,16 +46,13 @@
     "primeng": "^17.18.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.2.12",
-    "@angular/cli": "^18.2.12",
-    "@angular/compiler-cli": "^18.0.1",
-    "@angular/forms": "^18.0.1",
+    "@angular-devkit/build-angular": "^19.2.7",
+    "@angular/cli": "^19.2.7",
+    "@angular/compiler-cli": "^19.2.6",
     "@angular/material-luxon-adapter": "^18.2.14",
-    "@angular/platform-browser-dynamic": "^18.0.1",
-    "@angular/router": "^18.0.1",
     "@bartholomej/ngx-translate-extract": "^8.0.2",
     "@eslint/js": "^9.17.0",
     "@google/generative-ai": "^0.14.1",
@@ -89,8 +86,7 @@
     "primeng": "^17.18.13",
     "shelljs": "^0.9.2",
     "tslib": "^2.8.1",
-    "typescript": "~5.4.2",
-    "typescript-eslint": "^8.19.0",
-    "zone.js": "^0.14.10"
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.19.0"
   }
 }

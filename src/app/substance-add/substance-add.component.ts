@@ -34,7 +34,7 @@ import { SubstanceService } from '../services/substance.service';
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss',
-    providers: [MessageService],
+    providers: [MessageService]
 })
 export class SubstanceAddComponent {
     private fb = inject(FormBuilder);
