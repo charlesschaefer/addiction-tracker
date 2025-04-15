@@ -168,39 +168,39 @@ export class AppComponent implements OnInit {
                     { label: await firstValueFrom(this.translate.get("Recomendações")), routerLink: "/recommendations", icon: "pi pi-book" } as MenuItem,
                 ]
             },
-            // {
-            //     separator: true
-            // },
-            // {
-            //     label: await firstValueFrom(this.translate.get('Gastos')),
-            //     items: [
-            //         { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
-            //         { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
-            //     ]
-            // },
-            // {
-            //     separator: true
-            // },
-            // {
-            //     label: await firstValueFrom(this.translate.get('Configurações')),
-            //     items: [
-            //         { label: await firstValueFrom(this.translate.get("Adicionar Substância")), routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
-            //         { label: await firstValueFrom(this.translate.get("Backup")), routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
-            //         { label: await firstValueFrom(this.translate.get("Sincronizar dispositivos")), routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
-            //         { label: await firstValueFrom(this.translate.get("Mudar tema")), command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
-            //     ]
-            // },
-            // { 
-            //     label: await firstValueFrom(this.translate.get("Idioma")), 
-            //     items: [
-            //         { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
-            //         { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },
-            //     ]
-            // },
-            // {
-            //     separator: true
-            // },
-            // { label: await firstValueFrom(this.translate.get("Sobre")), routerLink: "/about", icon: "pi pi-info" } as MenuItem,
+            {
+                separator: true
+            },
+            {
+                label: await firstValueFrom(this.translate.get('Gastos')),
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Acompanhar")), routerLink: "/cost", icon: "pi pi-wallet" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Adicionar")), routerLink: "/cost-add", icon: "pi pi-money-bill" } as MenuItem,
+                ]
+            },
+            {
+                separator: true
+            },
+            {
+                label: await firstValueFrom(this.translate.get('Configurações')),
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Adicionar Substância")), routerLink: "/substance-add", icon: "pi pi-user-minus" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Backup")), routerLink: "/backup", icon: "pi pi-lock" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Sincronizar dispositivos")), routerLink: "/sync", icon: "pi pi-sync" } as MenuItem,
+                    { label: await firstValueFrom(this.translate.get("Mudar tema")), command: () => this.switchTheme(), icon: "pi pi-moon" } as MenuItem,
+                ]
+            },
+            { 
+                label: await firstValueFrom(this.translate.get("Idioma")), 
+                items: [
+                    { label: await firstValueFrom(this.translate.get("Português")), command: () => this.switchLanguage('pt-BR') },
+                    { label: await firstValueFrom(this.translate.get("Inglês")), command: () => this.switchLanguage('en') },
+                ]
+            },
+            {
+                separator: true
+            },
+            { label: await firstValueFrom(this.translate.get("Sobre")), routerLink: "/about", icon: "pi pi-info" } as MenuItem,
         ];
     }
 
