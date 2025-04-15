@@ -13,22 +13,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ['macos-latest', 'ubuntu-latest']
         include:
-          - os: 'macos-latest'
-            platform: 'macos-latest' # for Arm based macs (M1 and above).
+          - platform: 'macos-latest' # for Arm based macs (M1 and above).
             args: '--target aarch64-apple-darwin'
-          - os: 'macos-latest'
-            platform: 'macos-latest' # for Intel based macs.
+          - platform: 'macos-latest' # for Intel based macs.
             args: '--target x86_64-apple-darwin'
-          - os: 'ubuntu-latest'
-            platform: 'ubuntu-22.04'
+          - platform: 'ubuntu-22.04'
             args: ''
-          - os: 'ubuntu-latest'
-            platform: 'windows-latest'
+          - platform: 'windows-latest'
             args: '--target x86_64-pc-windows-msvc'
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
 
