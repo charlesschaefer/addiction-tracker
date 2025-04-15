@@ -13,17 +13,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        os: ['macos-latest', 'ubuntu-latest']
         include:
-          - platform: 'macos-latest' # for Arm based macs (M1 and above).
+          - os: 'macos-latest'
+            platform: 'macos-latest' # for Arm based macs (M1 and above).
             args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
+          - os: 'macos-latest'
+            platform: 'macos-latest' # for Intel based macs.
             args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04'
+          - os: 'ubuntu-latest'
+            platform: 'ubuntu-22.04'
             args: ''
-          - platform: 'windows-latest'
-            args: ''
+          - os: 'ubuntu-latest'
+            platform: 'windows-latest'
+            args: '--target x86_64-pc-windows-msvc'
 
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
 
@@ -56,8 +61,6 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
-          GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: 'App v__VERSION__'
