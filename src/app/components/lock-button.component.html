@@ -1,0 +1,65 @@
+<div class="relative">
+  <button
+    (click)="showMenu = !showMenu"
+    (mouseenter)="showTooltip = true"
+    (mouseleave)="showTooltip = false"
+    class="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
+    aria-label="Lock app"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 text-purple-600"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        [attr.stroke-width]="2"
+        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+      />
+    </svg>
+
+    <!-- Tooltip -->
+    <div
+      *ngIf="showTooltip && !showMenu"
+      class="absolute right-0 top-full mt-2 w-48 bg-gray-800 text-white text-xs rounded py-1 px-2 z-10"
+    >
+      Data protection is enabled
+    </div>
+  </button>
+
+  <div
+    *ngIf="showMenu"
+    class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-10 border border-gray-100"
+  >
+    <div class="px-4 py-2 border-b border-gray-100">
+      <p class="text-sm font-medium text-gray-700">Data Protection</p>
+      <p class="text-xs text-gray-500">
+        Your recovery data is password protected
+      </p>
+    </div>
+
+    <button
+      (click)="logout(); showMenu = false"
+      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4 mr-2 text-gray-500"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          [attr.stroke-width]="2"
+          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+        />
+      </svg>
+      Lock App
+    </button>
+  </div>
+</div>
