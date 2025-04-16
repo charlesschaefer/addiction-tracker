@@ -30,9 +30,10 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeicons/primeicons.css",
-              "node_modules/primeflex/primeflex.css",
-              "src/styles.scss"
+                "node_modules/primeicons/primeicons.css",
+                "node_modules/primeflex/primeflex.css",
+                "node_modules/tailwindcss/index.css",
+                "src/styles.scss"
             ]
           },
           "configurations": {

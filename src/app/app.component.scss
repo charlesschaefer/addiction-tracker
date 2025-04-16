@@ -1,40 +1,4 @@
-.example-fill-remaining-space {
-    flex: 1 1 auto;
-}
-
-:host ::ng-deep .dial-menu {
-    display: none;
-}
-
-:host ::ng-deep .dial-menu a {
-    text-decoration: none;
-}
-
-img#logo-icon {
-    display:none;
-}
-
-img#logo {
-    width: 20vw;
-}
-
-.main {
-    // padding-top: 62px;
-    padding-bottom: 40px;
-}
-
-// p-toolbar {
-//     position: fixed;
-//     width: 100%;
-//     margin-bottom: 20px;
-//     z-index: 1000;
-// }
-
-// :host ::ng-deep .p-toolbar {
-//     padding-top: 5px;
-//     padding-bottom: 5px;
-// }
-
+// Custom styles that can't be handled by Tailwind
 :host ::ng-deep p-menu div.p-menu {
     top: 51px !important;
     width: 240px;
@@ -48,6 +12,7 @@ img#logo {
 ::ng-deep .p-tieredmenu-submenu {
     left: -100% !important;
 }
+
 
 @media (max-width: 600px) {
     h2.title {
