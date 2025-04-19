@@ -13,8 +13,8 @@
     <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
     <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
   </div>
-</p-toolbar>
-
+</p-toolbar> -->
+<!-- 
 <section class="main">
   <router-outlet />
   <p
@@ -39,34 +39,34 @@
 
 <header
   class="bg-white/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm border-b border-gray-100"
-  data-oid=".9kjv7z"
+  
 >
-  <div class="max-w-5xl mx-auto px-4 py-5 pt-[12px] pb-[12px]" data-oid="op:rnsh">
-    <div class="flex items-center justify-between" data-oid="18ozgf.">
-      <div class="flex items-center" data-oid=":uf0ae.">
+  <div class="max-w-5xl mx-auto px-4 py-5 pt-[12px] pb-[12px]" >
+    <div class="flex items-center justify-between" >
+      <div class="flex items-center" >
         <!-- Mobile logo (icon only) -->
-        <a routerLink="/" data-oid="n:hoh1i">
+        <a routerLink="/" >
           <img
             class="block sm:hidden w-[60px] h-[60px]"
-            src="assets/icon.png"
+            src="assets/icon.svg"
             alt="Recovery Tracker"
-            data-oid="uddf3fg"
+            
           />
         </a>
 
         <!-- Desktop logo (wide version) -->
-        <div class="hidden sm:block" data-oid="hmp4_nz">
-          <a routerLink="/" data-oid="1l_.:uv">
+        <div class="hidden sm:block" >
+          <a routerLink="/" >
             <img
-              class="w-[500px] h-[37px]"
+              class="h-[3vh]"
               src="assets/logo.png"
               alt="Recovery Tracker"
-              data-oid="wwole-0"
+              
             />
           </a>
-          <p class="text-gray-500 mt-1 text-sm" data-oid="u48tkfy">
+          <!-- <p class="text-gray-500 mt-1 text-sm align-" >
             Track your habits. Take control of your life.
-          </p>
+          </p> -->
         </div>
       </div>
 
@@ -75,7 +75,7 @@
         class="md:hidden flex items-center text-gray-600 focus:outline-none"
         (click)="toggleMobileMenu()"
         aria-label="Toggle mobile menu"
-        data-oid="i.t27lj"
+        
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +83,7 @@
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          data-oid="ptcj.rl"
+          
         >
 
             <path
@@ -91,7 +91,7 @@
               stroke-linejoin="round"
               stroke-width="2"
               d="M6 18L18 6M6 6l12 12"
-              data-oid="bqp60ta"
+              
             />
      
             <path
@@ -99,15 +99,16 @@
               stroke-linejoin="round"
               stroke-width="2"
               d="M4 6h16M4 12h16M4 18h16"
-              data-oid="17jsh7n"
+              
             />
         </svg>
       </button>
 
       <!-- Desktop navigation -->
-      <div class="hidden md:flex items-center space-x-4" data-oid="lkqj:_f">
+      <div class="hidden md:flex items-center space-x-4" >
         <ng-container *ngIf="!isProtected || isAuthenticated">
-          <ng-container *ngFor="let link of navLinks">
+          <p-menubar [model]="menuItems" class="border-none" />
+          <!-- <ng-container *ngFor="let link of navLinks">
             <a
               [routerLink]="link.href"
               [ngClass]="{
@@ -116,31 +117,31 @@
                 'text-gray-600 hover:text-purple-600': pathname !== link.href
               }"
               [attr.aria-current]="pathname === link.href ? 'page' : null"
-              data-oid="3qz81sz"
+              
               *ngIf="link.icon; else noIcon"
             >
-              <!-- SVG icon for settings -->
+              < !-- SVG icon for settings -- >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                data-oid="6vrpwrh"
+                
               >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  data-oid="fv30jd9"
+                  
                 />
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  data-oid="ukd9gte"
+                  
                 />
               </svg>
             </a>
@@ -153,15 +154,21 @@
                   'text-gray-600 hover:text-purple-600': pathname !== link.href
                 }"
                 [attr.aria-current]="pathname === link.href ? 'page' : null"
-                data-oid="-o2npqv"
+                
               >
                 {{ link.label }}
               </a>
             </ng-template>
-          </ng-container>
+          </ng-container> -->
         </ng-container>
         <app-lock-button />
       </div>
+
+      <!-- <div class="p-toolbar-group-end" #toolbar>
+        <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
+        <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
+        <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
+      </div> -->
     </div>
   </div>
 
@@ -172,7 +179,7 @@
       'translate-x-0': mobileMenuOpen,
       '-translate-x-full': !mobileMenuOpen
     }"
-    data-oid="e8od-p_"
+    
   >
     <!-- Overlay -->
     <div
@@ -182,32 +189,32 @@
         'opacity-0': !mobileMenuOpen
       }"
       (click)="toggleMobileMenu()"
-      data-oid="thyiey-"
+      
     ></div>
 
     <!-- Drawer content -->
     <div
       class="absolute top-0 left-0 w-3/4 max-w-xs h-full bg-white shadow-xl flex flex-col"
-      data-oid="qx9whwn"
+      
     >
       <!-- Drawer header -->
       <div
         class="p-4 border-b border-gray-200 flex items-center justify-between"
-        data-oid="cvo8nla"
+        
       >
-        <a routerLink="/" (click)="toggleMobileMenu()" data-oid="r.dd.2d">
+        <a routerLink="/" (click)="toggleMobileMenu()" >
           <img
             class="w-[50px] h-[50px]"
             src="assets/icon.png"
             alt="Recovery Tracker"
-            data-oid="ngu6arn"
+            
           />
         </a>
         <button
           class="text-gray-500 hover:text-gray-700 focus:outline-none"
           (click)="toggleMobileMenu()"
           aria-label="Close menu"
-          data-oid="so5:mvg"
+          
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -215,24 +222,24 @@
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            data-oid="_2.-ke4"
+            
           >
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
               d="M6 18L18 6M6 6l12 12"
-              data-oid="hd.-zqr"
+              
             />
           </svg>
         </button>
       </div>
 
       <!-- Drawer navigation -->
-      <nav class="flex-1 overflow-y-auto p-4" data-oid="sh.-rnl">
-        <ul class="space-y-4" data-oid="8d.ggih">
+      <nav class="flex-1 overflow-y-auto p-4" >
+        <ul class="space-y-4" >
           <ng-container *ngIf="!isProtected || isAuthenticated">
-            <li *ngFor="let link of navLinks" data-oid="uf2zzii">
+            <li *ngFor="let link of navLinks" >
               <a
                 [routerLink]="link.href"
                 [ngClass]="{
@@ -241,7 +248,7 @@
                   'text-gray-700 hover:bg-gray-50 hover:text-purple-600': pathname !== link.href
                 }"
                 [attr.aria-current]="pathname === link.href ? 'page' : null"
-                data-oid="6oa6y4z"
+                
               >
                 <ng-container *ngIf="link.icon; else navIcon">
                   <!-- Settings icon -->
@@ -251,21 +258,21 @@
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    data-oid="_vuh2:_"
+                    
                   >
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
                       d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      data-oid="2un1uc-"
+                      
                     />
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       stroke-width="2"
                       d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      data-oid="1czxxm0"
+                      
                     />
                   </svg>
                   Settings
@@ -281,8 +288,8 @@
       </nav>
 
       <!-- Drawer footer -->
-      <div class="p-4 border-t border-gray-200" data-oid="9nxbz6w">
-        <div class="flex justify-center" data-oid="mzgmigy">
+      <div class="p-4 border-t border-gray-200" >
+        <div class="flex justify-center" >
           <app-lock-button />
         </div>
       </div>

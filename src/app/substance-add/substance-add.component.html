@@ -1,34 +1,30 @@
-<p-panel class="shipping-card" [header]="'Adicionar Substância' | translate">
-  
-  <p 
-    class="substance-add-subtitle"
-    joyrideStep="substanceAddStart"
-    [title]="'Vamos começar' | translate"
-    [text]="'Esperamos que goste do app. Não será uma jornada fácil se livrar do seu vício, mas sabemos que as recompensas serão grandes. Vamos começar adicionando a substância, ok?' | translate"
-    stepPosition="center"
-    translate
-  >
-    Adicione uma substância que gostaria de parar de usar.
-  </p>
-  <p-toast />
-  <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
-    <div class="field">
-      <p-floatLabel>
-        <input 
-            id="name" 
-            pInputText 
-            type="text" 
-            formControlName="name"
-            joyrideStep="substanceAdd"
-            [title]="'Adicionar Substância' | translate"
-            [text]="'Para começar, você precisa registrar qual a substância que usa e gostaria de controlar com o App. Alguns exemplos: álcool, cigarro, maconha, cocaína, extasy, etc.' | translate"
-        />
-        <label for="name" translate>Substância</label>
-      </p-floatLabel>
-    </div>
-    <div class="field">
-      <p-button type="submit" translate>Salvar</p-button>
-    </div>
-  </form>
-</p-panel>
-  
+<div class="max-w-xl mx-auto px-4 py-8">
+  <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent mb-4">
+      {{ 'Adicionar Substância' | translate }}
+    </h2>
+    <p class="italic text-sm text-gray-500 mb-4" translate>
+      Adicione uma substância que gostaria de parar de usar.
+    </p>
+    <p-toast />
+    <form [formGroup]="substanceForm" novalidate (ngSubmit)="onSubmit()">
+      <div class="field">
+        <p-floatLabel>
+          <input 
+              id="name" 
+              pInputText 
+              type="text" 
+              formControlName="name"
+              joyrideStep="substanceAdd"
+              [title]="'Adicionar Substância' | translate"
+              [text]="'Para começar, você precisa registrar qual a substância que usa e gostaria de controlar com o App. Alguns exemplos: álcool, cigarro, maconha, cocaína, extasy, etc.' | translate"
+          />
+          <label for="name" translate>Substância</label>
+        </p-floatLabel>
+      </div>
+      <div class="field">
+        <p-button type="submit" class="bg-gradient-to-r from-purple-500 to-orange-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-orange-600 transition-all" translate>Salvar</p-button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { ButtonModule } from "primeng/button";
 import { SpeedDialModule } from "primeng/speeddial";
 import { MenuItem } from "primeng/api";
 import { TieredMenuModule } from "primeng/tieredmenu";
+import { MenubarModule } from "primeng/menubar";
 import { JoyrideModule, JoyrideService } from "ngx-joyride";
 import { CookieService } from "ngx-cookie-service";
 import {
@@ -41,7 +42,8 @@ import { LockButtonComponent } from "./components/lock-button.component";
         MenuModule,
         TranslateModule,
         LockButtonComponent,
-        CommonModule
+        CommonModule,
+        MenubarModule,
     ],
     providers: [CookieService, RouterLink],
     templateUrl: "./app.component.html",
@@ -49,8 +51,8 @@ import { LockButtonComponent } from "./components/lock-button.component";
 })
 export class AppComponent implements OnInit {
     
-    isProtected: any;
-    isAuthenticated: any;
+    isProtected: any = false;
+    isAuthenticated: any = false;
     navLinks: any;
     pathname: any;
     
@@ -223,7 +225,7 @@ export class AppComponent implements OnInit {
             {
                 label: await firstValueFrom(this.translate.get("Home")),
                 routerLink: "/",
-                icon: "pi pi-home",
+                //icon: "pi pi-home",
             } as MenuItem,
             {
                 label: "Consumo",
@@ -233,66 +235,66 @@ export class AppComponent implements OnInit {
                             this.translate.get("Acompanhar")
                         ),
                         routerLink: "/usage-track",
-                        icon: "pi pi-chart-line",
+                        //icon: "pi pi-chart-line",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
                             this.translate.get("Intervalos de Consumo")
                         ),
                         routerLink: "/usage-interval",
-                        icon: "pi pi-clock",
+                        //icon: "pi pi-clock",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
                             this.translate.get("Adicionar")
                         ),
                         routerLink: "/usage-add",
-                        icon: "pi pi-plus",
+                        //icon: "pi pi-plus",
                     } as MenuItem,
-                ],
-            },
-            {
-                separator: true,
-            },
-            {
-                label: await firstValueFrom(
-                    this.translate.get("Recomendações")
-                ),
-                items: [
                     {
                         label: await firstValueFrom(
                             this.translate.get("Recomendações")
                         ),
                         routerLink: "/recommendations",
-                        icon: "pi pi-book",
+                        //icon: "pi pi-book",
                     } as MenuItem,
-                ],
-            },
-            {
-                separator: true,
-            },
-            {
-                label: await firstValueFrom(this.translate.get("Gastos")),
-                items: [
                     {
                         label: await firstValueFrom(
-                            this.translate.get("Acompanhar")
+                            this.translate.get("Acompanhar Gastos")
                         ),
                         routerLink: "/cost",
-                        icon: "pi pi-wallet",
+                        //icon: "pi pi-wallet",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
-                            this.translate.get("Adicionar")
+                            this.translate.get("Adicionar Gastos")
                         ),
                         routerLink: "/cost-add",
-                        icon: "pi pi-money-bill",
+                        //icon: "pi pi-money-bill",
                     } as MenuItem,
                 ],
             },
-            {
-                separator: true,
-            },
+            // {
+            //     separator: true,
+            // },
+            // {
+            //     label: await firstValueFrom(
+            //         this.translate.get("Recomendações")
+            //     ),
+                
+            // },
+            // {
+            //     separator: true,
+            // },
+            // {
+            //     label: await firstValueFrom(this.translate.get("Gastos")),
+            //     items: [
+                    
+            //     ],
+            // },
+            // {
+            //     separator: true,
+            // },
             {
                 label: await firstValueFrom(
                     this.translate.get("Configurações")
@@ -303,55 +305,56 @@ export class AppComponent implements OnInit {
                             this.translate.get("Adicionar Substância")
                         ),
                         routerLink: "/substance-add",
-                        icon: "pi pi-user-minus",
+                        // icon: "pi pi-user-minus",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
                             this.translate.get("Backup")
                         ),
                         routerLink: "/backup",
-                        icon: "pi pi-lock",
+                        // icon: "pi pi-lock",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
                             this.translate.get("Sincronizar dispositivos")
                         ),
                         routerLink: "/sync",
-                        icon: "pi pi-sync",
+                        // icon: "pi pi-sync",
                     } as MenuItem,
                     {
                         label: await firstValueFrom(
                             this.translate.get("Mudar tema")
                         ),
                         command: () => this.switchTheme(),
-                        icon: "pi pi-moon",
+                        // icon: "pi pi-moon",
                     } as MenuItem,
+                    {
+                        label: await firstValueFrom(this.translate.get("Idioma")),
+                        items: [
+                            {
+                                label: await firstValueFrom(
+                                    this.translate.get("Português")
+                                ),
+                                command: () => this.switchLanguage("pt-BR"),
+                            },
+                            {
+                                label: await firstValueFrom(
+                                    this.translate.get("Inglês")
+                                ),
+                                command: () => this.switchLanguage("en"),
+                            },
+                        ],
+                    },
                 ],
             },
-            {
-                label: await firstValueFrom(this.translate.get("Idioma")),
-                items: [
-                    {
-                        label: await firstValueFrom(
-                            this.translate.get("Português")
-                        ),
-                        command: () => this.switchLanguage("pt-BR"),
-                    },
-                    {
-                        label: await firstValueFrom(
-                            this.translate.get("Inglês")
-                        ),
-                        command: () => this.switchLanguage("en"),
-                    },
-                ],
-            },
-            {
-                separator: true,
-            },
+            
+            // {
+            //     separator: true,
+            // },
             {
                 label: await firstValueFrom(this.translate.get("Sobre")),
                 routerLink: "/about",
-                icon: "pi pi-info",
+                //icon: "pi pi-info",
             } as MenuItem,
         ];
     }

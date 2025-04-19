@@ -13,6 +13,9 @@
     left: -100% !important;
 }
 
+::ng-deep .p-menubar {
+    border: none;
+}
 
 @media (max-width: 600px) {
     h2.title {
