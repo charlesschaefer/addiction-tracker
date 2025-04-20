@@ -12,9 +12,11 @@ import { RecommendationsComponent } from "./recommendations/recommendations.comp
 import { BackupComponent } from "./backup/backup.component";
 import { RespirationComponent } from './respiration/respiration.component';
 import { SynchronizationComponent } from "./synchronization/synchronization.component";
+import { UsageEntriesPageComponent } from "./usage-entries/usage-entries.component";
+import { HomeComponent } from "./home/home.component";
 
 export const routes: Routes = [
-    {path: '', component: UsageComponent},
+    {path: '', component: HomeComponent},
     {path: 'usage-add', component: UsageAddComponent},
     {path: 'usage-track', component: UsageTrackComponent},
     {path: 'substance-add', component: SubstanceAddComponent},
@@ -25,5 +27,6 @@ export const routes: Routes = [
     {path: 'backup', component: BackupComponent},
     {path: 'respiration', component: RespirationComponent},
     {path: 'about', component: VersionComponent},
-    {path: 'sync', component: SynchronizationComponent}
+    {path: 'sync', component: SynchronizationComponent},
+    {path: 'usage-entries', component: UsageEntriesPageComponent}
 ];

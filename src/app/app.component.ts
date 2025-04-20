@@ -87,9 +87,8 @@ export class AppComponent implements OnInit {
 
     showOnboarding = false;
     showAuthPrompt = false;
-    showMotivationalFactors = false;
-    showMotivationalPrompt = false;
-    showRecordPopup = false;
+    
+    
     showBreathingPrompt = false;
     showBreathingExercise = false;
     addingMotivationalFactor = false;
@@ -99,7 +98,7 @@ export class AppComponent implements OnInit {
 
     substances: any[] = [];
     selectedSubstance = "";
-    currentMotivationalFactor: any = null;
+    
     date = "";
     time = "";
     amount = "";
@@ -117,40 +116,12 @@ export class AppComponent implements OnInit {
     selectedTriggers: string[] = [];
     newTrigger = "";
     usageHistory: any[] = [];
-    achievements: any[] = [
-        { id: 1, title: 'First Step', description: 'Record your first entry', completed: false },
-        {
-            id: 2,
-            title: '1 Week Milestone',
-            description: 'Maintain 7 days of sobriety',
-            completed: true,
-        },
-        {
-            id: 3,
-            title: '1 Month Strong',
-            description: 'Maintain 30 days of sobriety',
-            completed: false,
-        },
-        {
-            id: 4,
-            title: 'Trigger Awareness',
-            description: 'Identify 5 different triggers',
-            completed: true,
-        },
-        {
-            id: 5,
-            title: '3 Month Journey',
-            description: 'Maintain 90 days of sobriety',
-            completed: false,
-        },
-    ];
+    
     
     mobileMenuOpen: any;
 
     constructor(
         private themeService: ThemeService,
-        private joyrideService: JoyrideService,
-        private cookieService: CookieService,
         private translate: TranslateService,
         private router: Router
     ) {
@@ -184,10 +155,6 @@ export class AppComponent implements OnInit {
             this.themeService.switchTheme(userTheme);
         }
 
-        const sawGuidedTour = this.cookieService.get("sawGuidedTour");
-        if (!sawGuidedTour) {
-            this.initializeGuidedTour();
-        }
     }
 
     async notify() {
@@ -359,48 +326,12 @@ export class AppComponent implements OnInit {
         ];
     }
 
-    initializeGuidedTour() {
-        this.joyrideService
-            .startTour({
-                steps: [
-                    "firstStep",
-                    "substanceAdd@substance-add",
-                    "dialMenu",
-                    "usageAdd@usage-add",
-                    "triggerAdd@usage-add",
-                    "usageTrack@usage-track",
-                    "costAdd@cost-add",
-                    "recommendations@recommendations",
-                    "substanceAddStart@substance-add",
-                ],
-            })
-            .subscribe({
-                complete: () => {
-                    this.cookieService.set("sawGuidedTour", "1");
-                },
-            });
-    }
-
-    handleMotivationalFeedback(feedback: any) {
-        /* ... */
-    }
-    handleSubmit() {
-        /* ... */
-    }
-    setShowRecordPopup(val: boolean) {
-        this.showRecordPopup = val;
-    }
-    setShowMotivationalFactors(val: boolean) {
-        this.showMotivationalFactors = val;
-    }
-    calculateSobrietyDays(usageHistory: any): number {
-        return 0;
-    }
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
     }
-    onAddRecordClick() {
-        throw new Error("Method not implemented.");
+    
+    calculateSobrietyDays(usageHistory: any): number {
+        return 0;
     }
     
 }
