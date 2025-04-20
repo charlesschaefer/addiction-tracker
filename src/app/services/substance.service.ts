@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { DbService } from './db.service';
