@@ -44,7 +44,7 @@ export class SubstanceAddComponent {
     formSubmitted = false;
     
     constructor(
-        private substanceService: SubstanceService<SubstanceAddDto>,
+        private substanceService: SubstanceService,
         private snackBar: MatSnackBar,
         private router: Router,
         private messageService: MessageService,
@@ -63,7 +63,7 @@ export class SubstanceAddComponent {
             return;
         }
 
-        const substances = await firstValueFrom(this.substanceService.getByField('name', this.substanceForm.value.name));
+        const substances = await this.substanceService.getByField('name', this.substanceForm.value.name);
         if (substances.length) {
             this.messageService.add({ 
                 severity: 'error', 
@@ -76,8 +76,7 @@ export class SubstanceAddComponent {
         const data: SubstanceAddDto = {
             name: this.substanceForm.value.name || ''
         };
-        this.substanceService.add(data).subscribe({
-            next: async (values) => {
+        this.substanceService.add(data).then(async (values) => {
                 this.substanceService.clearCache();
                 this.messageService.add({ 
                     severity: 'success', 
@@ -89,15 +88,13 @@ export class SubstanceAddComponent {
                 setTimeout(() => {
                     this.router.navigate(['/']);
                 }, 2000);
-            },
-            error: async (error) => {
+            }).catch(async (error) => {
                 this.messageService.add({ 
                     severity: 'error', 
                     summary: await firstValueFrom(this.translate.get('Erro')), 
                     detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância! ')) + error, 
                     life: 2000
                 });
-            }
-        });
+            });
     }
 }

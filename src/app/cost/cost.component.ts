@@ -52,8 +52,8 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
 
 
     constructor(
-        private costService: CostService<CostDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
+        private costService: CostService,
+        private substanceService: SubstanceService,
         private messageService: MessageService,
         private translate: TranslateService,
     ) {
@@ -61,12 +61,13 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
     }
     
     ngOnInit() {
-        this.substanceService.list().subscribe(substances => {
+        this.substanceService.list().then(results => {
+            const substances = results as SubstanceDto[];
             substances.map(substance => this.substances.set(substance.id, substance.name));
         });
 
-        this.costService.list().subscribe(costs => {
-           this.groupCostBySubstance(costs); 
+        this.costService.list().then(costs => {
+           this.groupCostBySubstance(costs as CostDto[]); 
            this.calculateTotalCosts();
            this.prepareChartData();
 
@@ -132,8 +133,7 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
     }
 
     removeCost(id: number) {
-        this.costService.remove(id).subscribe({
-            next: async values => {
+        this.costService.remove(id).then(async values => {
                 this.messageService.add({
                     severity: "success",
                     summary: await firstValueFrom(this.translate.get("Tudo certo")),
@@ -141,15 +141,13 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
                     life: 2000
                 });
                 setTimeout(() => window.location.reload(), 2000);
-            },
-            error: async err => {
+            }).catch(async err => {
                 this.messageService.add({
                     severity: "error",
                     summary: await firstValueFrom(this.translate.get("Erro")),
                     detail: await firstValueFrom(this.translate.get("Não foi possível remover o gasto")),
                     life: 2000
                 });
-            }
-        })
+            });
     }
 }

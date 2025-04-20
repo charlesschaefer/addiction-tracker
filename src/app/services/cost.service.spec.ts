@@ -7,7 +7,7 @@ import { CostService } from './cost.service';
 import { CostAddDto } from '../dto/cost.dto';
 
 describe('CostService', () => {
-  let service: CostService<CostAddDto>;
+  let service: CostService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

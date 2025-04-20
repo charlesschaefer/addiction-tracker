@@ -1,76 +1,78 @@
-import { Injectable } from "@angular/core";
-import { NgxIndexedDBService } from "ngx-indexed-db";
-import { BehaviorSubject, Observable, catchError, map, throwError } from "rxjs";
+import { Inject, Injectable } from "@angular/core";
+import { Table } from "dexie";
+import { DatabaseChangeType } from "dexie-observable/api";
+import { BehaviorSubject, Observable, from } from "rxjs";
+import { AppDb, TableKeys } from "../app.db";
+import { Changes, DataUpdatedService } from "./data-updated.service";
+import { DbService } from "./db.service";
 
 @Injectable({ providedIn: 'root' })
 export abstract class ServiceAbstract<T> {
     private cache: BehaviorSubject<T[]> = new BehaviorSubject<T[]>([]);
     private useCache = true;
-    abstract storeName: string;
+    protected abstract storeName: TableKeys;
+    protected table!: Table<T, any, any>;
+    protected abstract dbService: DbService;
 
-    constructor(
-        protected dbService: NgxIndexedDBService
-    ) {}
+    @Inject(DataUpdatedService) protected dataUpdatedService?: DataUpdatedService;
 
-    /**
-     * Gets a cached list of accounts
-     * 
-     * @returns Observable<BaseDto[]>
-     */
-    list(): Observable<T[]> {
-        // TODO: it is fetching from cache, but not storing in it
-        if (this.useCache && this.cache.getValue().length) {
-            return new Observable<T[]>((observer) => {
-                observer.next(this.cache.getValue());
-            });
-        }
-        const cached = this.dbService.getAll<T>(this.storeName);
-        cached.subscribe(value => this.cache  = new BehaviorSubject<T[]>(value));
-        return cached;
+    constructor() {}
+
+    setTable() {
+        this.table = this.dbService.getTable(this.storeName) as Table<T>;
+    }
+
+    list() {
+        return this.table.toArray();
     }
 
     add(data: T) {
-        this.clearCache();
-        return this.dbService.add(this.storeName, data);
+        const promise = this.table.add(data);
+        promise.then(() => this.dataUpdatedService?.next([{
+            type: DatabaseChangeType.Create,
+            table: this.storeName,
+            key: 'id',
+            obj: data
+        } as Changes]))
+        return promise;
     }
 
-    bulkAdd(data: T[]): Observable<number[]> {
-        this.clearCache();
-        return this.dbService.bulkAdd(this.storeName, data as T & {key?: any}[]);
+    bulkAdd(data: T[]) {
+        const promise = this.table.bulkAdd(data);
+        return promise;
     }
 
-    edit(data: T): Observable<T> {
-        this.clearCache();
-        return this.dbService.update(this.storeName, data)
-            .pipe(
-                map((response: T) => response),
-                catchError((error: T) => throwError(error))
-            );
+    edit(id: number, data: T) {
+        const promise = this.table.update(id, data as any);
+        return promise;
     }
 
-    get(id: number): Observable<T> {
-        return this.dbService.getByID<T>(this.storeName, id);
+    get(id: number) {
+        const promise = this.table.get(id);
+        return promise;
     }
 
-    getByField(field: string, value: any): Observable<T[]> {
-        return this.dbService.getAllByIndex(this.storeName, field, IDBKeyRange.only(value)) as Observable<T[]>;
+    getByField(field: string, value: any) {
+        const where: Record<string, any> = {};
+        where[field] = value;
+        return this.table.where(where).toArray();
     }
 
-    remove(id: number): Observable<any> {
-        this.clearCache();
-        return this.dbService.deleteByKey(this.storeName, id);
+    remove(id: number) {
+        const promise = this.table.delete(id);
+        return promise;
     }
 
-    clear(): Observable<any> {
-        this.clearCache();
-        return this.dbService.clear(this.storeName);
+    clear() {
+        const promise = this.table.clear();
+        return promise;
     }
 
-    deactivateCache(): void {
+    deactivateCache() {
         this.useCache = false;
     }
 
-    clearCache(): void {
+    clearCache() {
         this.cache = new BehaviorSubject<T[]>([]);
     }
 }

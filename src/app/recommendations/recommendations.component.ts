@@ -33,13 +33,13 @@ export class RecommendationsComponent implements OnInit {
     trigger: string;
     
     constructor(
-        private triggerService: TriggerService<TriggerDto>,
+        private triggerService: TriggerService,
         private translate: TranslateService,
     ) {}
 
     ngOnInit(): void {
-        this.triggerService.list().subscribe(triggers => {
-            this.triggers = triggers;
+        this.triggerService.list().then(triggers => {
+            this.triggers = triggers as TriggerDto[];
         });
     }
 

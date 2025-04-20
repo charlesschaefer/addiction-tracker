@@ -11,9 +11,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { providePrimeNG } from 'primeng/config';
 import { AppTheme } from './app.theme';
+import { AppDb } from "./app.db";
 
 import { routes } from "./app.routes";
 import { dbConfig } from "./db.config";
+import { DbService } from "./services/db.service";
 
 registerLocaleData(localePt);
 // AoT requires an exported function for factories
@@ -28,7 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideLuxonDateAdapter(),
     importProvidersFrom(JoyrideModule.forRoot()),
-    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
+    //importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
     importProvidersFrom(TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
@@ -53,6 +55,14 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: '.dark-mode'
         }
       }
-    })
+    }),
+    {
+      provide: 'AppDb',
+      useClass: AppDb
+    },
+    {
+        provide: 'DbService',
+        useClass: DbService
+    }
   ],
 };

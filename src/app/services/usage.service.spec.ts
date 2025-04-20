@@ -8,7 +8,7 @@ import { UsageDto } from '../dto/usage.dto';
 import { DateTime } from 'luxon';
 
 describe('UsageService', () => {
-  let service: UsageService<UsageDto>;
+  let service: UsageService;
   let usages: UsageDto[];
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe('UsageService', () => {
         importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
       ],
     });
-    service = TestBed.inject(UsageService<UsageDto>);
+    service = TestBed.inject(UsageService);
 
     usages = [
       {id: 1, substance: 1, sentiment: 2, craving: 2, datetime: new Date('2024-01-01 10:10'), quantity: 2, trigger: [{name: "trigger 1"}]},

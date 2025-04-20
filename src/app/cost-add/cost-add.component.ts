@@ -51,15 +51,15 @@ export class CostAddComponent implements OnInit {
     substances: SubstanceDto[];
 
     constructor(
-        private substanceService: SubstanceService<SubstanceDto>,
-        private costAddService: CostService<CostAddDto>,
+        private substanceService: SubstanceService,
+        private costAddService: CostService,
         private messageService: MessageService,
         private router: Router,
         private translate: TranslateService,
     ) {}
     
     ngOnInit() {
-        this.substanceService.list().subscribe(substances => this.substances = substances);
+        this.substanceService.list().then(substances => this.substances = substances as SubstanceDto[]);
     }
     
     async onSubmit() {
@@ -80,8 +80,7 @@ export class CostAddComponent implements OnInit {
             date: form.date || new Date()
         };
 
-        this.costAddService.add(data).subscribe({
-            next: async value => {
+        this.costAddService.add(data).then(async value => {
                 this.costAddService.clearCache();
                 this.messageService.add({ 
                     severity: 'success', 
@@ -93,16 +92,14 @@ export class CostAddComponent implements OnInit {
                 setTimeout(() => {
                     this.router.navigate(['/cost']);
                 }, 2000);
-            },
-            error: async error => {
+            }).catch(async error => {
                 this.messageService.add({ 
                     severity: 'error', 
                     summary: await firstValueFrom(this.translate.get('Erro')), 
                     detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar o gasto!')), 
                     life: 2000
                 });
-            }
-        });
+            });
     }
     
 }

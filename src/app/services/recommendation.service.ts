@@ -1,28 +1,39 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
+import { RecommendationDto, RecommendationAddDto } from '../dto/recommendation.dto';
+import { AppDb } from '../app.db';
 import { firstValueFrom } from 'rxjs';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { invoke } from '@tauri-apps/api/core';
+import { DbService } from './db.service';
 
 interface ApiSecret {
     project: string,
     api_key: string
 }
 
+type Recommendations = RecommendationDto | RecommendationAddDto;
+
 @Injectable({
     providedIn: 'root'
 })
-export class RecommendationService<T> extends ServiceAbstract<T> {
-    storeName = 'recommendations';
+export class RecommendationService extends ServiceAbstract<Recommendations> {
+    protected override storeName: 'recommendations' = 'recommendations';
+
+    constructor(
+        protected override dbService: DbService
+    ) {
+        super();
+        this.setTable();
+    }
     
-    
-    async fetchRecommendation(trigger: string): Promise<T> {
-        let recommendation: T[] = await firstValueFrom(this.getByField('trigger', trigger));
+    async fetchRecommendation(trigger: string): Promise<Recommendations> {
+        let recommendation: Recommendations[] = await this.getByField('trigger', trigger);
         if (!recommendation.length) {
             // looks for recommendation in google gemini and then stores it to cache
             const text = await this.fetchRecommendationFromGemini(trigger);
             
-            const success = await firstValueFrom(this.add({trigger, text} as T));
+            const success = await this.add({trigger, text} as unknown as RecommendationAddDto);
             if (success) {
                 recommendation = [success];
             }

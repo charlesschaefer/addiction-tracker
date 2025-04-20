@@ -25,8 +25,8 @@ export class RecommendationComponent implements OnChanges {
     showRecommendationDialog = false;
 
     constructor(
-        private usageService: UsageService<UsageDto>,
-        private recommendationService: RecommendationService<RecommendationDto>,
+        private usageService: UsageService,
+        private recommendationService: RecommendationService,
         private translate: TranslateService,
     ) {}
 

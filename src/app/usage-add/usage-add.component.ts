@@ -90,11 +90,11 @@ export class UsageAddComponent implements OnInit {
     showRespirationExerciseDialog = true;
     
     constructor(
-        private substanceService: SubstanceService<SubstanceDto>,
-        private triggerService: TriggerService<TriggerDto>,
-        private triggerAddService: TriggerService<TriggerAddDto>,
-        private usageService: UsageService<UsageDto>,
-        private usageAddService: UsageService<UsageAddDto>,
+        private substanceService: SubstanceService,
+        private triggerService: TriggerService,
+        private triggerAddService: TriggerService,
+        private usageService: UsageService,
+        private usageAddService: UsageService,
         private messageService: MessageService,
         protected router: Router,
         private activatedRoute: ActivatedRoute,
@@ -106,7 +106,8 @@ export class UsageAddComponent implements OnInit {
         if (returning) {
             this.showRespirationExerciseDialog = false;
         }
-        this.substanceService.list().subscribe(substances => {
+        this.substanceService.list().then(results => {
+            const substances = results as SubstanceDto[];
             if (!substances.length) {
                 this.router.navigate(['/substance-add']);
                 return;
@@ -114,7 +115,8 @@ export class UsageAddComponent implements OnInit {
             this.substances = substances;
         });
 
-        this.triggerService.list().subscribe(triggers => {
+        this.triggerService.list().then(results => {
+            const triggers = results as TriggerDto[];
             this.triggers = triggers;
             this.filteredTriggers = triggers;
         });
@@ -150,7 +152,7 @@ export class UsageAddComponent implements OnInit {
             trigger: form.trigger || null
         };
 
-        this.usageAddService.add(usageData).subscribe(async result => {
+        this.usageAddService.add(usageData).then(async result => {
             this.usageService.clearCache();
             this.messageService.add({ 
                 severity: 'success',
@@ -182,7 +184,7 @@ export class UsageAddComponent implements OnInit {
     async saveTrigger() {
         const data: TriggerAddDto = { name: this.triggerForm.value.name as unknown as string };
 
-        const triggers = await firstValueFrom(this.triggerAddService.getByField('name', data.name));
+        const triggers = await this.triggerAddService.getByField('name', data.name);
         if (triggers.length) {
             this.messageService.add({ 
                 severity: 'error', 
@@ -193,23 +195,20 @@ export class UsageAddComponent implements OnInit {
             return;
         }
         
-        this.triggerAddService.add(data).subscribe({
-            next: values => {
+        this.triggerAddService.add(data).then(values => {
                 this.triggerAddService.clearCache();
                 this.triggers.push(values);
                 this.filteredTriggers = this.triggers;
                 
                 this.showAddTriggerDialog = false
-            },
-            error: async error => {
+            }).catch(async error => {
                 this.messageService.add({ 
                     severity: 'error', 
                     summary: await firstValueFrom(this.translate.get('Erro')), 
                     detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância!')), 
                     life: 2000
                 });
-            }
-        });
+            });
     }
 
     increaseQuantity() {

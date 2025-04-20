@@ -75,10 +75,10 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     ];
 
     constructor(
-        private usageService: UsageService<UsageDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
+        private usageService: UsageService,
+        private substanceService: SubstanceService,
         private messageService: MessageService,
-        private recommendationService: RecommendationService<RecommendationDto>,
+        private recommendationService: RecommendationService,
         private route: Router,
         private translate: TranslateService
     ) {
@@ -86,7 +86,8 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     }
     
     ngOnInit(): void {
-        this.substanceService.list().subscribe(substances => {
+        this.substanceService.list().then(results => {
+            const substances = results as SubstanceDto[];
             if (!substances.length) {
                 this.route.navigate(["/substance-add"]);
                 return;
@@ -94,18 +95,18 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
             substances.forEach(substance => this.substances.set(substance.id, substance.name));
         });
 
-        this.usageService.list().subscribe(usages => {
+        this.usageService.list().then(usages => {
             usages.sort((a, b) => a.datetime < b.datetime ? 1 : -1);
 
-            this.originalUsages = usages;
-            this.groupUsageBySubstance(usages);
+            this.originalUsages = usages as UsageDto[];
+            this.groupUsageBySubstance(this.originalUsages);
 
             this.initializePagination();
             this.generatePaginatedItems();
 
-            this.calculateTimeWithoutUsage(usages);
+            this.calculateTimeWithoutUsage(this.originalUsages);
 
-            this.getRecommendations(usages);
+            this.getRecommendations(this.originalUsages);
         });
         
     }
@@ -154,8 +155,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
     }
 
     removeUsage(id: number) {
-        this.usageService.remove(id).subscribe({
-            next: async value => {
+        this.usageService.remove(id).then(async value => {
                 this.messageService.add({
                     severity: 'success',
                     summary: await firstValueFrom(this.translate.get('Tudo certo')),
@@ -163,16 +163,14 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
                     life: 2000
                 });
                 setTimeout(() => window.location.reload(), 2000);
-            },
-            error: async err => {
+            }).catch(async err => {
                 this.messageService.add({
                     severity: 'success',
                     summary: await firstValueFrom(this.translate.get('Erro')),
                     detail: await firstValueFrom(this.translate.get('Não foi possível remover o registro!')),
                     life: 2000
                 });
-            }
-        })
+            });
     }
 
     

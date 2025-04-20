@@ -59,10 +59,10 @@ export class BackupComponent {
     filePointer: any;
 
     constructor(
-        private costService: CostService<CostDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
-        private usageService: UsageService<UsageDto>,
-        private triggerService: TriggerService<TriggerDto>,
+        private costService: CostService,
+        private substanceService: SubstanceService,
+        private usageService: UsageService,
+        private triggerService: TriggerService,
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private backupService: BackupService,

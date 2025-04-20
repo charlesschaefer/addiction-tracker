@@ -75,35 +75,36 @@ export class UsageTrackComponent implements OnInit {
     };
 
     constructor(
-        private usageService: UsageService<UsageDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
-        private recommendationService: RecommendationService<RecommendationDto>,
+        private usageService: UsageService,
+        private substanceService: SubstanceService,
+        private recommendationService: RecommendationService,
         private route: Router,
         private translate: TranslateService
     ) {}
 
     ngOnInit() {
         this.usageService.clearCache();
-        this.substanceService.list().subscribe(result => {
+        this.substanceService.list().then(result => {
             if (!result.length) {
                 this.route.navigate(['/substance-add']);
                 return;
             }
-            result.map(substance => {
-                this.substances.set(substance.id, substance);
+            result.map(result => {
+                const substance = result as SubstanceDto;
+                this.substances.set(substance.id, substance as SubstanceDto);
             });
         });
 
-        this.usageService.list().subscribe(result => {
+        this.usageService.list().then(result => {
             if (result.length > 100) {
                 result = result.slice(-100);
             }
-            this.originalUsages = result;
+            this.originalUsages = result as UsageDto[];
 
-            this.prepareChartData(result);
-            this.prepareTriggerChart(result);
+            this.prepareChartData(this.originalUsages);
+            this.prepareTriggerChart(this.originalUsages);
 
-            this.getRecommendations(result);
+            this.getRecommendations(this.originalUsages);
         });
 
         window.addEventListener('resize', (event) => this.reRenderOnResize(event));
@@ -228,7 +229,8 @@ export class UsageTrackComponent implements OnInit {
         } else {
             this.groupByHour = false;
         }
-        this.usageService.list().subscribe((result: UsageDto[]) => {
+        this.usageService.list().then(res => {
+            const result = res as UsageDto[];
             if (this.groupByHour || this.groupByDay) {
             
                 let data; 
@@ -238,12 +240,12 @@ export class UsageTrackComponent implements OnInit {
                     data = this.usageService.groupByDay(result);
                 }
 
-                let finalData = this.usageService.groupMapToUsageDto(data);
+                let finalData = this.usageService.groupMapToUsages(data);
                 if (finalData.length > 100) {
                     finalData = finalData.slice(-100);
                 }
 
-                this.prepareChartData(finalData);
+                this.prepareChartData(finalData as UsageDto[]);
             } else {
                 this.prepareChartData(result);
             }

@@ -7,7 +7,7 @@ import { SubstanceService } from './substance.service';
 import { SubstanceAddDto } from '../dto/substance.dto';
 
 describe('SubstanceService', () => {
-  let service: SubstanceService<SubstanceAddDto>;
+  let service: SubstanceService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

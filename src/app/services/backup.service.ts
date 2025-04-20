@@ -25,10 +25,10 @@ export class BackupService {
     encryptedBackup: string;
 
     constructor(
-        private costService: CostService<CostDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
-        private usageService: UsageService<UsageDto>,
-        private triggerService: TriggerService<TriggerDto>,
+        private costService: CostService,
+        private substanceService: SubstanceService,
+        private usageService: UsageService,
+        private triggerService: TriggerService,
     ) { }
     
     backupData(encryptKey: string): Subject<string> {
@@ -97,27 +97,23 @@ export class BackupService {
         // });
         const backupResponse$ = new Subject();
 
-        this.substanceService.bulkAdd(jsonBackup.substance).subscribe({
-            complete: () => {
+        this.substanceService.bulkAdd(jsonBackup.substance).then(() => {
+            console.log("Chamou o next")
+        }).finally(() => {
                 console.log("Adicionou substance")
-                this.triggerService.bulkAdd(jsonBackup.trigger).subscribe(() => {
+                this.triggerService.bulkAdd(jsonBackup.trigger).then(() => {
                     console.log("Adicionou trigger")
-                    this.usageService.bulkAdd(jsonBackup.usage).subscribe(() => {
+                    this.usageService.bulkAdd(jsonBackup.usage).then(() => {
                         console.log("Adicionou usage")
-                        this.costService.bulkAdd(jsonBackup.cost).subscribe(() => {
+                        this.costService.bulkAdd(jsonBackup.cost).then(() => {
                             console.log("Adicionou cost")
                             backupResponse$.complete();
                         })
                     })
                 })
-            }, 
-            next: () => {
-                console.log("Chamou o next")
-            },
-            error: (err) => {
+            }).catch((err) => {
                 console.log("Errro: ", err);
-            }
-        });
+            });
 
 
         // savedData$.subscribe({

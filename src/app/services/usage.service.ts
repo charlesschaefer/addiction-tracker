@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
+import { AppDb } from '../app.db';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
+import { DbService } from './db.service';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -19,21 +21,30 @@ export interface FinalUsage {
     substance: number;
 };
 
+type Usages = UsageAddDto | UsageDto;
+
 @Injectable({
     providedIn: 'root'
 })
-export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
-    storeName = 'usage';
+export class UsageService extends ServiceAbstract<Usages> {
+    protected override storeName: 'usage' = 'usage';
 
-    groupByHour(usages: T[]): Map<number, Map<string, FinalUsage>> {
+    constructor(
+        protected override dbService: DbService
+    ) {
+        super();
+        this.setTable();
+    }
+
+    groupByHour(usages: Usages[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'hour');
     }
 
-    groupByDay(usages: T[]): Map<number, Map<string, FinalUsage>> {
+    groupByDay(usages: Usages[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'day');
     }
 
-    private groupBy(usages: T[], groupType: "hour" | "day"): Map<number, Map<string, FinalUsage>> {
+    private groupBy(usages: Usages[], groupType: "hour" | "day"): Map<number, Map<string, FinalUsage>> {
         const substance = new Map<number, Map<string, IntermediaryUsage>>();
         // create a map with data vectors, without calculating yet
         usages.forEach(usage => {
@@ -86,8 +97,8 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
         return finalGroup;
     }
 
-    groupMapToUsageDto(groupMap: Map<number, Map<string, FinalUsage>>): UsageDto[] {
-        const usageDtos: UsageDto[] = [];
+    groupMapToUsages(groupMap: Map<number, Map<string, FinalUsage>>): Usages[] {
+        const usageDtos: Usages[] = [];
         groupMap.forEach((usages) => {
             usages.forEach((finalUsage) => {
                 usageDtos.push({
@@ -98,14 +109,14 @@ export class UsageService<T extends UsageAddDto> extends ServiceAbstract<T> {
                     sentiment: finalUsage.sentiment,
                     substance: finalUsage.substance,
                     trigger: []
-                } as UsageDto);
+                } as Usages);
             })
         });
 
         return usageDtos;
     }
 
-    getMostUsedTrigger(result: UsageDto[]): [string, number] {
+    getMostUsedTrigger(result: Usages[]): [string, number] {
         let usageTriggers = new Map<string, number>();
         result.forEach(usage => {
             usage.trigger?.forEach(trigger => {

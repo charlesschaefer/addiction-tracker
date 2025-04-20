@@ -37,20 +37,21 @@ export class UsageIntervalComponent implements OnInit {
     };
 
     constructor(
-        private usageService: UsageService<UsageDto>,
-        private substanceService: SubstanceService<SubstanceDto>,
+        private usageService: UsageService,
+        private substanceService: SubstanceService,
         private route: Router,
         private translate: TranslateService
     ) {}
 
     ngOnInit(): void {
-        this.substanceService.list().subscribe(results => {
+        this.substanceService.list().then(results => {
             if (!results.length) {
                 this.route.navigate(['/substance-add']);
                 return;
             }
             const substanceMap = new Map();
-            results.forEach(substance => {
+            results.forEach(result => {
+                const substance = result as SubstanceDto;
                 if (!substanceMap.has(substance.id)) {
                     substanceMap.set(substance.id, substance.name);
                 }
@@ -58,8 +59,8 @@ export class UsageIntervalComponent implements OnInit {
             this.substances = substanceMap;
         });
 
-        this.usageService.list().subscribe(results => {
-            this.calculateIntervalBySubstance(results);
+        this.usageService.list().then(results => {
+            this.calculateIntervalBySubstance(results as UsageDto[]);
             this.prepareChartData();
         });
 
