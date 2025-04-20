@@ -1,0 +1,20 @@
+<div [ngClass]="cardStyles.default + ' p-4 md:p-6 mb-6 md:mb-8'">
+  <div class="flex items-center justify-between">
+    <div class="text-center">
+      <div class="text-2xl md:text-4xl font-bold text-purple-600">{{ sobrietyDays }}</div>
+      <div class="text-gray-600 text-xs md:text-sm mt-1">Days Sober</div>
+    </div>
+    <div class="h-16 w-16 md:h-24 md:w-24 rounded-full bg-gradient-to-br from-purple-100 to-orange-100 flex items-center justify-center border-4 border-purple-200 shadow-inner">
+      <div class="text-center">
+        <div class="text-base md:text-xl font-bold text-purple-700">
+          {{ Math.min(100, sobrietyDays * 3.33) | number:'1.0-0' }} %
+        </div>
+        <div class="text-[10px] md:text-xs text-purple-600">to 30 days</div>
+      </div>
+    </div>
+    <div class="text-center">
+      <div class="text-2xl md:text-4xl font-bold text-green-600">{{ totalEntries }}</div>
+      <div class="text-gray-600 text-xs md:text-sm mt-1">Total Entries</div>
+    </div>
+  </div>
+</div>

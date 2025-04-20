@@ -1,0 +1,86 @@
+<div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
+  <h2 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+    Financial Impact
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="bg-gradient-to-r from-purple-50 to-indigo-50 p-4 rounded-xl border border-purple-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-3">Current Spending</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Past Week</span>
+          <span class="font-medium">${{ calculateSpendingByPeriod('week') | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Past Month</span>
+          <span class="font-medium">${{ calculateSpendingByPeriod('month') | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Past Year</span>
+          <span class="font-medium">${{ calculateSpendingByPeriod('year') | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-purple-100">
+          <span class="text-gray-700 font-medium">Total All Time</span>
+          <span class="text-xl font-bold text-purple-600">${{ calculateTotalSpending() | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gradient-to-r from-orange-50 to-amber-50 p-4 rounded-xl border border-orange-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-3">Potential Savings</h3>
+      <div class="space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">Projected Annual Cost</span>
+          <span class="font-medium text-red-500">${{ projectAnnualSpending() | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">1 Year of Sobriety</span>
+          <span class="font-medium text-green-600">+${{ calculatePotentialSavings(1) | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-600">5 Years of Sobriety</span>
+          <span class="font-medium text-green-600">+${{ calculatePotentialSavings(5) | number:'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-orange-100">
+          <span class="text-gray-700 font-medium">10 Years of Sobriety</span>
+          <span class="text-xl font-bold text-orange-600">+${{ calculatePotentialSavings(10) | number:'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h3 class="text-lg font-medium text-gray-700 mb-3">Spending Distribution</h3>
+  <div class="h-64 mb-6 flex items-center justify-center">
+    <!-- Pie chart placeholder: Use ngx-charts or similar for real chart -->
+    <span class="text-gray-400">[Pie Chart Here]</span>
+  </div>
+  <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+      <h3 class="text-base font-medium text-gray-700">Detailed Cost Breakdown</h3>
+    </div>
+    <div class="divide-y divide-gray-200">
+      <div *ngFor="let item of prepareCostBySubstanceData(); let i = index" class="flex justify-between items-center p-4 hover:bg-gray-50">
+        <div class="flex items-center">
+          <div class="w-3 h-3 rounded-full mr-2" [ngStyle]="{ backgroundColor: COLORS[i % COLORS.length] }"></div>
+          <span>{{ item.name }}</span>
+        </div>
+        <span class="font-medium">${{ item.value | number:'1.2-2' }}</span>
+      </div>
+      <div class="flex justify-between items-center p-4 bg-gray-50 font-medium">
+        <span>Total</span>
+        <span>${{ calculateTotalSpending() | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm text-blue-700">
+          These calculations are based on your recorded usage. The potential savings represent money you could save by maintaining sobriety, which could be invested in your health, education, or other life goals.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

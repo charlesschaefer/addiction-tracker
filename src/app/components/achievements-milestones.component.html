@@ -1,0 +1,56 @@
+<div *ngIf="loading" class="card p-4 md:p-6">
+  <div class="flex justify-center items-center h-32">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+</div>
+@if (!loading) {
+<div  class="space-y-6">
+  <app-achievements-display [achievements]="achievements" (viewAll)="viewAll.emit()"></app-achievements-display>
+    <div class="card p-4 md:p-6 hidden md:block">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Achievement Progress</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-purple-50 rounded-lg p-4 border border-purple-100">
+        <div class="flex items-center mb-2">
+          <span class="mr-2">🚩</span>
+          <h3 class="font-medium text-purple-700">Next Milestone</h3>
+        </div>
+        @let incompleteAchievements = getIncompleteAchievements();
+        @if (incompleteAchievements.length > 0) {
+          
+          <div class="mt-2">
+            <p class="text-sm font-medium text-gray-700">{{ incompleteAchievements[0].title }}</p>
+            <p class="text-xs text-gray-600">{{ incompleteAchievements[0].description }}</p>
+          </div>
+        } @else {
+          <p class="text-sm text-gray-600">You've completed all achievements! Great job!</p>
+        }
+      </div>
+      <div class="bg-teal-50 rounded-lg p-4 border border-teal-100">
+        <div class="flex items-center mb-2">
+          <span class="mr-2">🏆</span>
+          <h3 class="font-medium text-teal-700">Recent Achievement</h3>
+        </div>
+        @let completedAchievements = getCompletedAchievements();
+        <ng-container *ngIf="completedAchievements.length > 0; else noneYet">
+          <div class="mt-2">
+            <p class="text-sm font-medium text-gray-700">
+              {{ completedAchievements[completedAchievements.length - 1].title }}
+            </p>
+            <p class="text-xs text-gray-600">
+              {{ completedAchievements[completedAchievements.length - 1].description }}
+            </p>
+          </div>
+        </ng-container>
+        <ng-template #noneYet>
+          <p class="text-sm text-gray-600">No achievements completed yet. Keep going!</p>
+        </ng-template>
+      </div>
+    </div>
+    <div class="mt-4 text-center">
+      <a routerLink="/achievements" class="inline-block px-4 py-2 text-sm font-medium text-purple-600 border border-purple-200 rounded-lg hover:bg-purple-50 transition-colors">
+        View All Achievements
+      </a>
+    </div>
+  </div>
+</div>
+}

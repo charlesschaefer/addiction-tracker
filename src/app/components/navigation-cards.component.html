@@ -1,0 +1,23 @@
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
+  <a *ngFor="let card of cards; let i = index" [routerLink]="card.href" class="block">
+    <div
+      [ngClass]="i === 0 ? cardStyles.interactive + ' p-4 md:p-6 h-full' : 'bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all transform hover:scale-[1.02] h-full'"
+    >
+      <div class="flex flex-col items-center text-center">
+        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full" [ngClass]="card.bgColor + ' flex items-center justify-center mb-2 md:mb-4'">
+          {{ card.icon }}
+        </div>
+        <h2 class="text-lg md:text-xl font-semibold mb-1 md:mb-2 bg-gradient-to-r" [ngClass]="'from-' + card.gradientFrom + ' to-' + card.gradientTo + ' bg-clip-text text-transparent'">
+          {{ card.title }}
+        </h2>
+        <p class="text-gray-600 text-xs md:text-sm hidden md:block">{{ card.description }}</p>
+        <div class="mt-2 md:mt-4 inline-flex items-center" [ngClass]="'text-' + card.iconColor + ' font-medium text-sm md:text-base'">
+          {{ card.linkText }}
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>

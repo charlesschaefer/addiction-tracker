@@ -1,0 +1,44 @@
+<div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
+  <h2 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+    Substance Analysis
+  </h2>
+  <!-- Substance Selector Tabs -->
+  <div class="mb-6 border-b border-gray-200">
+    <div class="flex flex-wrap -mb-px">
+      <button
+        (click)="setSelectedAnalysisSubstance('all')"
+        class="mr-2 inline-block py-2 px-4 text-sm font-medium"
+        [ngClass]="selectedAnalysisSubstance === 'all' ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent'"
+      >
+        All Substances
+      </button>
+      <button
+        *ngFor="let substance of substances"
+        (click)="setSelectedAnalysisSubstance(substance)"
+        class="mr-2 inline-block py-2 px-4 text-sm font-medium"
+        [ngClass]="selectedAnalysisSubstance === substance ? 'text-purple-600 border-b-2 border-purple-600' : 'text-gray-500 hover:text-gray-700 hover:border-gray-300 border-b-2 border-transparent'"
+      >
+        {{ substance }}
+      </button>
+    </div>
+  </div>
+  <!-- Usage by Substance Chart (placeholder) -->
+  <div *ngIf="selectedAnalysisSubstance === 'all'" class="mb-8">
+    <h3 class="text-lg font-medium text-gray-700 mb-4">Usage by Substance</h3>
+    <div class="h-64 flex items-center justify-center text-gray-400">[Bar Chart Here]</div>
+  </div>
+  <!-- Combined Trend Chart (placeholder) -->
+  <div class="mb-8">
+    <h3 class="text-lg font-medium text-gray-700 mb-4">
+      {{ selectedAnalysisSubstance === 'all' ? 'Overall Trends (Last 14 Days)' : (selectedAnalysisSubstance + ' Trends (Last 14 Days)') }}
+    </h3>
+    <div class="h-80 flex items-center justify-center text-gray-400">[Line Chart Here]</div>
+  </div>
+  <!-- Trigger Analysis for Selected Substance (placeholder) -->
+  <div>
+    <h3 class="text-lg font-medium text-gray-700 mb-4">
+      {{ selectedAnalysisSubstance === 'all' ? 'Overall Trigger Analysis' : (selectedAnalysisSubstance + ' Trigger Analysis') }}
+    </h3>
+    <div class="h-64 flex items-center justify-center text-gray-400">[Pie Chart Here]</div>
+  </div>
+</div>

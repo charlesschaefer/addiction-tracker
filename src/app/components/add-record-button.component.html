@@ -1,0 +1,25 @@
+<button
+  (click)="onClick()"
+  [ngClass]="
+    'fixed bottom-4 sm:bottom-8 right-4 sm:right-6 w-12 h-12 sm:w-16 sm:h-16 rounded-full ' +
+    tailwindClasses.gradients.primary +
+    ' text-white shadow-xl flex items-center justify-center hover:from-purple-600 hover:to-orange-600 transition-all z-10 transform hover:scale-105 active:scale-95 ' +
+    focusStyles.highContrast
+  "
+  aria-label="Add new record"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-7 w-7 sm:h-8 sm:w-8"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M12 4v16m8-8H4"
+    />
+  </svg>
+</button>

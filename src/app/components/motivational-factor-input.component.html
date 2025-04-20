@@ -1,0 +1,37 @@
+<div class="card p-4 mb-6">
+  <h3 class="font-medium text-gray-700 mb-4">Add a motivational factor</h3>
+  <div class="flex space-x-2 mb-4">
+    <button type="button" (click)="type = 'text'" [ngClass]="type === 'text' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'" class="px-3 py-2 rounded-md text-sm">Text</button>
+    <button type="button" (click)="type = 'image'" [ngClass]="type === 'image' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'" class="px-3 py-2 rounded-md text-sm">Image</button>
+    <button type="button" (click)="type = 'audio'" [ngClass]="type === 'audio' ? 'bg-purple-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'" class="px-3 py-2 rounded-md text-sm">Audio</button>
+  </div>
+  <ng-container [ngSwitch]="type">
+    <form *ngSwitchCase="'text'" (ngSubmit)="handleTextSubmit()" class="mb-3">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Why do you want to stop using this substance?</label>
+      <textarea [(ngModel)]="content" name="content" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50" rows="3" placeholder="E.g., I want to be healthier for my family..."></textarea>
+      <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors mt-2" [disabled]="!content.trim()">Add Motivation</button>
+    </form>
+    <div *ngSwitchCase="'image'">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Upload an image that motivates you to quit</label>
+      <input type="file" accept="image/*" (change)="handleImageUpload($event)" />
+    </div>
+    <div *ngSwitchCase="'audio'">
+      <label class="block text-sm font-medium text-gray-700 mb-2">Record a voice message to your future self</label>
+      <div class="flex flex-col items-center">
+        <button *ngIf="!isRecording && !audioURL" type="button" (click)="startRecording()" class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors flex items-center">
+          Start Recording
+        </button>
+        <div *ngIf="isRecording" class="flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center animate-pulse mb-2">
+            <div class="w-8 h-8 rounded-full bg-red-600"></div>
+          </div>
+          <p class="text-sm text-gray-600 mb-3">Recording...</p>
+          <button type="button" (click)="stopRecording()" class="px-4 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors">Stop Recording</button>
+        </div>
+        <div *ngIf="audioURL && !isRecording" class="mt-3 w-full">
+          <audio [src]="audioURL" controls class="w-full"></audio>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
