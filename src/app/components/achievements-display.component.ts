@@ -1,19 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { AchievementDto } from "../dto/achievement.dto";
 
-export interface Achievement {
-    id: number;
-    title: string;
-    description: string;
-    completed: boolean;
-    category:
-        | "sobriety"
-        | "engagement"
-        | "alternatives"
-        | "motivational"
-        | "financial";
-    icon?: string; // Use string for icon class or emoji for Angular
-}
+
 
 @Component({
     selector: "app-achievements-display",
@@ -22,7 +11,7 @@ export interface Achievement {
     templateUrl: "./achievements-display.component.html",
 })
 export class AchievementsDisplayComponent {
-    @Input() achievements: Achievement[] = [];
+    @Input() achievements: AchievementDto[] = [];
     @Output() viewAll = new EventEmitter<void>();
 
     selectedCategory: string = "all";
@@ -57,14 +46,14 @@ export class AchievementsDisplayComponent {
         },
     ];
 
-    get filteredAchievements(): Achievement[] {
+    get filteredAchievements(): AchievementDto[] {
         if (this.selectedCategory === "all") return this.achievements;
         return this.achievements.filter(
             (a) => a.category === this.selectedCategory
         );
     }
 
-    get displayedAchievements(): Achievement[] {
+    get displayedAchievements(): AchievementDto[] {
         if (this.expanded) return this.filteredAchievements;
         return [
             ...this.filteredAchievements.filter((a) => a.completed),

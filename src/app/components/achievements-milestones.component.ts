@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import {
     AchievementsDisplayComponent,
-    Achievement,
 } from "./achievements-display.component";
 import { CommonModule } from "@angular/common";
+import { AchievementDto } from "../dto/achievement.dto";
 
 @Component({
     selector: "app-achievements-milestones",
@@ -13,18 +13,18 @@ import { CommonModule } from "@angular/common";
 })
 export class AchievementsMilestonesComponent implements OnInit {
     @Output() viewAll = new EventEmitter<void>();
-    achievements: Achievement[] = [];
+    achievements: AchievementDto[] = [];
     loading = true;
 
     ngOnInit() {
         this.loadAchievements();
     }
 
-    getIncompleteAchievements(): Achievement[] {
+    getIncompleteAchievements(): AchievementDto[] {
         return this.achievements.filter((a) => !a.completed);
     }
 
-    getCompletedAchievements(): Achievement[] {
+    getCompletedAchievements(): AchievementDto[] {
         return this.achievements.filter((a) => a.completed);
     }
 
@@ -64,7 +64,7 @@ export class AchievementsMilestonesComponent implements OnInit {
         }
     }
 
-    generateDefaultAchievements(): Achievement[] {
+    generateDefaultAchievements(): AchievementDto[] {
         return [
             {
                 id: 1,

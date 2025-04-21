@@ -1,0 +1,270 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 text-gray-800 transition-all duration-300">
+  <main class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+        Settings
+      </h2>
+      <p class="text-gray-500 text-center">
+        Manage your app settings and security preferences
+      </p>
+    </div>
+
+    <!-- Settings Content -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        Security Settings
+      </h3>
+
+      <div *ngIf="success" class="mb-6 p-4 bg-green-50 rounded-lg border border-green-100">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700">{{ success }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800">Password Protection</h4>
+            <p class="text-sm text-gray-600 mt-1">
+              {{ isProtected ? 'Your data is protected with a password' : 'Your data is not currently password protected' }}
+            </p>
+          </div>
+          <div>
+            <ng-container *ngIf="isProtected; else enableBtn">
+              <div class="flex space-x-2">
+                <button
+                  (click)="showChangePassword = !showChangePassword"
+                  class="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-md hover:bg-purple-200 transition-colors text-sm"
+                >
+                  Change Password
+                </button>
+                <button
+                  (click)="showChangePassword = false; currentPassword = ''"
+                  class="px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors text-sm"
+                >
+                  Disable Protection
+                </button>
+              </div>
+            </ng-container>
+            <ng-template #enableBtn>
+              <button
+                (click)="showChangePassword = true"
+                class="px-3 py-1.5 bg-teal-100 text-teal-700 rounded-md hover:bg-teal-200 transition-colors text-sm"
+              >
+                Enable Protection
+              </button>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- Enable Protection Form -->
+        <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white rounded-lg border border-gray-200">
+          <h4 class="font-medium text-gray-800 mb-4">Enable Password Protection</h4>
+          <form (submit)="handleEnableProtection($event)" class="space-y-4">
+            <div>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <input
+                id="newPassword"
+                type="password"
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Create a password"
+                required
+              />
+            </div>
+            <div>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="showChangePassword = false; error = ''"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
+              >
+                Enable Protection
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Change Password Form -->
+        <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white rounded-lg border border-gray-200">
+          <h4 class="font-medium text-gray-800 mb-4">Change Password</h4>
+          <form (submit)="handleChangePassword($event)" class="space-y-4">
+            <div>
+              <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+              <input
+                id="currentPassword"
+                type="password"
+                [(ngModel)]="currentPassword"
+                name="currentPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Enter current password"
+                required
+              />
+            </div>
+            <div>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <input
+                id="newPassword"
+                type="password"
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Create a new password"
+                required
+              />
+            </div>
+            <div>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Confirm your new password"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="showChangePassword = false; error = ''"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+              >
+                Change Password
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Disable Protection Form -->
+        <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white rounded-lg border border-gray-200">
+          <h4 class="font-medium text-gray-800 mb-4">Disable Password Protection</h4>
+          <form (submit)="handleDisableProtection($event)" class="space-y-4">
+            <div>
+              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+              <input
+                id="currentPasswordDisable"
+                type="password"
+                [(ngModel)]="currentPassword"
+                name="currentPasswordDisable"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                placeholder="Enter current password"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="currentPassword = ''; error = ''"
+                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+              >
+                Disable Protection
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700">
+                Password protection helps keep your recovery data private.
+                Your password is stored locally on your device and is not sent to any server.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Settings -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        App Settings
+      </h3>
+      <div class="space-y-4">
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800">Data Export</h4>
+            <p class="text-sm text-gray-600 mt-1">
+              Export your recovery data for backup or analysis
+            </p>
+          </div>
+          <button class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm">
+            Export Data
+          </button>
+        </div>
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800">Clear All Data</h4>
+            <p class="text-sm text-gray-600 mt-1">
+              Permanently delete all your recovery data
+            </p>
+          </div>
+          <button class="px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors text-sm">
+            Clear Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-100 mt-12">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <div class="flex flex-col items-center justify-center">
+        <p class="text-center text-gray-500 text-sm mb-2">
+          Recovery Tracker • Your personal journey to wellness
+        </p>
+        <div class="text-xs text-gray-400">
+          Remember: Every day is a new opportunity
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

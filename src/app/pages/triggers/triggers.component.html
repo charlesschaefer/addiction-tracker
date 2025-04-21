@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 text-gray-800 transition-all duration-300">
+  <main class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+        Trigger Analysis
+      </h2>
+      <p class="text-gray-500 text-center">
+        Understand what triggers your substance use to develop better coping strategies
+      </p>
+    </div>
+
+    <!-- Substance Selector -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-4">
+        Filter by Substance
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <button
+          (click)="setSelectedSubstance('all')"
+          [ngClass]="selectedSubstance === 'all'
+            ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-4 py-2 rounded-full text-sm transition-all"
+        >
+          All Substances
+        </button>
+        <button
+          *ngFor="let substance of substances"
+          (click)="setSelectedSubstance(substance)"
+          [ngClass]="selectedSubstance === substance
+            ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+          class="px-4 py-2 rounded-full text-sm transition-all"
+        >
+          {{ substance }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Trigger Distribution -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-4">
+        {{ selectedSubstance === 'all' ? 'Overall Trigger Distribution' : (selectedSubstance + ' Trigger Distribution') }}
+      </h3>
+      <div class="h-80 flex items-center justify-center text-gray-400">
+        <!-- Pie chart placeholder: Use ngx-charts-pie-chart or similar -->
+        [Pie Chart Here]
+      </div>
+    </div>
+
+    <!-- Triggers by Substance -->
+    <div *ngIf="selectedSubstance === 'all'" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-4">
+        Triggers by Substance
+      </h3>
+      <div class="h-80 flex items-center justify-center text-gray-400">
+        <!-- Bar chart placeholder: Use ngx-charts-bar-vertical-grouped or similar -->
+        [Bar Chart Here]
+      </div>
+    </div>
+
+    <!-- Trigger Insights -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+      <h3 class="text-lg font-medium text-gray-700 mb-4">
+        Understanding Your Triggers
+      </h3>
+      <div class="space-y-4">
+        <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
+          <h4 class="font-medium text-purple-800 mb-2">What are triggers?</h4>
+          <p class="text-gray-700">
+            Triggers are situations, emotions, or environments that create urges to use substances. Identifying your personal triggers is a crucial step in developing effective coping strategies.
+          </p>
+        </div>
+        <div class="p-4 bg-orange-50 rounded-lg border border-orange-100">
+          <h4 class="font-medium text-orange-800 mb-2">Common Emotional Triggers</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>Stress and anxiety</li>
+            <li>Sadness or depression</li>
+            <li>Boredom</li>
+            <li>Anger or frustration</li>
+            <li>Loneliness</li>
+          </ul>
+        </div>
+        <div class="p-4 bg-teal-50 rounded-lg border border-teal-100">
+          <h4 class="font-medium text-teal-800 mb-2">Common Environmental Triggers</h4>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>Social gatherings where substances are present</li>
+            <li>Specific locations associated with past use</li>
+            <li>Being around certain people</li>
+            <li>Celebrations or special occasions</li>
+            <li>Stressful work or home environments</li>
+          </ul>
+        </div>
+        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+          <h4 class="font-medium text-blue-800 mb-2">Coping Strategies</h4>
+          <p class="text-gray-700 mb-2">
+            Once you've identified your triggers, you can develop strategies to manage them:
+          </p>
+          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+            <li>Practice mindfulness and breathing exercises</li>
+            <li>Develop a support network of friends and family</li>
+            <li>Consider professional counseling or support groups</li>
+            <li>Create a list of alternative activities</li>
+            <li>Avoid high-risk situations when possible</li>
+            <li>Develop healthy stress management techniques</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-100 mt-12">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <div class="flex flex-col items-center justify-center">
+        <p class="text-center text-gray-500 text-sm mb-2">
+          Recovery Tracker • Your personal journey to wellness
+        </p>
+        <div class="text-xs text-gray-400">
+          Remember: Every day is a new opportunity
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

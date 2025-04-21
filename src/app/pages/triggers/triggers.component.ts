@@ -14,25 +14,17 @@ interface UsageEntry {
 }
 
 @Component({
-    selector: "app-usage-entries-page",
+    selector: "app-triggers-page",
     standalone: true,
     imports: [CommonModule],
-    templateUrl: "./usage-entries.component.html",
+    templateUrl: "./triggers.component.html",
 })
-export class UsageEntriesPageComponent implements OnInit {
-    protected Math = Math;
+export class TriggersPageComponent implements OnInit {
     usageHistory: UsageEntry[] = [];
-    currentPage = 1;
-    entriesPerPage = 10;
     substances: string[] = [];
+    selectedSubstance = "all";
     triggers: string[] = [];
-    moods = [
-        { emoji: "😢", label: "Sad" },
-        { emoji: "😟", label: "Anxious" },
-        { emoji: "😐", label: "Neutral" },
-        { emoji: "🙂", label: "Good" },
-        { emoji: "😄", label: "Great" },
-    ];
+    COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     ngOnInit() {
         this.triggers = [
@@ -45,33 +37,6 @@ export class UsageEntriesPageComponent implements OnInit {
         if (this.usageHistory.length === 0) {
             this.usageHistory = this.generateSampleData();
         }
-    }
-
-    moodEmoji(mood: string) {
-        return this.moods.find(m => m.label === mood)?.emoji
-    }
-
-    totalSpent() {
-        return this.usageHistory
-            .reduce((sum, entry) => sum + (entry.cost || 0), 0)
-            .toFixed(2);
-    }
-
-    mostCommon() {
-        const triggerCounts: { [key: string]: number } = {};
-        this.usageHistory.forEach((entry) => {
-            entry.triggers.forEach((trigger) => {
-                triggerCounts[trigger] = (triggerCounts[trigger] || 0) + 1;
-            });
-        });
-        const mostCommon = Object.entries(triggerCounts).sort(
-            (a, b) => b[1] - a[1]
-        )[0];
-        return mostCommon ? mostCommon[0] : "None";
-    }
-
-    totalPagesArray() {
-        return [...Array(this.totalPages)]
     }
 
     generateSampleData(): UsageEntry[] {
@@ -135,23 +100,55 @@ export class UsageEntriesPageComponent implements OnInit {
         return sampleData;
     }
 
-    getCravingColor(intensity: number): string {
-        if (intensity <= 3) return "#10B981";
-        if (intensity <= 7) return "#F59E0B";
-        return "#EF4444";
+    getFilteredUsageHistory(): UsageEntry[] {
+        if (this.selectedSubstance === "all") return this.usageHistory;
+        return this.usageHistory.filter(
+            (entry) => entry.substance === this.selectedSubstance
+        );
     }
 
-    get currentEntries(): UsageEntry[] {
-        const indexOfLastEntry = this.currentPage * this.entriesPerPage;
-        const indexOfFirstEntry = indexOfLastEntry - this.entriesPerPage;
-        return this.usageHistory.slice(indexOfFirstEntry, indexOfLastEntry);
+    prepareTriggerData() {
+        const triggerCounts: { [key: string]: number } = {};
+        const filteredHistory = this.getFilteredUsageHistory();
+        filteredHistory.forEach((entry) => {
+            entry.triggers.forEach((trigger) => {
+                triggerCounts[trigger] = (triggerCounts[trigger] || 0) + 1;
+            });
+        });
+        return Object.keys(triggerCounts).map((trigger) => ({
+            name: trigger,
+            value: triggerCounts[trigger],
+        }));
     }
 
-    get totalPages(): number {
-        return Math.ceil(this.usageHistory.length / this.entriesPerPage);
+    prepareTriggerBySubstanceData() {
+        const triggerBySubstance: any = {};
+        this.substances.forEach((substance) => {
+            triggerBySubstance[substance] = {};
+            this.triggers.forEach((trigger) => {
+                triggerBySubstance[substance][trigger] = 0;
+            });
+        });
+        this.usageHistory.forEach((entry) => {
+            entry.triggers.forEach((trigger) => {
+                if (
+                    triggerBySubstance[entry.substance] &&
+                    triggerBySubstance[entry.substance][trigger] !== undefined
+                ) {
+                    triggerBySubstance[entry.substance][trigger]++;
+                }
+            });
+        });
+        return this.triggers.map((trigger) => {
+            const data: any = { name: trigger };
+            this.substances.forEach((substance) => {
+                data[substance] = triggerBySubstance[substance][trigger] || 0;
+            });
+            return data;
+        });
     }
 
-    paginate(pageNumber: number) {
-        this.currentPage = pageNumber;
+    setSelectedSubstance(substance: string) {
+        this.selectedSubstance = substance;
     }
 }
