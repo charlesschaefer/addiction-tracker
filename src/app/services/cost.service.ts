@@ -18,4 +18,20 @@ export class CostService extends ServiceAbstract<Costs> {
         super();
         this.setTable();
     }
+
+    getTotalSpent() {
+        return this.table.toArray().then(data => {
+            return data.reduce((acc, item) => {    
+                return acc + item.value;
+            }, 0);
+        });
+    }
+
+    getTotalSpentBySubstance(substanceId: number) {
+        return this.table.where('substance').equals(substanceId).toArray().then(data => {
+            data.reduce((acc, item) => {    
+                return acc + item.value;
+            }, 0);
+        });
+    }
 }

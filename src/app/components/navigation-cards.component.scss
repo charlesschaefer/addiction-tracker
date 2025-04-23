@@ -1,0 +1,20 @@
+::ng-deep .my-svg-1 svg ,
+::ng-deep .my-svg-2 svg ,
+::ng-deep .my-svg-3 svg ,
+::ng-deep .my-svg-4 svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+}
+::ng-deep .my-svg-1 svg {
+    stroke: var(--color-purple-600);
+}
+::ng-deep .my-svg-2 svg {
+    stroke: var(--color-orange-600);
+}
+::ng-deep .my-svg-3 svg {
+    stroke: var(--color-teal-600);
+}
+::ng-deep .my-svg-4 svg {
+    stroke: var(--color-indigo-600);
+}

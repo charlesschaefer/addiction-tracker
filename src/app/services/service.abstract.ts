@@ -75,4 +75,13 @@ export abstract class ServiceAbstract<T> {
     clearCache() {
         this.cache = new BehaviorSubject<T[]>([]);
     }
+
+    getDataAsMap(data: T[], field: keyof T) {
+        const map = new Map<number, T>()
+        return data.reduce((acc, item) => {
+            const key = item[field] as unknown as number;
+            acc.set(key, item);
+            return acc;
+        }, map);
+    }
 }

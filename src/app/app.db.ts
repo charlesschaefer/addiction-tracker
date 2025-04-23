@@ -37,7 +37,7 @@ export class AppDb extends Dexie {
 
         this.version(6).stores({
             substance: '++id, name',
-            usage: '++id, substance, quantity, datetime, sentiment, craving, trigger',
+            usage: '++id, substance, quantity, datetime, sentiment, craving, trigger, cost',
             trigger: '++id, name',
             cost: '++id, substance, value, date',
             recommendations: '++id, trigger, text',
@@ -57,6 +57,7 @@ export class AppDb extends Dexie {
                 console.error('Error during upgrade:', error);
             }
         });
+
 
         this.on('populate', () => this.populate() );
     }

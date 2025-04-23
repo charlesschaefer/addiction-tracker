@@ -15,10 +15,11 @@ import { SynchronizationComponent } from "./synchronization/synchronization.comp
 import { UsageEntriesComponent } from "./pages/usage-entries/usage-entries.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { LoginComponent } from "./pages/login/login.component";
+import { MotivationalFactorsComponent } from "./pages/motivational-factors/motivational-factors.component";
+import { RecoveryDashboardComponent } from "./pages/recovery-dashboard/recovery-dashboard.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
-    { path: "login", component: LoginComponent },
     { path: "usage-add", component: UsageAddComponent },
     { path: "usage-track", component: UsageTrackComponent },
     { path: "substance-add", component: SubstanceAddComponent },
@@ -30,5 +31,10 @@ export const routes: Routes = [
     { path: "respiration", component: RespirationComponent },
     { path: "about", component: VersionComponent },
     { path: "sync", component: SynchronizationComponent },
+    /** New routes */
+    { path: "login", component: LoginComponent },
+    { path: "usage-entries", component: UsageEntriesComponent },
+    { path: "motivational-factors", component: MotivationalFactorsComponent },
+    { path: "recovery-dashboard", component: RecoveryDashboardComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
 ];

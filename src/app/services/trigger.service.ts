@@ -12,9 +12,10 @@ type Triggers = TriggerDto | TriggerAddDto;
 })
 export class TriggerService extends ServiceAbstract<Triggers> {
     protected override storeName: 'trigger' = 'trigger';
-    protected override dbService: DbService;
-
-    constructor(dbService: DbService) {
+    
+    constructor(
+        protected override dbService: DbService,
+    ) {
         super();
         this.setTable();
     }

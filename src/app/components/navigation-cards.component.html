@@ -1,11 +1,13 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
   <a *ngFor="let card of cards; let i = index" [routerLink]="card.href" class="block">
     <div
-      [ngClass]="i === 0 ? cardStyles.interactive + ' p-4 md:p-6 h-full' : 'bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all transform hover:scale-[1.02] h-full'"
+      [ngClass]="'bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all transform hover:scale-[1.02] h-full'"
     >
       <div class="flex flex-col items-center text-center">
-        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full" [ngClass]="card.bgColor + ' flex items-center justify-center mb-2 md:mb-4'">
-          {{ card.icon }}
+        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full" [ngClass]="card.bgColor + ' flex items-center justify-center mb-2 md:mb-4 ' + 'my-svg-' + (i + 1)" [innerHTML]="card.safeIcon">
+          <!-- <img [src]="card.icon" alt="Icon" [ngStyle]="{'stroke': card.bgColor}" width="24px" [ngClass]="card.bgColor" [class]="'my-svg-' + (i + 1)" /> -->
+          <!-- {{ card.safeIcon }} -->
+
         </div>
         <h2 class="text-lg md:text-xl font-semibold mb-1 md:mb-2 bg-gradient-to-r" [ngClass]="'from-' + card.gradientFrom + ' to-' + card.gradientTo + ' bg-clip-text text-transparent'">
           {{ card.title }}
