@@ -1,13 +1,15 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { AchievementDto } from "../dto/achievement.dto";
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { ButtonModule } from "primeng/button";
 
 
 
 @Component({
     selector: "app-achievements-display",
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, RouterLink, ButtonModule, RouterLinkActive],
     templateUrl: "./achievements-display.component.html",
 })
 export class AchievementsDisplayComponent {

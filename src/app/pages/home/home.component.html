@@ -2,7 +2,7 @@
   <!-- Introduction -->
   <section class="mb-10 text-center max-w-3xl mx-auto">
     <h2 class="text-2xl font-semibold mb-4 text-gray-800">
-      Your Journey to Recovery Starts Here
+      Your Journey to Recovery
     </h2>
     <p class="text-gray-600 leading-relaxed">
       Track your substance use, identify triggers, and monitor your progress over
@@ -20,6 +20,16 @@
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
     </svg>
   </button>
+
+  <!-- Add Usage Record Form Popup -->
+   @if (showRecordPopup) {
+    <app-record-substance-use
+      (close)="showRecordPopup = false"
+      [substances]="substances()"
+      (addSubstance)="handleAddSubstance($event)"
+      [showMotivationalPrompt]="false"
+    ></app-record-substance-use>
+   }
 
   <!-- Motivational Factors Display -->
   <ng-container *ngIf="showMotivationalFactors && currentMotivationalFactor">
@@ -104,23 +114,6 @@
 
   <!-- Achievements -->
   <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
-    <h2 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-      Achievements & Milestones
-    </h2>
-    <div class="space-y-4">
-      <div *ngFor="let achievement of achievements" [ngClass]="achievement.completed ? 'p-4 rounded-lg border border-green-200 bg-green-50' : 'p-4 rounded-lg border border-gray-200 bg-gray-50'">
-        <div class="flex items-center">
-          <div [ngClass]="achievement.completed ? 'w-8 h-8 rounded-full flex items-center justify-center mr-3 bg-green-500 text-white' : 'w-8 h-8 rounded-full flex items-center justify-center mr-3 bg-gray-200 text-gray-500'">
-            {{ achievement.completed ? '✓' : '' }}
-          </div>
-          <div>
-            <h3 [ngClass]="achievement.completed ? 'font-medium text-green-700' : 'font-medium text-gray-700'">
-              {{ achievement.title }}
-            </h3>
-            <p class="text-sm text-gray-600">{{ achievement.description }}</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-achievements-milestones (viewAll)="navigateToAchievements()"></app-achievements-milestones>
   </div>
 </main>

@@ -4,12 +4,12 @@ import { AchievementsDisplayComponent } from "../../components/achievements-disp
 import { AchievementDto } from "../../dto/achievement.dto";
 
 @Component({
-    selector: "app-achievements-page",
+    selector: "app-achievements",
     standalone: true,
     imports: [CommonModule, AchievementsDisplayComponent],
     templateUrl: "./achievements.component.html",
 })
-export class AchievementsPageComponent implements OnInit {
+export class AchievementsComponent implements OnInit {
     achievements: AchievementDto[] = [];
     loading = true;
 

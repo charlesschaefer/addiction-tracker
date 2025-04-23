@@ -127,10 +127,11 @@
 
     <button
         *ngIf="viewAll.observers.length > 0"
-        (click)="onViewAllClick()"
         class="mt-4 w-full py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors"
-        data-oid="ntzm5xv"
+        routerLink="/achievements"
+        routerLinkActive="hidden"
     >
         View All Achievements
     </button>
+    
 </div>

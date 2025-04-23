@@ -6,7 +6,7 @@ import { RouterModule } from "@angular/router";
 type FactorCategory = 'health' | 'family' | 'financial' | 'personal' | 'other';
 
 interface MotivationalFactor {
-    id: string;
+    id?: number;
     type: 'text' | 'image' | 'audio';
     content: string;
     createdAt: Date;
@@ -17,7 +17,7 @@ interface MotivationalFactor {
 }
 
 interface Substance {
-    id: string;
+    id: number;
     name: string;
     motivationalFactors: MotivationalFactor[];
 }
@@ -30,22 +30,22 @@ interface Substance {
 })
 export class MotivationalFactorsComponent implements OnInit {
     substances: Substance[] = [];
-    selectedSubstance: string | null = null;
+    selectedSubstance: number | null = null;
     searchTerm = "";
     sortOrder: 'newest' | 'oldest' | 'type' = 'newest';
     isLoading = true;
     showAddModal = false;
     showEditModal = false;
-    showDeleteConfirm: string | null = null;
+    showDeleteConfirm: number | null = null;
     editingFactor: MotivationalFactor | null = null;
     editedContent = "";
 
     ngOnInit() {
         // Simulate loading substances (replace with real API/localStorage in production)
         this.substances = [
-            { id: '1', name: 'Alcohol', motivationalFactors: [] },
-            { id: '2', name: 'Cigarettes', motivationalFactors: [] },
-            { id: '3', name: 'Cannabis', motivationalFactors: [] },
+            { id: 1, name: 'Alcohol', motivationalFactors: [] },
+            { id: 2, name: 'Cigarettes', motivationalFactors: [] },
+            { id: 3, name: 'Cannabis', motivationalFactors: [] },
         ];
         if (this.substances.length > 0) {
             this.selectedSubstance = this.substances[0].id;
@@ -99,8 +99,8 @@ export class MotivationalFactorsComponent implements OnInit {
         this.editingFactor = null;
     }
 
-    openDeleteConfirm(id: string) {
-        this.showDeleteConfirm = id;
+    openDeleteConfirm(id?: number) {
+        this.showDeleteConfirm = id as number;
     }
 
     closeDeleteConfirm() {
@@ -111,7 +111,6 @@ export class MotivationalFactorsComponent implements OnInit {
         if (!this.selectedSubstance) return;
         const newFactor: MotivationalFactor = {
             ...factor,
-            id: Date.now().toString(),
             createdAt: new Date(),
         };
         this.substances = this.substances.map(sub =>
@@ -138,7 +137,7 @@ export class MotivationalFactorsComponent implements OnInit {
         this.closeEditModal();
     }
 
-    deleteFactor(id: string) {
+    deleteFactor(id: number) {
         if (!this.selectedSubstance) return;
         this.substances = this.substances.map(sub =>
             sub.id === this.selectedSubstance

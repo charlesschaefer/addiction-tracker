@@ -4,11 +4,12 @@ import {
 } from "./achievements-display.component";
 import { CommonModule } from "@angular/common";
 import { AchievementDto } from "../dto/achievement.dto";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: "app-achievements-milestones",
     standalone: true,
-    imports: [AchievementsDisplayComponent, CommonModule],
+    imports: [AchievementsDisplayComponent, CommonModule, RouterLink],
     templateUrl: "./achievements-milestones.component.html",
 })
 export class AchievementsMilestonesComponent implements OnInit {

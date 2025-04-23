@@ -17,6 +17,7 @@ import { HomeComponent } from "./pages/home/home.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { MotivationalFactorsComponent } from "./pages/motivational-factors/motivational-factors.component";
 import { RecoveryDashboardComponent } from "./pages/recovery-dashboard/recovery-dashboard.component";
+import { AchievementsComponent } from "./pages/achievements/achievements.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
@@ -34,7 +35,8 @@ export const routes: Routes = [
     /** New routes */
     { path: "login", component: LoginComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
-    { path: "motivational-factors", component: MotivationalFactorsComponent },
+    // { path: "motivational-factors", component: MotivationalFactorsComponent },
     { path: "recovery-dashboard", component: RecoveryDashboardComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
+    { path: 'achievements', component: AchievementsComponent },
 ];

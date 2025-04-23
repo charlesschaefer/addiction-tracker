@@ -4,3 +4,5 @@ export interface SubstanceDto {
 }
 
 export type SubstanceAddDto = Pick<SubstanceDto, "name">;
+
+export type Substance = SubstanceDto | SubstanceAddDto;

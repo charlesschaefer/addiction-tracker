@@ -37,40 +37,41 @@
       [style]="{ position: 'absolute', left: 'calc(50% - 20px)'}" />
 </footer> -->
 
-<header
+<app-header></app-header>
+<!-- <header
   class="bg-white/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm border-b border-gray-100"
   
 >
   <div class="max-w-5xl mx-auto px-4 py-5 pt-[12px] pb-[12px]" >
     <div class="flex items-center justify-between" >
       <div class="flex items-center" >
-        <!-- Mobile logo (icon only) -->
+        < !-- Mobile logo (icon only) -- >
         <a routerLink="/" >
           <img
             class="block sm:hidden w-[60px] h-[60px]"
             src="assets/icon.svg"
-            alt="Recovery Tracker"
+            alt="Addiction Tracker"
             
           />
         </a>
 
-        <!-- Desktop logo (wide version) -->
+        < !-- Desktop logo (wide version) -- >
         <div class="hidden sm:block" >
           <a routerLink="/" >
             <img
               class="h-[3vh]"
               src="assets/logo.png"
-              alt="Recovery Tracker"
+              alt="Addiction Tracker"
               
             />
           </a>
-          <!-- <p class="text-gray-500 mt-1 text-sm align-" >
+          < !-- <p class="text-gray-500 mt-1 text-sm align-" >
             Track your habits. Take control of your life.
-          </p> -->
+          </p> -- >
         </div>
       </div>
 
-      <!-- Mobile menu button -->
+      < !-- Mobile menu button -- >
       <button
         class="md:hidden flex items-center text-gray-600 focus:outline-none"
         (click)="toggleMobileMenu()"
@@ -104,11 +105,11 @@
         </svg>
       </button>
 
-      <!-- Desktop navigation -->
+      < !-- Desktop navigation -- >
       <div class="hidden md:flex items-center space-x-4" >
         <ng-container *ngIf="!isProtected || isAuthenticated">
           <p-menubar [model]="menuItems" class="border-none" />
-          <!-- <ng-container *ngFor="let link of navLinks">
+          < !-- <ng-container *ngFor="let link of navLinks">
             <a
               [routerLink]="link.href"
               [ngClass]="{
@@ -159,20 +160,20 @@
                 {{ link.label }}
               </a>
             </ng-template>
-          </ng-container> -->
+          </ng-container> -- >
         </ng-container>
         <app-lock-button />
       </div>
 
-      <!-- <div class="p-toolbar-group-end" #toolbar>
+      < !-- <div class="p-toolbar-group-end" #toolbar>
         <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
         <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
         <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
-      </div> -->
+      </div> -- >
     </div>
   </div>
 
-  <!-- Mobile menu drawer -->
+  < !-- Mobile menu drawer -- >
   <div
     [ngClass]="{
       'fixed inset-0 z-40 transform transition-transform duration-300 ease-in-out': true,
@@ -181,7 +182,7 @@
     }"
     
   >
-    <!-- Overlay -->
+    < !-- Overlay -- >
     <div
       [ngClass]="{
         'absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300': true,
@@ -192,12 +193,12 @@
       
     ></div>
 
-    <!-- Drawer content -->
+    < !-- Drawer content -- >
     <div
       class="absolute top-0 left-0 w-3/4 max-w-xs h-full bg-white shadow-xl flex flex-col"
       
     >
-      <!-- Drawer header -->
+      < !-- Drawer header -- >
       <div
         class="p-4 border-b border-gray-200 flex items-center justify-between"
         
@@ -206,7 +207,7 @@
           <img
             class="w-[50px] h-[50px]"
             src="assets/icon.png"
-            alt="Recovery Tracker"
+            alt="Addiction Tracker"
             
           />
         </a>
@@ -235,7 +236,7 @@
         </button>
       </div>
 
-      <!-- Drawer navigation -->
+      < !-- Drawer navigation -- >
       <nav class="flex-1 overflow-y-auto p-4" >
         <ul class="space-y-4" >
           <ng-container *ngIf="!isProtected || isAuthenticated">
@@ -251,7 +252,7 @@
                 
               >
                 <ng-container *ngIf="link.icon; else navIcon">
-                  <!-- Settings icon -->
+                  < !-- Settings icon -- >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5 mr-3"
@@ -278,7 +279,7 @@
                   Settings
                 </ng-container>
                 <ng-template #navIcon>
-                  <!-- You can add more icons here based on link.label if needed -->
+                  < !-- You can add more icons here based on link.label if needed -- >
                   {{ link.label }}
                 </ng-template>
               </a>
@@ -287,7 +288,7 @@
         </ul>
       </nav>
 
-      <!-- Drawer footer -->
+      < !-- Drawer footer -- >
       <div class="p-4 border-t border-gray-200" >
         <div class="flex justify-center" >
           <app-lock-button />
@@ -295,9 +296,9 @@
       </div>
     </div>
   </div>
-</header>
-<div>
+</header> -->
 
+<div>
   <!-- Sobriety Badge -->
   <div class="max-w-5xl mx-auto px-4 mt-4">
     <div class="flex justify-end">
@@ -317,7 +318,7 @@
     <div class="max-w-5xl mx-auto px-4 py-8">
       <div class="flex flex-col items-center justify-center">
         <p class="text-center text-gray-500 text-sm mb-2">
-          Recovery Tracker • Your personal journey to wellness
+          Addiction Tracker • Your personal journey to wellness
         </p>
         <div class="text-xs text-gray-400">
           Remember: Every day is a new opportunity

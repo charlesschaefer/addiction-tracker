@@ -23,7 +23,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { firstValueFrom } from "rxjs";
 import { LockButtonComponent } from "./components/lock-button.component";
-
+import { HeaderComponent } from "./components/header.component";
 
 @Component({
     selector: "app-root",
@@ -44,18 +44,18 @@ import { LockButtonComponent } from "./components/lock-button.component";
         LockButtonComponent,
         CommonModule,
         MenubarModule,
+        HeaderComponent,
     ],
     providers: [CookieService, RouterLink],
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
-    
     isProtected: any = false;
     isAuthenticated: any = false;
     navLinks: any;
     pathname: any;
-    
+
     title = "Controle de Vícios";
     menuItems!: MenuItem[];
 
@@ -87,8 +87,7 @@ export class AppComponent implements OnInit {
 
     showOnboarding = false;
     showAuthPrompt = false;
-    
-    
+
     showBreathingPrompt = false;
     showBreathingExercise = false;
     addingMotivationalFactor = false;
@@ -98,7 +97,7 @@ export class AppComponent implements OnInit {
 
     substances: any[] = [];
     selectedSubstance = "";
-    
+
     date = "";
     time = "";
     amount = "";
@@ -116,8 +115,7 @@ export class AppComponent implements OnInit {
     selectedTriggers: string[] = [];
     newTrigger = "";
     usageHistory: any[] = [];
-    
-    
+
     mobileMenuOpen: any;
 
     constructor(
@@ -154,7 +152,6 @@ export class AppComponent implements OnInit {
             console.log(userTheme, currentTheme);
             this.themeService.switchTheme(userTheme);
         }
-
     }
 
     async notify() {
@@ -248,7 +245,7 @@ export class AppComponent implements OnInit {
             //     label: await firstValueFrom(
             //         this.translate.get("Recomendações")
             //     ),
-                
+
             // },
             // {
             //     separator: true,
@@ -256,7 +253,7 @@ export class AppComponent implements OnInit {
             // {
             //     label: await firstValueFrom(this.translate.get("Gastos")),
             //     items: [
-                    
+
             //     ],
             // },
             // {
@@ -296,7 +293,9 @@ export class AppComponent implements OnInit {
                         // icon: "pi pi-moon",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(this.translate.get("Idioma")),
+                        label: await firstValueFrom(
+                            this.translate.get("Idioma")
+                        ),
                         items: [
                             {
                                 label: await firstValueFrom(
@@ -314,7 +313,7 @@ export class AppComponent implements OnInit {
                     },
                 ],
             },
-            
+
             // {
             //     separator: true,
             // },
@@ -329,9 +328,8 @@ export class AppComponent implements OnInit {
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
     }
-    
+
     calculateSobrietyDays(usageHistory: any): number {
         return 0;
     }
-    
 }
