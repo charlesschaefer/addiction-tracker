@@ -4,10 +4,39 @@ export class AlternativeActivityData {
     public static data: AlternativeActivityDto[] = [
         {
             id: 1,
-            name: "Alternative Activity 1",
-            description: "Description for Alternative Activity 1",
-            type: "Type A",
-            status: "active",
-        }
-    ]
+            name: "Breathing Exercise",
+            description: '',
+            duration: 5
+        },
+        {
+            id: 2,
+            name: "Drink Water",
+            description: '',
+            duration: 1
+        },
+        {
+            id: 3,
+            name: "Take a Walk",
+            description: '',
+            duration: 10
+        },
+        {
+            id: 4,
+            name: "Stretching",
+            description: '',
+            duration: 5
+        },
+        {
+            id: 5,
+            name: "Healthy Snack",
+            description: '',
+            duration: 5
+        },
+        {
+            id: 6,
+            name: "Call a Friend",
+            description: '',
+            duration: 10
+        },
+    ];
 }

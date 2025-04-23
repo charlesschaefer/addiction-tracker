@@ -3,10 +3,7 @@ export interface AlternativeActivityDto {
     id: number;
     name: string;
     description: string;
-    time: string;
-    count: number;
-    successCount: number;
-    failCount: number;
+    duration: number; // in minutes
 }
 
 export type AlternativeActivityAddDto = Omit<AlternativeActivityDto, "id">;

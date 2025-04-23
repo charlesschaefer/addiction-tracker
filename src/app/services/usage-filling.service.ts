@@ -1,9 +1,17 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
+import { UsageFillingDto } from "../dto/usage-filling.dto";
+import { ServiceAbstract } from "./service.abstract";
+import { DbService } from "./db.service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
-export class UsageFillingService {
+export class UsageFillingService extends ServiceAbstract<UsageFillingDto> {
+    protected override storeName: "usage_filling" =
+        "usage_filling";
 
-  constructor() { }
+    constructor(protected override dbService: DbService) {
+        super();
+        this.setTable();
+    }
 }
