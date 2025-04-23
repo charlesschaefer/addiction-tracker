@@ -14,7 +14,7 @@ import { AppTheme } from './app.theme';
 import { AppDb } from "./app.db";
 
 import { routes } from "./app.routes";
-import { dbConfig } from "./db.config";
+//import { dbConfig } from "./db.config";
 import { DbService } from "./services/db.service";
 
 registerLocaleData(localePt);

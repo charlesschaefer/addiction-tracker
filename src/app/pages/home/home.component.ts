@@ -2,6 +2,10 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { JoyrideService } from "ngx-joyride";
+import { UsageDto } from "../../dto/usage.dto";
+import { AchievementDto } from "../../dto/achievement.dto";
+import { AchievementService } from "../../services/achievement.service";
+import { UsageService } from "../../services/usage.service";
 
 @Component({
     selector: "app-home",
@@ -14,41 +18,17 @@ export class HomeComponent implements OnInit {
     showMotivationalFactors = false;
     showMotivationalPrompt = false;
 
-    usageHistory: any[] = [];
-    achievements: any[] = [
-        { id: 1, title: 'First Step', description: 'Record your first entry', completed: false },
-        {
-            id: 2,
-            title: '1 Week Milestone',
-            description: 'Maintain 7 days of sobriety',
-            completed: true,
-        },
-        {
-            id: 3,
-            title: '1 Month Strong',
-            description: 'Maintain 30 days of sobriety',
-            completed: false,
-        },
-        {
-            id: 4,
-            title: 'Trigger Awareness',
-            description: 'Identify 5 different triggers',
-            completed: true,
-        },
-        {
-            id: 5,
-            title: '3 Month Journey',
-            description: 'Maintain 90 days of sobriety',
-            completed: false,
-        },
-    ];
+    usageHistory: UsageDto[] = [];
+    achievements: AchievementDto[] = [];
 
     currentMotivationalFactor: any = null;
 
 
     constructor(
         private joyrideService: JoyrideService,
-        private cookieService: CookieService
+        private cookieService: CookieService,
+        private achievementService: AchievementService,
+        private usageService: UsageService,
     ) {}
 
     ngOnInit(): void {
@@ -56,6 +36,10 @@ export class HomeComponent implements OnInit {
         if (!sawGuidedTour) {
             this.initializeGuidedTour();
         }
+
+        this.achievementService.list().then((achievements) => {
+            this.achievements = achievements as AchievementDto[];
+        });
     }
 
     initializeGuidedTour() {
