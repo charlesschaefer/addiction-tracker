@@ -29,7 +29,6 @@ export class NavigationCardsComponent implements OnInit {
     ) { }
 
     @Input() cards: NavigationCard[] = [];
-    @Input() cardStyles: { interactive: string } = { interactive: "" };
 
     ngOnInit() {
         this.cards = this.cards.map(card => {

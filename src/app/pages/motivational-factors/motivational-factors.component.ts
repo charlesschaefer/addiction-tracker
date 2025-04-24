@@ -1,79 +1,112 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, computed, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-
-type FactorCategory = 'health' | 'family' | 'financial' | 'personal' | 'other';
-
-interface MotivationalFactor {
-    id?: number;
-    type: 'text' | 'image' | 'audio';
-    content: string;
-    createdAt: Date;
-    category?: FactorCategory;
-    isFavorite?: boolean;
-    order?: number;
-    effectiveness?: number; // 0-100
-}
-
-interface Substance {
-    id: number;
-    name: string;
-    motivationalFactors: MotivationalFactor[];
-}
+import { MotivationalFactorService } from "../../services/motivational-factor.service";
+import { MotivationalFactorDto } from "../../dto/motivational-factor.dto";
+import { SubstanceService } from "../../services/substance.service";
+import { SubstanceDto } from "../../dto/substance.dto";
+import { MessageService } from "primeng/api";
+import { ToastModule } from "primeng/toast";
 
 @Component({
     selector: "app-motivational-factors",
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [CommonModule, RouterModule, FormsModule, ToastModule],
     templateUrl: "./motivational-factors.component.html",
 })
 export class MotivationalFactorsComponent implements OnInit {
-    substances: Substance[] = [];
-    selectedSubstance: number | null = null;
+    substances: SubstanceDto[] = [];
+    selectedSubstance = signal<number | null>(null);
+    substancesMotivationalFactors = signal<Map<number, MotivationalFactorDto[]>>(new Map());
+    motivationalFactors = computed(() => {
+        console.log("Recomputando os fatores motivacionais");
+        const selected = this.selectedSubstance();
+        const substanceFactors = this.substancesMotivationalFactors();
+        if (selected === null) return [];
+        return substanceFactors.get(selected) || [];
+    });
     searchTerm = "";
-    sortOrder: 'newest' | 'oldest' | 'type' = 'newest';
+    sortOrder: "newest" | "oldest" | "type" = "newest";
     isLoading = true;
     showAddModal = false;
     showEditModal = false;
     showDeleteConfirm: number | null = null;
-    editingFactor: MotivationalFactor | null = null;
+    editingFactor: MotivationalFactorDto | null = null;
     editedContent = "";
 
+    constructor(
+        private motivationalFactorService: MotivationalFactorService,
+        private substanceService: SubstanceService,
+        private messageService: MessageService
+    ) {}
+
     ngOnInit() {
-        // Simulate loading substances (replace with real API/localStorage in production)
-        this.substances = [
-            { id: 1, name: 'Alcohol', motivationalFactors: [] },
-            { id: 2, name: 'Cigarettes', motivationalFactors: [] },
-            { id: 3, name: 'Cannabis', motivationalFactors: [] },
-        ];
-        if (this.substances.length > 0) {
-            this.selectedSubstance = this.substances[0].id;
-        }
-        this.isLoading = false;
+        this.substanceService.list().then(async (subs) => {
+            this.substances = subs as SubstanceDto[];
+            if (this.substances.length > 0) {
+                this.selectedSubstance.set(this.substances[0].id);
+            }
+            
+            this.loadMotivationalFactors();
+        });
     }
 
-    get currentSubstance(): Substance | undefined {
-        return this.substances.find(s => s.id === this.selectedSubstance);
+    loadMotivationalFactors() {
+        this.motivationalFactorService.list().then((factors) => {
+            this.substances.forEach((substance) => {
+                const substanceFactors = factors.filter(
+                    (factor) => factor.substance === substance.id
+                ) as MotivationalFactorDto[];
+                this.substancesMotivationalFactors.update(factor => {
+                    factor.set(substance.id, substanceFactors)
+                    
+                    // returning a new Map to trigger the signal
+                    // This is necessary because the signal does not detect changes in the Map object
+                    // when we use the set method
+                    // So we create a new Map with the same entries
+                    // and return it to trigger the signal
+                    // This is a workaround for the signal not detecting changes in the Map object
+                    // This is a known issue in Angular signals
+                    //
+                    return new Map(factor);
+                });
+            });
+            this.isLoading = false;
+        });
     }
 
-    get filteredFactors(): MotivationalFactor[] {
-        if (!this.currentSubstance) return [];
-        let factors = [...this.currentSubstance.motivationalFactors];
+    get currentSubstance(): SubstanceDto | undefined {
+        return this.substances.find((s) => s.id === this.selectedSubstance());
+    }
+
+    get filteredFactors(): MotivationalFactorDto[] {
+        let factors = this.motivationalFactors();
         if (this.searchTerm) {
-            factors = factors.filter(f =>
-                f.type === 'text' &&
-                f.content.toLowerCase().includes(this.searchTerm.toLowerCase())
+            factors = factors.filter(
+                (f) =>
+                    f.type === "text" &&
+                    f.content
+                        .toLowerCase()
+                        .includes(this.searchTerm.toLowerCase())
             );
         }
         switch (this.sortOrder) {
-            case 'newest':
-                factors.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+            case "newest":
+                factors.sort(
+                    (a, b) =>
+                        new Date(b.createdAt).getTime() -
+                        new Date(a.createdAt).getTime()
+                );
                 break;
-            case 'oldest':
-                factors.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+            case "oldest":
+                factors.sort(
+                    (a, b) =>
+                        new Date(a.createdAt).getTime() -
+                        new Date(b.createdAt).getTime()
+                );
                 break;
-            case 'type':
+            case "type":
                 factors.sort((a, b) => a.type.localeCompare(b.type));
                 break;
         }
@@ -82,13 +115,14 @@ export class MotivationalFactorsComponent implements OnInit {
 
     openAddModal() {
         this.showAddModal = true;
+        this.editedContent = "";
     }
 
     closeAddModal() {
         this.showAddModal = false;
     }
 
-    openEditModal(factor: MotivationalFactor) {
+    openEditModal(factor: MotivationalFactorDto) {
         this.editingFactor = { ...factor };
         this.editedContent = factor.content;
         this.showEditModal = true;
@@ -107,46 +141,47 @@ export class MotivationalFactorsComponent implements OnInit {
         this.showDeleteConfirm = null;
     }
 
-    addMotivationalFactor(factor: Omit<MotivationalFactor, 'id' | 'createdAt'>) {
-        if (!this.selectedSubstance) return;
-        const newFactor: MotivationalFactor = {
-            ...factor,
-            createdAt: new Date(),
+    addMotivationalFactor() {
+        console.log("Adding motivational factor");
+        if (!this.currentSubstance) {
+            this.messageService.add({
+                severity: "error",
+                summary: "Error",
+                detail: "Please select a substance.",
+            });
+            return;
+        }
+        const factor = {
+            type: "text",
+            content: this.editedContent,
+            substance: this.currentSubstance.id,
         };
-        this.substances = this.substances.map(sub =>
-            sub.id === this.selectedSubstance
-                ? { ...sub, motivationalFactors: [...sub.motivationalFactors, newFactor] }
-                : sub
-        );
-        this.closeAddModal();
+        
+        const newFactor: MotivationalFactorDto = {
+            ...factor,
+            substance: this.selectedSubstance(),
+            createdAt: new Date(),
+        } as MotivationalFactorDto;
+        this.motivationalFactorService.add(newFactor).then(() => {
+            // Reload all factors from the service and update the map
+            this.loadMotivationalFactors();
+            this.closeAddModal();
+        });
     }
 
     saveEditFactor() {
         if (!this.editingFactor || !this.selectedSubstance) return;
         const updated = { ...this.editingFactor, content: this.editedContent };
-        this.substances = this.substances.map(sub =>
-            sub.id === this.selectedSubstance
-                ? {
-                    ...sub,
-                    motivationalFactors: sub.motivationalFactors.map(f =>
-                        f.id === updated.id ? updated : f
-                    ),
-                }
-                : sub
-        );
-        this.closeEditModal();
+        this.motivationalFactorService.edit(updated.id!, updated).then(() => {
+            this.loadMotivationalFactors();
+            this.closeEditModal();
+        });
     }
 
     deleteFactor(id: number) {
-        if (!this.selectedSubstance) return;
-        this.substances = this.substances.map(sub =>
-            sub.id === this.selectedSubstance
-                ? {
-                    ...sub,
-                    motivationalFactors: sub.motivationalFactors.filter(f => f.id !== id),
-                }
-                : sub
-        );
-        this.closeDeleteConfirm();
+        this.motivationalFactorService.remove(id).then(() => {
+            this.loadMotivationalFactors();
+            this.closeDeleteConfirm();
+        });
     }
 }

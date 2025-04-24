@@ -26,7 +26,7 @@
       </button>
     </div>
     <div class="py-2">
-      <form (ngSubmit)="submit.emit($event)">
+      <form (ngSubmit)="onSubmit($event)">
         <!-- Substance selection -->
         <div class="mb-6">
           <h3 class="text-base font-medium text-gray-700 mb-4">
@@ -307,7 +307,7 @@
             </div>
           </div>
 
-          <!-- Mood selection -->
+          <!-- Sentiment selection -->
           <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
             <div class="flex items-center mb-4">
               <svg
@@ -330,10 +330,10 @@
             </div>
             <div class="grid grid-cols-5 gap-2 sm:gap-4">
               <button
-                *ngFor="let m of moods"
+                *ngFor="let m of sentiments"
                 type="button"
-                (click)="mood = m.label"
-                [ngClass]="mood === m.label ? 'bg-purple-50 ring-2 ring-purple-500 shadow-sm transform scale-105' : 'hover:bg-gray-50 border border-transparent hover:border-gray-200 hover:scale-105'"
+                (click)="sentiment = m.label"
+                [ngClass]="sentiment === m.label ? 'bg-purple-50 ring-2 ring-purple-500 shadow-sm transform scale-105' : 'hover:bg-gray-50 border border-transparent hover:border-gray-200 hover:scale-105'"
                 class="flex flex-col items-center p-3 rounded-lg transition-all"
               >
                 <span class="text-3xl mb-2">{{ m.emoji }}</span>

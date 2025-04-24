@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AlternativeActivityService } from './alternative-activity.service';
 
-describe('HealthyActivityService', () => {
+describe('AlternativeActivityService', () => {
   let service: AlternativeActivityService;
 
   beforeEach(() => {

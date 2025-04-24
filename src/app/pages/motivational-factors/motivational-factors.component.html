@@ -30,8 +30,8 @@
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         <button
                             *ngFor="let substance of substances"
-                            (click)="selectedSubstance = substance.id"
-                            [ngClass]="selectedSubstance === substance.id
+                            (click)="selectedSubstance.set(substance.id)"
+                            [ngClass]="selectedSubstance() === substance.id
                                 ? 'bg-purple-100 text-purple-700 font-medium shadow-sm'
                                 : 'bg-gray-50 text-gray-700 hover:bg-gray-100'"
                             class="py-3 px-4 rounded-lg transition-all"
@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Motivational Factors Section -->
-                <ng-container *ngIf="selectedSubstance && currentSubstance">
+                <ng-container *ngIf="selectedSubstance() && currentSubstance">
                     <div class="border-t border-gray-200 pt-6">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
                             <h2 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">
@@ -57,7 +57,7 @@
                         </div>
 
                         <!-- Search and Sort Controls -->
-                        <div *ngIf="currentSubstance.motivationalFactors.length > 0" class="flex flex-col sm:flex-row gap-3 mb-6">
+                        <div *ngIf="substancesMotivationalFactors().has(selectedSubstance() ?? 0)" class="flex flex-col sm:flex-row gap-3 mb-6">
                             <div class="relative flex-grow">
                                 <input
                                     type="text"
@@ -88,9 +88,6 @@
                                             <div class="flex items-center text-xs text-gray-500">
                                                 <span>
                                                     Added {{ factor.createdAt | date:'mediumDate' }}
-                                                </span>
-                                                <span *ngIf="factor.category" class="ml-2 px-2 py-0.5 bg-gray-100 rounded-full">
-                                                    {{ factor.category }}
                                                 </span>
                                             </div>
                                         </div>
@@ -125,20 +122,6 @@
                                         <div *ngIf="factor.type === 'audio'" class="bg-gray-50 p-3 rounded-lg border border-gray-200">
                                             <audio [src]="factor.content" controls class="w-full"></audio>
                                         </div>
-                                        <div *ngIf="factor.effectiveness !== undefined" class="mt-3 flex items-center">
-                                            <span class="text-xs text-gray-500 mr-2">Effectiveness:</span>
-                                            <div class="flex-grow bg-gray-200 rounded-full h-2.5">
-                                                <div
-                                                    class="h-2.5 rounded-full"
-                                                    [ngClass]="
-                                                        factor.effectiveness > 75 ? 'bg-green-500' :
-                                                        factor.effectiveness > 50 ? 'bg-blue-500' :
-                                                        factor.effectiveness > 25 ? 'bg-yellow-500' : 'bg-red-500'
-                                                    "
-                                                    [style.width.%]="factor.effectiveness"
-                                                ></div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -148,7 +131,7 @@
                                 <div *ngIf="searchTerm">
                                     No motivational factors match your search.
                                 </div>
-                                <div *ngIf="!searchTerm && currentSubstance.motivationalFactors.length === 0">
+                                <div *ngIf="!searchTerm && !substancesMotivationalFactors().has(currentSubstance.id)">
                                     No motivational factors yet. Add one to get started!
                                 </div>
                             </div>
@@ -175,7 +158,7 @@
             <p class="text-gray-600 mb-4">
                 Add a motivational factor to help you remember why you want to quit {{ currentSubstance?.name }}.
             </p>
-            <form (ngSubmit)="addMotivationalFactor({ type: 'text', content: editedContent })">
+            <form (ngSubmit)="addMotivationalFactor()">
                 <textarea [(ngModel)]="editedContent" name="content" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 min-h-[100px]" placeholder="Why do you want to quit this substance?"></textarea>
                 <div class="flex justify-end mt-4">
                     <button type="button" (click)="closeAddModal()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors mr-2">

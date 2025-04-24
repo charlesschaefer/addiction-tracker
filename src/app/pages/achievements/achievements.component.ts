@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { AchievementsDisplayComponent } from "../../components/achievements-display.component";
 import { AchievementDto } from "../../dto/achievement.dto";
+import { AchievementService } from "../../services/achievement.service";
 
 @Component({
     selector: "app-achievements",
@@ -13,28 +14,21 @@ export class AchievementsComponent implements OnInit {
     achievements: AchievementDto[] = [];
     loading = true;
 
+    constructor(private achievementService: AchievementService) {}
+
     ngOnInit() {
         this.loadAchievements();
     }
 
     loadAchievements() {
         this.loading = true;
-        try {
-            const saved = localStorage.getItem("achievements");
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                this.achievements = parsed.map((a: any) => ({
-                    ...a,
-                    icon: this.getIconForCategory(a.category),
-                }));
-            } else {
-                window.location.href = "/";
-            }
-        } catch {
-            // handle error
-        } finally {
+        this.achievementService.list().then((achievements) => {
+            this.achievements = (achievements as AchievementDto[]).map((a) => ({
+                ...a,
+                icon: this.getIconForCategory(a.category),
+            }));
             this.loading = false;
-        }
+        });
     }
 
     getIconForCategory(category: string): string {

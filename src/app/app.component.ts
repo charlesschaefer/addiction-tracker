@@ -7,7 +7,7 @@ import { ToolbarModule } from "primeng/toolbar";
 import { MenuModule } from "primeng/menu";
 import { ButtonModule } from "primeng/button";
 import { SpeedDialModule } from "primeng/speeddial";
-import { MenuItem } from "primeng/api";
+import { MenuItem, MessageService } from "primeng/api";
 import { TieredMenuModule } from "primeng/tieredmenu";
 import { MenubarModule } from "primeng/menubar";
 import { JoyrideModule, JoyrideService } from "ngx-joyride";
@@ -24,6 +24,7 @@ import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { firstValueFrom } from "rxjs";
 import { LockButtonComponent } from "./components/lock-button.component";
 import { HeaderComponent } from "./components/header.component";
+import { ToastModule } from "primeng/toast";
 
 @Component({
     selector: "app-root",
@@ -32,7 +33,6 @@ import { HeaderComponent } from "./components/header.component";
         RouterOutlet,
         MatMenuModule,
         MatIconModule,
-        RouterLink,
         ToolbarModule,
         MenuModule,
         ButtonModule,
@@ -45,8 +45,9 @@ import { HeaderComponent } from "./components/header.component";
         CommonModule,
         MenubarModule,
         HeaderComponent,
+        ToastModule
     ],
-    providers: [CookieService, RouterLink],
+    providers: [CookieService, RouterLink, MessageService],
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
 })

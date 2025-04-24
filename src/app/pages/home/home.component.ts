@@ -2,7 +2,10 @@ import { CommonModule } from "@angular/common";
 import { Component, OnInit, signal } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { JoyrideService } from "ngx-joyride";
+import { UsageService } from "../../services/usage.service";
+import { MotivationalFactorService } from "../../services/motivational-factor.service";
 import { UsageDto } from "../../dto/usage.dto";
+import { MotivationalFactorDto } from "../../dto/motivational-factor.dto";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
 import { NavigationCardsComponent } from "../../components/navigation-cards.component";
@@ -33,6 +36,7 @@ export class HomeComponent implements OnInit {
     showMotivationalPrompt = false;
 
     usageHistory: UsageDto[] = [];
+    motivationalFactors: MotivationalFactorDto[] = [];
     achievements: AchievementDto[] = [];
     substances = signal<SubstanceDto[]>([]);
 
@@ -41,10 +45,10 @@ export class HomeComponent implements OnInit {
     cards = [
         {
             href: "/usage-entries",
-            iconColor: "purple-600",
+            iconColor: "text-purple-600",
             bgColor: "bg-purple-100",
-            gradientFrom: "purple-600",
-            gradientTo: "orange-500",
+            gradientFrom: "from-purple-600",
+            gradientTo: "to-orange-500",
             title: "Usage Entries",
             description:
                 "View and manage your substance usage records and track your progress over time.",
@@ -53,10 +57,10 @@ export class HomeComponent implements OnInit {
         },
         {
             href: "/motivational-factors",
-            iconColor: "orange-600",
+            iconColor: "text-orange-600",
             bgColor: "bg-orange-100",
-            gradientFrom: "orange-600",
-            gradientTo: "red-600",
+            gradientFrom: "from-orange-600",
+            gradientTo: "to-red-600",
             title: "Motivations",
             description:
                 "Manage your personal motivations to stay on track with your recovery journey.",
@@ -65,10 +69,10 @@ export class HomeComponent implements OnInit {
         },
         {
             href: "/recovery-dashboard",
-            iconColor: "teal-600",
+            iconColor: "text-teal-600",
             bgColor: "bg-teal-100",
-            gradientFrom: "teal-600",
-            gradientTo: "blue-600",
+            gradientFrom: "from-teal-600",
+            gradientTo: "to-blue-600",
             title: "Dashboard",
             description:
                 "Visualize your recovery journey with detailed charts and analytics.",
@@ -77,10 +81,10 @@ export class HomeComponent implements OnInit {
         },
         {
             href: "/alternative-analytics",
-            iconColor: "indigo-600",
+            iconColor: "text-indigo-600",
             bgColor: "bg-indigo-100",
-            gradientFrom: "indigo-600",
-            gradientTo: "purple-600",
+            gradientFrom: "from-indigo-600",
+            gradientTo: "to-purple-600",
             title: "Alternatives",
             description:
                 "See which alternative activities work best for you based on your data.",
@@ -93,7 +97,9 @@ export class HomeComponent implements OnInit {
         private joyrideService: JoyrideService,
         private cookieService: CookieService,
         private achievementService: AchievementService,
-        private substanceService: SubstanceService
+        private substanceService: SubstanceService,
+        private usageService: UsageService,
+        private motivationalFactorService: MotivationalFactorService
     ) {}
 
     ngOnInit(): void {
@@ -108,6 +114,14 @@ export class HomeComponent implements OnInit {
 
         this.substanceService.list().then((substances) => {
             this.substances.set(substances as SubstanceDto[]);
+        });
+
+        this.usageService.list().then((usages) => {
+            this.usageHistory = usages as UsageDto[];
+        });
+
+        this.motivationalFactorService.list().then((factors) => {
+            this.motivationalFactors = factors as MotivationalFactorDto[];
         });
     }
 

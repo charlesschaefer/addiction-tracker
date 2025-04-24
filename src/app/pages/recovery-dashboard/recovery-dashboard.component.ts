@@ -1,6 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { UsageService } from "../../services/usage.service";
+import { SubstanceService } from "../../services/substance.service";
+import { UsageDto } from "../../dto/usage.dto";
+import { SubstanceDto } from "../../dto/substance.dto";
 
 interface UsageEntry {
     id: number;
@@ -21,87 +25,34 @@ interface UsageEntry {
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
-    usageHistory: UsageEntry[] = [];
-    substances: string[] = [];
+    usageHistory: UsageDto[] = [];
+    substances: SubstanceDto[] = [];
     selectedAnalysisSubstance: string = "all";
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
-    ngOnInit() {
-        if (this.usageHistory.length === 0) {
-            this.usageHistory = this.generateSampleData();
-        }
-    }
+    constructor(
+        private usageService: UsageService,
+        private substanceService: SubstanceService
+    ) {}
 
-    generateSampleData(): UsageEntry[] {
-        const substances = ["Alcohol", "Cigarettes", "Cannabis"];
-        this.substances = substances;
-        const moods = ["Sad", "Anxious", "Neutral", "Good", "Great"];
-        const sampleTriggers = [
-            "Stress",
-            "Social gathering",
-            "Boredom",
-            "Anxiety",
-            "Celebration",
-        ];
-        const today = new Date();
-        const sampleData: UsageEntry[] = [];
-        for (let i = 30; i >= 0; i--) {
-            if (i % 3 === 0 && i > 5) continue;
-            const entryDate = new Date(today);
-            entryDate.setDate(today.getDate() - i);
-            const substance =
-                substances[Math.floor(Math.random() * substances.length)];
-            const entryMood = moods[Math.floor(Math.random() * moods.length)];
-            const cravingLevel = Math.floor(Math.random() * 10) + 1;
-            const entryTriggers: string[] = [];
-            const numTriggers = Math.floor(Math.random() * 2) + 1;
-            for (let j = 0; j < numTriggers; j++) {
-                const trigger =
-                    sampleTriggers[
-                        Math.floor(Math.random() * sampleTriggers.length)
-                    ];
-                if (!entryTriggers.includes(trigger))
-                    entryTriggers.push(trigger);
-            }
-            let cost = 0;
-            if (substance === "Alcohol")
-                cost = Math.floor(Math.random() * 30) + 5;
-            else if (substance === "Cigarettes")
-                cost = Math.floor(Math.random() * 10) + 8;
-            else if (substance === "Cannabis")
-                cost = Math.floor(Math.random() * 40) + 20;
-            sampleData.push({
-                id: Date.now() - i * 1000000,
-                substance,
-                date: entryDate.toISOString().split("T")[0],
-                time: `${String(Math.floor(Math.random() * 24)).padStart(
-                    2,
-                    "0"
-                )}:${String(Math.floor(Math.random() * 60)).padStart(2, "0")}`,
-                amount:
-                    substance === "Alcohol"
-                        ? `${Math.floor(Math.random() * 3) + 1} drinks`
-                        : substance === "Cigarettes"
-                        ? `${Math.floor(Math.random() * 5) + 1} cigarettes`
-                        : `${Math.floor(Math.random() * 2) + 1} uses`,
-                mood: entryMood,
-                triggers: entryTriggers,
-                cost: cost,
-                cravingIntensity: cravingLevel,
-            });
-        }
-        return sampleData;
+    ngOnInit() {
+        this.usageService.list().then((usages) => {
+            this.usageHistory = usages as UsageDto[];
+        });
+        this.substanceService.list().then((subs) => {
+            this.substances = subs as SubstanceDto[];
+        });
     }
 
     calculateSobrietyDays(): number {
         if (this.usageHistory.length === 0) return 0;
         const sortedHistory = [...this.usageHistory].sort(
             (a, b) =>
-                new Date(b.date + "T" + b.time).getTime() -
-                new Date(a.date + "T" + a.time).getTime()
+                new Date(b.datetime).getTime() -
+                new Date(a.datetime).getTime()
         );
         const lastUsageDate = new Date(
-            sortedHistory[0].date + "T" + sortedHistory[0].time
+            sortedHistory[0].datetime
         );
         const today = new Date();
         const diffTime = Math.abs(today.getTime() - lastUsageDate.getTime());
@@ -129,7 +80,7 @@ export class RecoveryDashboardComponent implements OnInit {
             return this.usageHistory;
         }
         return this.usageHistory.filter(
-            (entry) => entry.substance === this.selectedAnalysisSubstance
+            (entry) => entry.substance.toString() === this.selectedAnalysisSubstance
         );
     }
 
@@ -146,8 +97,8 @@ export class RecoveryDashboardComponent implements OnInit {
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (usageByDate[entry.date] !== undefined) {
-                usageByDate[entry.date]++;
+            if (usageByDate[entry.datetime.toISOString().split("T")[0]] !== undefined) {
+                usageByDate[entry.datetime.toISOString().split("T")[0]]++;
             }
         });
         return dates.map((date) => ({
@@ -176,14 +127,14 @@ export class RecoveryDashboardComponent implements OnInit {
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (moodByDate[entry.date]) {
-                moodByDate[entry.date].total += moodValues[entry.mood] || 3;
-                moodByDate[entry.date].count++;
+            if (moodByDate[entry.datetime.toISOString().split("T")[0]]) {
+                moodByDate[entry.datetime.toISOString().split("T")[0]].total += moodValues[entry.sentiment] || 3;
+                moodByDate[entry.datetime.toISOString().split("T")[0]].count++;
             }
         });
         return dates.map((date) => ({
             date,
-            mood:
+            sentiment:
                 moodByDate[date].count > 0
                     ? moodByDate[date].total / moodByDate[date].count
                     : null,
@@ -203,9 +154,9 @@ export class RecoveryDashboardComponent implements OnInit {
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (cravingByDate[entry.date] && entry.cravingIntensity) {
-                cravingByDate[entry.date].total += entry.cravingIntensity;
-                cravingByDate[entry.date].count++;
+            if (cravingByDate[entry.datetime.toISOString().split("T")[0]] && entry.craving) {
+                cravingByDate[entry.datetime.toISOString().split("T")[0]].total += entry.craving;
+                cravingByDate[entry.datetime.toISOString().split("T")[0]].count++;
             }
         });
         return dates.map((date) => ({
@@ -224,7 +175,7 @@ export class RecoveryDashboardComponent implements OnInit {
         return usageData.map((item, index) => ({
             date: item.date,
             usage: item.usage,
-            mood: moodData[index].mood,
+            mood: moodData[index].sentiment,
             craving: cravingData[index].craving,
         }));
     }
@@ -233,8 +184,8 @@ export class RecoveryDashboardComponent implements OnInit {
         const triggerCounts: { [key: string]: number } = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            entry.triggers.forEach((trigger) => {
-                triggerCounts[trigger] = (triggerCounts[trigger] || 0) + 1;
+            entry.trigger?.forEach((trigger) => {
+                triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
             });
         });
         return Object.keys(triggerCounts).map((trigger) => ({
@@ -284,7 +235,7 @@ export class RecoveryDashboardComponent implements OnInit {
                 startDate = new Date(0);
         }
         return this.usageHistory
-            .filter((entry) => new Date(entry.date) >= startDate)
+            .filter((entry) => new Date(entry.datetime) >= startDate)
             .reduce((total, entry) => total + (entry.cost || 0), 0);
     }
 

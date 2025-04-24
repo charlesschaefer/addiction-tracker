@@ -27,13 +27,13 @@
         </button>
         <button
           *ngFor="let substance of substances"
-          (click)="setSelectedSubstance(substance)"
-          [ngClass]="selectedSubstance === substance
+          (click)="setSelectedSubstance(substance.name)"
+          [ngClass]="selectedSubstance === substance.name
             ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
             : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
           class="px-4 py-2 rounded-full text-sm transition-all"
         >
-          {{ substance }}
+          {{ substance.name }}
         </button>
       </div>
     </div>

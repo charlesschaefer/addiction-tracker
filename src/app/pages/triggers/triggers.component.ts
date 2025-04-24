@@ -1,17 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-
-interface UsageEntry {
-    id: number;
-    substance: string;
-    date: string;
-    time: string;
-    amount: string;
-    mood: string;
-    triggers: string[];
-    cost: number;
-    cravingIntensity: number;
-}
+import { UsageService } from "../../services/usage.service";
+import { SubstanceService } from "../../services/substance.service";
+import { UsageDto } from "../../dto/usage.dto";
+import { SubstanceDto } from "../../dto/substance.dto";
+import { TriggerDto } from "../../dto/trigger.dto";
 
 @Component({
     selector: "app-triggers-page",
@@ -20,90 +13,34 @@ interface UsageEntry {
     templateUrl: "./triggers.component.html",
 })
 export class TriggersPageComponent implements OnInit {
-    usageHistory: UsageEntry[] = [];
-    substances: string[] = [];
+    usageHistory: UsageDto[] = [];
+    substances: SubstanceDto[] = [];
     selectedSubstance = "all";
-    triggers: string[] = [];
+    triggers: TriggerDto[] = [];
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
+    constructor(
+        private usageService: UsageService,
+        private substanceService: SubstanceService
+    ) {}
+
     ngOnInit() {
-        this.triggers = [
-            "Stress",
-            "Social gathering",
-            "Boredom",
-            "Anxiety",
-            "Celebration",
-        ];
-        if (this.usageHistory.length === 0) {
-            this.usageHistory = this.generateSampleData();
-        }
+        this.usageService.list().then((usages) => {
+            this.usageHistory = usages as UsageDto[];
+            // Collect all unique triggers from usageHistory
+            this.triggers = Array.from(
+                new Set(this.usageHistory.flatMap(u => (u.trigger || []) as TriggerDto[]))
+            );
+        });
+        this.substanceService.list().then((subs) => {
+            this.substances = subs as SubstanceDto[];
+        });
     }
 
-    generateSampleData(): UsageEntry[] {
-        const substances = ["Alcohol", "Cigarettes", "Cannabis"];
-        this.substances = substances;
-        const moods = ["Sad", "Anxious", "Neutral", "Good", "Great"];
-        const sampleTriggers = [
-            "Stress",
-            "Social gathering",
-            "Boredom",
-            "Anxiety",
-            "Celebration",
-        ];
-        const today = new Date();
-        const sampleData: UsageEntry[] = [];
-        for (let i = 30; i >= 0; i--) {
-            if (i % 3 === 0 && i > 5) continue;
-            const entryDate = new Date(today);
-            entryDate.setDate(today.getDate() - i);
-            const substance =
-                substances[Math.floor(Math.random() * substances.length)];
-            const entryMood = moods[Math.floor(Math.random() * moods.length)];
-            const cravingLevel = Math.floor(Math.random() * 10) + 1;
-            const entryTriggers: string[] = [];
-            const numTriggers = Math.floor(Math.random() * 2) + 1;
-            for (let j = 0; j < numTriggers; j++) {
-                const trigger =
-                    sampleTriggers[
-                        Math.floor(Math.random() * sampleTriggers.length)
-                    ];
-                if (!entryTriggers.includes(trigger))
-                    entryTriggers.push(trigger);
-            }
-            let cost = 0;
-            if (substance === "Alcohol")
-                cost = Math.floor(Math.random() * 30) + 5;
-            else if (substance === "Cigarettes")
-                cost = Math.floor(Math.random() * 10) + 8;
-            else if (substance === "Cannabis")
-                cost = Math.floor(Math.random() * 40) + 20;
-            sampleData.push({
-                id: Date.now() - i * 1000000,
-                substance,
-                date: entryDate.toISOString().split("T")[0],
-                time: `${String(Math.floor(Math.random() * 24)).padStart(
-                    2,
-                    "0"
-                )}:${String(Math.floor(Math.random() * 60)).padStart(2, "0")}`,
-                amount:
-                    substance === "Alcohol"
-                        ? `${Math.floor(Math.random() * 3) + 1} drinks`
-                        : substance === "Cigarettes"
-                        ? `${Math.floor(Math.random() * 5) + 1} cigarettes`
-                        : `${Math.floor(Math.random() * 2) + 1} uses`,
-                mood: entryMood,
-                triggers: entryTriggers,
-                cost: cost,
-                cravingIntensity: cravingLevel,
-            });
-        }
-        return sampleData;
-    }
-
-    getFilteredUsageHistory(): UsageEntry[] {
+    getFilteredUsageHistory() {
         if (this.selectedSubstance === "all") return this.usageHistory;
         return this.usageHistory.filter(
-            (entry) => entry.substance === this.selectedSubstance
+            (entry) => entry.substance.toString() === this.selectedSubstance
         );
     }
 
@@ -111,8 +48,8 @@ export class TriggersPageComponent implements OnInit {
         const triggerCounts: { [key: string]: number } = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            entry.triggers.forEach((trigger) => {
-                triggerCounts[trigger] = (triggerCounts[trigger] || 0) + 1;
+            (entry.trigger || []).forEach((trigger) => {
+                triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
             });
         });
         return Object.keys(triggerCounts).map((trigger) => ({
@@ -124,25 +61,25 @@ export class TriggersPageComponent implements OnInit {
     prepareTriggerBySubstanceData() {
         const triggerBySubstance: any = {};
         this.substances.forEach((substance) => {
-            triggerBySubstance[substance] = {};
+            triggerBySubstance[substance.name] = {};
             this.triggers.forEach((trigger) => {
-                triggerBySubstance[substance][trigger] = 0;
+                triggerBySubstance[substance.name][trigger.name] = 0;
             });
         });
         this.usageHistory.forEach((entry) => {
-            entry.triggers.forEach((trigger) => {
+            (entry.trigger || []).forEach((trigger) => {
                 if (
                     triggerBySubstance[entry.substance] &&
-                    triggerBySubstance[entry.substance][trigger] !== undefined
+                    triggerBySubstance[entry.substance][trigger.name] !== undefined
                 ) {
-                    triggerBySubstance[entry.substance][trigger]++;
+                    triggerBySubstance[entry.substance][trigger.name]++;
                 }
             });
         });
         return this.triggers.map((trigger) => {
             const data: any = { name: trigger };
             this.substances.forEach((substance) => {
-                data[substance] = triggerBySubstance[substance][trigger] || 0;
+                data[substance.name] = triggerBySubstance[substance.name][trigger.name] || 0;
             });
             return data;
         });
