@@ -38,5 +38,5 @@ export const routes: Routes = [
     { path: "motivational-factors", component: MotivationalFactorsComponent },
     { path: "recovery-dashboard", component: RecoveryDashboardComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
-    { path: 'achievements', component: AchievementsComponent },
+    // { path: 'achievements', component: AchievementsComponent },
 ];

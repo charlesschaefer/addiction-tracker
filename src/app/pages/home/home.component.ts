@@ -12,7 +12,7 @@ import { NavigationCardsComponent } from "../../components/navigation-cards.comp
 import { AchievementsMilestonesComponent } from "../../components/achievements-milestones.component";
 import { RecordSubstanceUseComponent } from "../../components/record-substance-use.component";
 import { SubstanceService } from "../../services/substance.service";
-import { Substance, SubstanceDto } from "../../dto/substance.dto";
+import { SubstanceDto } from "../../dto/substance.dto";
 
 import svg1 from "../../../assets/icons/usage-entries.svg";
 import svg2 from "../../../assets/icons/heart.svg";
@@ -178,6 +178,6 @@ export class HomeComponent implements OnInit {
     handleAddSubstance(substance: SubstanceDto) {
         const substances = this.substances();
         substances.push(substance);
-        this.substances.set(substances);
+        this.substances.set([...substances]);
     }
 }

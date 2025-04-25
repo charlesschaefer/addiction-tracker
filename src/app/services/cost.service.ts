@@ -12,9 +12,11 @@ type Costs = CostDto | CostAddDto;
 })
 export class CostService extends ServiceAbstract<Costs> {
     protected override storeName: 'cost' = 'cost';
-    protected override dbService: DbService;
+    
 
-    constructor(dbService: DbService) {
+    constructor(
+        protected override dbService: DbService
+    ) {
         super();
         this.setTable();
     }

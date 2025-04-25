@@ -6,6 +6,7 @@ import { TriggerService } from "../../services/trigger.service";
 import { SubstanceService } from "../../services/substance.service";
 import { TriggerDto } from "../../dto/trigger.dto";
 import { CostService } from "../../services/cost.service";
+import { SentimentService } from "../../services/sentiment.service";
 
 interface UsageEntry {
     id: number;
@@ -32,13 +33,7 @@ export class UsageEntriesComponent implements OnInit {
     entriesPerPage = 10;
     substances: string[] = [];
     triggers: string[] = [];
-    moods = [
-        { emoji: "😢", label: "Sad" },
-        { emoji: "😟", label: "Anxious" },
-        { emoji: "😐", label: "Neutral" },
-        { emoji: "🙂", label: "Good" },
-        { emoji: "😄", label: "Great" },
-    ];
+    moods = SentimentService.sentiments;
 
     constructor(
         private usageService: UsageService,
@@ -48,18 +43,15 @@ export class UsageEntriesComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.triggers = [
-            "Stress",
-            "Social gathering",
-            "Boredom",
-            "Anxiety",
-            "Celebration",
-        ];
+        this.triggerService.list().then(triggers => {
+            const triggerData = triggers as TriggerDto[];
+            this.triggers = triggerData.map((trigger: TriggerDto) => trigger.name);
+        });
         
         this.usageService.list().then(async (data) => {
             const usageData = data as UsageDto[];
-            const triggerData = this.triggerService.getDataAsMap(await this.triggerService.list(), 'name');
-            const substanceData = this.substanceService.getDataAsMap(await this.substanceService.list(), 'name');
+            const triggerData = this.triggerService.getDataAsMap((await this.triggerService.list()), 'id');
+            const substanceData = this.substanceService.getDataAsMap((await this.substanceService.list()), 'id');
             
             this.usageHistory = usageData.map((entry) => ({
                 id: entry.id,
@@ -71,7 +63,6 @@ export class UsageEntriesComponent implements OnInit {
                 craving: entry.craving,
                 cost: entry.cost,
             })) as UsageEntry[];
-            
         });
     }
 

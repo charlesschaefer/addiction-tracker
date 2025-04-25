@@ -1,55 +1,61 @@
 <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-30 p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
   <div class="bg-white/95 rounded-2xl shadow-2xl p-5 sm:p-7 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 animate-scaleIn">
-    <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 backdrop-blur-sm pt-1 pb-3 border-b border-gray-100">
-      <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
-        Record Substance Use
-      </h2>
-      <button
-        (click)="close.emit()"
-        class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100/80 transition-all"
-        aria-label="Close popup"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+    <div class="sticky top-0 p-5 z-99 bg-black/3 backdrop-blur-sm rounded-xl">
+      <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 backdrop-blur-sm pt-1 pb-3 border-b border-gray-100 z-100 shadow-sm p-4 rounded-xl">
+        <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+          Record Substance Use
+        </h2>
+        <button
+          (click)="close.emit()"
+          class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100/80 transition-all"
+          aria-label="Close popup"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
     <div class="py-2">
       <form (ngSubmit)="onSubmit($event)">
         <!-- Substance selection -->
         <div class="mb-6">
-          <h3 class="text-base font-medium text-gray-700 mb-4">
+          <h3 class="text-base font-medium text-gray-700 mb-4" *ngIf="!showAddSubstance">
             Select a substance
           </h3>
-          <div *ngIf="selectedSubstance && !showAddSubstance" class="mb-4 animate-fadeIn">
+          <div 
+            *ngIf="!showAddSubstance && (currentMotivationalFactor !== null || (selectedSubstance && !showAddSubstance))" 
+            class="mb-4 transition-transform duration-300 ease-in-out transform scale-95 opacity-0 animate-fadeIn"
+            [ngClass]="{'scale-100 opacity-100': currentMotivationalFactor || selectedSubstance}"
+            >
             <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
-              <h4 class="text-sm font-medium text-purple-700 mb-2">
-                Remember why you want to quit {{ selectedSubstance }}
-              </h4>
+              <h2 class="text-sm font-medium text-purple-700 mb-2">
+              Remember why you want to quit {{ selectedSubstance?.name ?? "using substances" }}
+              </h2>
               <ng-container *ngIf="currentMotivationalFactor; else noMotivation">
-                <div>
-                  <span *ngIf="currentMotivationalFactor.type === 'text'">
-                    {{ currentMotivationalFactor.content }}
-                  </span>
-                  <img *ngIf="currentMotivationalFactor.type === 'image'" [src]="currentMotivationalFactor.content" class="max-h-40 rounded-lg shadow-sm" />
-                  <audio *ngIf="currentMotivationalFactor.type === 'audio'" [src]="currentMotivationalFactor.content" controls></audio>
-                </div>
+              <div>
+                <span *ngIf="currentMotivationalFactor.type === 'text'">
+                {{ currentMotivationalFactor.content }}
+                </span>
+                <img *ngIf="currentMotivationalFactor.type === 'image'" [src]="currentMotivationalFactor.content" class="max-h-40 rounded-lg shadow-sm" />
+                <audio *ngIf="currentMotivationalFactor.type === 'audio'" [src]="currentMotivationalFactor.content" controls></audio>
+              </div>
               </ng-container>
               <ng-template #noMotivation>
-                <p class="text-gray-600 italic">
-                  "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
-                </p>
+              <p class="text-gray-600 italic">
+                "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
+              </p>
               </ng-template>
             </div>
           </div>
@@ -57,7 +63,7 @@
             <h3 class="text-lg font-medium text-purple-700 mb-3">
               Add New Substance
             </h3>
-            <div class="flex flex-col sm:flex-row gap-3">
+            <div class="flex flex-col sm:flex-col gap-3">
               <input
                 type="text"
                 [(ngModel)]="newSubstance"
@@ -65,31 +71,40 @@
                 placeholder="Substance name"
                 class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
               />
-              <button
-                type="button"
-                (click)="handleAddSubstance()"
-                class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-              >
-                Add
-              </button>
-              <button
-                type="button"
-                (click)="showAddSubstance = false"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
+
+              <h4>Select an icon:</h4>
+              <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" />
+
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  (click)="handleAddSubstance()"
+                  class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                >
+                  Add
+                </button>
+                <button
+                  type="button"
+                  (click)="showAddSubstance = false"
+                  class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
           <div *ngIf="!showAddSubstance" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
             <button
               *ngFor="let substance of substances"
               type="button"
-              (click)="handleSelectSubstance(substance.name)"
+              (click)="handleSelectSubstance(substance)"
               
-              [ngClass]="selectedSubstance === substance.name ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md' : 'border-gray-100 hover:border-teal-300 hover:bg-teal-50'"
+              [ngClass]="selectedSubstance?.name === substance.name ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md' : 'border-gray-100 hover:border-teal-300 hover:bg-teal-50'"
               class="p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center"
             >
+              @if (substance.icon) {
+                <i class="pi pi-{{substance.icon}} mb-3"></i>
+              }
               {{ substance.name }}
             </button>
           </div>
@@ -196,13 +211,39 @@
               <label class="block text-xs font-medium text-gray-500 mb-1">
                 Amount
               </label>
-              <input
-                type="text"
-                [(ngModel)]="amount"
-                name="amount"
-                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                placeholder="Enter the number of units consumed"
-              />
+              <div class="flex items-center">
+                <button
+                  type="button"
+                  (click)="decreaseAmount()"
+                  class="h-10 w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-l-lg border border-gray-200 transition-colors"
+                  aria-label="Decrease amount"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                  </svg>
+                </button>
+                <input
+                  type="number"
+                  [(ngModel)]="amount"
+                  name="amount"
+                  class="pl-4 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-10 text-center"
+                  min="1"
+                  placeholder="Enter the number of units consumed"
+                />
+                <button
+                  type="button"
+                  (click)="increaseAmount()"
+                  class="h-10 w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-r-lg border border-gray-200 transition-colors"
+                  aria-label="Increase amount"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Enter the number of units consumed
+              </p>
             </div>
             <div class="mt-4">
               <button
@@ -367,8 +408,8 @@
               <button
                 *ngFor="let trigger of triggers"
                 type="button"
-                (click)="toggleTrigger(trigger)"
-                [ngClass]="selectedTriggers.includes(trigger) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                (click)="toggleTrigger(trigger.name)"
+                [ngClass]="selectedTriggers.includes(trigger.name) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                 class="px-4 py-2 rounded-full text-sm transition-all"
               >
                 {{ trigger }}

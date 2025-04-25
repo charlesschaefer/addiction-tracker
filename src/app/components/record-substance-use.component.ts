@@ -2,11 +2,15 @@ import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SubstanceService } from "../services/substance.service";
-import { SubstanceAddDto, SubstanceDto } from "../dto/substance.dto";
+import { SubstanceAddDto, SubstanceDto, SubstanceIcon } from "../dto/substance.dto";
 import { MotivationalFactorDto } from "../dto/motivational-factor.dto";
 import { UsageService } from "../services/usage.service";
 import { MotivationalFactorService } from "../services/motivational-factor.service";
 import { SentimentService } from "../services/sentiment.service";
+import { SelectModule } from "primeng/select";
+import { SubstanceIconSelectComponent } from "./substance-icon-select/substance-icon-select.component";
+import { TriggerAddDto, TriggerDto } from "../dto/trigger.dto";
+import { TriggerService } from "../services/trigger.service";
 
 /**
  * Angular component for recording substance use.
@@ -15,20 +19,16 @@ import { SentimentService } from "../services/sentiment.service";
 @Component({
     selector: "app-record-substance-use",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, SelectModule, SubstanceIconSelectComponent],
     templateUrl: "./record-substance-use.component.html",
 })
 export class RecordSubstanceUseComponent implements OnInit {
     /** List of available substances. */
     @Input() substances?: SubstanceDto[] | null = [];
     /** Currently selected substance name. */
-    @Input() selectedSubstance?: string;
-    /** Whether to show the motivational prompt. */
-    @Input() showMotivationalPrompt = false;
+    @Input() selectedSubstance?: SubstanceDto;
     /** The current motivational factor to display. */
     @Input() currentMotivationalFactor: MotivationalFactorDto | null = null;
-    /** Whether to show the breathing prompt. */
-    @Input() showBreathingPrompt = false;
 
     /** Emits when the form is submitted. */
     @Output() submit = new EventEmitter<any>();
@@ -50,7 +50,7 @@ export class RecordSubstanceUseComponent implements OnInit {
     /** Mood selected. */
     mood: string = "";
     /** List of available triggers. */
-    triggers: string[] = [];
+    triggers: TriggerDto[] = [];
     /** List of selected triggers. */
     selectedTriggers: string[] = [];
     /** New trigger input value. */
@@ -71,6 +71,8 @@ export class RecordSubstanceUseComponent implements OnInit {
     substanceCreationStep: "name" | "motivation" = "name";
     /** ID of the new substance being created. */
     newSubstanceId?: number;
+    /** Selected substance icon */
+    newSubstanceIcon?: string = "tretinha cabolosa";
     /** Whether a motivational factor is being added. */
     addingMotivationalFactor: boolean = false;
     /** Selected Sentiment */
@@ -78,72 +80,64 @@ export class RecordSubstanceUseComponent implements OnInit {
 
     /** List of sentiments for selection. */
     sentiments = SentimentService.sentiments;
+    /** List of motivational factors for the selected substance. */
+    motivationalFactors: MotivationalFactorDto[] = [];
 
     constructor(
         private substanceService: SubstanceService,
         private usageService: UsageService,
-        private motivationalFactorService: MotivationalFactorService
+        private motivationalFactorService: MotivationalFactorService,
+        private triggerService: TriggerService
     ) {}
 
     ngOnInit(): void {
-        this.substanceService.list().then((subs) => {
-            this.substances = subs as SubstanceDto[];
-            if (this.substances && this.substances.length > 0) {
-                this.selectedSubstance = this.substances[0].name;
-                this.showMotivationalPrompt = false;
-                this.showBreathingPrompt = false;
-                this.showAddSubstance = false;
-            } else {
-                this.showAddSubstance = true;
-            }
-        });
+        if (!this.substances?.length) {
+            this.substanceService.list().then((subs) => {
+                this.substances = subs as SubstanceDto[];
+                if (this.substances && this.substances.length > 0) {
+                    this.showAddSubstance = false;
+                } else {
+                    this.showAddSubstance = true;
+                }
+            });
+        } else {
+            this.showAddSubstance = false;
+        }
+
         const now = new Date();
         this.date = now.toISOString().split("T")[0];
         this.time = now.toTimeString().split(" ")[0].substring(0, 5);
-        this.triggers = [
-            "Stress",
-            "Social gathering",
-            "Boredom",
-            "Anxiety",
-            "Celebration",
-        ];
+        
+        this.triggerService.list().then((triggers) => {
+            this.triggers = triggers as TriggerDto[];
+            console.log("Triggers:", this.triggers);
+        });
 
-        console.log("Substances:", this.substances);
-        if (this.substances && this.substances.length > 0) {
-            this.selectedSubstance = this.substances[0].name;
-            this.showMotivationalPrompt = false;
-            this.showBreathingPrompt = false;
-            this.showAddSubstance = false;
-            return;
+        
+
+        if (!this.currentMotivationalFactor) {
+            console.log("Não tem motivational factor");
+            this.motivationalFactorService.list().then((factors) => {
+                console.log("Buscando motivational factors", factors);
+                this.motivationalFactors = factors as MotivationalFactorDto[];
+                this.selectRandomMotivationalFactor();
+                console.log("Motivational Factors:", this.motivationalFactors);
+            })
         }
-        this.showAddSubstance = true;
-
-        console.log("Substances:", this.substances);
     }
 
     /**
      * Returns a random motivational factor for the selected substance.
      * @returns MotivationalFactorDto or null
      */
-    getRandomMotivationalFactor(): MotivationalFactorDto | null {
-        if (!this.selectedSubstance) return null;
-        const substance = this.substances?.find(
-            (s) => s.name === this.selectedSubstance
-        );
-        if (!substance) return null;
+    selectRandomMotivationalFactor() {
+        if (!this.motivationalFactors) return null;
+
         // Fetch motivational factors for this substance
-        // This could be async, but for simplicity, assume already loaded or use a callback
-        // (You may want to refactor to async/await if needed)
-        this.motivationalFactorService
-            .getByField("substance", substance.id)
-            .then((factors) => {
-                if (factors.length > 0) {
-                    this.currentMotivationalFactor =
-                        factors[Math.floor(Math.random() * factors.length)] as MotivationalFactorDto;
-                } else {
-                    this.currentMotivationalFactor = null;
-                }
-            });
+        const randIdx = Math.floor(Math.random() * this.motivationalFactors.length);
+        console.warn("Vamos pegar o idx: ", randIdx);
+
+        this.currentMotivationalFactor = this.motivationalFactors[randIdx];
         return this.currentMotivationalFactor;
     }
 
@@ -152,23 +146,23 @@ export class RecordSubstanceUseComponent implements OnInit {
      */
     async handleAddSubstance() {
         const name = this.newSubstance.trim();
+        const icon = SubstanceIcon[this.newSubstanceIcon?.trim() as keyof typeof SubstanceIcon] ?? undefined;
         if (name) {
             const substanceObj = {
                 name,
+                icon
             } as Partial<SubstanceDto>;
             this.substanceService
                 .add(substanceObj as SubstanceAddDto)
-                .then((substanceId) => {
+                .then(async (substanceId) => {
                     substanceObj.id = substanceId;
                     this.addSubstance.emit(substanceObj as SubstanceDto);
                     this.showAddSubstance = false;
                     this.newSubstanceId = substanceObj.id;
-                    this.selectedSubstance = substanceObj.name;
+                    this.selectedSubstance = await this.substanceService.get(substanceObj.id || 0) as SubstanceDto;
                     this.substanceCreationStep = "motivation";
-                    // // Optionally reload substances
-                    // this.substanceService.list().then((subs) => {
-                    //     this.substances = subs as SubstanceDto[];
-                    // });
+
+                    this.addSubstance.emit(substanceObj as SubstanceDto);
                 })
                 .catch((error) => {
                     console.error("Error adding substance:", error);
@@ -197,13 +191,19 @@ export class RecordSubstanceUseComponent implements OnInit {
     handleAddTrigger(): void {
         if (
             this.newTrigger.trim() &&
-            !this.triggers.includes(this.newTrigger.trim())
+            !this.triggers.find(trigger => trigger.name == this.newTrigger.trim())
         ) {
-            this.triggers = [...this.triggers, this.newTrigger.trim()];
-            this.selectedTriggers = [
-                ...this.selectedTriggers,
-                this.newTrigger.trim(),
-            ];
+            const newTriggerObj = {
+                name: this.newTrigger.trim(),
+            };
+            this.triggerService.add(newTriggerObj).then((id) => {
+                const newTrigger = {...newTriggerObj, id};
+                this.triggers.push(newTrigger);
+                this.selectedTriggers = [
+                    ...this.selectedTriggers,
+                    newTriggerObj.name,
+                ];
+            });
             this.newTrigger = "";
             this.showAddTrigger = false;
         }
@@ -251,7 +251,7 @@ export class RecordSubstanceUseComponent implements OnInit {
                 this.submit.emit(newUsage);
 
                 // Reset form
-                this.selectedSubstance = "";
+                this.selectedSubstance = undefined;
                 this.amount = "";
                 this.mood = "";
                 this.selectedTriggers = [];
@@ -274,8 +274,34 @@ export class RecordSubstanceUseComponent implements OnInit {
         return "#EF4444"; // Red for severe
     }
 
-    handleSelectSubstance(substance: string): void {
+    handleSelectSubstance(substance: SubstanceDto): void {
         this.selectedSubstance = substance;
-        this.showMotivationalPrompt = false;
+
+        this.motivationalFactorService.getSubstanceFactors(substance.id).then((factors) => {
+            this.motivationalFactors = factors as MotivationalFactorDto[];
+            if (this.motivationalFactors.length > 0) {
+                const randomIdx = Math.floor(Math.random() * this.motivationalFactors.length);
+                this.currentMotivationalFactor = this.motivationalFactors[randomIdx];
+            } else {
+                this.currentMotivationalFactor = null;
+            }
+        })
+    }
+
+    increaseAmount() {
+        if (this.amount) {
+            this.amount = (parseFloat(this.amount) + 1).toString();
+        } else {
+            this.amount = "1";
+        }
+    }
+
+    decreaseAmount() {
+        if (this.amount) {
+            const newAmount = parseFloat(this.amount) - 1;
+            this.amount = newAmount > 0 ? newAmount.toString() : "0";
+        } else {
+            this.amount = "0";
+        }
     }
 }

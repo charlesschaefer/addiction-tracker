@@ -18,4 +18,8 @@ export class MotivationalFactorService extends ServiceAbstract<MotivationalFacto
         super();
         this.setTable();
     }
+
+    getSubstanceFactors(substanceId: number) {
+        return this.table.where("substance").equals(substanceId).toArray();
+    }
 }

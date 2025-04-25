@@ -1,8 +1,9 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
-import { Substance, SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
-import { AppDb } from '../app.db';
+import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { DbService } from './db.service';
+
+export type Substance = SubstanceDto | SubstanceAddDto;
 
 @Injectable({
     providedIn: 'root'

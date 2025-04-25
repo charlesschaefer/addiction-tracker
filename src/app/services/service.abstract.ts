@@ -76,11 +76,27 @@ export abstract class ServiceAbstract<T> {
         this.cache = new BehaviorSubject<T[]>([]);
     }
 
-    getDataAsMap(data: T[], field: keyof T) {
+
+    /**
+     * Converts an array of objects into a `Map` where the keys are derived from a specified field of each object.
+     *
+     * @template T - The type of the objects in the input array.
+     * @param data - An array of objects to be converted into a map.
+     * @param field - The key of the field in each object to be used as the map's key.
+     *                The field's value must be convertible to a number.
+     * @returns A `Map` where the keys are numbers derived from the specified field of each object,
+     *          and the values are the corresponding objects from the input array.
+     * @throws If the field value cannot be cast to a number, the behavior is undefined.
+     */
+    getDataAsMap(data: T[], field: any): Map<number, T> {
+        if (!data && !data[field]) {
+            throw new Error(`Data is empty or field ${field} does not exist`);
+        }
         const map = new Map<number, T>()
         return data.reduce((acc, item) => {
-            const key = item[field] as unknown as number;
-            acc.set(key, item);
+            const element = item as any;
+            const key = element[field] as unknown as number;
+            acc.set(key, element);
             return acc;
         }, map);
     }

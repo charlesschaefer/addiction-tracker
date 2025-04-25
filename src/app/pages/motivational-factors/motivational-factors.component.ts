@@ -8,11 +8,12 @@ import { SubstanceService } from "../../services/substance.service";
 import { SubstanceDto } from "../../dto/substance.dto";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import { MotivationalFactorInputComponent } from "../../components/motivational-factor-input.component";
 
 @Component({
     selector: "app-motivational-factors",
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule, ToastModule],
+    imports: [CommonModule, RouterModule, FormsModule, ToastModule, MotivationalFactorInputComponent],
     templateUrl: "./motivational-factors.component.html",
 })
 export class MotivationalFactorsComponent implements OnInit {
@@ -141,7 +142,7 @@ export class MotivationalFactorsComponent implements OnInit {
         this.showDeleteConfirm = null;
     }
 
-    addMotivationalFactor() {
+    addMotivationalFactor(data: {substance: number, type: string, content: string}) {
         console.log("Adding motivational factor");
         if (!this.currentSubstance) {
             this.messageService.add({
@@ -151,15 +152,10 @@ export class MotivationalFactorsComponent implements OnInit {
             });
             return;
         }
-        const factor = {
-            type: "text",
-            content: this.editedContent,
-            substance: this.currentSubstance.id,
-        };
-        
         const newFactor: MotivationalFactorDto = {
-            ...factor,
-            substance: this.selectedSubstance(),
+            type: data.type,
+            content: data.content,
+            substance: data.substance,
             createdAt: new Date(),
         } as MotivationalFactorDto;
         this.motivationalFactorService.add(newFactor).then(() => {
