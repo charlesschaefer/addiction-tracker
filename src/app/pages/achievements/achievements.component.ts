@@ -3,11 +3,12 @@ import { Component, OnInit } from "@angular/core";
 import { AchievementsDisplayComponent } from "../../components/achievements-display.component";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
     selector: "app-achievements",
     standalone: true,
-    imports: [CommonModule, AchievementsDisplayComponent],
+    imports: [CommonModule, AchievementsDisplayComponent, RouterLink],
     templateUrl: "./achievements.component.html",
 })
 export class AchievementsComponent implements OnInit {

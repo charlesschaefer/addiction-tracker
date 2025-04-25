@@ -69,11 +69,11 @@
                 [(ngModel)]="newSubstance"
                 name="newSubstance"
                 placeholder="Substance name"
-                class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                class="flex-1 rounded-lg border-gray-300 p-4 bg-white/60 mb-4 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
               />
 
               <h4>Select an icon:</h4>
-              <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" />
+              <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" class="mb-4" />
 
               <div class="flex gap-2">
                 <button

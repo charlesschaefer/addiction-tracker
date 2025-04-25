@@ -12,7 +12,7 @@
       Back to Home
     </a>
   </div>
-  <div class="card p-6 mb-8">
+  <div class="card p-6 mb-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-md border border-gray-100">
     <div class="mb-6">
       <h2 class="text-xl font-semibold text-gray-800 mb-2">Achievement Progress</h2>
       <p class="text-gray-600">
@@ -21,7 +21,7 @@
     </div>
     <app-achievements-display [achievements]="achievements"></app-achievements-display>
   </div>
-  <div class="card p-6">
+  <div class="card p-6 bg-white/80 backdrop-blur-sm rounded-2xl shadow-md border border-gray-100">
     <h2 class="text-xl font-semibold text-gray-800 mb-4">Upcoming Achievements</h2>
     <div class="space-y-4">
       <div *ngFor="let achievement of achievementCompleted(0, 3)" class="p-4 border border-dashed border-gray-200 rounded-lg">

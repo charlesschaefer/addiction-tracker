@@ -125,13 +125,15 @@
         Show less
     </button>
 
-    <button
-        *ngIf="viewAll.observers.length > 0"
-        class="mt-4 w-full py-2 text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors"
-        routerLink="/achievements"
-        routerLinkActive="hidden"
-    >
-        View All Achievements
-    </button>
+    <div>
+      <a
+          *ngIf="viewAll.observers.length > 0"
+          class="mt-4 w-full py-2 text-sm block text-center font-medium text-white bg-gradient-to-r from-teal-500 to-blue-500 rounded-lg hover:from-teal-600 hover:to-blue-600 transition-colors"
+          routerLink="/achievements"
+          routerLinkActive="hidden"
+      >
+          View All Achievements
+      </a>
+    </div>
     
 </div>
