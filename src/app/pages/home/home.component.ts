@@ -13,6 +13,7 @@ import { AchievementsMilestonesComponent } from "../../components/achievements-m
 import { RecordSubstanceUseComponent } from "../../components/record-substance-use.component";
 import { SubstanceService } from "../../services/substance.service";
 import { SubstanceDto } from "../../dto/substance.dto";
+import { AlternativeActivityOverlayComponent } from "../../components/alternative-activity-overlay.component";
 
 import svg1 from "../../../assets/icons/usage-entries.svg";
 import svg2 from "../../../assets/icons/heart.svg";
@@ -25,7 +26,8 @@ import svg4 from "../../../assets/icons/analytics.svg";
         CommonModule,
         NavigationCardsComponent,
         AchievementsMilestonesComponent,
-        RecordSubstanceUseComponent
+        RecordSubstanceUseComponent,
+        AlternativeActivityOverlayComponent,
     ],
     templateUrl: "./home.component.html",
     styleUrl: "./home.component.scss",
@@ -41,6 +43,8 @@ export class HomeComponent implements OnInit {
     substances = signal<SubstanceDto[]>([]);
 
     currentMotivationalFactor: any = null;
+    showBreathingPrompt = false;
+    personalizedRecommendation?: { name: string; successRate: number };
 
     cards = [
         {
@@ -86,12 +90,12 @@ export class HomeComponent implements OnInit {
             gradientFrom: "from-indigo-600",
             gradientTo: "to-purple-600",
             title: "Alternatives",
-            description:
-                "See which alternative activities work best for you based on your data.",
+            description: "See which alternative activities work best for you based on your data.",
             linkText: "View Analytics",
             icon: svg4, //`/assets/icons/analytics.svg`
         },
     ];
+
 
     constructor(
         private joyrideService: JoyrideService,
@@ -179,5 +183,11 @@ export class HomeComponent implements OnInit {
         const substances = this.substances();
         substances.push(substance);
         this.substances.set([...substances]);
+    }
+
+    handleAlternativeSelected(activityId: string) {
+        // TODO: Implement what happens when an alternative is selected
+        this.showBreathingPrompt = false;
+        // You can add logic here to track the activity, show feedback, etc.
     }
 }

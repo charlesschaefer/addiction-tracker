@@ -27,6 +27,7 @@
       (close)="showRecordPopup = false"
       [substances]="substances()"
       (addSubstance)="handleAddSubstance($event)"
+      (showAlternatives)="showBreathingPrompt = true"
     />
    }
 
@@ -74,6 +75,14 @@
       </div>
     </div>
   </ng-container>
+
+  <!-- Healthy Alternatives Prompt Overlay -->
+  <app-alternative-activity-overlay
+    [show]="showBreathingPrompt"
+    [personalizedRecommendation]="personalizedRecommendation"
+    (onClose)="showBreathingPrompt = false"
+    (onSelect)="handleAlternativeSelected($event)"
+  ></app-alternative-activity-overlay>
 
   <!-- Navigation Buttons -->
   <app-navigation-cards

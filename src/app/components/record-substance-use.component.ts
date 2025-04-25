@@ -2,7 +2,11 @@ import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SubstanceService } from "../services/substance.service";
-import { SubstanceAddDto, SubstanceDto, SubstanceIcon } from "../dto/substance.dto";
+import {
+    SubstanceAddDto,
+    SubstanceDto,
+    SubstanceIcon,
+} from "../dto/substance.dto";
 import { MotivationalFactorDto } from "../dto/motivational-factor.dto";
 import { UsageService } from "../services/usage.service";
 import { MotivationalFactorService } from "../services/motivational-factor.service";
@@ -11,6 +15,11 @@ import { SelectModule } from "primeng/select";
 import { SubstanceIconSelectComponent } from "./substance-icon-select/substance-icon-select.component";
 import { TriggerAddDto, TriggerDto } from "../dto/trigger.dto";
 import { TriggerService } from "../services/trigger.service";
+import { DatePickerModule } from "primeng/datepicker";
+import { UsageAddDto } from "../dto/usage.dto";
+import { CostService } from "../services/cost.service";
+import { CostAddDto } from "../dto/cost.dto";
+import { MessageService } from "primeng/api";
 
 /**
  * Angular component for recording substance use.
@@ -19,7 +28,13 @@ import { TriggerService } from "../services/trigger.service";
 @Component({
     selector: "app-record-substance-use",
     standalone: true,
-    imports: [CommonModule, FormsModule, SelectModule, SubstanceIconSelectComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        SelectModule,
+        SubstanceIconSelectComponent,
+        DatePickerModule,
+    ],
     templateUrl: "./record-substance-use.component.html",
 })
 export class RecordSubstanceUseComponent implements OnInit {
@@ -40,9 +55,11 @@ export class RecordSubstanceUseComponent implements OnInit {
     @Output() addMotivationalFactor = new EventEmitter<
         Omit<MotivationalFactorDto, "id" | "createdAt">
     >();
+    /** Emits when a substance is selected (to show alternatives). */
+    @Output() showAlternatives = new EventEmitter<void>();
 
     /** Date of usage. */
-    date: string = "";
+    datetime: Date = new Date();
     /** Time of usage. */
     time: string = "";
     /** Amount used. */
@@ -87,7 +104,9 @@ export class RecordSubstanceUseComponent implements OnInit {
         private substanceService: SubstanceService,
         private usageService: UsageService,
         private motivationalFactorService: MotivationalFactorService,
-        private triggerService: TriggerService
+        private triggerService: TriggerService,
+        private costService: CostService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
@@ -105,15 +124,12 @@ export class RecordSubstanceUseComponent implements OnInit {
         }
 
         const now = new Date();
-        this.date = now.toISOString().split("T")[0];
-        this.time = now.toTimeString().split(" ")[0].substring(0, 5);
-        
+        this.datetime = now;
+
         this.triggerService.list().then((triggers) => {
             this.triggers = triggers as TriggerDto[];
             console.log("Triggers:", this.triggers);
         });
-
-        
 
         if (!this.currentMotivationalFactor) {
             console.log("Não tem motivational factor");
@@ -122,7 +138,7 @@ export class RecordSubstanceUseComponent implements OnInit {
                 this.motivationalFactors = factors as MotivationalFactorDto[];
                 this.selectRandomMotivationalFactor();
                 console.log("Motivational Factors:", this.motivationalFactors);
-            })
+            });
         }
     }
 
@@ -134,7 +150,9 @@ export class RecordSubstanceUseComponent implements OnInit {
         if (!this.motivationalFactors) return null;
 
         // Fetch motivational factors for this substance
-        const randIdx = Math.floor(Math.random() * this.motivationalFactors.length);
+        const randIdx = Math.floor(
+            Math.random() * this.motivationalFactors.length
+        );
         console.warn("Vamos pegar o idx: ", randIdx);
 
         this.currentMotivationalFactor = this.motivationalFactors[randIdx];
@@ -146,11 +164,14 @@ export class RecordSubstanceUseComponent implements OnInit {
      */
     async handleAddSubstance() {
         const name = this.newSubstance.trim();
-        const icon = SubstanceIcon[this.newSubstanceIcon?.trim() as keyof typeof SubstanceIcon] ?? undefined;
+        const icon =
+            SubstanceIcon[
+                this.newSubstanceIcon?.trim() as keyof typeof SubstanceIcon
+            ] ?? undefined;
         if (name) {
             const substanceObj = {
                 name,
-                icon
+                icon,
             } as Partial<SubstanceDto>;
             this.substanceService
                 .add(substanceObj as SubstanceAddDto)
@@ -159,7 +180,9 @@ export class RecordSubstanceUseComponent implements OnInit {
                     this.addSubstance.emit(substanceObj as SubstanceDto);
                     this.showAddSubstance = false;
                     this.newSubstanceId = substanceObj.id;
-                    this.selectedSubstance = await this.substanceService.get(substanceObj.id || 0) as SubstanceDto;
+                    this.selectedSubstance = (await this.substanceService.get(
+                        substanceObj.id || 0
+                    )) as SubstanceDto;
                     this.substanceCreationStep = "motivation";
 
                     this.addSubstance.emit(substanceObj as SubstanceDto);
@@ -191,13 +214,15 @@ export class RecordSubstanceUseComponent implements OnInit {
     handleAddTrigger(): void {
         if (
             this.newTrigger.trim() &&
-            !this.triggers.find(trigger => trigger.name == this.newTrigger.trim())
+            !this.triggers.find(
+                (trigger) => trigger.name == this.newTrigger.trim()
+            )
         ) {
             const newTriggerObj = {
                 name: this.newTrigger.trim(),
             };
             this.triggerService.add(newTriggerObj).then((id) => {
-                const newTrigger = {...newTriggerObj, id};
+                const newTrigger = { ...newTriggerObj, id };
                 this.triggers.push(newTrigger);
                 this.selectedTriggers = [
                     ...this.selectedTriggers,
@@ -227,38 +252,70 @@ export class RecordSubstanceUseComponent implements OnInit {
      * Handles form submission and emits the usage data.
      * @param event The form submit event.
      */
-    onSubmit(event: Event): void {
+    async onSubmit(event: Event) {
+        console.log(
+            "Submitting form with values:",
+            "this.selectedSubstance",
+            this.selectedSubstance,
+            "this.datetime",
+            this.datetime,
+            "this.amount",
+            this.amount,
+            "this.mood",
+            this.sentiment
+        );
         event.preventDefault();
         if (
             this.selectedSubstance &&
-            this.date &&
-            this.time &&
+            this.datetime &&
             this.amount &&
-            this.mood
+            this.sentiment
         ) {
+            const triggers = this.triggers.filter((trigger) =>
+                this.selectedTriggers.includes(trigger.name)
+            );
             const newUsage = {
-                id: Date.now(),
-                substance: this.selectedSubstance,
-                date: this.date,
-                time: this.time,
-                amount: this.amount,
-                mood: this.mood,
-                triggers: [...this.selectedTriggers],
+                substance: this.selectedSubstance.id,
+                datetime: this.datetime,
+                quantity: parseFloat(this.amount),
+                sentiment: this.sentiments.findIndex(
+                    (sentiment) => sentiment.label == this.sentiment
+                ),
+                trigger: triggers,
                 cost: this.cost ? parseFloat(this.cost) : 0,
-                cravingIntensity: parseInt(this.cravingIntensity.toString()),
-            };
-            this.usageService.add(newUsage as any).then(() => {
-                this.submit.emit(newUsage);
+                craving: parseInt(this.cravingIntensity.toString()),
+            } as UsageAddDto;
 
-                // Reset form
-                this.selectedSubstance = undefined;
-                this.amount = "";
-                this.mood = "";
-                this.selectedTriggers = [];
-                this.cost = "";
-                this.cravingIntensity = 5;
-                this.showCostInput = false;
+            // if the uesr filled the cost input, we need to store it
+            let costData: CostAddDto | undefined = undefined;
+            if (this.cost) {
+                costData = {
+                    value: parseFloat(this.cost),
+                    substance: this.selectedSubstance.id,
+                    date: this.datetime,
+                };
+            }
+
+            await this.usageService.add(newUsage);
+            await this.costService.add(costData as CostAddDto);
+
+            this.submit.emit(newUsage);
+
+            this.messageService.add({
+                severity: "success",
+                summary: "Success",
+                detail: "Substance use recorded successfully!",
+                life: 3000,
             });
+
+            // Reset form
+            this.selectedSubstance = undefined;
+            this.amount = "";
+            this.sentiment = "";
+            this.selectedTriggers = [];
+            this.cost = "";
+            this.cravingIntensity = 5;
+            this.showCostInput = false;
         }
     }
 
@@ -277,15 +334,22 @@ export class RecordSubstanceUseComponent implements OnInit {
     handleSelectSubstance(substance: SubstanceDto): void {
         this.selectedSubstance = substance;
 
-        this.motivationalFactorService.getSubstanceFactors(substance.id).then((factors) => {
-            this.motivationalFactors = factors as MotivationalFactorDto[];
-            if (this.motivationalFactors.length > 0) {
-                const randomIdx = Math.floor(Math.random() * this.motivationalFactors.length);
-                this.currentMotivationalFactor = this.motivationalFactors[randomIdx];
-            } else {
-                this.currentMotivationalFactor = null;
-            }
-        })
+        this.motivationalFactorService
+            .getSubstanceFactors(substance.id)
+            .then((factors) => {
+                this.motivationalFactors = factors as MotivationalFactorDto[];
+                if (this.motivationalFactors.length > 0) {
+                    const randomIdx = Math.floor(
+                        Math.random() * this.motivationalFactors.length
+                    );
+                    this.currentMotivationalFactor =
+                        this.motivationalFactors[randomIdx];
+                } else {
+                    this.currentMotivationalFactor = null;
+                }
+            });
+        // Emit event to show alternatives overlay
+        this.showAlternatives.emit();
     }
 
     increaseAmount() {

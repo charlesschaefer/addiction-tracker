@@ -1,5 +1,5 @@
 <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-30 p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
-  <div class="bg-white/95 rounded-2xl shadow-2xl p-5 sm:p-7 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 animate-scaleIn">
+  <div class="bg-white/95 rounded-2xl shadow-2xl p-5 sm:p-7 pt-0 sm:pt-0 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 animate-scaleIn">
     <div class="sticky top-0 p-5 z-99 bg-black/3 backdrop-blur-sm rounded-xl">
       <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 backdrop-blur-sm pt-1 pb-3 border-b border-gray-100 z-100 shadow-sm p-4 rounded-xl">
         <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
@@ -36,61 +36,72 @@
           </h3>
           <div 
             *ngIf="!showAddSubstance && (currentMotivationalFactor !== null || (selectedSubstance && !showAddSubstance))" 
-            class="mb-4 transition-transform duration-300 ease-in-out transform scale-95 opacity-0 animate-fadeIn"
-            [ngClass]="{'scale-100 opacity-100': currentMotivationalFactor || selectedSubstance}"
-            >
+            class="mb-4 animate-fadeIn"
+          >
             <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
               <h2 class="text-sm font-medium text-purple-700 mb-2">
-              Remember why you want to quit {{ selectedSubstance?.name ?? "using substances" }}
+                Remember why you want to quit {{ selectedSubstance?.name ?? "using substances" }}
               </h2>
               <ng-container *ngIf="currentMotivationalFactor; else noMotivation">
-              <div>
-                <span *ngIf="currentMotivationalFactor.type === 'text'">
-                {{ currentMotivationalFactor.content }}
-                </span>
-                <img *ngIf="currentMotivationalFactor.type === 'image'" [src]="currentMotivationalFactor.content" class="max-h-40 rounded-lg shadow-sm" />
-                <audio *ngIf="currentMotivationalFactor.type === 'audio'" [src]="currentMotivationalFactor.content" controls></audio>
-              </div>
+                <div>
+                  <span *ngIf="currentMotivationalFactor.type === 'text'">
+                    {{ currentMotivationalFactor.content }}
+                  </span>
+                  <img *ngIf="currentMotivationalFactor.type === 'image'" [src]="currentMotivationalFactor.content" class="max-h-40 rounded-lg shadow-sm" />
+                  <audio *ngIf="currentMotivationalFactor.type === 'audio'" [src]="currentMotivationalFactor.content" controls></audio>
+                </div>
               </ng-container>
               <ng-template #noMotivation>
-              <p class="text-gray-600 italic">
-                "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
-              </p>
+                <p class="text-gray-600 italic">
+                  "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
+                </p>
               </ng-template>
             </div>
           </div>
-          <div *ngIf="showAddSubstance" class="bg-purple-50 p-4 rounded-lg border border-purple-100">
-            <h3 class="text-lg font-medium text-purple-700 mb-3">
+          <div *ngIf="showAddSubstance" class="bg-gradient-to-br from-purple-50 to-purple-100/70 p-5 rounded-xl border border-purple-200 shadow-sm animate-fadeIn">
+            <h3 class="text-xl font-semibold bg-gradient-to-r from-purple-700 to-purple-500 bg-clip-text text-transparent mb-2">
               Add New Substance
             </h3>
-            <div class="flex flex-col sm:flex-col gap-3">
+            <p class="text-sm text-gray-600 mb-4">
+              Start by giving your substance a name. This will help you track your usage patterns over time.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
               <input
                 type="text"
                 [(ngModel)]="newSubstance"
                 name="newSubstance"
                 placeholder="Substance name"
-                class="flex-1 rounded-lg border-gray-300 p-4 bg-white/60 mb-4 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                class="flex-1 rounded-lg border-gray-300 p-4 bg-white/60 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
               />
-
-              <h4>Select an icon:</h4>
               <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" class="mb-4" />
-
-              <div class="flex gap-2">
-                <button
-                  type="button"
-                  (click)="handleAddSubstance()"
-                  class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+            </div>
+            <div class="flex gap-3 justify-end">
+              <button
+                type="button"
+                (click)="handleAddSubstance()"
+                class="px-5 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
-                  Add
-                </button>
-                <button
-                  type="button"
-                  (click)="showAddSubstance = false"
-                  class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                Add
+              </button>
+              <button
+                type="button"
+                (click)="showAddSubstance = false"
+                class="px-5 py-3 border border-gray-300 bg-white/80 text-gray-700 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center"
+              >
+                Cancel
+              </button>
             </div>
           </div>
           <div *ngIf="!showAddSubstance" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
@@ -98,13 +109,10 @@
               *ngFor="let substance of substances"
               type="button"
               (click)="handleSelectSubstance(substance)"
-              
               [ngClass]="selectedSubstance?.name === substance.name ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md' : 'border-gray-100 hover:border-teal-300 hover:bg-teal-50'"
               class="p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center"
             >
-              @if (substance.icon) {
-                <i class="pi pi-{{substance.icon}} mb-3"></i>
-              }
+              <i *ngIf="substance.icon" class="pi pi-{{substance.icon}} mb-3"></i>
               {{ substance.name }}
             </button>
           </div>
@@ -140,150 +148,221 @@
           </div>
 
           <!-- Date and Time -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
-            <div class="flex items-center mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-purple-600 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
+          <div class="bg-white/90 rounded-xl border border-gray-200 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-6">
+              <div class="bg-purple-100 p-2.5 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-purple-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <h4 class="font-medium text-gray-700">
-                When did you use it?
-              </h4>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1">
-                  Date
-                </label>
-                <input
-                  type="date"
-                  [(ngModel)]="date"
-                  name="date"
-                  class="w-full rounded-lg border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50"
-                />
+                  />
+                </svg>
               </div>
               <div>
-                <label class="block text-xs font-medium text-gray-500 mb-1">
-                  Time
+                <h4 class="font-semibold text-gray-800 text-lg">
+                  When did you use it?
+                </h4>
+                <p class="text-gray-500 text-sm mt-1">
+                  Record the date and time of your substance use
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Date and time
                 </label>
-                <input
-                  type="time"
-                  [(ngModel)]="time"
-                  name="time"
-                  class="w-full rounded-lg border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50"
-                />
+                <p-datepicker 
+                  [(ngModel)]="datetime" 
+                  name="date" 
+                  [showTime]="true"
+                  [showIcon]="true" 
+                  [showButtonBar]="true" 
+                  
+                  class="w-full"
+                  inputStyleClass="h-12 rounded-lg border-gray-200 bg-white/80 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
+                ></p-datepicker>
               </div>
             </div>
           </div>
 
           <!-- Amount -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
-            <div class="flex items-center mb-4">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-teal-600 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
-                />
-              </svg>
-              <h4 class="font-medium text-gray-700">
-                How much did you use?
-              </h4>
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-gray-500 mb-1">
-                Amount
-              </label>
-              <div class="flex items-center">
-                <button
-                  type="button"
-                  (click)="decreaseAmount()"
-                  class="h-10 w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-l-lg border border-gray-200 transition-colors"
-                  aria-label="Decrease amount"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                  </svg>
-                </button>
-                <input
-                  type="number"
-                  [(ngModel)]="amount"
-                  name="amount"
-                  class="pl-4 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-10 text-center"
-                  min="1"
-                  placeholder="Enter the number of units consumed"
-                />
-                <button
-                  type="button"
-                  (click)="increaseAmount()"
-                  class="h-10 w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-r-lg border border-gray-200 transition-colors"
-                  aria-label="Increase amount"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                  </svg>
-                </button>
-              </div>
-              <p class="text-xs text-gray-500 mt-1">
-                Enter the number of units consumed
-              </p>
-            </div>
-            <div class="mt-4">
-              <button
-                type="button"
-                (click)="showCostInput = !showCostInput"
-                class="flex items-center text-purple-600 hover:text-purple-800 text-sm font-medium mt-2 transition-all transform hover:translate-x-1"
-              >
+          <div class="bg-white/90 rounded-xl border border-gray-200 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-6">
+              <div class="bg-teal-100 p-2.5 rounded-lg mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 mr-1"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+                  class="h-6 w-6 text-teal-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
                   <path
-                    fill-rule="evenodd"
-                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                    clip-rule="evenodd"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
                   />
                 </svg>
-                Add cost information
-              </button>
-              <div *ngIf="showCostInput" class="mt-2">
-                <label class="block text-xs font-medium text-gray-500 mb-1">
-                  Cost (optional)
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 text-lg">
+                  How much did you use?
+                </h4>
+                <p class="text-gray-500 text-sm mt-1">
+                  Record the amount and cost of your substance use
+                </p>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Amount
                 </label>
-                <input
-                  type="number"
-                  [(ngModel)]="cost"
-                  name="cost"
-                  min="0"
-                  step="0.01"
-                  class="w-full rounded-lg border-gray-200 shadow-sm focus:border-green-500 focus:ring focus:ring-green-200 focus:ring-opacity-50"
-                  placeholder="Enter cost"
-                />
+                <div class="flex items-center">
+                  <button
+                    type="button"
+                    (click)="decreaseAmount()"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-l-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                    aria-label="Decrease amount"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <div class="relative flex-1 group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-colors"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="number"
+                      [(ngModel)]="amount"
+                      name="amount"
+                      class="pl-12 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 group-hover:border-teal-300"
+                      min="1"
+                      placeholder="Enter amount"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    (click)="increaseAmount()"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-r-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                    aria-label="Increase amount"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-sm text-gray-500 mt-2 ml-1">
+                  Enter the number of units consumed
+                </p>
+              </div>
+              <div class="mt-6">
+                <div *ngIf="showCostInput" class="space-y-2 animate-fadeIn">
+                  <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                    Cost ($)
+                  </label>
+                  <div class="flex items-center">
+                    <button
+                      type="button"
+                      (click)="decreaseAmount()"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-l-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                      aria-label="Decrease cost"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                        <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                    <div class="relative flex-1 group">
+                      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-colors"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="number"
+                        [(ngModel)]="cost"
+                        name="cost"
+                        placeholder="Enter cost"
+                        class="pl-12 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 group-hover:border-teal-300"
+                        step="0.01"
+                        min="0"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      (click)="increaseAmount()"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-r-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                      aria-label="Increase cost"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                  <p class="text-sm text-gray-500 mt-2 ml-1">
+                    Enter the cost in dollars
+                  </p>
+                </div>
+                <button
+                  *ngIf="!showCostInput"
+                  type="button"
+                  (click)="showCostInput = true"
+                  class="flex items-center text-teal-600 hover:text-teal-800 text-sm font-medium mt-2 transition-all transform hover:translate-x-2 hover:scale-105 bg-teal-50 hover:bg-teal-100 px-4 py-2 rounded-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  Add cost information
+                </button>
               </div>
             </div>
           </div>
 
           <!-- Craving Intensity -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -325,16 +404,26 @@
               />
               <div class="mt-4 flex flex-col items-center">
                 <div
-                  class="w-24 h-24 rounded-full border-8 flex items-center justify-center"
-                  [style.borderColor]="getCravingColor(cravingIntensity)"
-                  [style.background]="
-                    'conic-gradient(' +
-                    getCravingColor(cravingIntensity) +
-                    ' ' +
-                    (cravingIntensity * 10) +
-                    '%, transparent 0)'
-                  "
-                ></div>
+                  class="relative flex items-center justify-center mb-2"
+                >
+                  <div
+                    class="w-24 h-24 rounded-full border-8 flex items-center justify-center"
+                    [style.borderColor]="getCravingColor(cravingIntensity)"
+                    [style.background]="
+                      'conic-gradient(' +
+                      getCravingColor(cravingIntensity) +
+                      ' ' +
+                      (cravingIntensity * 10) +
+                      '%, transparent 0)'
+                    "
+                  >
+                    <div
+                      class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold"
+                    >
+                      {{cravingIntensity}}
+                    </div>
+                  </div>
+                </div>
                 <p class="text-sm text-gray-500 mt-2 font-medium">
                   {{
                     cravingIntensity <= 3
@@ -349,7 +438,7 @@
           </div>
 
           <!-- Sentiment selection -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -384,7 +473,7 @@
           </div>
 
           <!-- Triggers -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm">
+          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -412,7 +501,7 @@
                 [ngClass]="selectedTriggers.includes(trigger.name) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
                 class="px-4 py-2 rounded-full text-sm transition-all"
               >
-                {{ trigger }}
+                {{ trigger.name }}
               </button>
             </div>
             <div *ngIf="showAddTrigger" class="bg-purple-50 p-3 rounded-lg border border-purple-100 mt-3">
@@ -420,28 +509,70 @@
                 New Trigger
               </label>
               <div class="flex flex-col sm:flex-row gap-2">
-                <input
-                  type="text"
-                  [(ngModel)]="newTrigger"
-                  name="newTrigger"
-                  placeholder="Enter new trigger"
-                  class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
-                  autofocus
-                />
-                <button
-                  type="button"
-                  (click)="handleAddTrigger()"
-                  class="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-                >
-                  Add
-                </button>
-                <button
-                  type="button"
-                  (click)="showAddTrigger = false"
-                  class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </button>
+                <div class="relative flex-1">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    [(ngModel)]="newTrigger"
+                    name="newTrigger"
+                    placeholder="Enter new trigger"
+                    class="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                    autofocus
+                  />
+                </div>
+                <div class="flex gap-2">
+                  <button
+                    type="button"
+                    (click)="handleAddTrigger()"
+                    class="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Add
+                  </button>
+                  <button
+                    type="button"
+                    (click)="showAddTrigger = false"
+                    class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-1"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
             <button
