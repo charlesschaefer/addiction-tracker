@@ -7,20 +7,20 @@ import { RecommendationDto } from './dto/recommendation.dto';
 import { AlternativeActivityDto } from './dto/alternative-activity.dto';
 import { MotivationalFactorDto } from './dto/motivational-factor.dto';
 import { AchievementDto } from './dto/achievement.dto';
-import { AchievementData } from './data/achievements.data';
+import { AchievementData } from './data/achievement.data';
 import { AlternativeActivityData } from './data/alternative-activity.data';
 import { TriggerData } from './data/trigger.data';
 
-export type TableKeys = 'substance' | 'usage' | 'trigger' | 'cost' | 'recommendations' | 'alternative_activity' | 'motivational_factors' | 'usage_filling' | 'achievement';
+export type TableKeys = 'substance' | 'usage' | 'trigger' | 'cost' | 'recommendation' | 'alternative_activity' | 'motivational_factor' | 'usage_filling' | 'achievement';
 
 export class AppDb extends Dexie {
     substance!: Table<SubstanceDto, number>;
     usage!: Table<UsageDto, number>;
     trigger!: Table<TriggerDto, number>;
     cost!: Table<CostDto, number>;
-    recommendations!: Table<RecommendationDto, number>;
+    recommendation!: Table<RecommendationDto, number>;
     alternative_activity!: Table<AlternativeActivityDto, number>;
-    motivational_factors!: Table<MotivationalFactorDto, number>;
+    motivational_factor!: Table<MotivationalFactorDto, number>;
     usage_filling!: Table<UsageDto, number>;
     achievement!: Table<AchievementDto, number>;
 
@@ -32,7 +32,7 @@ export class AppDb extends Dexie {
             usage: '++id, substance, quantity, datetime, sentiment, craving, trigger',
             trigger: '++id, name',
             cost: '++id, substance, value, date',
-            recommendations: '++id, trigger, text'
+            recommendation: '++id, trigger, text'
         });
 
         this.version(6).stores({
@@ -40,8 +40,8 @@ export class AppDb extends Dexie {
             usage: '++id, substance, quantity, datetime, sentiment, craving, trigger, cost',
             trigger: '++id, name',
             cost: '++id, substance, value, date',
-            recommendations: '++id, trigger, text',
-            motivational_factors: '++id, substance, type, content, createdAt',
+            recommendation: '++id, trigger, text',
+            motivational_factor: '++id, substance, type, content, createdAt',
             usage_filling: '++id, datetime, substance, motivational_factor, alternative_activity, kept_usage',
             alternative_activity: '++id, name, description, duration',
             achievement: '++id, title, description, completed, category, icon',

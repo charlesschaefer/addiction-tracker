@@ -1,3 +1,6 @@
+
+export type UsageFillings = UsageFillingAddDto | UsageFillingDto;
+
 /**
  * @fileoverview DTO for recording statistics about the Usage Filling process.
  * Everytime the user opens the Usage Filling screen, a new entry is created in the database with 

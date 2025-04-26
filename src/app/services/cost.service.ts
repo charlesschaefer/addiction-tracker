@@ -4,6 +4,8 @@ import { CostAddDto, CostDto } from '../dto/cost.dto';
 import { AppDb } from '../app.db';
 import { DbSchema } from 'dexie';
 import { DbService } from './db.service';
+import { Changes, DataUpdatedService } from './data-updated.service';
+import { DatabaseChangeType } from 'dexie-observable/api';
 
 type Costs = CostDto | CostAddDto;
 
@@ -15,10 +17,23 @@ export class CostService extends ServiceAbstract<Costs> {
     
 
     constructor(
-        protected override dbService: DbService
+        protected override dbService: DbService,
+        protected dataUpdteService: DataUpdatedService
     ) {
         super();
         this.setTable();
+    }
+
+    override add(costs: CostAddDto) {
+        return super.add(costs).then(() => {
+            this.dataUpdatedService?.next([{
+                key: 'id', 
+                obj: costs,
+                table: this.storeName,
+                type: DatabaseChangeType.Create,
+                source: ''
+            }] as Changes[]);
+        })
     }
 
     getTotalSpent() {

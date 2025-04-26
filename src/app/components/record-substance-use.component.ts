@@ -297,7 +297,14 @@ export class RecordSubstanceUseComponent implements OnInit {
             }
 
             await this.usageService.add(newUsage);
-            await this.costService.add(costData as CostAddDto);
+            
+            try {
+                if (costData) {
+                    await this.costService.add(costData as CostAddDto);
+                }
+            } catch (e) {
+                console.error("Erro cabuloso", e);
+            }
 
             this.submit.emit(newUsage);
 

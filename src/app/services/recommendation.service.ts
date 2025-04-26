@@ -18,7 +18,7 @@ type Recommendations = RecommendationDto | RecommendationAddDto;
     providedIn: 'root'
 })
 export class RecommendationService extends ServiceAbstract<Recommendations> {
-    protected override storeName: 'recommendations' = 'recommendations';
+    protected override storeName: 'recommendation' = 'recommendation';
 
     constructor(
         protected override dbService: DbService

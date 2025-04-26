@@ -4,6 +4,8 @@ import { AppDb } from '../app.db';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { DbService } from './db.service';
+import { DatabaseChangeType } from 'dexie-observable/api';
+import { Changes } from './data-updated.service';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -34,6 +36,19 @@ export class UsageService extends ServiceAbstract<Usages> {
     ) {
         super();
         this.setTable();
+    }
+
+    override add(usage: UsageAddDto) {
+        return super.add(usage).then(() => {
+            console.log("Entrou no usage.add()")
+            this.dataUpdatedService?.next([{
+                key: 'id', 
+                obj: usage,
+                table: this.storeName,
+                type: DatabaseChangeType.Create,
+                source: ''
+            }] as Changes[]);
+        })
     }
 
     groupByHour(usages: Usages[]): Map<number, Map<string, FinalUsage>> {

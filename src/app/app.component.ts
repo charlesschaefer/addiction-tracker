@@ -25,6 +25,8 @@ import { firstValueFrom } from "rxjs";
 import { LockButtonComponent } from "./components/lock-button.component";
 import { HeaderComponent } from "./components/header.component";
 import { ToastModule } from "primeng/toast";
+import { DataUpdatedService } from "./services/data-updated.service";
+import { AchievementService } from "./services/achievement.service";
 
 @Component({
     selector: "app-root",
@@ -122,7 +124,9 @@ export class AppComponent implements OnInit {
     constructor(
         private themeService: ThemeService,
         private translate: TranslateService,
-        private router: Router
+        private router: Router,
+        private dataUpdatedService: DataUpdatedService,
+        private achievementService: AchievementService
     ) {
         translate.setDefaultLang("en");
         //translate.use('en');
@@ -153,6 +157,15 @@ export class AppComponent implements OnInit {
             console.log(userTheme, currentTheme);
             this.themeService.switchTheme(userTheme);
         }
+
+        const detectAchievements = () => {
+            this.achievementService.detectAchievements();
+        };
+
+        this.dataUpdatedService.subscribe('cost', detectAchievements);
+        this.dataUpdatedService.subscribe('usage', detectAchievements);
+        this.dataUpdatedService.subscribe('motivational_factor', detectAchievements);
+        this.dataUpdatedService.subscribe('usage_filling', detectAchievements);
     }
 
     async notify() {

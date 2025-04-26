@@ -70,7 +70,7 @@ export class AchievementData {
         {
             id: 9,
             title: 'Motivation Driven',
-            description: 'Use motivational factors to avoid substance use 3 times',
+            description: 'Use motivational factors to avoid substance use 3 times (ver como fazer o registro)',
             completed: false,
             category: 'motivational',
             icon: '/assets/icon/motivational.svg'
