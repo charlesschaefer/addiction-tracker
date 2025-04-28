@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, computed, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { TriggerService } from "../../services/trigger.service";
@@ -7,63 +7,113 @@ import { SubstanceService } from "../../services/substance.service";
 import { TriggerDto } from "../../dto/trigger.dto";
 import { CostService } from "../../services/cost.service";
 import { SentimentService } from "../../services/sentiment.service";
-
-interface UsageEntry {
-    id: number;
-    substance: string;
-    datetime: string;
-    quantity: string;
-    sentiment: string;
-    trigger: string[];
-    cost?: number;
-    craving: number;
-}
+import { SubstanceDto } from "../../dto/substance.dto";
+import { DateTime, DateTimeFormatOptions } from "luxon";
+import { FormsModule } from "@angular/forms";
+import { SelectModule } from "primeng/select";
 
 @Component({
     selector: "app-usage-entries",
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule, SelectModule],
     templateUrl: "./usage-entries.component.html",
 })
 export class UsageEntriesComponent implements OnInit {
+    console = console;
+    DateTime = DateTime;
+    dateFormat = {
+        dateStyle: "short",
+    } as DateTimeFormatOptions;
     Math = Math;
+    Array = Array;
 
-    usageHistory: UsageEntry[] = [];
-    currentPage = 1;
-    entriesPerPage = 10;
-    substances: string[] = [];
-    triggers: string[] = [];
+    currentPage = signal<number>(1);
+    entriesPerPage = 2;//10;
+    substances: Map<number, SubstanceDto> = new Map();
     moods = SentimentService.sentiments;
+
+    currentSubstance = signal<number>(0);
+    usageEntries = signal<UsageDto[]>([]);
+    usageHistory = computed<UsageDto[]>(() => {
+        const substance = this.currentSubstance();
+        if (substance > 0) {
+            return this.usageEntries().filter(
+                (usageEntry) => usageEntry.substance == substance
+            );
+        }
+        return this.usageEntries();
+    });
+
+    currentEntries = computed<UsageDto[]>(() => {
+        console.warn("Lá vou eu de novo currentEntries");
+        let totalItems;
+        if ((totalItems = this.usageHistory().length)) {
+            let indexOfLastEntry = this.currentPage() * this.entriesPerPage;
+            const indexOfFirstEntry = indexOfLastEntry - this.entriesPerPage;
+
+            if (totalItems < indexOfLastEntry) {
+                indexOfLastEntry = totalItems;
+            }
+            this.console.log("indexOfLastEntry", indexOfLastEntry, "indexOfFirstEntry", indexOfFirstEntry)
+            return this.usageHistory().slice(
+                indexOfFirstEntry,
+                indexOfLastEntry
+            );
+        }
+        return [];
+    });
+
+    mostCommonTrigger = computed<string>(() => {
+        console.warn("Lá vou eu de novo trigger");
+        const triggerCounts: { [key: string]: number } = {};
+        this.usageHistory().forEach((entry) => {
+            entry.trigger?.forEach((trigger) => {
+                triggerCounts[trigger.name] =
+                    (triggerCounts[trigger.name] || 0) + 1;
+            });
+        });
+        const mostCommon = Object.entries(triggerCounts).sort(
+            (a, b) => b[1] - a[1]
+        )[0];
+        console.log("Most common:", mostCommon[0]);
+        return mostCommon.length ? mostCommon[0] : "No triggers recorded";
+    });
+
+    totalPages = computed<number>(() => {
+        return Math.ceil(this.usageHistory().length / this.entriesPerPage);
+    });
+
+    pageNumerator = computed<[]>(() => [].constructor(this.totalPages()));
+
+    totalSpent = computed<number>(() => {
+        const entries = this.usageHistory();
+        return entries.reduce((prev, entry) => prev += entry?.cost !== undefined ? entry.cost : 0, 0);
+    });
 
     constructor(
         private usageService: UsageService,
         private triggerService: TriggerService,
         private substanceService: SubstanceService,
-        private costService: CostService,
-    ) { }
+        private costService: CostService
+    ) {}
 
     ngOnInit() {
-        this.triggerService.list().then(triggers => {
-            const triggerData = triggers as TriggerDto[];
-            this.triggers = triggerData.map((trigger: TriggerDto) => trigger.name);
-        });
-        
+        this.substanceService
+            .list()
+            .then(
+                (substances) =>
+                    (this.substances = this.substanceService.getDataAsMap(
+                        substances,
+                        "id"
+                    ) as Map<number, SubstanceDto>)
+            );
         this.usageService.list().then(async (data) => {
-            const usageData = data as UsageDto[];
-            const triggerData = this.triggerService.getDataAsMap((await this.triggerService.list()), 'id');
-            const substanceData = this.substanceService.getDataAsMap((await this.substanceService.list()), 'id');
-            
-            this.usageHistory = usageData.map((entry) => ({
-                id: entry.id,
-                substance: substanceData.get(entry.substance)?.name || "Unknown",
-                datetime: entry.datetime.toLocaleDateString(),
-                quantity: entry.quantity.toString(),
-                sentiment: entry.sentiment.toString(),
-                trigger: entry.trigger ? entry.trigger.map(t => triggerData.get((t as TriggerDto).id)?.name || "Unknown") : [],
-                craving: entry.craving,
-                cost: entry.cost,
-            })) as UsageEntry[];
+            this.usageEntries.set(data as UsageDto[]);
         });
+
+        // this.costService
+        //     .getTotalSpent()
+        //     .then((totalSpent) => (this.totalSpent.set(totalSpent));
     }
 
     getCravingColor(intensity: number): string {
@@ -72,36 +122,15 @@ export class UsageEntriesComponent implements OnInit {
         return "#EF4444";
     }
 
-    get currentEntries(): UsageEntry[] {
-        const indexOfLastEntry = this.currentPage * this.entriesPerPage;
-        const indexOfFirstEntry = indexOfLastEntry - this.entriesPerPage;
-        return this.usageHistory.slice(indexOfFirstEntry, indexOfLastEntry);
-    }
-
-    get totalPages(): number {
-        return Math.ceil(this.usageHistory.length / this.entriesPerPage);
-    }
-
-    async totalSpent() {
-        return await this.costService.getTotalSpent();
-    }
-
-    get mostCommonTrigger() {
-        const triggerCounts: { [key: string]: number } = {};
-        this.usageHistory.forEach(entry => {
-            entry.trigger.forEach(trigger => {
-                triggerCounts[trigger] = (triggerCounts[trigger] || 0) + 1;
-            });
-        });
-        const mostCommon = Object.entries(triggerCounts).sort((a, b) => b[1] - a[1])[0];
-        return mostCommon ? mostCommon[0] : 'None';
-    }
-
-    getMoodEmoji(mood: string) {
-        return this.moods.find(m => m.label === mood)?.emoji;
+    getMoodEmoji(mood: number) {
+        return this.moods[mood]?.emoji;
     }
 
     paginate(pageNumber: number) {
-        this.currentPage = pageNumber;
+        this.currentPage.set(pageNumber);
+    }
+
+    parseInt(value: string) {
+        return parseInt(value);
     }
 }

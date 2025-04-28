@@ -1,302 +1,4 @@
-<!-- <p-toolbar >
-  <div class="p-toolbar-group-start">
-    < !-- <h2 class="title">{{ title }}</h2> -- >
-    <a routerLink="/">
-      <img src="assets/logo.png" id="logo" />
-      <img src="assets/icon.svg" id="logo-icon" />
-    </a>
-  </div>
-  <div class="p-toolbar-group-center">
-  </div>
-  <div class="p-toolbar-group-end" #toolbar>
-    <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
-    <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
-    <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
-  </div>
-</p-toolbar> -->
-<!-- 
-<section class="main">
-  <router-outlet />
-  <p
-    joyrideStep="firstStep"
-    [title]="'Boas vindas' | translate"
-    [text]="'O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso.' | translate"
-    stepPosition="center"
-  ></p>
-</section>
-
-<footer class="dial-menu">
-  <p-speedDial 
-      joyrideStep="dialMenu"
-      [title]="'Menu de acesso rápido' | translate"
-      [text]="'Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos.' | translate"
-      [model]="speedDialItems" 
-      direction="up" 
-      [radius]="80" 
-      type="semi-circle"
-      [style]="{ position: 'absolute', left: 'calc(50% - 20px)'}" />
-</footer> -->
-
 <app-header></app-header>
-<!-- <header
-  class="bg-white/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm border-b border-gray-100"
-  
->
-  <div class="max-w-5xl mx-auto px-4 py-5 pt-[12px] pb-[12px]" >
-    <div class="flex items-center justify-between" >
-      <div class="flex items-center" >
-        < !-- Mobile logo (icon only) -- >
-        <a routerLink="/" >
-          <img
-            class="block sm:hidden w-[60px] h-[60px]"
-            src="assets/icon.svg"
-            alt="Addiction Tracker"
-            
-          />
-        </a>
-
-        < !-- Desktop logo (wide version) -- >
-        <div class="hidden sm:block" >
-          <a routerLink="/" >
-            <img
-              class="h-[3vh]"
-              src="assets/logo.png"
-              alt="Addiction Tracker"
-              
-            />
-          </a>
-          < !-- <p class="text-gray-500 mt-1 text-sm align-" >
-            Track your habits. Take control of your life.
-          </p> -- >
-        </div>
-      </div>
-
-      < !-- Mobile menu button -- >
-      <button
-        class="md:hidden flex items-center text-gray-600 focus:outline-none"
-        (click)="toggleMobileMenu()"
-        aria-label="Toggle mobile menu"
-        
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          
-        >
-
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-              
-            />
-     
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-              
-            />
-        </svg>
-      </button>
-
-      < !-- Desktop navigation -- >
-      <div class="hidden md:flex items-center space-x-4" >
-        <ng-container *ngIf="!isProtected || isAuthenticated">
-          <p-menubar [model]="menuItems" class="border-none" />
-          < !-- <ng-container *ngFor="let link of navLinks">
-            <a
-              [routerLink]="link.href"
-              [ngClass]="{
-                'transition-colors': true,
-                'text-purple-600 font-medium': pathname === link.href,
-                'text-gray-600 hover:text-purple-600': pathname !== link.href
-              }"
-              [attr.aria-current]="pathname === link.href ? 'page' : null"
-              
-              *ngIf="link.icon; else noIcon"
-            >
-              < !-- SVG icon for settings -- >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  
-                />
-              </svg>
-            </a>
-            <ng-template #noIcon>
-              <a
-                [routerLink]="link.href"
-                [ngClass]="{
-                  'transition-colors': true,
-                  'text-purple-600 font-medium': pathname === link.href,
-                  'text-gray-600 hover:text-purple-600': pathname !== link.href
-                }"
-                [attr.aria-current]="pathname === link.href ? 'page' : null"
-                
-              >
-                {{ link.label }}
-              </a>
-            </ng-template>
-          </ng-container> -- >
-        </ng-container>
-        <app-lock-button />
-      </div>
-
-      < !-- <div class="p-toolbar-group-end" #toolbar>
-        <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
-        <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
-        <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
-      </div> -- >
-    </div>
-  </div>
-
-  < !-- Mobile menu drawer -- >
-  <div
-    [ngClass]="{
-      'fixed inset-0 z-40 transform transition-transform duration-300 ease-in-out': true,
-      'translate-x-0': mobileMenuOpen,
-      '-translate-x-full': !mobileMenuOpen
-    }"
-    
-  >
-    < !-- Overlay -- >
-    <div
-      [ngClass]="{
-        'absolute inset-0 bg-black bg-opacity-50 transition-opacity duration-300': true,
-        'opacity-100': mobileMenuOpen,
-        'opacity-0': !mobileMenuOpen
-      }"
-      (click)="toggleMobileMenu()"
-      
-    ></div>
-
-    < !-- Drawer content -- >
-    <div
-      class="absolute top-0 left-0 w-3/4 max-w-xs h-full bg-white shadow-xl flex flex-col"
-      
-    >
-      < !-- Drawer header -- >
-      <div
-        class="p-4 border-b border-gray-200 flex items-center justify-between"
-        
-      >
-        <a routerLink="/" (click)="toggleMobileMenu()" >
-          <img
-            class="w-[50px] h-[50px]"
-            src="assets/icon.png"
-            alt="Addiction Tracker"
-            
-          />
-        </a>
-        <button
-          class="text-gray-500 hover:text-gray-700 focus:outline-none"
-          (click)="toggleMobileMenu()"
-          aria-label="Close menu"
-          
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-              
-            />
-          </svg>
-        </button>
-      </div>
-
-      < !-- Drawer navigation -- >
-      <nav class="flex-1 overflow-y-auto p-4" >
-        <ul class="space-y-4" >
-          <ng-container *ngIf="!isProtected || isAuthenticated">
-            <li *ngFor="let link of navLinks" >
-              <a
-                [routerLink]="link.href"
-                [ngClass]="{
-                  'flex items-center py-2 px-3 rounded-lg transition-colors': true,
-                  'bg-purple-50 text-purple-600 font-medium': pathname === link.href,
-                  'text-gray-700 hover:bg-gray-50 hover:text-purple-600': pathname !== link.href
-                }"
-                [attr.aria-current]="pathname === link.href ? 'page' : null"
-                
-              >
-                <ng-container *ngIf="link.icon; else navIcon">
-                  < !-- Settings icon -- >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5 mr-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                      
-                    />
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                      
-                    />
-                  </svg>
-                  Settings
-                </ng-container>
-                <ng-template #navIcon>
-                  < !-- You can add more icons here based on link.label if needed -- >
-                  {{ link.label }}
-                </ng-template>
-              </a>
-            </li>
-          </ng-container>
-        </ul>
-      </nav>
-
-      < !-- Drawer footer -- >
-      <div class="p-4 border-t border-gray-200" >
-        <div class="flex justify-center" >
-          <app-lock-button />
-        </div>
-      </div>
-    </div>
-  </div>
-</header> -->
 
 <div>
   <!-- Sobriety Badge -->
@@ -312,6 +14,91 @@
     </div>
   </div>
   <section class="main">
+    <!-- Floating Add Button -->
+    <button (click)="onAddRecordClick()"
+      class="fixed bottom-6 sm:bottom-8 right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-xl flex items-center justify-center hover:from-purple-600 hover:to-orange-600 transition-all z-10 transform hover:scale-105 active:scale-95"
+      aria-label="Add new record">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+    </button>
+
+    <!-- Add Usage Record Form Popup -->
+    @if (showRecordPopup) {
+    <app-record-substance-use (close)="showRecordPopup = false" [substances]="substances()"
+      (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true" />
+    }
+
+    <!-- Motivational Factors Display -->
+    <ng-container *ngIf="showMotivationalFactors && currentMotivationalFactor">
+      <div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+        <div class="bg-white/95 rounded-2xl shadow-2xl p-6 max-w-md w-full border border-gray-100 animate-scaleIn">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-purple-600">Your Motivation</h3>
+            <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+              class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100/80 transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="mb-4">
+            <div *ngIf="currentMotivationalFactor.type === 'text'"
+              class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+              <p class="text-gray-800 italic">"{{ currentMotivationalFactor.content }}"</p>
+            </div>
+            <div *ngIf="currentMotivationalFactor.type === 'image'" class="flex justify-center">
+              <img [src]="currentMotivationalFactor.content" alt="Motivational image"
+                class="max-h-64 rounded-lg shadow-sm" />
+            </div>
+            <div *ngIf="currentMotivationalFactor.type === 'audio'"
+              class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+              <audio [src]="currentMotivationalFactor.content" controls class="w-full"></audio>
+            </div>
+          </div>
+          <div class="mt-6">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Did this help with your craving?</h4>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'gave_up', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-green-100 text-green-800 rounded-full text-sm hover:bg-green-200 transition-colors">I
+                decided not to use</button>
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'craving_reduced', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200 transition-colors">Craving
+                reduced</button>
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'craving_increased', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-red-100 text-red-800 rounded-full text-sm hover:bg-red-200 transition-colors">Craving
+                increased</button>
+              <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+                class="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-gray-200 transition-colors">Continue
+                to record</button>
+            </div>
+            <h4 class="text-sm font-medium text-gray-700 mb-2">How does this make you feel emotionally?</h4>
+            <div class="flex gap-2">
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'no_change', emotionalImpact: 'happier'})"
+                class="px-3 py-1.5 bg-yellow-100 text-yellow-800 rounded-full text-sm hover:bg-yellow-200 transition-colors flex items-center"><span
+                  class="mr-1">😊</span> Happier</button>
+              <button (click)="handleMotivationalFeedback({motivationalImpact: 'no_change', emotionalImpact: 'sadder'})"
+                class="px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full text-sm hover:bg-indigo-200 transition-colors flex items-center"><span
+                  class="mr-1">😢</span> Sadder</button>
+              <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+                class="px-3 py-1.5 bg-gray-100 text-gray-800 rounded-full text-sm hover:bg-gray-200 transition-colors">No
+                change</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Healthy Alternatives Prompt Overlay -->
+    <app-alternative-activity-overlay [show]="showBreathingPrompt"
+      [personalizedRecommendation]="personalizedRecommendation" (onClose)="showBreathingPrompt = false"
+      (onSelect)="handleAlternativeSelected($event)"></app-alternative-activity-overlay>
     <router-outlet />
   </section>
   <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-100 mt-12">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterOutlet, RouterLink, Router } from "@angular/router";
 import { MatMenuModule } from "@angular/material/menu";
@@ -27,6 +27,10 @@ import { HeaderComponent } from "./components/header.component";
 import { ToastModule } from "primeng/toast";
 import { DataUpdatedService } from "./services/data-updated.service";
 import { AchievementService } from "./services/achievement.service";
+import { RecordSubstanceUseComponent } from "./components/record-substance-use.component";
+import { AlternativeActivityOverlayComponent } from "./components/alternative-activity-overlay.component";
+import { SubstanceService } from "./services/substance.service";
+import { SubstanceDto } from "./dto/substance.dto";
 
 @Component({
     selector: "app-root",
@@ -47,7 +51,9 @@ import { AchievementService } from "./services/achievement.service";
         CommonModule,
         MenubarModule,
         HeaderComponent,
-        ToastModule
+        ToastModule,
+        RecordSubstanceUseComponent,
+        AlternativeActivityOverlayComponent,
     ],
     providers: [CookieService, RouterLink, MessageService],
     templateUrl: "./app.component.html",
@@ -98,7 +104,15 @@ export class AppComponent implements OnInit {
     showAddTrigger = false;
     showCostInput = false;
 
-    substances: any[] = [];
+    showRecordPopup = false;
+    showMotivationalFactors = false;
+    showMotivationalPrompt = false;
+    currentMotivationalFactor: any = null;
+    personalizedRecommendation?: { name: string; successRate: number };
+
+    substances = signal<SubstanceDto[]>([]);
+
+    //substances: any[] = [];
     selectedSubstance = "";
 
     date = "";
@@ -126,7 +140,8 @@ export class AppComponent implements OnInit {
         private translate: TranslateService,
         private router: Router,
         private dataUpdatedService: DataUpdatedService,
-        private achievementService: AchievementService
+        private achievementService: AchievementService,
+        private substanceService: SubstanceService
     ) {
         translate.setDefaultLang("en");
         //translate.use('en');
@@ -162,10 +177,17 @@ export class AppComponent implements OnInit {
             this.achievementService.detectAchievements();
         };
 
-        this.dataUpdatedService.subscribe('cost', detectAchievements);
-        this.dataUpdatedService.subscribe('usage', detectAchievements);
-        this.dataUpdatedService.subscribe('motivational_factor', detectAchievements);
-        this.dataUpdatedService.subscribe('usage_filling', detectAchievements);
+        this.dataUpdatedService.subscribe("cost", detectAchievements);
+        this.dataUpdatedService.subscribe("usage", detectAchievements);
+        this.dataUpdatedService.subscribe(
+            "motivational_factor",
+            detectAchievements
+        );
+        this.dataUpdatedService.subscribe("usage_filling", detectAchievements);
+
+        this.substanceService.list().then((substances) => {
+            this.substances.set(substances as SubstanceDto[]);
+        });
     }
 
     async notify() {
@@ -345,5 +367,37 @@ export class AppComponent implements OnInit {
 
     calculateSobrietyDays(usageHistory: any): number {
         return 0;
+    }
+
+    setShowRecordPopup(val: boolean) {
+        this.showRecordPopup = val;
+    }
+    
+    setShowMotivationalFactors(val: boolean) {
+        this.showMotivationalFactors = val;
+    }
+
+    onAddRecordClick() {
+        this.showRecordPopup = true;
+    }
+
+    handleAddSubstance(substance: SubstanceDto) {
+        const substances = this.substances();
+        substances.push(substance);
+        this.substances.set([...substances]);
+    }
+
+    handleAlternativeSelected(activityId: string) {
+        // TODO: Implement what happens when an alternative is selected
+        this.showBreathingPrompt = false;
+        // You can add logic here to track the activity, show feedback, etc.
+    }
+
+    handleMotivationalFeedback(feedback: any) {
+        /* ... */
+    }
+
+    handleSubmit() {
+        /* ... */
     }
 }

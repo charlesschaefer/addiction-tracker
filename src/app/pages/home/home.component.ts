@@ -25,26 +25,20 @@ import svg4 from "../../../assets/icons/analytics.svg";
     imports: [
         CommonModule,
         NavigationCardsComponent,
-        AchievementsMilestonesComponent,
-        RecordSubstanceUseComponent,
-        AlternativeActivityOverlayComponent,
+        AchievementsMilestonesComponent
     ],
     templateUrl: "./home.component.html",
     styleUrl: "./home.component.scss",
 })
 export class HomeComponent implements OnInit {
-    showRecordPopup = false;
-    showMotivationalFactors = false;
-    showMotivationalPrompt = false;
+    
 
     usageHistory: UsageDto[] = [];
     motivationalFactors: MotivationalFactorDto[] = [];
     achievements: AchievementDto[] = [];
-    substances = signal<SubstanceDto[]>([]);
+    
 
-    currentMotivationalFactor: any = null;
     showBreathingPrompt = false;
-    personalizedRecommendation?: { name: string; successRate: number };
 
     cards = [
         {
@@ -116,10 +110,6 @@ export class HomeComponent implements OnInit {
             this.achievements = achievements as AchievementDto[];
         });
 
-        this.substanceService.list().then((substances) => {
-            this.substances.set(substances as SubstanceDto[]);
-        });
-
         this.usageService.list().then((usages) => {
             this.usageHistory = usages as UsageDto[];
         });
@@ -151,26 +141,6 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    handleMotivationalFeedback(feedback: any) {
-        /* ... */
-    }
-
-    handleSubmit() {
-        /* ... */
-    }
-
-    setShowRecordPopup(val: boolean) {
-        this.showRecordPopup = val;
-    }
-    
-    setShowMotivationalFactors(val: boolean) {
-        this.showMotivationalFactors = val;
-    }
-
-    onAddRecordClick() {
-        this.showRecordPopup = true;
-    }
-
     calculateSobrietyDays(usageHistory: any): number {
         return 0;
     }
@@ -179,15 +149,5 @@ export class HomeComponent implements OnInit {
         throw new Error("Method not implemented.");
     }
 
-    handleAddSubstance(substance: SubstanceDto) {
-        const substances = this.substances();
-        substances.push(substance);
-        this.substances.set([...substances]);
-    }
-
-    handleAlternativeSelected(activityId: string) {
-        // TODO: Implement what happens when an alternative is selected
-        this.showBreathingPrompt = false;
-        // You can add logic here to track the activity, show feedback, etc.
-    }
+    
 }
