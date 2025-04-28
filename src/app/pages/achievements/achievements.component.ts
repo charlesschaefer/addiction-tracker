@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { AchievementsDisplayComponent } from "../../components/achievements-display.component";
+import { AchievementsDisplayComponent } from "../../components/achivements/achievements-display.component";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
 import { RouterLink } from "@angular/router";

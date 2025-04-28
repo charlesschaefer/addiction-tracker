@@ -1,8 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { UsageFillingService } from "../services/usage-filling.service";
-import { UsageFillingAddDto } from "../dto/usage-filling.dto";
+import { UsageFillingService } from "../../services/usage-filling.service";
+import { UsageFillingAddDto } from "../../dto/usage-filling.dto";
+import { SubstanceDto } from "../../dto/substance.dto";
 
 @Component({
     selector: "app-alternative-activity-overlay",
@@ -13,7 +14,7 @@ import { UsageFillingAddDto } from "../dto/usage-filling.dto";
 export class AlternativeActivityOverlayComponent {
     @Input() show = false;
     @Input() personalizedRecommendation?: { name: string; successRate: number };
-    @Input() selectedSubstance?: string;
+    @Input() selectedSubstance?: SubstanceDto;
     @Input() motivationalFactorId?: number;
     @Output() onClose = new EventEmitter<void>();
     @Output() onSelect = new EventEmitter<number>();
@@ -100,7 +101,7 @@ export class AlternativeActivityOverlayComponent {
             // Record the usage-filling data
             const usageFilling: UsageFillingAddDto = {
                 datetime: new Date(),
-                substance: parseInt(this.selectedSubstance),
+                substance: this.selectedSubstance.id,
                 motivational_factor: this.motivationalFactorId,
                 alternative_activity: this.selectedActivity ? parseInt(this.selectedActivity.id) : undefined,
                 kept_usage: false

@@ -3,7 +3,7 @@ import {
     AchievementsDisplayComponent,
 } from "./achievements-display.component";
 import { CommonModule } from "@angular/common";
-import { AchievementDto } from "../dto/achievement.dto";
+import { AchievementDto } from "../../dto/achievement.dto";
 import { RouterLink } from "@angular/router";
 
 @Component({

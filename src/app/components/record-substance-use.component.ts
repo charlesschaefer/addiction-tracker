@@ -71,6 +71,7 @@ export class RecordSubstanceUseComponent implements OnInit {
         wasSuccessful: boolean;
         feedback?: string;
     }>();
+    @Output() selectSubstance = new EventEmitter<SubstanceDto>();
 
     /** Date of usage. */
     datetime: Date = new Date();
@@ -370,6 +371,7 @@ export class RecordSubstanceUseComponent implements OnInit {
 
     handleSelectSubstance(substance: SubstanceDto): void {
         this.selectedSubstance = substance;
+        this.selectSubstance.emit(substance);
 
         this.motivationalFactorService
             .getSubstanceFactors(substance.id)

@@ -136,22 +136,15 @@
           <div class="flex flex-wrap md:flex-nowrap justify-between items-start gap-4">
             <div class="flex items-start space-x-3">
               <div class="bg-gradient-to-br from-purple-500 to-orange-500 text-white p-3 rounded-lg shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <ng-container [ngSwitch]="entry.substance">
-                    <path *ngSwitchCase="'Alcohol'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    <path *ngSwitchCase="'Cigarettes'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                    <path *ngSwitchDefault stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </ng-container>
-                </svg>
+                <i *ngIf="substances.get(entry.substance)?.icon" class="pi pi-{{substances.get(entry.substance)?.icon}}"></i>
               </div>
               <div>
                 <h3
                   class="font-semibold text-lg bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
                   {{ substances.get(entry.substance)?.name }}
+                  <span class="text-sm">
+                    x {{ entry.quantity }}
+                  </span>
                 </h3>
                 <p class="text-sm text-gray-500 mt-1">
                   {{ DateTime.fromJSDate(entry.datetime).toLocaleString(dateFormat) }}

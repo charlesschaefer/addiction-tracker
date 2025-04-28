@@ -9,11 +9,11 @@ import { MotivationalFactorDto } from "../../dto/motivational-factor.dto";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
 import { NavigationCardsComponent } from "../../components/navigation-cards.component";
-import { AchievementsMilestonesComponent } from "../../components/achievements-milestones.component";
+import { AchievementsMilestonesComponent } from "../../components/achivements/achievements-milestones.component";
 import { RecordSubstanceUseComponent } from "../../components/record-substance-use.component";
 import { SubstanceService } from "../../services/substance.service";
 import { SubstanceDto } from "../../dto/substance.dto";
-import { AlternativeActivityOverlayComponent } from "../../components/alternative-activity-overlay.component";
+import { AlternativeActivityOverlayComponent } from "../../components/alternative-activity/alternative-activity-overlay.component";
 
 import svg1 from "../../../assets/icons/usage-entries.svg";
 import svg2 from "../../../assets/icons/heart.svg";

@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { AchievementDto } from "../dto/achievement.dto";
+import { AchievementDto } from "../../dto/achievement.dto";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { ButtonModule } from "primeng/button";
 

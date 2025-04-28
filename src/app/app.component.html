@@ -30,7 +30,7 @@
       (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true"
       (selectAlternative)="handleAlternativeSelected($event.id)" [alternatives]="alternativeActivities"
       (alternativeFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
-      [selectedAlternativeActivity]="currentActivity" />
+      [selectedAlternativeActivity]="currentActivity" (selectSubstance)="handleSelectSubstance($event)" />
     }
 
     <!-- Motivational Factors Display -->
@@ -107,7 +107,7 @@
       (onClose)="showBreathingPrompt = false"
       (onSelect)="handleAlternativeSelected($event)" 
       (onFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
-      (onGiveUpUsage)="showRecordPopup = false; showBreathingPrompt = false"
+      (onGiveUpUsage)="handleGiveUpUsage()"
     ></app-alternative-activity-overlay>
 
     <router-outlet />

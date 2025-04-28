@@ -28,7 +28,7 @@ import { ToastModule } from "primeng/toast";
 import { DataUpdatedService } from "./services/data-updated.service";
 import { AchievementService } from "./services/achievement.service";
 import { RecordSubstanceUseComponent } from "./components/record-substance-use.component";
-import { AlternativeActivityOverlayComponent } from "./components/alternative-activity-overlay.component";
+import { AlternativeActivityOverlayComponent } from "./components/alternative-activity/alternative-activity-overlay.component";
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
 
@@ -112,7 +112,7 @@ export class AppComponent implements OnInit {
     substances = signal<SubstanceDto[]>([]);
 
     //substances: any[] = [];
-    selectedSubstance = "";
+    selectedSubstance: SubstanceDto;
 
     date = "";
     time = "";
@@ -131,6 +131,8 @@ export class AppComponent implements OnInit {
     selectedTriggers: string[] = [];
     newTrigger = "";
     usageHistory: any[] = [];
+    openedAlternativeActivityDialog = false;
+    wasAlternativeActivityEffective = false;
 
     mobileMenuOpen: any;
 
@@ -466,5 +468,21 @@ export class AppComponent implements OnInit {
 
     handleSubmit() {
         /* ... */
+    }
+
+    handleSelectSubstance(substance: SubstanceDto) {
+        this.selectedSubstance = substance;
+    }
+
+    handleGiveUpUsage() {
+        this.showRecordPopup = false; 
+        this.showBreathingPrompt = false
+
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Congratulations for this decision',
+            detail: 'This is an important step for your recovery',
+            life: 3000
+        })
     }
 }
