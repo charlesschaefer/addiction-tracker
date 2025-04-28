@@ -47,7 +47,6 @@ import { SubstanceDto } from "./dto/substance.dto";
         TieredMenuModule,
         MenuModule,
         TranslateModule,
-        LockButtonComponent,
         CommonModule,
         MenubarModule,
         HeaderComponent,
@@ -135,13 +134,27 @@ export class AppComponent implements OnInit {
 
     mobileMenuOpen: any;
 
+    /** List of alternative activities. */
+    alternativeActivities: any[] = [
+        { id: 1, name: 'Breathing Exercise', count: 0, successCount: 0, failCount: 0 },
+        { id: 2, name: 'Drink Water', count: 0, successCount: 0, failCount: 0 },
+        { id: 3, name: 'Take a Walk', count: 0, successCount: 0, failCount: 0 },
+        { id: 4, name: 'Stretching', count: 0, successCount: 0, failCount: 0 },
+        { id: 5, name: 'Healthy Snack', count: 0, successCount: 0, failCount: 0 },
+        { id: 6, name: 'Call a Friend', count: 0, successCount: 0, failCount: 0 }
+    ];
+    
+    /** The currently selected activity for feedback. */
+    currentActivity: any = null;
+
     constructor(
         private themeService: ThemeService,
         private translate: TranslateService,
         private router: Router,
         private dataUpdatedService: DataUpdatedService,
         private achievementService: AchievementService,
-        private substanceService: SubstanceService
+        private substanceService: SubstanceService,
+        private messageService: MessageService
     ) {
         translate.setDefaultLang("en");
         //translate.use('en');
@@ -387,10 +400,64 @@ export class AppComponent implements OnInit {
         this.substances.set([...substances]);
     }
 
-    handleAlternativeSelected(activityId: string) {
-        // TODO: Implement what happens when an alternative is selected
+    handleAlternativeSelected(activityId: number) {
+        // Find the selected alternative activity
+        const selectedActivity = this.alternativeActivities.find(alt => alt.id === activityId);
+        if (!selectedActivity) return;
+        
+        // Create a record of this activity and update count
+        const activityIndex = this.alternativeActivities.findIndex(a => a.id === activityId);
+        if (activityIndex >= 0) {
+            this.alternativeActivities[activityIndex] = {
+                ...this.alternativeActivities[activityIndex],
+                count: this.alternativeActivities[activityIndex].count + 1
+            };
+        }
+        
+        // Set the current activity for reference
+        this.currentActivity = {
+            id: selectedActivity.id,
+            name: selectedActivity.name,
+        };
+    }
+
+    /**
+     * Handles feedback from the alternative activity overlay
+     */
+    handleAlternativeFeedback(
+        activity: any,
+        wasSuccessful: boolean,
+        feedback?: string
+    ): void {
+        if (!activity) return;
+        
+        // Update the alternative activity success/fail counts
+        const activityIndex = this.alternativeActivities.findIndex(
+            (a) => a.id === activity.id
+        );
+        
+        if (activityIndex >= 0) {
+            const updatedActivity = {
+                ...this.alternativeActivities[activityIndex],
+                successCount: wasSuccessful
+                    ? this.alternativeActivities[activityIndex].successCount + 1
+                    : this.alternativeActivities[activityIndex].successCount,
+                failCount: !wasSuccessful
+                    ? this.alternativeActivities[activityIndex].failCount + 1
+                    : this.alternativeActivities[activityIndex].failCount,
+            };
+            
+            this.alternativeActivities[activityIndex] = updatedActivity;
+        }
+        
+        // Update the current activity with feedback results
+        // if (this.currentActivity) {
+        //     this.currentActivity.wasSuccessful = wasSuccessful;
+        //     this.currentActivity.feedback = feedback;
+        // }
+        
+        // Close any related dialogs or prompts
         this.showBreathingPrompt = false;
-        // You can add logic here to track the activity, show feedback, etc.
     }
 
     handleMotivationalFeedback(feedback: any) {

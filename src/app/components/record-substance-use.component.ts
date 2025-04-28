@@ -20,6 +20,8 @@ import { UsageAddDto } from "../dto/usage.dto";
 import { CostService } from "../services/cost.service";
 import { CostAddDto } from "../dto/cost.dto";
 import { MessageService } from "primeng/api";
+import { UsageFillingService } from "../services/usage-filling.service";
+import { UsageFillingAddDto } from "../dto/usage-filling.dto";
 
 /**
  * Angular component for recording substance use.
@@ -44,6 +46,10 @@ export class RecordSubstanceUseComponent implements OnInit {
     @Input() selectedSubstance?: SubstanceDto;
     /** The current motivational factor to display. */
     @Input() currentMotivationalFactor: MotivationalFactorDto | null = null;
+    /** List of alternative activities. */
+    @Input() alternatives: any[] = [];
+    /** The alternative activity that was selected by the user */
+    @Input() selectedAlternativeActivity?: {id: number, name: string};
 
     /** Emits when the form is submitted. */
     @Output() submit = new EventEmitter<any>();
@@ -57,6 +63,14 @@ export class RecordSubstanceUseComponent implements OnInit {
     >();
     /** Emits when a substance is selected (to show alternatives). */
     @Output() showAlternatives = new EventEmitter<void>();
+    /** Emits when an alternative activity is selected. */
+    @Output() selectAlternative = new EventEmitter<{id: number, name: string}>();
+    /** Emits when feedback is provided for an alternative activity. */
+    @Output() alternativeFeedback = new EventEmitter<{
+        activity: any;
+        wasSuccessful: boolean;
+        feedback?: string;
+    }>();
 
     /** Date of usage. */
     datetime: Date = new Date();
@@ -100,13 +114,17 @@ export class RecordSubstanceUseComponent implements OnInit {
     /** List of motivational factors for the selected substance. */
     motivationalFactors: MotivationalFactorDto[] = [];
 
+    /** Reference to the Math object for use in the template. */
+    Math = Math;
+
     constructor(
         private substanceService: SubstanceService,
         private usageService: UsageService,
         private motivationalFactorService: MotivationalFactorService,
         private triggerService: TriggerService,
         private costService: CostService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private usageFillingService: UsageFillingService
     ) {}
 
     ngOnInit(): void {
@@ -302,8 +320,19 @@ export class RecordSubstanceUseComponent implements OnInit {
                 if (costData) {
                     await this.costService.add(costData as CostAddDto);
                 }
+                
+                // Record usage-filling with kept_usage = true
+                const usageFilling: UsageFillingAddDto = {
+                    datetime: new Date(),
+                    substance: this.selectedSubstance.id,
+                    motivational_factor: this.currentMotivationalFactor?.id,
+                    alternative_activity: this.selectedAlternativeActivity ? this.selectedAlternativeActivity.id : undefined,
+                    kept_usage: true
+                };
+                await this.usageFillingService.add(usageFilling);
+                
             } catch (e) {
-                console.error("Erro cabuloso", e);
+                console.error("Error recording usage data", e);
             }
 
             this.submit.emit(newUsage);
@@ -323,6 +352,7 @@ export class RecordSubstanceUseComponent implements OnInit {
             this.cost = "";
             this.cravingIntensity = 5;
             this.showCostInput = false;
+            this.selectedAlternativeActivity = undefined;
         }
     }
 
@@ -357,6 +387,61 @@ export class RecordSubstanceUseComponent implements OnInit {
             });
         // Emit event to show alternatives overlay
         this.showAlternatives.emit();
+    }
+
+    /**
+     * Handles when a user selects an alternative activity.
+     * Emits the selected alternative to the parent component.
+     * @param alternative The selected alternative activity.
+     */
+    handleSelectAlternative(alternative: any): void {
+        // Store the selected alternative activity
+        this.selectedAlternativeActivity = {
+            id: alternative.id,
+            name: alternative.name
+        };
+        
+        // Emit the selected alternative
+        this.selectAlternative.emit({
+            id: alternative.id,
+            name: alternative.name
+        });
+    }
+    
+    /**
+     * Handles when the user decides to give up using the substance.
+     * Records this choice along with motivational factor and alternative activity data.
+     */
+    handleGiveUpUsage() {
+        this.close.emit();
+        if (!this.selectedSubstance) return;
+        
+        // Create a usage-filling record with kept_usage = false
+        const usageFilling: UsageFillingAddDto = {
+            datetime: new Date(),
+            substance: this.selectedSubstance.id,
+            motivational_factor: this.currentMotivationalFactor?.id,
+            alternative_activity: this.selectedAlternativeActivity ? this.selectedAlternativeActivity.id : undefined,
+            kept_usage: false
+        };
+        
+        // Add the record to the database
+        this.usageFillingService.add(usageFilling)
+            .then(() => {
+                // Show success message to user
+                this.messageService.add({
+                    severity: "success",
+                    summary: "Great decision!",
+                    detail: "You successfully avoided using the substance. Keep up the good work!",
+                    life: 5000,
+                });
+                
+                // Close the form
+                this.close.emit();
+            })
+            .catch(error => {
+                console.error("Error recording usage filling:", error);
+            });
     }
 
     increaseAmount() {

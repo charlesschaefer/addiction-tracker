@@ -28,7 +28,7 @@ export class UsageEntriesComponent implements OnInit {
     Array = Array;
 
     currentPage = signal<number>(1);
-    entriesPerPage = 2;//10;
+    entriesPerPage = 10;
     substances: Map<number, SubstanceDto> = new Map();
     moods = SentimentService.sentiments;
 

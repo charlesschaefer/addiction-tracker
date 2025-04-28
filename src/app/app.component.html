@@ -27,7 +27,10 @@
     <!-- Add Usage Record Form Popup -->
     @if (showRecordPopup) {
     <app-record-substance-use (close)="showRecordPopup = false" [substances]="substances()"
-      (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true" />
+      (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true"
+      (selectAlternative)="handleAlternativeSelected($event.id)" [alternatives]="alternativeActivities"
+      (alternativeFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
+      [selectedAlternativeActivity]="currentActivity" />
     }
 
     <!-- Motivational Factors Display -->
@@ -96,9 +99,17 @@
     </ng-container>
 
     <!-- Healthy Alternatives Prompt Overlay -->
-    <app-alternative-activity-overlay [show]="showBreathingPrompt"
-      [personalizedRecommendation]="personalizedRecommendation" (onClose)="showBreathingPrompt = false"
-      (onSelect)="handleAlternativeSelected($event)"></app-alternative-activity-overlay>
+    <app-alternative-activity-overlay 
+      [show]="showBreathingPrompt"
+      [personalizedRecommendation]="personalizedRecommendation" 
+      [selectedSubstance]="selectedSubstance"
+      [motivationalFactorId]="currentMotivationalFactor?.id"
+      (onClose)="showBreathingPrompt = false"
+      (onSelect)="handleAlternativeSelected($event)" 
+      (onFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
+      (onGiveUpUsage)="showRecordPopup = false; showBreathingPrompt = false"
+    ></app-alternative-activity-overlay>
+
     <router-outlet />
   </section>
   <footer class="bg-white/80 backdrop-blur-sm border-t border-gray-100 mt-12">
