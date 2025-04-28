@@ -18,6 +18,7 @@ import { LoginComponent } from "./pages/login/login.component";
 import { MotivationalFactorsComponent } from "./pages/motivational-factors/motivational-factors.component";
 import { RecoveryDashboardComponent } from "./pages/recovery-dashboard/recovery-dashboard.component";
 import { AchievementsComponent } from "./pages/achievements/achievements.component";
+import { AlternativeActivityAnalyticsComponent } from "./pages/alternative-activity-analytics/alternative-activity-analytics.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
@@ -39,5 +40,5 @@ export const routes: Routes = [
     { path: "recovery-dashboard", component: RecoveryDashboardComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
     { path: 'achievements', component: AchievementsComponent },
-    { path: "alternative-analytics", component: UsageComponent },
+    { path: "alternative-activity-analytics", component: AlternativeActivityAnalyticsComponent },
 ];

@@ -78,7 +78,7 @@ export class HomeComponent implements OnInit {
             icon: svg3, //`/assets/icons/dashboard.svg`
         },
         {
-            href: "/alternative-analytics",
+            href: "/alternative-activity-analytics",
             iconColor: "text-indigo-600",
             bgColor: "bg-indigo-100",
             gradientFrom: "from-indigo-600",
