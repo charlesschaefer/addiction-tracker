@@ -65,6 +65,11 @@ export const appConfig: ApplicationConfig = {
     {
         provide: 'DbService',
         useClass: DbService
+    },
+    {
+      provide: TranslocoHttpLoader,
+      useFactory: (http: HttpClient) => new TranslocoHttpLoader(http),
+      deps: [HttpClient]
     }
   ],
 };
