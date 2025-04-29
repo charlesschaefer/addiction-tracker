@@ -9,12 +9,12 @@
         <button
             (click)="toggleExpanded()"
             class="text-teal-600 hover:text-teal-800 p-1.5 rounded-full hover:bg-teal-50 transition-all"
-            [attr.aria-label]="expanded ? 'Show less' : 'Show more'"
+            [attr.aria-label]="expanded() ? 'Show less' : 'Show more'"
             data-oid="twq2ydv"
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
-                [ngClass]="{'rotate-180': expanded}"
+                [ngClass]="{'rotate-180': expanded()}"
                 class="h-5 w-5 transition-transform"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -39,18 +39,18 @@
                 Your progress
             </span>
             <span class="text-sm font-medium text-teal-600" data-oid=":tahtdc">
-                {{ progressPercentage }}%
+                {{ progressPercentage() }}%
             </span>
         </div>
         <div class="w-full bg-gray-200 rounded-full h-2.5" data-oid=":89vn5z">
             <div
                 class="bg-gradient-to-r from-teal-500 to-blue-500 h-2.5 rounded-full"
-                [ngStyle]="{ width: progressPercentage + '%' }"
+                [ngStyle]="{ width: progressPercentage() + '%' }"
                 data-oid="6udpbnk"
             ></div>
         </div>
         <div class="mt-1 text-xs text-gray-500 text-right" data-oid="gp6z:2x">
-            {{ completedCount }} of {{ totalCount }} achievements
+            {{ completedCount() }} of {{ totalCount() }} achievements
         </div>
     </div>
 
@@ -60,7 +60,7 @@
             *ngFor="let category of categories"
             (click)="setCategory(category.id)"
             class="px-3 py-1 rounded-full text-xs font-medium transition-colors"
-            [ngClass]="selectedCategory === category.id ? category.color : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+            [ngClass]="selectedCategory() === category.id ? category.color : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
             data-oid="l:ytebj"
         >
             {{ category.name }}
@@ -68,11 +68,13 @@
     </div>
 
     <!-- Achievements list -->
-    <div class="space-y-3 md:space-y-4" data-oid="9-m07zo">
-        <ng-container *ngIf="displayedAchievements.length > 0; else noAchievements">
+    <div class="space-y-3 md:space-y-4">
+      <h2>Displayed Achievements: {{displayedAchievements()?.length}}</h2>
+      <div class="flex flex-row flex-wrap gap-4 justify-center">
+        <ng-container *ngIf="(displayedAchievements()?.length || 0) > 0; else noAchievements">
             <div
-                *ngFor="let achievement of displayedAchievements"
-                class="p-3 md:p-4 rounded-lg border transition-all"
+                *ngFor="let achievement of displayedAchievements()"
+                class="p-2 md:p-4 rounded-lg border transition-all w-9/20"
                 [ngClass]="achievement.completed ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'"
                 data-oid="axp6vfy"
             >
@@ -82,9 +84,13 @@
                         [ngClass]="achievement.completed ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'"
                         data-oid="y11m0kj"
                     >
-                        {{ achievement.completed ? '✓' : (achievement.icon || '') }}
+                        <!-- @if (achievement.completed) {
+                          ✓
+                        } @else { -->
+                          <span [innerHTML]="achievement.safeIcon"> {{ achievement.icon }}</span>
+                        
                     </div>
-                    <div data-oid="5kowzpu">
+                    <div>
                         <h3
                             class="font-medium text-sm md:text-base"
                             [ngClass]="achievement.completed ? 'text-green-700' : 'text-gray-700'"
@@ -104,21 +110,22 @@
                 No achievements in this category yet
             </div>
         </ng-template>
+      </div>
     </div>
 
     <!-- Show more/less button -->
     <button
-        *ngIf="!expanded && filteredAchievements.length > displayedAchievements.length"
-        (click)="expanded = true"
+        *ngIf="!expanded() && (filteredAchievements()?.length || 0) > (displayedAchievements()?.length || 0)"
+        (click)="expanded.set(true)"
         class="mt-4 w-full py-2 text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg hover:bg-teal-50 transition-colors"
         data-oid="40h48j1"
     >
-        Show {{ filteredAchievements.length - displayedAchievements.length }} more achievements
+        Show {{ (filteredAchievements().length || 0) - (displayedAchievements().length || 0) }} more achievements
     </button>
 
     <button
-        *ngIf="expanded"
-        (click)="expanded = false"
+        *ngIf="expanded()"
+        (click)="expanded.set(false)"
         class="mt-4 w-full py-2 text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg hover:bg-teal-50 transition-colors"
         data-oid="fa6ds_-"
     >

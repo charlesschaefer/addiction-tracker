@@ -19,6 +19,8 @@ import { MotivationalFactorsComponent } from "./pages/motivational-factors/motiv
 import { RecoveryDashboardComponent } from "./pages/recovery-dashboard/recovery-dashboard.component";
 import { AchievementsComponent } from "./pages/achievements/achievements.component";
 import { AlternativeActivityAnalyticsComponent } from "./pages/alternative-activity-analytics/alternative-activity-analytics.component";
+import { FinancialImpactComponent } from "./pages/financial-impact/financial-impact.component";
+import { TriggersComponent } from "./pages/triggers/triggers.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
@@ -39,6 +41,8 @@ export const routes: Routes = [
     { path: "motivational-factors", component: MotivationalFactorsComponent },
     { path: "recovery-dashboard", component: RecoveryDashboardComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
-    { path: 'achievements', component: AchievementsComponent },
+    { path: "achievements", component: AchievementsComponent },
     { path: "alternative-activity-analytics", component: AlternativeActivityAnalyticsComponent },
+    { path: "financial-impact", component: FinancialImpactComponent },
+    { path: "triggers", component: TriggersComponent },
 ];

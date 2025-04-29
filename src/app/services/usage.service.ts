@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { DbService } from './db.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
-import { Changes } from './data-updated.service';
+import { Changes, DataUpdatedService } from './data-updated.service';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -32,7 +32,8 @@ export class UsageService extends ServiceAbstract<Usages> {
     protected override storeName: 'usage' = 'usage';
 
     constructor(
-        protected override dbService: DbService
+        protected override dbService: DbService,
+        protected override dataUpdatedService: DataUpdatedService,
     ) {
         super();
         this.setTable();

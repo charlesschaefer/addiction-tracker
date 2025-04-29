@@ -3,7 +3,7 @@ import { UsageFillingAddDto, UsageFillingDto, UsageFillings } from "../dto/usage
 import { ServiceAbstract } from "./service.abstract";
 import { DbService } from "./db.service";
 import { DatabaseChangeType } from "dexie-observable/api";
-import { Changes } from "./data-updated.service";
+import { Changes, DataUpdatedService } from "./data-updated.service";
 
 @Injectable({
     providedIn: "root",
@@ -12,7 +12,10 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
     protected override storeName: "usage_filling" =
         "usage_filling";
 
-    constructor(protected override dbService: DbService) {
+    constructor(
+        protected override dbService: DbService,
+        protected override dataUpdatedService: DataUpdatedService,
+    ) {
         super();
         this.setTable();
     }

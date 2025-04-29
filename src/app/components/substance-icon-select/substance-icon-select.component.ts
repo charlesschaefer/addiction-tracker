@@ -2,15 +2,13 @@ import { Component, forwardRef, Input } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { SelectModule } from "primeng/select";
 import { SubstanceIcon } from "../../dto/substance.dto";
-import { FontAwesomeModule, IconDefinition } from "@fortawesome/angular-fontawesome";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { CommonModule } from "@angular/common";
 
 console.log("Chegou no SubanceIconSelectComponent");
 
 @Component({
     selector: "app-substance-icon-select",
-    imports: [FontAwesomeModule, SelectModule, CommonModule],
+    imports: [SelectModule, CommonModule],
     templateUrl: "./substance-icon-select.component.html",
     /** To work with ngModel, this component needs to declare itself as a provider for NG_VALUE_ACESSOR */
     providers: [{

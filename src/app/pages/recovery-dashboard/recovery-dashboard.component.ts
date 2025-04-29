@@ -1,10 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
+import { FinancialImpactCardComponent } from "../../components/financial-impact-card.component";
+import { CostService } from "../../services/cost.service";
+import { SubstanceAnalysisCardComponent } from "../../components/substance-analysis-card.component";
 
 interface UsageEntry {
     id: number;
@@ -21,32 +24,43 @@ interface UsageEntry {
 @Component({
     selector: "app-recovery-dashboard",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, FinancialImpactCardComponent, SubstanceAnalysisCardComponent],
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
-    usageHistory: UsageDto[] = [];
-    substances: SubstanceDto[] = [];
+
     selectedAnalysisSubstance: string = "all";
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
+    usageHistory = signal<UsageDto[]>([]);
+    substances = signal<Map<number, SubstanceDto>>(new Map([]));
+
     constructor(
         private usageService: UsageService,
-        private substanceService: SubstanceService
+        private substanceService: SubstanceService,
+        private costService: CostService,
     ) {}
 
     ngOnInit() {
         this.usageService.list().then((usages) => {
-            this.usageHistory = usages as UsageDto[];
+            this.usageHistory.set(usages as UsageDto[]);
         });
         this.substanceService.list().then((subs) => {
-            this.substances = subs as SubstanceDto[];
+            this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
         });
+    }
+
+    setSelectedAnalysisSubstance(substance: string) {
+        this.selectedAnalysisSubstance = substance;
+    }
+
+    getSubstanceNames(): string[] {
+        return Array.from(this.substances().values()).map(substance => substance.name);
     }
 
     calculateSobrietyDays(): number {
         if (this.usageHistory.length === 0) return 0;
-        const sortedHistory = [...this.usageHistory].sort(
+        const sortedHistory = [...this.usageHistory()].sort(
             (a, b) =>
                 new Date(b.datetime).getTime() -
                 new Date(a.datetime).getTime()
@@ -62,11 +76,12 @@ export class RecoveryDashboardComponent implements OnInit {
 
     prepareUsageBySubstanceData() {
         const substanceCounts: { [key: string]: number } = {};
-        this.usageHistory.forEach((entry) => {
-            if (substanceCounts[entry.substance]) {
-                substanceCounts[entry.substance]++;
+        this.usageHistory().forEach((entry) => {
+            const substanceName = this.substances().get(entry.substance)?.name as string;
+            if (substanceCounts[substanceName]) {
+                substanceCounts[substanceName]++;
             } else {
-                substanceCounts[entry.substance] = 1;
+                substanceCounts[substanceName] = 1;
             }
         });
         return Object.keys(substanceCounts).map((substance) => ({
@@ -77,9 +92,9 @@ export class RecoveryDashboardComponent implements OnInit {
 
     getFilteredUsageHistory() {
         if (this.selectedAnalysisSubstance === "all") {
-            return this.usageHistory;
+            return this.usageHistory();
         }
-        return this.usageHistory.filter(
+        return this.usageHistory().filter(
             (entry) => entry.substance.toString() === this.selectedAnalysisSubstance
         );
     }
@@ -195,57 +210,30 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareCostBySubstanceData() {
-        const substanceCosts: { [key: string]: number } = {};
-        this.usageHistory.forEach((entry) => {
-            if (entry.cost) {
-                if (substanceCosts[entry.substance]) {
-                    substanceCosts[entry.substance] += entry.cost;
-                } else {
-                    substanceCosts[entry.substance] = entry.cost;
-                }
-            }
-        });
-        return Object.keys(substanceCosts).map((substance) => ({
-            name: substance,
-            value: substanceCosts[substance],
-        }));
+        return this.costService.prepareCostBySubstanceData(this.usageHistory(), this.substances());
     }
 
     calculateTotalSpending(): number {
-        return this.usageHistory.reduce((total, entry) => total + (entry.cost || 0), 0);
+        return this.costService.calculateTotalSpending(this.usageHistory());
     }
 
     calculateSpendingByPeriod(period: "week" | "month" | "year" | "all" = "all"): number {
-        const now = new Date();
-        let startDate: Date;
-        switch (period) {
-            case "week":
-                startDate = new Date(now);
-                startDate.setDate(now.getDate() - 7);
-                break;
-            case "month":
-                startDate = new Date(now);
-                startDate.setMonth(now.getMonth() - 1);
-                break;
-            case "year":
-                startDate = new Date(now);
-                startDate.setFullYear(now.getFullYear() - 1);
-                break;
-            default:
-                startDate = new Date(0);
-        }
-        return this.usageHistory
-            .filter((entry) => new Date(entry.datetime) >= startDate)
-            .reduce((total, entry) => total + (entry.cost || 0), 0);
+        return this.costService.calculateSpendingByPeriod(this.usageHistory(), period);
     }
 
     projectAnnualSpending(): number {
-        const monthlySpending = this.calculateSpendingByPeriod("month");
-        return monthlySpending * 12;
+        return this.costService.projectAnnualSpending(this.usageHistory());
     }
 
     calculatePotentialSavings(years: number): number {
-        const annualSpending = this.projectAnnualSpending();
-        return annualSpending * years;
+        return this.costService.calculatePotentialSavings(this.usageHistory(), years);
+    }
+
+    calculateInvestmentGrowth(years: number, interestRate = 0.07): number {
+        return this.costService.calculateInvestmentGrowth(this.usageHistory(), years);
+    }
+
+    prepareSpendingTrendData() {
+        return this.costService.prepareSpendingTrendData(this.usageHistory());
     }
 }

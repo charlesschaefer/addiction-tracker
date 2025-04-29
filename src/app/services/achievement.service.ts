@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AchievementAddDto, AchievementDto } from '../dto/achievement.dto';
+import { Injectable, InputSignal, resource, WritableSignal } from '@angular/core';
+import { AchievementAddDto, AchievementDto, SafeIconAchievement } from '../dto/achievement.dto';
 import { ServiceAbstract } from './service.abstract';
 import { DbService } from './db.service';
 import { UsageService } from './usage.service';
@@ -10,8 +10,9 @@ import { MotivationalFactorService } from './motivational-factor.service';
 import { MotivationalFactorDto } from '../dto/motivational-factor.dto';
 import { AlternativeActivityService } from './alternative-activity.service';
 import { UsageFillingDto } from '../dto/usage-filling.dto';
-import { AchievementData } from '../data/achievement.data';
 import { TableKeys } from '../app.db';
+import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
+import { DomSanitizer } from '@angular/platform-browser';
 
 type Achievements = AchievementDto | AchievementAddDto;
 
@@ -30,7 +31,8 @@ export class AchievementService extends ServiceAbstract<Achievements> {
         private usageService: UsageService,
         private triggerService: TriggerService,
         private motivationalFactorService: MotivationalFactorService,
-        private alternativeActivityService: AlternativeActivityService
+        private alternativeActivityService: AlternativeActivityService,
+        private sanitizer: DomSanitizer,
     ) {
         super();
         this.setTable();
@@ -367,5 +369,44 @@ export class AchievementService extends ServiceAbstract<Achievements> {
             const completed = alternativeSuccessCount >= 5;
             await this.updateAchievement(12, completed);
         }
+    }
+
+    getAchievementsWithIcon(achievements: InputSignal<AchievementDto[]> | WritableSignal<AchievementDto[]>) {
+        return resource<SafeIconAchievement[], AchievementDto[]>({
+            request: () => (achievements()),
+            loader: ({request}) => {
+                const achievements = request;
+                let fetchfn;
+                if ((window as any).__TAURI__) {
+                    fetchfn = tauriFetch;
+                } else {
+                    fetchfn = fetch;
+                }
+    
+                const saferAchievements: SafeIconAchievement[] = [];
+    
+                return Promise.all(achievements.map(achievement => {
+                    console.log("Fetching the icon at: ", achievement.icon);
+                    return fetchfn(achievement?.icon as string)
+                })).then(async (responses): Promise<SafeIconAchievement[]> => {
+                    console.warn("Finished running all the promises", responses);
+                    const filledAchievements: number[] = [];
+                    return Promise.all(responses.map(async (response, idx) => {
+                        const icon = await response.text();
+                        console.warn(`We got the icon text for the icon number ${idx+1}: `, icon);
+                        let saferAchievement:SafeIconAchievement = {} as SafeIconAchievement;
+                        for (let achievement of achievements) {
+                            if (filledAchievements.indexOf(achievement.id) < 0 && response.url.includes(achievement.icon as string)) {
+                                console.log("Updating saferAchievements: ", achievement);
+                                saferAchievement = {...achievement, safeIcon: this.sanitizer.bypassSecurityTrustHtml(icon as string)} as SafeIconAchievement;
+                                filledAchievements.push(achievement.id);
+                                break;
+                            }
+                        }
+                        return saferAchievement;
+                    }));
+                });
+            }
+        });
     }
 }

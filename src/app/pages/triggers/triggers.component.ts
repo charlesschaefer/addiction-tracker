@@ -12,7 +12,7 @@ import { TriggerDto } from "../../dto/trigger.dto";
     imports: [CommonModule],
     templateUrl: "./triggers.component.html",
 })
-export class TriggersPageComponent implements OnInit {
+export class TriggersComponent implements OnInit {
     usageHistory: UsageDto[] = [];
     substances: SubstanceDto[] = [];
     selectedSubstance = "all";

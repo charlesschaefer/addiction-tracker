@@ -9,7 +9,7 @@ export class AchievementData {
             description: 'Record your first entry',
             completed: false,
             category: 'engagement',
-            icon: '/assets/icon/engagement.svg'
+            icon: '/assets/icons/engagement.svg'
         },
         {
             id: 2,
@@ -17,7 +17,7 @@ export class AchievementData {
             description: 'Maintain 7 days of sobriety',
             completed: false,
             category: 'sobriety',
-            icon: '/assets/icon/sobriety.svg'
+            icon: '/assets/icons/sobriety.svg'
         },
         {
             id: 3,
@@ -25,7 +25,7 @@ export class AchievementData {
             description: 'Maintain 30 days of sobriety',
             completed: false,
             category: 'sobriety',
-            icon: '/assets/icon/sobriety.svg'
+            icon: '/assets/icons/sobriety.svg'
         },
         {
             id: 4,
@@ -33,7 +33,7 @@ export class AchievementData {
             description: 'Identify 5 different triggers',
             completed: false,
             category: 'engagement',
-            icon: '/assets/icon/engagement.svg'
+            icon: '/assets/icons/engagement.svg'
         },
         {
             id: 5,
@@ -41,7 +41,7 @@ export class AchievementData {
             description: 'Maintain 90 days of sobriety',
             completed: false,
             category: 'sobriety',
-            icon: '/assets/icon/sobriety.svg'
+            icon: '/assets/icons/sobriety.svg'
         },
         {
             id: 6,
@@ -49,7 +49,7 @@ export class AchievementData {
             description: 'Try 3 different alternative activities',
             completed: false,
             category: 'alternatives',
-            icon: '/assets/icon/alternatives.svg'
+            icon: '/assets/icons/alternatives.svg'
         },
         {
             id: 7,
@@ -57,7 +57,7 @@ export class AchievementData {
             description: 'Complete 5 breathing exercises',
             completed: false,
             category: 'alternatives',
-            icon: '/assets/icon/alternatives.svg'
+            icon: '/assets/icons/alternatives.svg'
         },
         {
             id: 8,
@@ -65,7 +65,7 @@ export class AchievementData {
             description: 'Add 3 motivational factors',
             completed: false,
             category: 'motivational',
-            icon: '/assets/icon/motivational.svg'
+            icon: '/assets/icons/motivational.svg'
         },
         {
             id: 9,
@@ -73,7 +73,7 @@ export class AchievementData {
             description: 'Use motivational factors to avoid substance use 3 times (ver como fazer o registro)',
             completed: false,
             category: 'motivational',
-            icon: '/assets/icon/motivational.svg'
+            icon: '/assets/icons/motivational.svg'
         },
         {
             id: 10,
@@ -81,7 +81,7 @@ export class AchievementData {
             description: 'Save $100 by avoiding substance use',
             completed: false,
             category: 'financial',
-            icon: '/assets/icon/financial.svg'
+            icon: '/assets/icons/financial.svg'
         },
         {
             id: 11,
@@ -89,7 +89,7 @@ export class AchievementData {
             description: 'Record entries for 10 consecutive days',
             completed: false,
             category: 'engagement',
-            icon: '/assets/icon/engagement.svg'
+            icon: '/assets/icons/engagement.svg'
         },
         {
             id: 12,
@@ -97,7 +97,7 @@ export class AchievementData {
             description: 'Successfully use alternatives 5 times to avoid substance use',
             completed: false,
             category: 'alternatives',
-            icon: '/assets/icon/alternatives.svg'
+            icon: '/assets/icons/alternatives.svg'
         },
     ];
 }

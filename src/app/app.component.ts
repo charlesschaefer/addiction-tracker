@@ -189,6 +189,7 @@ export class AppComponent implements OnInit {
         }
 
         const detectAchievements = () => {
+            console.log("Vamos verificar os achievements");
             this.achievementService.detectAchievements();
         };
 

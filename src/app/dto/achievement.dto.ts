@@ -1,3 +1,4 @@
+import { SafeResourceUrl } from "@angular/platform-browser";
 
 export interface AchievementDto {
     id: number;
@@ -14,3 +15,7 @@ export interface AchievementDto {
 }
 
 export type AchievementAddDto = Omit<AchievementDto, "id">;
+
+export interface SafeIconAchievement extends AchievementDto {
+    safeIcon: SafeResourceUrl
+}

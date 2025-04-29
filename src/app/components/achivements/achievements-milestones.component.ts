@@ -4,18 +4,22 @@ import {
 } from "./achievements-display.component";
 import { CommonModule } from "@angular/common";
 import { AchievementDto } from "../../dto/achievement.dto";
-import { RouterLink } from "@angular/router";
+import { AchievementService } from "../../services/achievement.service";
 
 @Component({
     selector: "app-achievements-milestones",
     standalone: true,
-    imports: [AchievementsDisplayComponent, CommonModule, RouterLink],
+    imports: [AchievementsDisplayComponent, CommonModule],
     templateUrl: "./achievements-milestones.component.html",
 })
 export class AchievementsMilestonesComponent implements OnInit {
     @Output() viewAll = new EventEmitter<void>();
     achievements: AchievementDto[] = [];
     loading = true;
+
+    constructor(
+        protected achievementService: AchievementService,
+    ) {}
 
     ngOnInit() {
         this.loadAchievements();
@@ -32,16 +36,13 @@ export class AchievementsMilestonesComponent implements OnInit {
     loadAchievements() {
         this.loading = true;
         try {
-            const saved = localStorage.getItem("achievements");
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                this.achievements = parsed.map((a: any) => ({
-                    ...a,
-                    icon: this.getIconForCategory(a.category),
-                }));
-            } else {
-                this.achievements = this.generateDefaultAchievements();
-            }
+            this.achievementService.list().then(achievements => {
+                if (achievements) {
+                    this.achievements = achievements as AchievementDto[];
+                } else {
+                    this.achievements = this.generateDefaultAchievements();
+                }
+            })
         } catch {
             this.achievements = this.generateDefaultAchievements();
         } finally {

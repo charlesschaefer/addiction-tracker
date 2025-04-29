@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, untracked } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { TriggerService } from "../../services/trigger.service";
@@ -37,17 +37,27 @@ export class UsageEntriesComponent implements OnInit {
     usageHistory = computed<UsageDto[]>(() => {
         const substance = this.currentSubstance();
         if (substance > 0) {
-            return this.usageEntries().filter(
-                (usageEntry) => usageEntry.substance == substance
-            );
+            const usageEntries = this.usageEntries();
+            const entries = usageEntries.filter(usageEntry => usageEntry.substance == substance);
+            
+            if (entries.length) {
+                return entries;
+            }
+            return [] as unknown as UsageDto[];
         }
         return this.usageEntries();
     });
 
     currentEntries = computed<UsageDto[]>(() => {
         console.warn("Lá vou eu de novo currentEntries");
+        
+        const substance = this.currentSubstance();
+        console.log("Current substance: ", substance);
+
+        const history = this.usageHistory();
+        
         let totalItems;
-        if ((totalItems = this.usageHistory().length)) {
+        if ((totalItems = history.length)) {
             let indexOfLastEntry = this.currentPage() * this.entriesPerPage;
             const indexOfFirstEntry = indexOfLastEntry - this.entriesPerPage;
 
@@ -55,7 +65,7 @@ export class UsageEntriesComponent implements OnInit {
                 indexOfLastEntry = totalItems;
             }
             this.console.log("indexOfLastEntry", indexOfLastEntry, "indexOfFirstEntry", indexOfFirstEntry)
-            return this.usageHistory().slice(
+            return history.slice(
                 indexOfFirstEntry,
                 indexOfLastEntry
             );
@@ -67,16 +77,18 @@ export class UsageEntriesComponent implements OnInit {
         console.warn("Lá vou eu de novo trigger");
         const triggerCounts: { [key: string]: number } = {};
         this.usageHistory().forEach((entry) => {
-            entry.trigger?.forEach((trigger) => {
-                triggerCounts[trigger.name] =
-                    (triggerCounts[trigger.name] || 0) + 1;
-            });
+            if (entry && entry.trigger) {
+                entry.trigger?.forEach((trigger) => {
+                    triggerCounts[trigger.name] =
+                        (triggerCounts[trigger.name] || 0) + 1;
+                });
+            }
         });
         const mostCommon = Object.entries(triggerCounts).sort(
             (a, b) => b[1] - a[1]
         )[0];
-        console.log("Most common:", mostCommon[0]);
-        return mostCommon.length ? mostCommon[0] : "No triggers recorded";
+        console.log("Most common:", mostCommon?.length ? mostCommon[0] : "No triggers recorded");
+        return mostCommon?.length ? mostCommon[0] : "No triggers recorded";
     });
 
     totalPages = computed<number>(() => {
