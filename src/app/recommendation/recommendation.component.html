@@ -1,11 +1,10 @@
-
 @if (recommendationText) {
-    <p-dialog [header]="'Recomendações para você' | translate" [modal]="true" [(visible)]="showRecommendationDialog" [style]="">
+    <p-dialog [header]="'Recomendações para você' | transloco" [modal]="true" [(visible)]="showRecommendationDialog" [style]="">
         <p-card>
             <div [innerHTML]="recommendationText"></div>
         </p-card>
         <ng-template pTemplate="footer">
-          <p-button [label]="'Fechar' | translate"  (onClick)="showRecommendationDialog = false"></p-button>
+          <p-button [label]="'Fechar' | transloco"  (onClick)="showRecommendationDialog = false"></p-button>
         </ng-template>
     </p-dialog>
 }

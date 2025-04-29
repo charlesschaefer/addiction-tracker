@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-respiration',
@@ -10,7 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
     imports: [
         DialogModule,
         ButtonModule,
-        TranslateModule,
+        TranslocoModule
     ],
     templateUrl: './respiration.component.html',
     styleUrl: './respiration.component.scss'

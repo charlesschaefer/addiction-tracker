@@ -12,7 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { firstValueFrom } from 'rxjs';
 import { JoyrideModule } from 'ngx-joyride';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { SubstanceAddDto } from '../dto/substance.dto';
 import { SubstanceService } from '../services/substance.service';
@@ -30,7 +30,7 @@ import { SubstanceService } from '../services/substance.service';
         ToastModule,
         TooltipModule,
         JoyrideModule,
-        TranslateModule,
+        TranslocoModule,
     ],
     templateUrl: './substance-add.component.html',
     styleUrl: './substance-add.component.scss',
@@ -48,7 +48,7 @@ export class SubstanceAddComponent {
         private snackBar: MatSnackBar,
         private router: Router,
         private messageService: MessageService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {}
     
     async onSubmit() {
@@ -56,8 +56,8 @@ export class SubstanceAddComponent {
         if (!this.substanceForm.valid) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: await firstValueFrom(this.translate.get('Erro')), 
-                detail: await firstValueFrom(this.translate.get("Verifique todos os valores do formulário")), 
+                summary: this.translateService.translate('Erro'), 
+                detail: this.translateService.translate("Verifique todos os valores do formulário"), 
                 life: 3000 
             });
             return;
@@ -67,8 +67,8 @@ export class SubstanceAddComponent {
         if (substances.length) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: await firstValueFrom(this.translate.get('Entrada duplicada')), 
-                detail: await firstValueFrom(this.translate.get('Já existe essa substância')), 
+                summary: this.translateService.translate('Entrada duplicada'), 
+                detail: this.translateService.translate('Já existe essa substância'), 
                 life: 3000
             });
             return;
@@ -80,8 +80,8 @@ export class SubstanceAddComponent {
                 this.substanceService.clearCache();
                 this.messageService.add({ 
                     severity: 'success', 
-                    summary: await firstValueFrom(this.translate.get('Tudo certo')), 
-                    detail: await firstValueFrom(this.translate.get('Substância salva com sucesso!')), 
+                    summary: this.translateService.translate('Tudo certo'), 
+                    detail: this.translateService.translate('Substância salva com sucesso!'), 
                     life: 2000
                 });
 
@@ -91,8 +91,8 @@ export class SubstanceAddComponent {
             }).catch(async (error) => {
                 this.messageService.add({ 
                     severity: 'error', 
-                    summary: await firstValueFrom(this.translate.get('Erro')), 
-                    detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância! ')) + error, 
+                    summary: this.translateService.translate('Erro'), 
+                    detail: this.translateService.translate('Houve um erro ao salvar a substância! ') + error, 
                     life: 2000
                 });
             });

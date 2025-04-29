@@ -14,7 +14,7 @@ import { PanelModule } from 'primeng/panel';
 
 import { OtpGeneratorService } from '../services/otp-generator.service';
 import { BackupService } from '../services/backup.service';
-import { TranslateService, TranslateModule } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-synchronization',
@@ -26,7 +26,7 @@ import { TranslateService, TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         InputOtpModule,
         ToastModule,
-        TranslateModule,
+        TranslocoModule,
         PanelModule
     ],
     providers: [
@@ -55,7 +55,7 @@ export class SynchronizationComponent {
         private backupService: BackupService,
         private httpClient: HttpClient,
         private messageService: MessageService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {}
 
     openFromOthers() {
@@ -87,8 +87,8 @@ export class SynchronizationComponent {
         invoke('search_network_sync_services').then(async (ipv4) => {
             console.log("Device found at ", ipv4);
             this.messageService.add({
-                summary: await firstValueFrom(this.translate.get("Device found")),
-                detail: await firstValueFrom(this.translate.get("Your device was discovered with the IP: ")) + ipv4,
+                summary: this.translateService.translate("Device found"),
+                detail: this.translateService.translate("Your device was discovered with the IP: ") + ipv4,
                 severity: "info"
             });
             this.showOTPField = true;
@@ -115,8 +115,8 @@ export class SynchronizationComponent {
                 complete: async () => {
                     console.log("Backup restored. Showing messages");
                     this.messageService.add({
-                        summary: await firstValueFrom(this.translate.get("Sincronizado com sucesso")),
-                        detail: await firstValueFrom(this.translate.get("Seus dados foram sincronizados com sucesso.")),
+                        summary: this.translateService.translate("Sincronizado com sucesso"),
+                        detail: this.translateService.translate("Seus dados foram sincronizados com sucesso."),
                         severity: "success",
                         life: 4000,
                     });
@@ -125,8 +125,8 @@ export class SynchronizationComponent {
                 error: async (err) => {
                     console.log("Error recovering backup. Showing messages...", err);
                     this.messageService.add({
-                        summary: await firstValueFrom(this.translate.get("Erro Sincronizando")),
-                        detail: await firstValueFrom(this.translate.get(`Erro ao tentar sincronizar os dados: `)) + err.toString()
+                        summary: this.translateService.translate("Erro Sincronizando"),
+                        detail: this.translateService.translate(`Erro ao tentar sincronizar os dados: `) + err.toString()
                     });
                 }
             });

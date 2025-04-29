@@ -5,38 +5,38 @@
     <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-6 border border-gray-100 flex items-center space-x-3">
       <i class="pi pi-star pi-spin text-yellow-500 text-xl"></i>
       <span>
-        {{'Você está há' | translate}}
+        {{'Você está há' | transloco}}
         @if (timeWithoutUsage?.days) {
-          {{timeWithoutUsage.days}} {{' dias,' | translate}}
+          {{timeWithoutUsage.days}} {{' dias,' | transloco}}
         }
         @if (timeWithoutUsage?.hours) {
-          {{timeWithoutUsage.hours}} {{' horas e' | translate}}
+          {{timeWithoutUsage.hours}} {{' horas e' | transloco}}
         }
-        {{timeWithoutUsage.minutes}} {{' minutos sem consumir nada. Parabéns!' | translate}}
+        {{timeWithoutUsage.minutes}} {{' minutos sem consumir nada. Parabéns!' | transloco}}
       </span>
     </div>
   }
 
   <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
     <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent mb-6 text-center">
-      {{ 'Histórico de Consumo' | translate }}
+      {{ 'Histórico de Consumo' | transloco }}
     </h2>
     <p-accordion>
       @for (usage of paginatedItems; track usage.name) {
         <p-accordion-panel [value]="usage.substanceId">
           <p-accordion-header>
-            {{ ('Consumos de ' | translate) + usage.name + ' (' + allItems[$index].items.length + ')' }}
+            {{ ('Consumos de ' | transloco) + usage.name + ' (' + allItems[$index].items.length + ')' }}
           </p-accordion-header>
           <p-accordion-content>
             <p-table [value]="usage.items" class="usage-table">
               <ng-template pTemplate="header">
                 <tr>
                   <th></th>
-                  <th translate>Data</th>
-                  <th translate>Substância</th>
-                  <th translate>Sentimento</th>
-                  <th translate>Fissura</th>
-                  <th translate>Gatilhos</th>
+                  <th>{{ 'Data' | transloco }}</th>
+                  <th>{{ 'Substância' | transloco }}</th>
+                  <th>{{ 'Sentimento' | transloco }}</th>
+                  <th>{{ 'Fissura' | transloco }}</th>
+                  <th>{{ 'Gatilhos' | transloco }}</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-usage>
@@ -73,8 +73,8 @@
           </p-accordion-content>
         </p-accordion-panel>
       } @empty {
-        <p class="text-gray-500 text-center py-8" translate>Não há dados para serem exibidos.</p>
-        <p class="text-center" translate>Registre um novo consumo <a routerLink="/usage-add" class="text-purple-600 underline">por aqui</a>.</p>
+        <p class="text-gray-500 text-center py-8">{{ 'Não há dados para serem exibidos.' | transloco }}</p>
+        <p class="text-center">{{ 'Registre um novo consumo' | transloco }} <a routerLink="/usage-add" class="text-purple-600 underline">{{ 'por aqui' | transloco }}</a>.</p>
       }
     </p-accordion>
   </div>

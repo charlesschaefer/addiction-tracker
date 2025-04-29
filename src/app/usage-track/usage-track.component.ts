@@ -21,7 +21,7 @@ import { ChartData, UsageChart} from '../util/chart-types';
 import { RecommendationService } from '../services/recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
 import { RecommendationComponent } from '../recommendation/recommendation.component';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 
 
@@ -46,10 +46,9 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
         FormsModule,
         DialogModule,
         ButtonModule,
-        RecommendationComponent,
         RouterLink,
         JoyrideModule,
-        TranslateModule
+        TranslocoModule
     ],
     templateUrl: './usage-track.component.html',
     styleUrl: './usage-track.component.scss'
@@ -79,7 +78,7 @@ export class UsageTrackComponent implements OnInit {
         private substanceService: SubstanceService,
         private recommendationService: RecommendationService,
         private route: Router,
-        private translate: TranslateService
+        private translateService: TranslocoService
     ) {}
 
     ngOnInit() {
@@ -115,9 +114,9 @@ export class UsageTrackComponent implements OnInit {
         const usageChartData: UsageChart[] = [];
         const registeredSubstances = new Map;
         const [usageLabel, feelingLabel, cravingLabel] = [
-            await firstValueFrom(this.translate.get('Consumo')),
-            await firstValueFrom(this.translate.get('Sentimento')),
-            await firstValueFrom(this.translate.get('Fissura')),
+            this.translateService.translate('Consumo'),
+            this.translateService.translate('Sentimento'),
+            this.translateService.translate('Fissura'),
         ];
         result.forEach(usage => {
             if (!registeredSubstances.has(usage.substance)) {
@@ -166,7 +165,7 @@ export class UsageTrackComponent implements OnInit {
     async prepareTriggerChart(result: UsageDto[]) {
         const triggerData = this.consolidateTriggerData(result);
 
-        const totalUsage = await firstValueFrom(this.translate.get('Consumo total'));
+        const totalUsage = this.translateService.translate('Consumo total');
 
         triggerData.forEach((triggerUsage, substanceId) => {
             const chartData: ChartData = {

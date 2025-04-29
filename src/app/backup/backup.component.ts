@@ -8,7 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { invoke } from '@tauri-apps/api/core';
 
@@ -40,7 +40,7 @@ interface SaveFileResult {
         ToastModule,
         FloatLabelModule,
         ConfirmDialogModule,
-        TranslateModule
+        TranslocoModule
     ],
     providers: [MessageService, ConfirmationService],
     templateUrl: './backup.component.html',
@@ -66,7 +66,7 @@ export class BackupComponent {
         private messageService: MessageService,
         private confirmationService: ConfirmationService,
         private backupService: BackupService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {}
     
     generateBackup() {
@@ -76,13 +76,13 @@ export class BackupComponent {
         console.log("Backup generated");
     }
 
-    async copyToClipboard(textareaElement: HTMLTextAreaElement) {
+    copyToClipboard(textareaElement: HTMLTextAreaElement) {
         textareaElement.focus();
         textareaElement.select();
         document.execCommand('copy');
         this.messageService.add({
-            detail: await firstValueFrom(this.translate.get("Backup criptografado copiado com sucesso.")),
-            summary: await firstValueFrom(this.translate.get("Copiado!")),
+            detail: this.translateService.translate("Backup criptografado copiado com sucesso."),
+            summary: this.translateService.translate("Copiado!"),
             severity: "success"
         })
     }
@@ -91,15 +91,15 @@ export class BackupComponent {
         const result = await invoke("save_backup_file", { backupStr: this.encryptedBackup}) as SaveFileResult;
         if (result.result) {
             this.messageService.add({
-                detail: await firstValueFrom(this.translate.get(`Backup criptografado salvo em `)) + result.path,
+                detail: this.translateService.translate(`Backup criptografado salvo em `) + result.path,
                 summary: result.msg,
                 severity: "success"
             });
             this.filePathDownload = result.path;
         } else {
             this.messageService.add({
-                detail: await firstValueFrom(this.translate.get(`Erro ao salvar {path}: {msg}`, {path: result.path, msg: result.msg})),
-                summary: await firstValueFrom(this.translate.get("Erro ao salvar arquivo")),
+                detail: this.translateService.translate(`Erro ao salvar {path}: {msg}`, {path: result.path, msg: result.msg}),
+                summary: this.translateService.translate("Erro ao salvar arquivo"),
                 severity: "error"
             });
         }
@@ -120,8 +120,8 @@ export class BackupComponent {
     async restoreBackupDialog(event: Event) {
         this.confirmationService.confirm({
             target: event.target as EventTarget,
-            message: await firstValueFrom(this.translate.get("Tem certeza de que deseja restaurar este backup? Seus dados atuais serão apagados e não poderão ser recuperados posteriormente!")),
-            header: await firstValueFrom(this.translate.get("Confirmação")),
+            message: this.translateService.translate("Tem certeza de que deseja restaurar este backup? Seus dados atuais serão apagados e não poderão ser recuperados posteriormente!"),
+            header: this.translateService.translate("Confirmação"),
             icon: "pi pi-exclamation-triangle",
             accept: () => {
                 this.restoreBackup();
@@ -135,16 +135,16 @@ export class BackupComponent {
             .subscribe({
                 complete: async () =>  {
                     this.messageService.add({
-                        summary: await firstValueFrom(this.translate.get("Restaurado com sucesso!")),
-                        detail: await firstValueFrom(this.translate.get("Seu backup foi restaurado com sucesso! Seus dados já estão disponíveis para consulta.")),
+                        summary: this.translateService.translate("Restaurado com sucesso!"),
+                        detail: this.translateService.translate("Seu backup foi restaurado com sucesso! Seus dados já estão disponíveis para consulta."),
                         severity: "success",
                         life: 4000,
                     });
                 },
                 error: async () => {
                     this.messageService.add({
-                        summary: await firstValueFrom(this.translate.get("Erro no backup")),
-                        detail: await firstValueFrom(this.translate.get("Não foi possível restaurar seu backup. Por favor, tente novamente!")),
+                        summary: this.translateService.translate("Erro no backup"),
+                        detail: this.translateService.translate("Não foi possível restaurar seu backup. Por favor, tente novamente!"),
                         severity: "error",
                         life: 4000,
                     });

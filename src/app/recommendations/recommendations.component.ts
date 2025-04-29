@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
 import { JoyrideModule } from 'ngx-joyride';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { TriggerService } from '../services/trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
@@ -22,7 +22,7 @@ import { RecommendationComponent } from '../recommendation/recommendation.compon
         RecommendationComponent,
         CommonModule,
         JoyrideModule,
-        TranslateModule,
+        TranslocoModule,
     ],
     templateUrl: './recommendations.component.html',
     styleUrl: './recommendations.component.scss'
@@ -34,7 +34,7 @@ export class RecommendationsComponent implements OnInit {
     
     constructor(
         private triggerService: TriggerService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {}
 
     ngOnInit(): void {

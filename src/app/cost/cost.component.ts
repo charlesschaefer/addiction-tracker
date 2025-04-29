@@ -17,7 +17,7 @@ import { SubstanceDto } from '../dto/substance.dto';
 import { ChartDataset, ChartData } from '../util/chart-types';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
 import { RouterLink } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ import { firstValueFrom } from 'rxjs';
         AccordionModule,
         ToastModule,
         RouterLink,
-        TranslateModule
+        TranslocoModule
     ],
     templateUrl: './cost.component.html',
     styleUrl: './cost.component.scss',
@@ -55,7 +55,7 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
         private costService: CostService,
         private substanceService: SubstanceService,
         private messageService: MessageService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {
         super();
     }
@@ -136,16 +136,16 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
         this.costService.remove(id).then(async values => {
                 this.messageService.add({
                     severity: "success",
-                    summary: await firstValueFrom(this.translate.get("Tudo certo")),
-                    detail: await firstValueFrom(this.translate.get("Gasto removido com sucesso!")),
+                    summary: this.translateService.translate("Tudo certo"),
+                    detail: this.translateService.translate("Gasto removido com sucesso!"),
                     life: 2000
                 });
                 setTimeout(() => window.location.reload(), 2000);
             }).catch(async err => {
                 this.messageService.add({
                     severity: "error",
-                    summary: await firstValueFrom(this.translate.get("Erro")),
-                    detail: await firstValueFrom(this.translate.get("Não foi possível remover o gasto")),
+                    summary: this.translateService.translate("Erro"),
+                    detail: this.translateService.translate("Não foi possível remover o gasto"),
                     life: 2000
                 });
             });

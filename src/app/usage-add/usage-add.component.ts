@@ -32,7 +32,7 @@ import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { TriggerService } from '../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
 import { firstValueFrom } from 'rxjs';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
     selector: 'app-usage-add',
@@ -60,7 +60,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
         JoyrideModule,
         SliderModule,
         ListboxModule,
-        TranslateModule
+        TranslocoModule
     ],
     templateUrl: './usage-add.component.html',
     styleUrl: './usage-add.component.scss',
@@ -98,7 +98,7 @@ export class UsageAddComponent implements OnInit {
         private messageService: MessageService,
         protected router: Router,
         private activatedRoute: ActivatedRoute,
-        private translate: TranslateService
+        private translateService: TranslocoService
     ) {}
     
     ngOnInit(): void {
@@ -135,8 +135,8 @@ export class UsageAddComponent implements OnInit {
         if (!this.usageForm.valid) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: await firstValueFrom(this.translate.get('Erro')), 
-                detail: await firstValueFrom(this.translate.get("Verifique todos os valores do formulário")), 
+                summary: this.translateService.translate('Erro'), 
+                detail: this.translateService.translate("Verifique todos os valores do formulário"), 
                 life: 3000,
             });
             return;
@@ -156,8 +156,8 @@ export class UsageAddComponent implements OnInit {
             this.usageService.clearCache();
             this.messageService.add({ 
                 severity: 'success',
-                summary: await firstValueFrom(this.translate.get('Tudo certo')),
-                detail: await firstValueFrom(this.translate.get("Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Abrindo...")),
+                summary: this.translateService.translate('Tudo certo'),
+                detail: this.translateService.translate("Dados de uso salvos com sucesso. Você já pode vê-los no dashboard. Abrindo..."),
                 life: 2000,
             });
             setTimeout(() => this.router.navigate(['/usage-track']), 2000);
@@ -188,8 +188,8 @@ export class UsageAddComponent implements OnInit {
         if (triggers.length) {
             this.messageService.add({ 
                 severity: 'error', 
-                summary: await firstValueFrom(this.translate.get('Entrada duplicada')), 
-                detail: await firstValueFrom(this.translate.get('Já existe esse gatilho')), 
+                summary: this.translateService.translate('Entrada duplicada'), 
+                detail: this.translateService.translate('Já existe esse gatilho'), 
                 life: 3000
             });
             return;
@@ -198,17 +198,15 @@ export class UsageAddComponent implements OnInit {
         this.triggerAddService.add(data).then(values => {
                 this.triggerAddService.clearCache();
                 this.triggers.push(values);
-                this.filteredTriggers = this.triggers;
-                
-                this.showAddTriggerDialog = false
-            }).catch(async error => {
                 this.messageService.add({ 
-                    severity: 'error', 
-                    summary: await firstValueFrom(this.translate.get('Erro')), 
-                    detail: await firstValueFrom(this.translate.get('Houve um erro ao salvar a substância!')), 
-                    life: 2000
+                    severity: 'success', 
+                    summary: this.translateService.translate('Tudo certo'), 
+                    detail: this.translateService.translate('Gatilho adicionado com sucesso'), 
+                    life: 3000
                 });
-            });
+                this.showAddTriggerDialog = false;
+                this.triggerForm.reset();
+        });
     }
 
     increaseQuantity() {

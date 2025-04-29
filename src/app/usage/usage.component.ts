@@ -19,7 +19,7 @@ import { SubstanceDto } from '../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../util/paginated-component';
 import { RecommendationService } from '../services/recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
@@ -44,7 +44,7 @@ interface SubstanceUsage {
         DialogModule,
         FormsModule,
         RouterLink,
-        TranslateModule
+        TranslocoModule
     ],
     templateUrl: './usage.component.html',
     styleUrl: './usage.component.scss',
@@ -80,7 +80,7 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         private messageService: MessageService,
         private recommendationService: RecommendationService,
         private route: Router,
-        private translate: TranslateService
+        private translateService: TranslocoService
     ) {
         super();
     }
@@ -158,16 +158,16 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         this.usageService.remove(id).then(async value => {
                 this.messageService.add({
                     severity: 'success',
-                    summary: await firstValueFrom(this.translate.get('Tudo certo')),
-                    detail: await firstValueFrom(this.translate.get('Consumo removido com sucesso!')),
+                    summary: this.translateService.translate('Tudo certo'),
+                    detail: this.translateService.translate('Consumo removido com sucesso!'),
                     life: 2000
                 });
                 setTimeout(() => window.location.reload(), 2000);
             }).catch(async err => {
                 this.messageService.add({
                     severity: 'success',
-                    summary: await firstValueFrom(this.translate.get('Erro')),
-                    detail: await firstValueFrom(this.translate.get('Não foi possível remover o registro!')),
+                    summary: this.translateService.translate('Erro'),
+                    detail: this.translateService.translate('Não foi possível remover o registro!'),
                     life: 2000
                 });
             });

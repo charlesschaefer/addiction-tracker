@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { UsageDto } from '../dto/usage.dto';
 import { UsageService } from '../services/usage.service';
@@ -12,7 +12,7 @@ import { RecommendationDto } from '../dto/recommendation.dto';
 @Component({
     selector: 'app-recommendation',
     standalone: true,
-    imports: [DialogModule, ButtonModule, CardModule, TranslateModule],
+    imports: [DialogModule, ButtonModule, CardModule, TranslocoModule],
     templateUrl: './recommendation.component.html',
     styleUrl: './recommendation.component.scss'
 })
@@ -27,7 +27,7 @@ export class RecommendationComponent implements OnChanges {
     constructor(
         private usageService: UsageService,
         private recommendationService: RecommendationService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
     ) {}
 
 

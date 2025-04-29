@@ -11,7 +11,7 @@ import { UsageDto } from '../dto/usage.dto';
 import { SubstanceService } from '../services/substance.service';
 import { SubstanceDto } from '../dto/substance.dto';
 import { UsageChart } from '../util/chart-types';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
 
 interface UsageInterval {
@@ -22,7 +22,7 @@ interface UsageInterval {
 @Component({
     selector: 'app-usage-interval',
     standalone: true,
-    imports: [AccordionModule, CardModule, ChartModule, RouterLink, TranslateModule],
+    imports: [AccordionModule, CardModule, ChartModule, RouterLink, TranslocoModule],
     templateUrl: './usage-interval.component.html',
     styleUrl: './usage-interval.component.scss'
 })
@@ -40,7 +40,7 @@ export class UsageIntervalComponent implements OnInit {
         private usageService: UsageService,
         private substanceService: SubstanceService,
         private route: Router,
-        private translate: TranslateService
+        private translateService: TranslocoService
     ) {}
 
     ngOnInit(): void {
@@ -132,7 +132,7 @@ export class UsageIntervalComponent implements OnInit {
                         labels: [],
                         datasets: [
                             {
-                                label: await firstValueFrom(this.translate.get('Intervalo de Consumo (minutos)')),
+                                label: this.translateService.translate('Intervalo de Consumo (minutos)'),
                                 data: [],
                                 tension: 0.3,
                                 borderColor: documentStyle.getPropertyValue('--blue-500')

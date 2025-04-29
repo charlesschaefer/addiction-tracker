@@ -20,7 +20,7 @@ import {
 
 import { ThemeService } from "./services/theme.service";
 import { invoke } from "@tauri-apps/api/core";
-import { TranslateModule, TranslateService } from "@ngx-translate/core";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { firstValueFrom } from "rxjs";
 import { LockButtonComponent } from "./components/lock-button.component";
 import { HeaderComponent } from "./components/header.component";
@@ -46,7 +46,7 @@ import { SubstanceDto } from "./dto/substance.dto";
         JoyrideModule,
         TieredMenuModule,
         MenuModule,
-        TranslateModule,
+        TranslocoModule,
         CommonModule,
         MenubarModule,
         HeaderComponent,
@@ -151,21 +151,18 @@ export class AppComponent implements OnInit {
 
     constructor(
         private themeService: ThemeService,
-        private translate: TranslateService,
+        private translateService: TranslocoService,
         private router: Router,
         private dataUpdatedService: DataUpdatedService,
         private achievementService: AchievementService,
         private substanceService: SubstanceService,
         private messageService: MessageService
     ) {
-        translate.setDefaultLang("en");
-        //translate.use('en');
-
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {
             userLanguage = "en";
         }
-        this.translate.use(userLanguage);
+        this.translateService.setActiveLang(userLanguage);
     }
 
     ngOnInit(): void {
@@ -229,9 +226,8 @@ export class AppComponent implements OnInit {
         localStorage.setItem("theme", currentTheme);
     }
 
-    switchLanguage(language: "en" | "pt-BR") {
-        console.log("Changing language to ", language);
-        this.translate.use(language);
+    switchLanguage(language: "en" | "pt-br") {
+        this.translateService.setActiveLang(language);
         localStorage.setItem("language", language);
         this.setupMenu();
     }
@@ -239,7 +235,7 @@ export class AppComponent implements OnInit {
     async setupMenu() {
         this.menuItems = [
             {
-                label: await firstValueFrom(this.translate.get("Home")),
+                label: this.translateService.translate("Home"),
                 routerLink: "/",
                 //icon: "pi pi-home",
             } as MenuItem,
@@ -247,44 +243,32 @@ export class AppComponent implements OnInit {
                 label: "Consumo",
                 items: [
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Acompanhar")
-                        ),
+                        label: this.translateService.translate("Acompanhar"),
                         routerLink: "/usage-track",
                         //icon: "pi pi-chart-line",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Intervalos de Consumo")
-                        ),
+                        label: this.translateService.translate("Intervalos de Consumo"),
                         routerLink: "/usage-interval",
                         //icon: "pi pi-clock",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Adicionar")
-                        ),
+                        label: this.translateService.translate("Adicionar"),
                         routerLink: "/usage-add",
                         //icon: "pi pi-plus",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Recomendações")
-                        ),
+                        label: this.translateService.translate("Recomendações"),
                         routerLink: "/recommendations",
                         //icon: "pi pi-book",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Acompanhar Gastos")
-                        ),
+                        label: this.translateService.translate("Acompanhar Gastos"),
                         routerLink: "/cost",
                         //icon: "pi pi-wallet",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Adicionar Gastos")
-                        ),
+                        label: this.translateService.translate("Adicionar Gastos"),
                         routerLink: "/cost-add",
                         //icon: "pi pi-money-bill",
                     } as MenuItem,
@@ -295,7 +279,7 @@ export class AppComponent implements OnInit {
             // },
             // {
             //     label: await firstValueFrom(
-            //         this.translate.get("Recomendações")
+            //         this.translateService.translate("Recomendações")
             //     ),
 
             // },
@@ -303,7 +287,7 @@ export class AppComponent implements OnInit {
             //     separator: true,
             // },
             // {
-            //     label: await firstValueFrom(this.translate.get("Gastos")),
+            //     label: await firstValueFrom(this.translateService.translate("Gastos")),
             //     items: [
 
             //     ],
@@ -312,53 +296,37 @@ export class AppComponent implements OnInit {
             //     separator: true,
             // },
             {
-                label: await firstValueFrom(
-                    this.translate.get("Configurações")
-                ),
+                label: this.translateService.translate("Configurações"),
                 items: [
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Adicionar Substância")
-                        ),
+                        label: this.translateService.translate("Adicionar Substância"),
                         routerLink: "/substance-add",
                         // icon: "pi pi-user-minus",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Backup")
-                        ),
+                        label: this.translateService.translate("Backup"),
                         routerLink: "/backup",
                         // icon: "pi pi-lock",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Sincronizar dispositivos")
-                        ),
+                        label: this.translateService.translate("Sincronizar dispositivos"),
                         routerLink: "/sync",
                         // icon: "pi pi-sync",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Mudar tema")
-                        ),
+                        label: this.translateService.translate("Mudar tema"),
                         command: () => this.switchTheme(),
                         // icon: "pi pi-moon",
                     } as MenuItem,
                     {
-                        label: await firstValueFrom(
-                            this.translate.get("Idioma")
-                        ),
+                        label: this.translateService.translate("Idioma"),
                         items: [
                             {
-                                label: await firstValueFrom(
-                                    this.translate.get("Português")
-                                ),
-                                command: () => this.switchLanguage("pt-BR"),
+                                label: this.translateService.translate("Português"),
+                                command: () => this.switchLanguage("pt-br"),
                             },
                             {
-                                label: await firstValueFrom(
-                                    this.translate.get("Inglês")
-                                ),
+                                label: this.translateService.translate("Inglês"),
                                 command: () => this.switchLanguage("en"),
                             },
                         ],
@@ -370,7 +338,7 @@ export class AppComponent implements OnInit {
             //     separator: true,
             // },
             {
-                label: await firstValueFrom(this.translate.get("Sobre")),
+                label: this.translateService.translate("Sobre"),
                 routerLink: "/about",
                 //icon: "pi pi-info",
             } as MenuItem,
