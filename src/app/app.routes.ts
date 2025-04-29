@@ -21,6 +21,7 @@ import { AchievementsComponent } from "./pages/achievements/achievements.compone
 import { AlternativeActivityAnalyticsComponent } from "./pages/alternative-activity-analytics/alternative-activity-analytics.component";
 import { FinancialImpactComponent } from "./pages/financial-impact/financial-impact.component";
 import { TriggersComponent } from "./pages/triggers/triggers.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
@@ -45,4 +46,5 @@ export const routes: Routes = [
     { path: "alternative-activity-analytics", component: AlternativeActivityAnalyticsComponent },
     { path: "financial-impact", component: FinancialImpactComponent },
     { path: "triggers", component: TriggersComponent },
+    { path: "settings", component: SettingsComponent }
 ];

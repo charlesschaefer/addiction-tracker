@@ -1,6 +1,9 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { MessageService } from "primeng/api";
+import { DATABASE_NAME } from "../../app.db";
+import { Dexie } from "dexie";
 
 @Component({
     selector: "app-settings-page",
@@ -9,6 +12,7 @@ import { FormsModule } from "@angular/forms";
     templateUrl: "./settings.component.html",
 })
 export class SettingsComponent {
+    
     isProtected = false;
     password = "";
     newPassword = "";
@@ -17,6 +21,13 @@ export class SettingsComponent {
     error = "";
     success = "";
     showChangePassword = false;
+    clearDataConfirmation = "";
+    showClearDataDialog = false;
+    clearDataConfirmed: boolean = false;
+
+    constructor(
+        private messageService: MessageService
+    ) {}
 
     enableProtection(password: string) {
         this.isProtected = true;
@@ -80,5 +91,46 @@ export class SettingsComponent {
         this.newPassword = "";
         this.confirmPassword = "";
         this.showChangePassword = false;
+    }
+
+    validateClearData() {
+        if (this.clearDataConfirmation === 'CLEAR ALL DATA') {
+            // Implement the actual data clearing logic here
+            this.clearAllData();
+            this.setShowClearDataDialog(false);
+            this.clearDataConfirmed = false;
+            this.messageService.add({
+                severity: 'success',
+                summary: "Success",
+                detail: 'All data has been cleared successfully',
+                life: 3000
+            })
+        } else {
+            this.messageService.add({
+                severity: 'error',
+                summary: "Error",
+                detail: 'Please type CLEAR ALL DATA exactly to confirm',
+                life: 3000
+            })
+        }
+    }
+    setClearDataConfirmation(event: any) {
+        if (event.value == 'CLEAR ALL DATA') {
+            this.clearDataConfirmed = true;
+            return;
+        }
+        this.clearDataConfirmed = false;
+    }
+    setShowClearDataDialog(show: boolean): true {
+        this.showClearDataDialog = show;
+        return true;
+    }
+
+    clearAllData() {
+        try {
+            Dexie.delete(DATABASE_NAME)
+        } catch (e) {
+            console.error("Error trying to delete database: ", e);
+        }
     }
 }

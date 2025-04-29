@@ -12,7 +12,7 @@
 
     <!-- Substance Selector -->
     <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">
+      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
         Filter by Substance
       </h3>
       <div class="flex flex-wrap gap-2">
@@ -40,40 +40,58 @@
 
     <!-- Trigger Distribution -->
     <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">
+      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
         {{ selectedSubstance === 'all' ? 'Overall Trigger Distribution' : (selectedSubstance + ' Trigger Distribution') }}
       </h3>
-      <div class="h-80 flex items-center justify-center text-gray-400">
-        <!-- Pie chart placeholder: Use ngx-charts-pie-chart or similar -->
-        [Pie Chart Here]
+      <div class="h-80">
+        <div *ngIf="hasTriggerData(); else noTriggerData" class="h-full">
+          <p-chart type="pie" [data]="pieChartData" [options]="pieChartOptions"></p-chart>
+        </div>
+        <ng-template #noTriggerData>
+          <div class="h-full flex items-center justify-center text-gray-500">
+            <p class="text-center">
+              {{ selectedSubstance === 'all' 
+                ? 'No trigger data available yet. Start recording your substance use to see trigger patterns.' 
+                : 'No trigger data available for this substance yet. Record some usage to see trigger patterns.' }}
+            </p>
+          </div>
+        </ng-template>
       </div>
     </div>
 
     <!-- Triggers by Substance -->
     <div *ngIf="selectedSubstance === 'all'" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">
+      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
         Triggers by Substance
       </h3>
-      <div class="h-80 flex items-center justify-center text-gray-400">
-        <!-- Bar chart placeholder: Use ngx-charts-bar-vertical-grouped or similar -->
-        [Bar Chart Here]
+      <div class="h-96">
+        <div *ngIf="hasSubstanceData(); else noSubstanceData" class="h-full">
+          <p-chart type="bar" [data]="barChartData" [options]="barChartOptions" [style]="{'width': '100%', 'height': '100%'}"></p-chart>
+        </div>
+        <ng-template #noSubstanceData>
+          <div class="h-full flex items-center justify-center text-gray-500">
+            <p class="text-center">
+              No substance data available yet. Start recording your substance use to see patterns across different substances.
+            </p>
+          </div>
+        </ng-template>
       </div>
     </div>
 
     <!-- Trigger Insights -->
     <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-medium text-gray-700 mb-4">
+      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
         Understanding Your Triggers
       </h3>
       <div class="space-y-4">
         <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
-          <h4 class="font-medium text-purple-800 mb-2">What are triggers?</h4>
+          <h4 class="font-semibold text-purple-800 mb-2">What are triggers?</h4>
           <p class="text-gray-700">
             Triggers are situations, emotions, or environments that create urges to use substances. Identifying your personal triggers is a crucial step in developing effective coping strategies.
           </p>
         </div>
         <div class="p-4 bg-orange-50 rounded-lg border border-orange-100">
-          <h4 class="font-medium text-orange-800 mb-2">Common Emotional Triggers</h4>
+          <h4 class="font-semibold  text-orange-800 mb-2">Common Emotional Triggers</h4>
           <ul class="list-disc pl-5 text-gray-700 space-y-1">
             <li>Stress and anxiety</li>
             <li>Sadness or depression</li>
@@ -83,7 +101,7 @@
           </ul>
         </div>
         <div class="p-4 bg-teal-50 rounded-lg border border-teal-100">
-          <h4 class="font-medium text-teal-800 mb-2">Common Environmental Triggers</h4>
+          <h4 class="font-semibold  text-teal-800 mb-2">Common Environmental Triggers</h4>
           <ul class="list-disc pl-5 text-gray-700 space-y-1">
             <li>Social gatherings where substances are present</li>
             <li>Specific locations associated with past use</li>
@@ -93,7 +111,7 @@
           </ul>
         </div>
         <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
-          <h4 class="font-medium text-blue-800 mb-2">Coping Strategies</h4>
+          <h4 class="font-semibold  text-blue-800 mb-2">Coping Strategies</h4>
           <p class="text-gray-700 mb-2">
             Once you've identified your triggers, you can develop strategies to manage them:
           </p>

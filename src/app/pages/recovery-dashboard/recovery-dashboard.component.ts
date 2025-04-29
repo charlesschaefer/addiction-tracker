@@ -34,12 +34,15 @@ export class RecoveryDashboardComponent implements OnInit {
 
     usageHistory = signal<UsageDto[]>([]);
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
+    chartOptions: any;
 
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
         private costService: CostService,
-    ) {}
+    ) {
+        this.initChartOptions();
+    }
 
     ngOnInit() {
         this.usageService.list().then((usages) => {
@@ -99,26 +102,62 @@ export class RecoveryDashboardComponent implements OnInit {
         );
     }
 
+    initChartOptions() {
+        this.chartOptions = {
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Triggers'
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
+                        callback: function(value: any) {
+                            const date = new Date(value);
+                            return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                        }
+                    }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Entries'
+                    }
+                }
+            }
+        };
+    }
+
     prepareSubstanceUsageData() {
         const usageByDate: { [key: string]: number } = {};
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            usageByDate[dateStr] = 0;
+            dates.push(date);
+            usageByDate[date.toISOString()] = 0;
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (usageByDate[entry.datetime.toISOString().split("T")[0]] !== undefined) {
-                usageByDate[entry.datetime.toISOString().split("T")[0]]++;
+            const entryDate = new Date(entry.datetime);
+            if (usageByDate[entryDate.toISOString()] !== undefined) {
+                usageByDate[entryDate.toISOString()]++;
             }
         });
         return dates.map((date) => ({
-            date,
-            usage: usageByDate[date],
+            date: date.toISOString(),
+            usage: usageByDate[date.toISOString()],
         }));
     }
 
@@ -131,54 +170,54 @@ export class RecoveryDashboardComponent implements OnInit {
             Good: 4,
             Great: 5,
         };
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            moodByDate[dateStr] = { total: 0, count: 0 };
+            dates.push(date);
+            moodByDate[date.toISOString()] = { total: 0, count: 0 };
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (moodByDate[entry.datetime.toISOString().split("T")[0]]) {
-                moodByDate[entry.datetime.toISOString().split("T")[0]].total += moodValues[entry.sentiment] || 3;
-                moodByDate[entry.datetime.toISOString().split("T")[0]].count++;
+            const entryDate = new Date(entry.datetime);
+            if (moodByDate[entryDate.toISOString()]) {
+                moodByDate[entryDate.toISOString()].total += moodValues[entry.sentiment] || 3;
+                moodByDate[entryDate.toISOString()].count++;
             }
         });
         return dates.map((date) => ({
-            date,
+            date: date.toISOString(),
             sentiment:
-                moodByDate[date].count > 0
-                    ? moodByDate[date].total / moodByDate[date].count
+                moodByDate[date.toISOString()].count > 0
+                    ? moodByDate[date.toISOString()].total / moodByDate[date.toISOString()].count
                     : null,
         }));
     }
 
     prepareCravingTrendData() {
         const cravingByDate: { [key: string]: { total: number; count: number } } = {};
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            cravingByDate[dateStr] = { total: 0, count: 0 };
+            dates.push(date);
+            cravingByDate[date.toISOString()] = { total: 0, count: 0 };
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (cravingByDate[entry.datetime.toISOString().split("T")[0]] && entry.craving) {
-                cravingByDate[entry.datetime.toISOString().split("T")[0]].total += entry.craving;
-                cravingByDate[entry.datetime.toISOString().split("T")[0]].count++;
+            const entryDate = new Date(entry.datetime);
+            if (cravingByDate[entryDate.toISOString()] && entry.craving) {
+                cravingByDate[entryDate.toISOString()].total += entry.craving;
+                cravingByDate[entryDate.toISOString()].count++;
             }
         });
         return dates.map((date) => ({
-            date,
+            date: date.toISOString(),
             craving:
-                cravingByDate[date].count > 0
-                    ? cravingByDate[date].total / cravingByDate[date].count
+                cravingByDate[date.toISOString()].count > 0
+                    ? cravingByDate[date.toISOString()].total / cravingByDate[date.toISOString()].count
                     : null,
         }));
     }
@@ -188,7 +227,7 @@ export class RecoveryDashboardComponent implements OnInit {
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
         return usageData.map((item, index) => ({
-            date: item.date,
+            date: new Date(item.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
             usage: item.usage,
             mood: moodData[index].sentiment,
             craving: cravingData[index].craving,

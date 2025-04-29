@@ -6,11 +6,12 @@ import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceAddDto, SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
+import { ChartModule } from 'primeng/chart';
 
 @Component({
     selector: "app-financial-impact",
     standalone: true,
-    imports: [CommonModule, FinancialImpactCardComponent],
+    imports: [CommonModule, FinancialImpactCardComponent, ChartModule],
     templateUrl: "./financial-impact.component.html",
 })
 export class FinancialImpactComponent implements OnInit {
@@ -19,19 +20,75 @@ export class FinancialImpactComponent implements OnInit {
     usageHistory = signal<UsageDto[]>([]);
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
     
+    // Chart data
+    spendingTrendData: any;
+    spendingTrendOptions: any;
+    
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
         private costService: CostService
-    ) {}
+    ) {
+        this.initChartOptions();
+    }
 
     ngOnInit() {
         this.usageService.list().then((usages) => {
             this.usageHistory.set(usages as UsageDto[]);
+            this.updateSpendingTrendChart();
         });
         this.substanceService.list().then((subs) => {
             this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
+            this.updateSpendingTrendChart();
         });
+    }
+
+    initChartOptions() {
+        this.spendingTrendOptions = {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            }
+        };
+    }
+
+    updateSpendingTrendChart() {
+        const trendData = this.prepareSpendingTrendData();
+        if (trendData.length > 0) {
+            this.spendingTrendData = {
+                labels: trendData.map(item => {
+                    const date = new Date(item.date);
+                    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                }),
+                datasets: [{
+                    label: 'Daily Spending',
+                    data: trendData.map(item => item.spending),
+                    fill: true,
+                    borderColor: '#8B5CF6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                    tension: 0.4
+                }]
+            };
+        }
+    }
+
+    hasSpendingTrendData(): boolean {
+        const trendData = this.prepareSpendingTrendData();
+        return trendData.length > 0;
     }
 
     prepareCostBySubstanceData() {

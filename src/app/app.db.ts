@@ -12,6 +12,7 @@ import { AlternativeActivityData } from './data/alternative-activity.data';
 import { TriggerData } from './data/trigger.data';
 
 export type TableKeys = 'substance' | 'usage' | 'trigger' | 'cost' | 'recommendation' | 'alternative_activity' | 'motivational_factor' | 'usage_filling' | 'achievement';
+export const DATABASE_NAME = 'addiction_tracker';
 
 export class AppDb extends Dexie {
     substance!: Table<SubstanceDto, number>;
@@ -25,7 +26,7 @@ export class AppDb extends Dexie {
     achievement!: Table<AchievementDto, number>;
 
     constructor() {
-        super('addiction_tracker');
+        super(DATABASE_NAME);
         console.log("Vamos adicionar as coisas aqui.")
         this.version(5).stores({
             substance: '++id, name',

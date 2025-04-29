@@ -60,8 +60,12 @@ export class SubstanceAnalysisCardComponent {
         if (this.selectedAnalysisSubstance === "all") {
             return this.usageHistory;
         }
+        const substance = Array.from(this.substances.values()).find(s => s.name === this.selectedAnalysisSubstance);
+        if (!substance) {
+            return this.usageHistory;
+        }
         return this.usageHistory.filter(
-            (entry) => entry.substance.toString() === this.selectedAnalysisSubstance
+            (entry) => entry.substance === substance.id
         );
     }
 
@@ -93,24 +97,25 @@ export class SubstanceAnalysisCardComponent {
 
     prepareSubstanceUsageData() {
         const usageByDate: { [key: string]: number } = {};
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            usageByDate[dateStr] = 0;
+            dates.push(date);
+            usageByDate[date.toISOString().split('T')[0]] = 0;
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (usageByDate[entry.datetime.toISOString().split("T")[0]] !== undefined) {
-                usageByDate[entry.datetime.toISOString().split("T")[0]]++;
+            const entryDate = new Date(entry.datetime);
+            const dateKey = entryDate.toISOString().split('T')[0];
+            if (usageByDate[dateKey] !== undefined) {
+                usageByDate[dateKey]++;
             }
         });
         return dates.map((date) => ({
-            date,
-            usage: usageByDate[date],
+            date: date.toISOString(),
+            usage: usageByDate[date.toISOString().split('T')[0]],
         }));
     }
 
@@ -123,49 +128,55 @@ export class SubstanceAnalysisCardComponent {
             Good: 4,
             Great: 5,
         };
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            moodByDate[dateStr] = { total: 0, count: 0 };
+            dates.push(date);
+            moodByDate[date.toISOString().split('T')[0]] = { total: 0, count: 0 };
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (moodByDate[entry.datetime.toISOString().split("T")[0]]) {
-                moodByDate[entry.datetime.toISOString().split("T")[0]].total += moodValues[entry.sentiment] || 3;
-                moodByDate[entry.datetime.toISOString().split("T")[0]].count++;
+            const entryDate = new Date(entry.datetime);
+            const dateKey = entryDate.toISOString().split('T')[0];
+            if (moodByDate[dateKey]) {
+                moodByDate[dateKey].total += moodValues[entry.sentiment] || 3;
+                moodByDate[dateKey].count++;
             }
         });
         return dates.map((date) => ({
-            date,
-            sentiment: moodByDate[date].count > 0 ? moodByDate[date].total / moodByDate[date].count : null,
+            date: date.toISOString(),
+            sentiment: moodByDate[date.toISOString().split('T')[0]].count > 0 
+                ? moodByDate[date.toISOString().split('T')[0]].total / moodByDate[date.toISOString().split('T')[0]].count 
+                : null,
         }));
     }
 
     prepareCravingTrendData() {
         const cravingByDate: { [key: string]: { total: number; count: number } } = {};
-        const dates: string[] = [];
+        const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-            const dateStr = date.toISOString().split("T")[0];
-            dates.push(dateStr);
-            cravingByDate[dateStr] = { total: 0, count: 0 };
+            dates.push(date);
+            cravingByDate[date.toISOString().split('T')[0]] = { total: 0, count: 0 };
         }
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
-            if (cravingByDate[entry.datetime.toISOString().split("T")[0]] && entry.craving) {
-                cravingByDate[entry.datetime.toISOString().split("T")[0]].total += entry.craving;
-                cravingByDate[entry.datetime.toISOString().split("T")[0]].count++;
+            const entryDate = new Date(entry.datetime);
+            const dateKey = entryDate.toISOString().split('T')[0];
+            if (cravingByDate[dateKey] && entry.craving) {
+                cravingByDate[dateKey].total += entry.craving;
+                cravingByDate[dateKey].count++;
             }
         });
         return dates.map((date) => ({
-            date,
-            craving: cravingByDate[date].count > 0 ? cravingByDate[date].total / cravingByDate[date].count : null,
+            date: date.toISOString(),
+            craving: cravingByDate[date.toISOString().split('T')[0]].count > 0 
+                ? cravingByDate[date.toISOString().split('T')[0]].total / cravingByDate[date.toISOString().split('T')[0]].count 
+                : null,
         }));
     }
 
@@ -175,7 +186,10 @@ export class SubstanceAnalysisCardComponent {
         const cravingData = this.prepareCravingTrendData();
 
         return {
-            labels: usageData.map(item => item.date),
+            labels: usageData.map(item => {
+                const date = new Date(item.date);
+                return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+            }),
             datasets: [
                 {
                     label: 'Usage',
@@ -215,5 +229,20 @@ export class SubstanceAnalysisCardComponent {
                 backgroundColor: this.COLORS
             }]
         };
+    }
+
+    hasDataForSelectedSubstance(): boolean {
+        const filteredHistory = this.getFilteredUsageHistory();
+        return filteredHistory.length > 0;
+    }
+
+    hasTriggerData(): boolean {
+        const triggerData = this.prepareTriggerData();
+        return triggerData.labels.length > 0;
+    }
+
+    hasUsageData(): boolean {
+        const usageData = this.prepareUsageBySubstanceData();
+        return usageData.labels.length > 0;
     }
 }

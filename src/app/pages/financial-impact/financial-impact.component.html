@@ -20,9 +20,17 @@
             <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
                 Spending Trend (Last 30 Days)
             </h3>
-            <div class="h-80 flex items-center justify-center">
-                <!-- Integrate ngx-charts or similar for actual chart -->
-                <span class="text-gray-400">[Line Chart Placeholder]</span>
+            <div class="h-80">
+                <div *ngIf="hasSpendingTrendData(); else noSpendingTrendData" class="h-full">
+                    <p-chart type="line" [data]="spendingTrendData" [options]="spendingTrendOptions"></p-chart>
+                </div>
+                <ng-template #noSpendingTrendData>
+                    <div class="h-full flex items-center justify-center text-gray-500">
+                        <p class="text-center">
+                            No spending data available for the last 30 days. Start recording your substance use to see spending trends.
+                        </p>
+                    </div>
+                </ng-template>
             </div>
         </div>
 
