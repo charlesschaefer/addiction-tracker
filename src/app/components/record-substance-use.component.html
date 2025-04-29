@@ -531,9 +531,9 @@
               <label class="block text-xs text-purple-700 font-medium mb-1">
                 New Trigger
               </label>
-              <div class="flex flex-col sm:flex-row gap-2">
+              <div class="flex flex-col sm:flex-row gap-3">
                 <div class="relative flex-1">
-                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="h-5 w-5 text-gray-400"
@@ -552,19 +552,19 @@
                     [(ngModel)]="newTrigger"
                     name="newTrigger"
                     placeholder="Enter new trigger"
-                    class="pl-10 w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                    class="pl-12 w-full h-12 rounded-lg border-gray-200 bg-white/80 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
                     autofocus
                   />
                 </div>
-                <div class="flex gap-2">
+                <div class="flex gap-3">
                   <button
                     type="button"
                     (click)="handleAddTrigger()"
-                    class="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center justify-center"
+                    class="px-5 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 mr-1"
+                      class="h-5 w-5 mr-2"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -579,11 +579,11 @@
                   <button
                     type="button"
                     (click)="showAddTrigger = false"
-                    class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center"
+                    class="px-5 py-3 border border-gray-300 bg-white/80 text-gray-700 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 mr-1"
+                      class="h-5 w-5 mr-2"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >

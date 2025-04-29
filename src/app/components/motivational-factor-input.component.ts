@@ -15,6 +15,7 @@ export class MotivationalFactorInputComponent {
     @Output() add = new EventEmitter<
         Omit<MotivationalFactorDto, "id" | "createdAt">
     >();
+    @Output() close = new EventEmitter();
 
     type: "text" | "image" | "audio" = "text";
     content = "";

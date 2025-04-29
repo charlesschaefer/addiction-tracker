@@ -41,13 +41,22 @@
           placeholder="E.g., I want to be healthier for my family..."
         ></textarea>
       </div>
-      <button
-        type="submit"
-        class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400"
-        [disabled]="!content.trim()"
-      >
-        Add Motivation
-      </button>
+      <div class="flex flex-row gap-6 justify-end">
+        <button
+          type="submit"
+          class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400"
+          [disabled]="!content.trim()"
+        >
+          Add Motivation
+        </button>
+        <button
+          type="button"
+          (click)="close.emit()"
+          class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors flex items-center justify-center"
+        >
+          Cancel
+        </button>
+      </div>
     </form>
     <!-- Image Motivation -->
     <div *ngSwitchCase="'image'">
