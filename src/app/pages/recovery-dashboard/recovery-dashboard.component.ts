@@ -174,6 +174,45 @@ export class RecoveryDashboardComponent implements OnInit {
         };
     }
 
+    initChartOptions() {
+        this.chartOptions = {
+            plugins: {
+                legend: {
+                    position: "bottom",
+                },
+            },
+            // responsive: true,
+            // maintainAspectRatio: false,
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: "Triggers",
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45,
+                        callback: function (value: any) {
+                            const date = new Date(value);
+                            return date.toLocaleDateString("en-US", {
+                                day: "numeric",
+                                month: "short",
+                            });
+                        },
+                    },
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: "Number of Entries",
+                    },
+                },
+            },
+        };
+    }
+
     prepareSubstanceUsageData() {
         const usageByDate: { [key: string]: number } = {};
         const dates: Date[] = [];
