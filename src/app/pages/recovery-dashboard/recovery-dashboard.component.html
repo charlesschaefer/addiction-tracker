@@ -14,10 +14,7 @@
         <div class="space-y-8">
             <!-- Sobriety Tracker -->
             <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-2 text-purple-700">Days of Sobriety</h3>
-                <div class="text-5xl font-bold text-purple-600 mb-2">
-                    {{ calculateSobrietyDays() }}
-                </div>
+                <app-sobriety-card [usageHistory]="usageHistory()" [componentStyle]="sobrietyComponentStyle" [useCache]="false" />
                 <div class="text-gray-500">
                     Total Entries: {{ usageHistory().length }}
                 </div>

@@ -2,17 +2,8 @@
 
 <div>
   <!-- Sobriety Badge -->
-  <div class="max-w-5xl mx-auto px-4 mt-4">
-    <div class="flex justify-end">
-      <div class="hidden sm:block">
-        <div class="flex items-center space-x-1 text-sm">
-          <span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700">
-            {{ calculateSobrietyDays() }} {{ 'days sober' | transloco }}
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-sobriety-card [componentStyle]="sobrietyComponentStyle" />
+
   <section class="main">
     <!-- Floating Add Button -->
     <button (click)="onAddRecordClick()"

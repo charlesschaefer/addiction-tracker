@@ -32,29 +32,31 @@ import { AlternativeActivityOverlayComponent } from "./components/alternative-ac
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
 import { UsageService } from "./services/usage.service";
+import { SobrietyCardComponent, SobrietyCardStyle } from "./components/sobriety-card/sobriety-card.component";
 
 @Component({
     selector: "app-root",
     standalone: true,
     imports: [
-        RouterOutlet,
-        MatMenuModule,
-        MatIconModule,
-        ToolbarModule,
-        MenuModule,
-        ButtonModule,
-        SpeedDialModule,
-        JoyrideModule,
-        TieredMenuModule,
-        MenuModule,
-        TranslocoModule,
-        CommonModule,
-        MenubarModule,
-        HeaderComponent,
-        ToastModule,
-        RecordSubstanceUseComponent,
-        AlternativeActivityOverlayComponent,
-    ],
+    RouterOutlet,
+    MatMenuModule,
+    MatIconModule,
+    ToolbarModule,
+    MenuModule,
+    ButtonModule,
+    SpeedDialModule,
+    JoyrideModule,
+    TieredMenuModule,
+    MenuModule,
+    TranslocoModule,
+    CommonModule,
+    MenubarModule,
+    HeaderComponent,
+    ToastModule,
+    RecordSubstanceUseComponent,
+    AlternativeActivityOverlayComponent,
+    SobrietyCardComponent
+],
     providers: [CookieService, RouterLink, MessageService],
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
@@ -149,6 +151,7 @@ export class AppComponent implements OnInit {
     
     /** The currently selected activity for feedback. */
     currentActivity: any = null;
+    sobrietyComponentStyle = SobrietyCardStyle.BADGE;
 
     constructor(
         private themeService: ThemeService,
@@ -349,10 +352,6 @@ export class AppComponent implements OnInit {
 
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
-    }
-
-    calculateSobrietyDays(): number {
-        return this.usageService.calculateSobrietyDays();
     }
 
     setShowRecordPopup(val: boolean) {

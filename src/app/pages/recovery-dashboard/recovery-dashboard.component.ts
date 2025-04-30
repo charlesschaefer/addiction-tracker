@@ -9,6 +9,7 @@ import { FinancialImpactCardComponent } from "../../components/financial-impact-
 import { CostService } from "../../services/cost.service";
 import { SubstanceAnalysisCardComponent } from "../../components/substance-analysis-card.component";
 import { DateTime } from "luxon";
+import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobriety-card/sobriety-card.component";
 
 interface UsageEntry {
     id: number;
@@ -25,7 +26,7 @@ interface UsageEntry {
 @Component({
     selector: "app-recovery-dashboard",
     standalone: true,
-    imports: [CommonModule, FormsModule, FinancialImpactCardComponent, SubstanceAnalysisCardComponent],
+    imports: [CommonModule, FormsModule, FinancialImpactCardComponent, SubstanceAnalysisCardComponent, SobrietyCardComponent],
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
@@ -36,6 +37,7 @@ export class RecoveryDashboardComponent implements OnInit {
     usageHistory = signal<UsageDto[]>([]);
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
     chartOptions: any;
+    sobrietyComponentStyle = SobrietyCardStyle.SIMPLE_DAYS;
 
     constructor(
         private usageService: UsageService,

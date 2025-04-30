@@ -20,20 +20,10 @@
 
   <!-- Sobriety Stats -->
   <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-    <div class="flex items-center justify-between mb-6">
-      <div class="text-center">
-        <div class="text-4xl font-bold text-purple-600">{{ calculateSobrietyDays(usageHistory) }}</div>
-        <div class="text-gray-600 mt-1">Days Sober</div>
-      </div>
-      <div class="h-24 w-24 rounded-full bg-gradient-to-br from-purple-100 to-orange-100 flex items-center justify-center border-4 border-purple-200 shadow-inner">
-        <div class="text-center">
-          <div class="text-xl font-bold text-purple-700">
-            {{ ((100 < (calculateSobrietyDays(usageHistory) * 3.33)) ? 100 : (calculateSobrietyDays(usageHistory) * 3.33) | number:'1.0-0') }}%
-          </div>
-          <div class="text-xs text-purple-600">to 30 days</div>
-        </div>
-      </div>
-      <div class="text-center">
+    <div class="flex items-center justify-between gap-4 flex-col mb-6 md:grid md:grid-cols-3">
+      <!-- Sobriety data -->
+      <app-sobriety-card [usageHistory]="usageHistory" [componentStyle]="sobrietyComponentStyle" [useCache]="false" class="md:grid md:col-span-2" />
+      <div class="text-center md:col-3">
         <div class="text-4xl font-bold text-green-600">{{ usageHistory.length }}</div>
         <div class="text-gray-600 mt-1">Total Entries</div>
       </div>

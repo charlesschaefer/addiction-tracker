@@ -20,14 +20,16 @@ import svg2 from "../../../assets/icons/heart.svg";
 import svg3 from "../../../assets/icons/dashboard.svg";
 import svg4 from "../../../assets/icons/analytics.svg";
 import { DateTime } from "luxon";
+import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobriety-card/sobriety-card.component";
 
 @Component({
     selector: "app-home",
     imports: [
-        CommonModule,
-        NavigationCardsComponent,
-        AchievementsMilestonesComponent
-    ],
+    CommonModule,
+    NavigationCardsComponent,
+    AchievementsMilestonesComponent,
+    SobrietyCardComponent
+],
     templateUrl: "./home.component.html",
     styleUrl: "./home.component.scss",
 })
@@ -90,6 +92,7 @@ export class HomeComponent implements OnInit {
             icon: svg4, //`/assets/icons/analytics.svg`
         },
     ];
+    sobrietyComponentStyle = SobrietyCardStyle.YEAR_COMPLETION;
 
 
     constructor(

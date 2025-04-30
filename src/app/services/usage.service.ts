@@ -32,6 +32,8 @@ export class UsageService extends ServiceAbstract<Usages> {
     protected override storeName: 'usage' = 'usage';
 
     sobrietyDaysCache?: number;
+    usageHistoryCache?: UsageDto[];
+    loadingHistory = false;
 
     constructor(
         protected override dbService: DbService,
@@ -150,12 +152,20 @@ export class UsageService extends ServiceAbstract<Usages> {
         return usageTriggers.entries().next().value as [string, number];
     }
 
-    calculateSobrietyDays(usageHistory?: UsageDto[]): number {
-        if (this.sobrietyDaysCache) return this.sobrietyDaysCache;
+    calculateSobrietyDays(usageHistory?: UsageDto[], useCache: boolean = true): number {
+        if (useCache && this.sobrietyDaysCache) return this.sobrietyDaysCache;
         
-        if (!usageHistory) {
-            // TODO: see how to fetch the data while being synchronous
-            return 0;
+        if (!usageHistory || !usageHistory.length) {
+            if (!this.usageHistoryCache && !this.loadingHistory) {
+                this.loadingHistory = true;
+                this.list().then(usages => {
+                    this.usageHistoryCache = usages as UsageDto[]
+                    this.loadingHistory = false;
+                });
+                this.sobrietyDaysCache = 0;
+                return 0;
+            }
+            usageHistory = (this.loadingHistory ? [] : this.usageHistoryCache) as UsageDto[];
         }
 
         const oldDate = new Date();
