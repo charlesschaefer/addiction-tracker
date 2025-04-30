@@ -31,6 +31,8 @@ type Usages = UsageAddDto | UsageDto;
 export class UsageService extends ServiceAbstract<Usages> {
     protected override storeName: 'usage' = 'usage';
 
+    sobrietyDaysCache?: number;
+
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
@@ -146,5 +148,27 @@ export class UsageService extends ServiceAbstract<Usages> {
         usageTriggers = new Map([...usageTriggers.entries()].sort((a, b) => a[1] <= b[1] ? 1 : -1));
 
         return usageTriggers.entries().next().value as [string, number];
+    }
+
+    calculateSobrietyDays(usageHistory?: UsageDto[]): number {
+        if (this.sobrietyDaysCache) return this.sobrietyDaysCache;
+        
+        if (!usageHistory) {
+            // TODO: see how to fetch the data while being synchronous
+            return 0;
+        }
+
+        const oldDate = new Date();
+        oldDate.setFullYear(1980);
+        const highestDate = usageHistory.reduce((prev, curr) => {
+            const prevDate = DateTime.fromJSDate(prev);
+            const currDate = DateTime.fromJSDate(curr.datetime);
+            return DateTime.max(prevDate, currDate).toJSDate();
+        }, oldDate);
+
+        if (highestDate == oldDate) return 0;
+        const sobrietyDays = Math.abs(Math.round(DateTime.fromJSDate(highestDate).diff(DateTime.now(), "days").days));
+        this.sobrietyDaysCache = sobrietyDays;
+        return sobrietyDays;
     }
 }

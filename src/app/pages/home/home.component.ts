@@ -19,6 +19,7 @@ import svg1 from "../../../assets/icons/usage-entries.svg";
 import svg2 from "../../../assets/icons/heart.svg";
 import svg3 from "../../../assets/icons/dashboard.svg";
 import svg4 from "../../../assets/icons/analytics.svg";
+import { DateTime } from "luxon";
 
 @Component({
     selector: "app-home",
@@ -141,8 +142,8 @@ export class HomeComponent implements OnInit {
             });
     }
 
-    calculateSobrietyDays(usageHistory: any): number {
-        return 0;
+    calculateSobrietyDays(usageHistory: UsageDto[]): number {
+        return this.usageService.calculateSobrietyDays(usageHistory);
     }
 
     navigateToAchievements() {

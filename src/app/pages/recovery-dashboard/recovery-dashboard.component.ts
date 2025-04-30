@@ -8,6 +8,7 @@ import { SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
 import { SubstanceAnalysisCardComponent } from "../../components/substance-analysis-card.component";
+import { DateTime } from "luxon";
 
 interface UsageEntry {
     id: number;
@@ -62,19 +63,7 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     calculateSobrietyDays(): number {
-        if (this.usageHistory.length === 0) return 0;
-        const sortedHistory = [...this.usageHistory()].sort(
-            (a, b) =>
-                new Date(b.datetime).getTime() -
-                new Date(a.datetime).getTime()
-        );
-        const lastUsageDate = new Date(
-            sortedHistory[0].datetime
-        );
-        const today = new Date();
-        const diffTime = Math.abs(today.getTime() - lastUsageDate.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays;
+        return this.usageService.calculateSobrietyDays(this.usageHistory());
     }
 
     prepareUsageBySubstanceData() {

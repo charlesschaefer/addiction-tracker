@@ -31,6 +31,7 @@ import { RecordSubstanceUseComponent } from "./components/record-substance-use.c
 import { AlternativeActivityOverlayComponent } from "./components/alternative-activity/alternative-activity-overlay.component";
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
+import { UsageService } from "./services/usage.service";
 
 @Component({
     selector: "app-root",
@@ -156,7 +157,8 @@ export class AppComponent implements OnInit {
         private dataUpdatedService: DataUpdatedService,
         private achievementService: AchievementService,
         private substanceService: SubstanceService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private usageService: UsageService,
     ) {
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {
@@ -349,8 +351,8 @@ export class AppComponent implements OnInit {
         this.mobileMenuOpen = !this.mobileMenuOpen;
     }
 
-    calculateSobrietyDays(usageHistory: any): number {
-        return 0;
+    calculateSobrietyDays(): number {
+        return this.usageService.calculateSobrietyDays();
     }
 
     setShowRecordPopup(val: boolean) {
