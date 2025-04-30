@@ -28,9 +28,9 @@
                     Success Rate by Activity
                 </h3>
                 <div class="space-y-4">
-                    <div *ngFor="let activity of sortedAlternatives" class="bg-gray-50 p-4 rounded-lg">
+                    <div *ngFor="let activity of sortedAlternatives()" class="bg-gray-50 p-4 rounded-lg">
                         <div class="flex justify-between mb-2">
-                            <span class="font-medium text-gray-800">{{ activity.name }}</span>
+                            <span class="font-medium text-gray-800">{{ alternativeActivities.get(activity.activity)?.name }}</span>
                             <span class="text-sm font-medium">
                                 {{ activity.count > 0 ? (calculateSuccessRate(activity) | number:'1.0-0') + '% success rate' : 'No data yet' }}
                             </span>
@@ -57,8 +57,8 @@
                     <h4 class="text-sm font-medium text-purple-700 mb-1">
                         Most Effective Activity
                     </h4>
-                    <div *ngIf="sortedAlternatives.length > 0; else noData1" class="text-xl font-semibold text-purple-800">
-                        {{ sortedAlternatives[0].name }}
+                    <div *ngIf="sortedAlternatives().length > 0; else noData1" class="text-xl font-semibold text-purple-800">
+                        {{ alternativeActivities.get(sortedAlternatives()[0].activity)?.name }}
                     </div>
                     <ng-template #noData1>
                         <div class="text-gray-500">No data yet</div>
@@ -70,7 +70,7 @@
                         Total Alternatives Used
                     </h4>
                     <div class="text-xl font-semibold text-teal-800">
-                        {{ totalUsed }}
+                        {{ totalUsed() }}
                     </div>
                 </div>
 
@@ -78,8 +78,8 @@
                     <h4 class="text-sm font-medium text-orange-700 mb-1">
                         Overall Success Rate
                     </h4>
-                    <div *ngIf="alternativeActivities.length > 0; else noData2" class="text-xl font-semibold text-orange-800">
-                        {{ overallSuccessRate | number:'1.0-0' }}%
+                    <div *ngIf="alternativeActivitiesCounts().length > 0; else noData2" class="text-xl font-semibold text-orange-800">
+                        {{ overallSuccessRate() | number:'1.0-0' }}%
                     </div>
                     <ng-template #noData2>
                         <div class="text-gray-500">No data yet</div>
@@ -92,13 +92,13 @@
                 <h3 class="text-lg font-medium mb-3 text-gray-800">
                     Personalized Recommendations
                 </h3>
-                <ng-container *ngIf="sortedAlternatives.length > 0; else noRecommendations">
+                <ng-container *ngIf="sortedAlternatives().length > 0; else noRecommendations">
                     <p class="text-gray-700 mb-3">
                         Based on your data, here are your most effective alternatives:
                     </p>
                     <ol class="list-decimal list-inside space-y-2 pl-2">
-                        <li *ngFor="let activity of sortedAlternatives.slice(0,3)" class="text-gray-800">
-                            <span class="font-medium">{{ activity.name }}</span>
+                        <li *ngFor="let activity of sortedAlternatives().slice(0,3)" class="text-gray-800">
+                            <span class="font-medium">{{ alternativeActivities.get(activity.activity)?.name }}</span>
                             <span *ngIf="activity.count > 0" class="text-sm text-gray-600 ml-2">
                                 ({{ calculateSuccessRate(activity) | number:'1.0-0' }}% success rate)
                             </span>
@@ -107,7 +107,7 @@
                     <div class="mt-4 p-3 bg-white/70 rounded-lg">
                         <p class="text-gray-700">
                             <span class="font-medium">Pro tip:</span>
-                            Try to use <span class="font-medium">{{ sortedAlternatives[0].name }}</span> more often, as it has been your most effective strategy for avoiding substance use.
+                            Try to use <span class="font-medium">{{ alternativeActivities.get(sortedAlternatives()[0].activity)?.name }}</span> more often, as it has been your most effective strategy for avoiding substance use.
                         </p>
                     </div>
                 </ng-container>
