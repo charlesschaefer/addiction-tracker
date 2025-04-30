@@ -22,7 +22,7 @@
             </h3>
             <div class="h-80">
                 <div *ngIf="hasSpendingTrendData(); else noSpendingTrendData" class="h-full">
-                    <p-chart type="line" [data]="spendingTrendData" [options]="spendingTrendOptions"></p-chart>
+                    <p-chart type="line" [data]="spendingTrendData" [options]="spendingTrendOptions" height="300" width="300" />
                 </div>
                 <ng-template #noSpendingTrendData>
                     <div class="h-full flex items-center justify-center text-gray-500">

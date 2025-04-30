@@ -11,6 +11,7 @@ import { SubstanceDto } from "../../dto/substance.dto";
 import { DateTime, DateTimeFormatOptions } from "luxon";
 import { FormsModule } from "@angular/forms";
 import { SelectModule } from "primeng/select";
+import { MessageService } from "primeng/api";
 
 @Component({
     selector: "app-usage-entries",
@@ -22,7 +23,8 @@ export class UsageEntriesComponent implements OnInit {
     console = console;
     DateTime = DateTime;
     dateFormat = {
-        dateStyle: "short",
+        dateStyle: "medium",
+        timeStyle: 'short',
     } as DateTimeFormatOptions;
     Math = Math;
     Array = Array;
@@ -102,11 +104,13 @@ export class UsageEntriesComponent implements OnInit {
         return entries.reduce((prev, entry) => prev += entry?.cost !== undefined ? entry.cost : 0, 0);
     });
 
+    entryToDelete?: number;
+    showDeleteConfirmation = signal(false);
+
     constructor(
         private usageService: UsageService,
-        private triggerService: TriggerService,
         private substanceService: SubstanceService,
-        private costService: CostService
+        private messageService: MessageService,
     ) {}
 
     ngOnInit() {
@@ -119,13 +123,17 @@ export class UsageEntriesComponent implements OnInit {
                         "id"
                     ) as Map<number, SubstanceDto>)
             );
-        this.usageService.list().then(async (data) => {
-            this.usageEntries.set(data as UsageDto[]);
-        });
+        this.loadUsageEntries();
 
         // this.costService
         //     .getTotalSpent()
         //     .then((totalSpent) => (this.totalSpent.set(totalSpent));
+    }
+
+    loadUsageEntries() {
+        this.usageService.list().then(async (data) => {
+            this.usageEntries.set(data as UsageDto[]);
+        });
     }
 
     getCravingColor(intensity: number): string {
@@ -136,6 +144,25 @@ export class UsageEntriesComponent implements OnInit {
 
     getMoodEmoji(mood: number) {
         return this.moods[mood]?.emoji;
+    }
+
+    showDeleteConfirmationDialog(id: number) {
+        this.showDeleteConfirmation.set(true);
+        this.entryToDelete = id;
+    }
+
+    delete(id: number) {
+        this.entryToDelete = undefined;
+        this.showDeleteConfirmation.set(false);
+        this.usageService.remove(id).then(() => {
+            this.messageService.add({
+                life: 3000,
+                severity: 'success',
+                summary: 'Usage removed',
+                detail: 'Usage successfully removed'
+            });
+            this.loadUsageEntries();
+        })
     }
 
     paginate(pageNumber: number) {

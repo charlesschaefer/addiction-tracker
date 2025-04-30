@@ -3,6 +3,8 @@ import { Component, Input } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../dto/usage.dto";
 import { SubstanceDto } from "../dto/substance.dto";
+import { ChartData } from "chart.js";
+import { SentimentService } from "../services/sentiment.service";
 
 @Component({
     selector: "app-substance-analysis-card",
@@ -35,6 +37,14 @@ export class SubstanceAnalysisCardComponent {
         plugins: {
             legend: {
                 display: true
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context: any) => {
+                        const mood = SentimentService.sentiments[context.parsed.y];
+                        return `${mood.emoji}: ${mood.label}`;
+                    }
+                }
             }
         },
         scales: {
@@ -69,7 +79,7 @@ export class SubstanceAnalysisCardComponent {
         );
     }
 
-    prepareUsageBySubstanceData() {
+    prepareUsageBySubstanceData(): ChartData {
         const substanceCounts: { [key: string]: number } = {};
         this.usageHistory.forEach((entry) => {
             const substanceName = this.substances.get(entry.substance)?.name as string;
@@ -80,19 +90,18 @@ export class SubstanceAnalysisCardComponent {
             }
         });
 
+        const substanceCountsKeys = Object.keys(substanceCounts);
+
         const returnData = {
-            labels: Object.keys(substanceCounts),
+            labels: substanceCountsKeys,
             datasets: [{
                 label: "Usage",
-                data: Object.values(substanceCounts)
+                data: Object.values(substanceCounts),
+                borderColor: substanceCountsKeys.map((val, idx) => this.COLORS[idx]),
+                backgroundColor: substanceCountsKeys.map((val, idx) => this.COLORS[idx]),
             }]
-        };
+        } as ChartData;
         return returnData;
-        // return Object.keys(substanceCounts).map((substanceName) => ({
-        //     name: substanceName,
-        //     count: substanceCounts[substanceName],
-        // }));
-
     }
 
     prepareSubstanceUsageData() {
@@ -180,10 +189,13 @@ export class SubstanceAnalysisCardComponent {
         }));
     }
 
-    prepareCombinedTrendData() {
+    prepareCombinedTrendData(): ChartData {
         const usageData = this.prepareSubstanceUsageData();
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
+        const firstColor = randBeetween(0, this.COLORS.length);
+        const secondColor = firstColor == this.COLORS.length - 1 ? 0 : firstColor + 1;
+        const thirdColor = secondColor == this.COLORS.length - 1 ? 0 : secondColor + 1;
 
         return {
             labels: usageData.map(item => {
@@ -194,26 +206,34 @@ export class SubstanceAnalysisCardComponent {
                 {
                     label: 'Usage',
                     data: usageData.map(item => item.usage),
-                    borderColor: this.COLORS[0],
-                    tension: 0.4
+                    borderColor: this.COLORS[firstColor],
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: this.COLORS[firstColor] + '80',
+                    order: 3
                 },
                 {
                     label: 'Mood',
                     data: moodData.map(item => item.sentiment),
-                    borderColor: this.COLORS[1],
-                    tension: 0.4
+                    borderColor: this.COLORS[secondColor],
+                    backgroundColor: this.COLORS[secondColor] + '80',
+                    tension: 0.4,
+                    borderDash: [2, 2],
+                    order: 2,
                 },
                 {
                     label: 'Craving',
                     data: cravingData.map(item => item.craving),
-                    borderColor: this.COLORS[2],
-                    tension: 0.4
+                    borderColor: this.COLORS[thirdColor],
+                    backgroundColor: this.COLORS[thirdColor] + '80',
+                    tension: 0.4,
+                    order: 1
                 }
             ]
         };
     }
 
-    prepareTriggerData() {
+    prepareTriggerData(): ChartData {
         const triggerCounts: { [key: string]: number } = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
@@ -238,11 +258,15 @@ export class SubstanceAnalysisCardComponent {
 
     hasTriggerData(): boolean {
         const triggerData = this.prepareTriggerData();
-        return triggerData.labels.length > 0;
+        return (triggerData.labels && triggerData.labels.length > 0) as boolean;
     }
 
     hasUsageData(): boolean {
         const usageData = this.prepareUsageBySubstanceData();
-        return usageData.labels.length > 0;
+        return (usageData.labels && usageData.labels.length > 0) as boolean;
     }
+}
+
+function randBeetween(start: number, end: number): number {
+    return Math.floor(Math.random() * (end - start + 1) + start);
 }
