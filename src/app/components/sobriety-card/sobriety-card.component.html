@@ -5,7 +5,7 @@
       <div class="flex justify-end">
         <div class="hidden sm:block">
           <div class="flex items-center space-x-1 text-sm">
-            <span class="px-3 py-1 rounded-full bg-teal-100 text-teal-700">
+            <span class="px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-200">
               {{ calculateSobrietyDays() }} {{ 'days sober' | transloco }}
             </span>
           </div>
@@ -15,8 +15,8 @@
   }
   @case (styles.SIMPLE_DAYS) {
     <div class="flex flex-col items-center">
-      <h3 class="text-xl font-semibold mb-2 text-purple-700">Days of Sobriety</h3>
-      <div class="text-5xl font-bold text-purple-600 mb-2">
+      <h3 class="text-xl font-semibold mb-2 text-purple-700 dark:text-purple-300">Days of Sobriety</h3>
+      <div class="text-5xl font-bold text-purple-600 dark:text-purple-300 mb-2">
           {{ calculateSobrietyDays() }}
       </div>
     </div>
@@ -25,15 +25,15 @@
     @let sobrietyDays = calculateSobrietyDays();
     <div class="flex justify-around items-center flex-col gap-4 md:flex-row">
       <div class="text-center ">
-        <div class="text-4xl font-bold text-purple-600">{{ sobrietyDays }}</div>
-        <div class="text-gray-600 mt-1">Days Sober</div>
+        <div class="text-4xl font-bold text-purple-600 dark:text-purple-300">{{ sobrietyDays }}</div>
+        <div class="text-gray-600 dark:text-gray-300 mt-1">Days Sober</div>
       </div>
-      <div class="h-24 w-24 rounded-full bg-gradient-to-br from-purple-100 to-orange-100 flex items-center justify-center border-4 border-purple-200 shadow-inner">
+      <div class="h-24 w-24 rounded-full bg-gradient-to-br from-purple-100 to-orange-100 dark:from-purple-900 dark:to-orange-900 flex items-center justify-center border-4 border-purple-200 dark:border-purple-800 shadow-inner">
         <div class="text-center">
-          <div class="text-xl font-bold text-purple-700">
+          <div class="text-xl font-bold text-purple-700 dark:text-purple-200">
             {{ ((100 < (sobrietyDays * 3.33)) ? 100 : (sobrietyDays * 3.33) | number:'1.0-0') }}%
           </div>
-          <div class="text-xs text-purple-600">to 30 days</div>
+          <div class="text-xs text-purple-600 dark:text-purple-300">to 30 days</div>
         </div>
       </div>
     </div>

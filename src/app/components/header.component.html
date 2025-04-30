@@ -70,7 +70,7 @@
   <!-- Mobile menu drawer (simplified, add overlay and nav as needed) -->
   <div *ngIf="mobileMenuOpen" class="fixed inset-0 z-40">
     <div class="absolute inset-0 bg-black opacity-60" (click)="mobileMenuOpen = false"></div>
-    <div class="absolute top-0 left-0 w-4/5 max-w-sm h-full bg-white/95 backdrop-blur-sm shadow-xl flex flex-col">
+    <div class="absolute top-0 left-0 w-4/5 max-w-sm h-full bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-xl flex flex-col">
       <div class="p-5 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-purple-50 to-white">
         <a routerLink="/">
           <div class="flex items-center">
@@ -81,7 +81,7 @@
             </div>
           </div>
         </a>
-        <button class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100" (click)="mobileMenuOpen = false" aria-label="Close menu">
+        <button class="text-gray-500 hover:text-gray-700 dark:text-gray-300-2 rounded-full hover:bg-gray-100" (click)="mobileMenuOpen = false" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -91,7 +91,7 @@
         <h2 class="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-4 pl-2">Navigation</h2>
         <ul class="space-y-2">
           <li *ngFor="let link of navLinks">
-            <a [routerLink]="link.href" class="flex items-center py-3 px-4 rounded-lg transition-colors text-gray-700 hover:bg-gray-50 hover:text-purple-600" routerLinkActive="bg-purple-100 text-purple-700 font-medium shadow-sm" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
+            <a [routerLink]="link.href" class="flex items-center py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300over:bg-gray-50 hover:text-purple-600" routerLinkActive="bg-purple-100 text-purple-700 font-medium shadow-sm" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
               <ng-container *ngIf="link.icon; else navLabel">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -104,7 +104,7 @@
           <!-- Settings section in mobile menu -->
           <li class="mt-4">
             <button
-              class="flex items-center w-full py-3 px-4 rounded-lg transition-colors text-gray-700 hover:bg-gray-50 hover:text-purple-600 font-semibold"
+              class="flex items-center w-full py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300over:bg-gray-50 hover:text-purple-600 font-semibold"
               (click)="mobileSettingsOpen = !mobileSettingsOpen"
               [attr.aria-expanded]="mobileSettingsOpen"
               aria-controls="mobile-settings-menu"

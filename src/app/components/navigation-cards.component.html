@@ -1,7 +1,7 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-12">
   <a *ngFor="let card of cards; let i = index" [routerLink]="card.href" class="block">
     <div
-      [ngClass]="'bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-all transform hover:scale-[1.02] h-full'"
+      [ngClass]="'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-all transform hover:scale-[1.02] h-full'"
     >
       <div class="flex flex-col items-center text-center">
         <div class="w-12 h-12 md:w-16 md:h-16 rounded-full" [ngClass]="card.bgColor + ' flex items-center justify-center mb-2 md:mb-4 ' + 'my-svg-' + (i + 1)" [innerHTML]="card.safeIcon">
@@ -12,7 +12,7 @@
         <h2 class="text-lg md:text-xl font-semibold mb-1 md:mb-2 bg-gradient-to-r " [ngClass]="card.gradientFrom + ' ' + card.gradientTo + ' bg-clip-text text-transparent'">
           {{ card.title }}
         </h2>
-        <p class="text-gray-600 text-xs md:text-sm hidden md:block">{{ card.description }}</p>
+        <p class="text-gray-600 dark:text-gray-400 text-xs md:text-sm hidden md:block">{{ card.description }}</p>
         <div class="mt-2 md:mt-4 inline-flex items-center" [ngClass]="card.iconColor + ' font-medium text-sm md:text-base'">
           {{ card.linkText }}
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">

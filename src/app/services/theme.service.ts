@@ -5,24 +5,31 @@ import { Injectable } from '@angular/core';
 })
 export class ThemeService {
     currentTheme = 'light';
-    
-    switchTheme(theme?: string) {
-        const themeLink = window.document.getElementById('app-theme') as HTMLLinkElement;
 
-        if (theme) {
-            themeLink.href = `aura-${theme}.css`;
-            this.currentTheme = theme;
-            return;
+    constructor() {
+        // On service init, set theme from localStorage or system preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            this.setDarkMode(true);
+        } else {
+            this.setDarkMode(false);
         }
-        
-        if (themeLink) {
-            if (themeLink.href.match('aura-dark.css')) {
-                themeLink.href = 'aura-light.css';
-                this.currentTheme = 'light';
-            } else {
-                themeLink.href = 'aura-dark.css';
-                this.currentTheme = 'dark';
-            }
+    }
+
+    switchTheme() {
+        this.setDarkMode(this.currentTheme !== 'dark');
+    }
+
+    setDarkMode(isDark: boolean) {
+        const html = document.documentElement;
+        if (isDark) {
+            html.classList.add('dark');
+            this.currentTheme = 'dark';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            this.currentTheme = 'light';
+            localStorage.setItem('theme', 'light');
         }
     }
 

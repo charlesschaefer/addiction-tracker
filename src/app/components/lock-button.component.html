@@ -3,12 +3,12 @@
     (click)="showMenu = !showMenu"
     (mouseenter)="showTooltip = true"
     (mouseleave)="showTooltip = false"
-    class="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
+    class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
     aria-label="Lock app"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="h-5 w-5 text-purple-600"
+      class="h-5 w-5 text-purple-600 dark:text-purple-400"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -32,22 +32,22 @@
 
   <div
     *ngIf="showMenu"
-    class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-10 border border-gray-100"
+    class="absolute right-0 mt-2 w-56 bg-white dark:bg-gray-900 rounded-lg shadow-lg py-2 z-10 border border-gray-100 dark:border-gray-800"
   >
-    <div class="px-4 py-2 border-b border-gray-100">
-      <p class="text-sm font-medium text-gray-700">Data Protection</p>
-      <p class="text-xs text-gray-500">
+    <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-800">
+      <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Data Protection</p>
+      <p class="text-xs text-gray-500 dark:text-gray-400">
         Your recovery data is password protected
       </p>
     </div>
 
     <button
       (click)="logout(); showMenu = false"
-      class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+      class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-4 w-4 mr-2 text-gray-500"
+        class="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

@@ -1,53 +1,53 @@
-<div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
-  <div class="bg-white/95 rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border border-gray-100 animate-scaleIn">
+<div class="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+  <div class="bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border border-gray-100 dark:border-gray-800 animate-scaleIn">
     <ng-container *ngIf="step === 1; else passwordStep">
-      <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div class="w-20 h-20 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
         </svg>
       </div>
-      <h3 class="text-2xl font-semibold text-gray-800 mb-3">Protect Your Recovery Data</h3>
-      <p class="text-gray-600 mb-6 leading-relaxed">
+      <h3 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Protect Your Recovery Data</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
         Your recovery journey contains sensitive information. Would you like to protect it with a password?
       </p>
       <div class="space-y-4">
         <button (click)="step = 2" class="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-orange-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-orange-600 transition-all">
           Yes, Protect My Data
         </button>
-        <button (click)="handleSkip()" class="w-full py-3 px-4 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all">
+        <button (click)="handleSkip()" class="w-full py-3 px-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
           Not Now
         </button>
       </div>
-      <p class="mt-6 text-xs text-gray-500">You can always change this setting later in the app.</p>
+      <p class="mt-6 text-xs text-gray-500 dark:text-gray-400">You can always change this setting later in the app.</p>
     </ng-container>
     <ng-template #passwordStep>
-      <div class="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+      <div class="w-20 h-20 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
         </svg>
       </div>
-      <h3 class="text-2xl font-semibold text-gray-800 mb-3">Create a Password</h3>
-      <p class="text-gray-600 mb-6 leading-relaxed">
+      <h3 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Create a Password</h3>
+      <p class="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
         Choose a secure password to protect your recovery data. Make sure it's something you'll remember.
       </p>
       <form (submit)="handleEnableProtection($event)" class="space-y-4 text-left">
         <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Password</label>
           <input id="password" type="password" [(ngModel)]="password" name="password"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-900 dark:text-gray-100"
             placeholder="Create a password" required />
         </div>
         <div>
-          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Confirm Password</label>
           <input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
-            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+            class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-900 dark:text-gray-100"
             placeholder="Confirm your password" required />
         </div>
-        <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+        <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
         <div class="flex gap-4 pt-2">
-          <button type="button" (click)="step = 1" class="flex-1 py-2 px-4 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-all">
+          <button type="button" (click)="step = 1" class="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-all">
             Back
           </button>
           <button type="submit" class="flex-1 py-2 px-4 bg-gradient-to-r from-purple-500 to-orange-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-orange-600 transition-all">

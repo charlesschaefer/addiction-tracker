@@ -1,18 +1,18 @@
-<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 text-gray-800 transition-all duration-300">
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
   <main class="max-w-5xl mx-auto px-4 py-8 relative">
     <!-- Page Title -->
     <div class="mb-8">
       <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
         Trigger Analysis
       </h2>
-      <p class="text-gray-500 text-center">
+      <p class="text-gray-500 dark:text-gray-400 text-center">
         Understand what triggers your substance use to develop better coping strategies
       </p>
     </div>
 
     <!-- Substance Selector -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
         Filter by Substance
       </h3>
       <div class="flex flex-wrap gap-2">
@@ -20,7 +20,7 @@
           (click)="setSelectedSubstance('all')"
           [ngClass]="selectedSubstance === 'all'
             ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
           class="px-4 py-2 rounded-full text-sm transition-all"
         >
           All Substances
@@ -30,7 +30,7 @@
           (click)="setSelectedSubstance(substance.name)"
           [ngClass]="selectedSubstance === substance.name
             ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
-            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+            : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
           class="px-4 py-2 rounded-full text-sm transition-all"
         >
           {{ substance.name }}
@@ -39,8 +39,8 @@
     </div>
 
     <!-- Trigger Distribution -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
         {{ selectedSubstance === 'all' ? 'Overall Trigger Distribution' : (selectedSubstance + ' Trigger Distribution') }}
       </h3>
       <div class="h-80">
@@ -48,7 +48,7 @@
           <p-chart type="pie" [data]="pieChartData" [options]="pieChartOptions" height="350" width="350"></p-chart>
         </div>
         <ng-template #noTriggerData>
-          <div class="h-full flex items-center justify-center text-gray-500">
+          <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
             <p class="text-center">
               {{ selectedSubstance === 'all' 
                 ? 'No trigger data available yet. Start recording your substance use to see trigger patterns.' 
@@ -60,8 +60,8 @@
     </div>
 
     <!-- Triggers by Substance -->
-    <div *ngIf="selectedSubstance === 'all'" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
+    <div *ngIf="selectedSubstance === 'all'" class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
         Triggers by Substance
       </h3>
       <div class="h-96">
@@ -69,7 +69,7 @@
           <p-chart type="bar" [data]="barChartData" [options]="barChartOptions" height="350" width="350" />
         </div>
         <ng-template #noSubstanceData>
-          <div class="h-full flex items-center justify-center text-gray-500">
+          <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
             <p class="text-center">
               No substance data available yet. Start recording your substance use to see patterns across different substances.
             </p>
@@ -79,20 +79,20 @@
     </div>
 
     <!-- Trigger Insights -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
-      <h3 class="text-lg font-semibold  text-gray-700 mb-4">
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
         Understanding Your Triggers
       </h3>
       <div class="space-y-4">
-        <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
-          <h4 class="font-semibold text-purple-800 mb-2">What are triggers?</h4>
-          <p class="text-gray-700">
+        <div class="p-4 bg-purple-50 dark:bg-purple-900/40 rounded-lg border border-purple-100 dark:border-purple-800">
+          <h4 class="font-semibold text-purple-800 dark:text-purple-200 mb-2">What are triggers?</h4>
+          <p class="text-gray-700 dark:text-gray-200">
             Triggers are situations, emotions, or environments that create urges to use substances. Identifying your personal triggers is a crucial step in developing effective coping strategies.
           </p>
         </div>
-        <div class="p-4 bg-orange-50 rounded-lg border border-orange-100">
-          <h4 class="font-semibold  text-orange-800 mb-2">Common Emotional Triggers</h4>
-          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <div class="p-4 bg-orange-50 dark:bg-orange-900/40 rounded-lg border border-orange-100 dark:border-orange-800">
+          <h4 class="font-semibold  text-orange-800 dark:text-orange-200 mb-2">Common Emotional Triggers</h4>
+          <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
             <li>Stress and anxiety</li>
             <li>Sadness or depression</li>
             <li>Boredom</li>
@@ -100,9 +100,9 @@
             <li>Loneliness</li>
           </ul>
         </div>
-        <div class="p-4 bg-teal-50 rounded-lg border border-teal-100">
-          <h4 class="font-semibold  text-teal-800 mb-2">Common Environmental Triggers</h4>
-          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+        <div class="p-4 bg-teal-50 dark:bg-teal-900/40 rounded-lg border border-teal-100 dark:border-teal-800">
+          <h4 class="font-semibold  text-teal-800 dark:text-teal-200 mb-2">Common Environmental Triggers</h4>
+          <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
             <li>Social gatherings where substances are present</li>
             <li>Specific locations associated with past use</li>
             <li>Being around certain people</li>
@@ -110,12 +110,12 @@
             <li>Stressful work or home environments</li>
           </ul>
         </div>
-        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
-          <h4 class="font-semibold  text-blue-800 mb-2">Coping Strategies</h4>
-          <p class="text-gray-700 mb-2">
+        <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
+          <h4 class="font-semibold  text-blue-800 dark:text-blue-200 mb-2">Coping Strategies</h4>
+          <p class="text-gray-700 dark:text-gray-200 mb-2">
             Once you've identified your triggers, you can develop strategies to manage them:
           </p>
-          <ul class="list-disc pl-5 text-gray-700 space-y-1">
+          <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
             <li>Practice mindfulness and breathing exercises</li>
             <li>Develop a support network of friends and family</li>
             <li>Consider professional counseling or support groups</li>

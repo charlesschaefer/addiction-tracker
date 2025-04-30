@@ -5,7 +5,7 @@
             <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
                 Your Recovery Dashboard
             </h2>
-            <p class="text-gray-500 text-center">
+            <p class="text-gray-500 dark:text-gray-400 text-center">
                 Track your progress and visualize your journey to recovery
             </p>
         </div>
@@ -13,9 +13,9 @@
         <!-- Dashboard Content -->
         <div class="space-y-8">
             <!-- Sobriety Tracker -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 flex flex-col items-center">
+            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 flex flex-col items-center">
                 <app-sobriety-card [usageHistory]="usageHistory()" [componentStyle]="sobrietyComponentStyle" [useCache]="false" />
-                <div class="text-gray-500">
+                <div class="text-gray-500 dark:text-gray-400">
                     Total Entries: {{ usageHistory().length }}
                 </div>
             </div>
@@ -27,7 +27,7 @@
             ></app-substance-analysis-card>
 
             <!-- Financial Impact -->
-            <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 mt-10">
+            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
               <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                   Financial Impact
               </h3>

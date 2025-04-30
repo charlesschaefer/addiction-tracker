@@ -1,7 +1,7 @@
-<div class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-30 p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
-  <div class="bg-white/95 rounded-2xl shadow-2xl p-5 sm:p-7 pt-0 sm:pt-0 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 animate-scaleIn">
+<div class="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center z-30 p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
+  <div class="bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl p-5 sm:p-7 pt-0 sm:pt-0 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 dark:border-gray-800 animate-scaleIn">
     <div class="sticky top-0 p-5 z-99 bg-black/3 backdrop-blur-sm rounded-xl">
-      <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 backdrop-blur-sm pt-3 pb-3 border-b border-gray-100 z-100 shadow-sm p-4 rounded-xl">
+      <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm pt-3 pb-3 border-b border-gray-100 dark:border-gray-800 z-100 shadow-sm p-4 rounded-xl">
         <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
           Record Substance Use
         </h2>
@@ -29,7 +29,7 @@
           </button>
           <button
             (click)="close.emit()"
-            class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full hover:bg-gray-100/80 transition-all cursor-pointer"
+            class="text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 p-1.5 rounded-full hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all cursor-pointer"
             aria-label="Close popup"
           >
             <svg
@@ -54,15 +54,15 @@
       <form (ngSubmit)="onSubmit($event)">
         <!-- Substance selection -->
         <div class="mb-6">
-          <h3 class="text-base font-medium text-gray-700 mb-4" *ngIf="!showAddSubstance">
+          <h3 class="text-base font-medium text-gray-700 dark:text-gray-300 mb-4" *ngIf="!showAddSubstance">
             Select a substance
           </h3>
           <div 
             *ngIf="!showAddSubstance && (currentMotivationalFactor !== null || (selectedSubstance && !showAddSubstance))" 
             class="mb-4 animate-fadeIn"
           >
-            <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
-              <h2 class="text-sm font-medium text-purple-700 mb-2">
+            <div class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+              <h2 class="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">
                 Remember why you want to quit {{ selectedSubstance?.name ?? "using substances" }}
               </h2>
               <ng-container *ngIf="currentMotivationalFactor; else noMotivation">
@@ -75,17 +75,17 @@
                 </div>
               </ng-container>
               <ng-template #noMotivation>
-                <p class="text-gray-600 italic">
+                <p class="text-gray-600 dark:text-gray-400 italic">
                   "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
                 </p>
               </ng-template>
             </div>
           </div>
-          <div *ngIf="showAddSubstance" class="bg-gradient-to-br from-purple-50 to-purple-100/70 p-5 rounded-xl border border-purple-200 shadow-sm animate-fadeIn">
+          <div *ngIf="showAddSubstance" class="bg-gradient-to-br from-purple-50 to-purple-100/70 dark:from-purple-900 dark:to-purple-900/70 p-5 rounded-xl border border-purple-200 dark:border-purple-800 shadow-sm animate-fadeIn">
             <h3 class="text-xl font-semibold bg-gradient-to-r from-purple-700 to-purple-500 bg-clip-text text-transparent mb-2">
               Add New Substance
             </h3>
-            <p class="text-sm text-gray-600 mb-4">
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Start by giving your substance a name. This will help you track your usage patterns over time.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 mb-4">
@@ -94,7 +94,7 @@
                 [(ngModel)]="newSubstance"
                 name="newSubstance"
                 placeholder="Substance name"
-                class="flex-1 rounded-lg border-gray-300 p-4 bg-white/60 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                class="flex-1 rounded-lg border-gray-300 dark:border-gray-700 p-4 bg-white/60 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
               />
               <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" class="mb-4" />
             </div>
@@ -121,7 +121,7 @@
               <button
                 type="button"
                 (click)="showAddSubstance = false"
-                class="px-5 py-3 border border-gray-300 bg-white/80 text-gray-700 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center"
+                class="px-5 py-3 border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center"
               >
                 Cancel
               </button>
@@ -132,7 +132,7 @@
               *ngFor="let substance of substances"
               type="button"
               (click)="handleSelectSubstance(substance)"
-              [ngClass]="selectedSubstance?.name === substance.name ? 'border-teal-500 bg-teal-50 text-teal-700 shadow-md' : 'border-gray-100 hover:border-teal-300 hover:bg-teal-50'"
+              [ngClass]="selectedSubstance?.name === substance.name ? 'border-teal-500 bg-teal-50 dark:bg-teal-900 text-teal-700 dark:text-teal-200 shadow-md' : 'border-gray-100 dark:border-gray-700 hover:border-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/40 text-gray-700 dark:text-gray-200'"
               class="p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center"
             >
               <i *ngIf="substance.icon" class="pi pi-{{substance.icon}} mb-3"></i>
@@ -142,7 +142,7 @@
           <button *ngIf="!showAddSubstance"
             type="button"
             (click)="showAddSubstance = true"
-            class="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-500 hover:text-teal-600 hover:border-teal-300 hover:bg-teal-50 transition-all flex items-center justify-center transform hover:scale-[1.02]"
+            class="w-full py-4 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-300 hover:border-teal-300 dark:hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/40 transition-all flex items-center justify-center transform hover:scale-[1.02]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -163,20 +163,20 @@
         <!-- Usage Details -->
         <div *ngIf="selectedSubstance && !showAddSubstance">
           <div class="mt-6 mb-8 flex items-center">
-            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 to-transparent"></div>
-            <span class="px-3 text-sm font-medium text-purple-600">
+            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
+            <span class="px-3 text-sm font-medium text-purple-600 dark:text-purple-300">
               Usage Details
             </span>
-            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 to-transparent"></div>
+            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
           </div>
 
           <!-- Date and Time -->
-          <div class="bg-white/90 rounded-xl border border-gray-200 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+          <div class="bg-white/90 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-6">
-              <div class="bg-purple-100 p-2.5 rounded-lg mr-4">
+              <div class="bg-purple-100 dark:bg-purple-900 p-2.5 rounded-lg mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-6 w-6 text-purple-600"
+                  class="h-6 w-6 text-purple-600 dark:text-purple-300"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -190,17 +190,17 @@
                 </svg>
               </div>
               <div>
-                <h4 class="font-semibold text-gray-800 text-lg">
+                <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
                   When did you use it?
                 </h4>
-                <p class="text-gray-500 text-sm mt-1">
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
                   Record the date and time of your substance use
                 </p>
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-4">
-                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Date and time
                 </label>
                 <p-datepicker 
@@ -211,19 +211,19 @@
                   [showButtonBar]="true" 
                   
                   class="w-full"
-                  inputStyleClass="h-12 rounded-lg border-gray-200 bg-white/80 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
+                  inputStyleClass="h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
                 ></p-datepicker>
               </div>
             </div>
           </div>
 
           <!-- Amount -->
-          <div class="bg-white/90 rounded-xl border border-gray-200 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+          <div class="bg-white/90 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-6">
-              <div class="bg-teal-100 p-2.5 rounded-lg mr-4">
+              <div class="bg-teal-100 dark:bg-teal-900 p-2.5 rounded-lg mr-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  class="h-6 w-6 text-teal-600"
+                  class="h-6 w-6 text-teal-600 dark:text-teal-300"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -237,24 +237,24 @@
                 </svg>
               </div>
               <div>
-                <h4 class="font-semibold text-gray-800 text-lg">
+                <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
                   How much did you use?
                 </h4>
-                <p class="text-gray-500 text-sm mt-1">
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
                   Record the amount and cost of your substance use
                 </p>
               </div>
             </div>
             <div class="space-y-6">
               <div class="space-y-2">
-                <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   Amount
                 </label>
                 <div class="flex items-center">
                   <button
                     type="button"
                     (click)="decreaseAmount()"
-                    class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-l-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-l-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
                     aria-label="Decrease amount"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
@@ -265,7 +265,7 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-colors"
+                        class="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-teal-500 dark:group-hover:text-teal-300 transition-colors"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -282,7 +282,7 @@
                       type="number"
                       [(ngModel)]="amount"
                       name="amount"
-                      class="pl-12 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 group-hover:border-teal-300"
+                      class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
                       min="1"
                       placeholder="Enter amount"
                     />
@@ -290,7 +290,7 @@
                   <button
                     type="button"
                     (click)="increaseAmount()"
-                    class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-r-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-r-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
                     aria-label="Increase amount"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
@@ -298,20 +298,20 @@
                     </svg>
                   </button>
                 </div>
-                <p class="text-sm text-gray-500 mt-2 ml-1">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
                   Enter the number of units consumed
                 </p>
               </div>
               <div class="mt-6">
                 <div *ngIf="showCostInput" class="space-y-2 animate-fadeIn">
-                  <label class="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                     Cost ($)
                   </label>
                   <div class="flex items-center">
                     <button
                       type="button"
                       (click)="decreaseAmount()"
-                      class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-l-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-l-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
                       aria-label="Decrease cost"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
@@ -322,7 +322,7 @@
                       <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          class="h-5 w-5 text-gray-400 group-hover:text-teal-500 transition-colors"
+                          class="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-teal-500 dark:group-hover:text-teal-300 transition-colors"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -340,7 +340,7 @@
                         [(ngModel)]="cost"
                         name="cost"
                         placeholder="Enter cost"
-                        class="pl-12 w-full border-y border-gray-200 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 group-hover:border-teal-300"
+                        class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
                         step="0.01"
                         min="0"
                       />
@@ -348,7 +348,7 @@
                     <button
                       type="button"
                       (click)="increaseAmount()"
-                      class="h-12 w-12 flex items-center justify-center bg-gray-100 hover:bg-teal-100 text-gray-700 hover:text-teal-700 rounded-r-lg border border-gray-200 hover:border-teal-300 transition-all duration-200 transform active:scale-95"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-r-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
                       aria-label="Increase cost"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
@@ -356,7 +356,7 @@
                       </svg>
                     </button>
                   </div>
-                  <p class="text-sm text-gray-500 mt-2 ml-1">
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
                     Enter the cost in dollars
                   </p>
                 </div>
@@ -364,7 +364,7 @@
                   *ngIf="!showCostInput"
                   type="button"
                   (click)="showCostInput = true"
-                  class="flex items-center text-teal-600 hover:text-teal-800 text-sm font-medium mt-2 transition-all transform hover:translate-x-2 hover:scale-105 bg-teal-50 hover:bg-teal-100 px-4 py-2 rounded-lg"
+                  class="flex items-center text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-400 text-sm font-medium mt-2 transition-all transform hover:translate-x-2 hover:scale-105 bg-teal-50 dark:bg-teal-900 hover:bg-teal-100 dark:hover:bg-teal-800 px-4 py-2 rounded-lg"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -385,11 +385,11 @@
           </div>
 
           <!-- Craving Intensity -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-orange-500 mr-2"
+                class="h-5 w-5 text-orange-500 dark:text-orange-300 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -407,15 +407,15 @@
                   d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
                 />
               </svg>
-              <h4 class="font-medium text-gray-700">
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
                 How intense was your craving?
               </h4>
             </div>
             <div class="px-2">
               <div class="flex justify-between mb-2">
-                <span class="text-xs text-gray-500">Mild (1)</span>
-                <span class="text-xs text-gray-500">Moderate (5)</span>
-                <span class="text-xs text-gray-500">Severe (10)</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Mild (1)</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Moderate (5)</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Severe (10)</span>
               </div>
               <input
                 type="range"
@@ -423,7 +423,7 @@
                 max="10"
                 [(ngModel)]="cravingIntensity"
                 name="cravingIntensity"
-                class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500 dark:accent-orange-300"
               />
               <div class="mt-4 flex flex-col items-center">
                 <div
@@ -441,13 +441,13 @@
                     "
                   >
                     <div
-                      class="w-16 h-16 bg-white rounded-full flex items-center justify-center text-2xl font-bold"
+                      class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-2xl font-bold"
                     >
                       {{cravingIntensity}}
                     </div>
                   </div>
                 </div>
-                <p class="text-sm text-gray-500 mt-2 font-medium">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium">
                   {{
                     cravingIntensity <= 3
                       ? 'Mild craving'
@@ -461,11 +461,11 @@
           </div>
 
           <!-- Sentiment selection -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-teal-600 mr-2"
+                class="h-5 w-5 text-teal-600 dark:text-teal-300 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -477,7 +477,7 @@
                   d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <h4 class="font-medium text-gray-700">
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
                 How were you feeling?
               </h4>
             </div>
@@ -486,7 +486,7 @@
                 *ngFor="let m of sentiments"
                 type="button"
                 (click)="sentiment = m.label"
-                [ngClass]="sentiment === m.label ? 'bg-purple-50 ring-2 ring-purple-500 shadow-sm transform scale-105' : 'hover:bg-gray-50 border border-transparent hover:border-gray-200 hover:scale-105'"
+                [ngClass]="sentiment === m.label ? 'bg-purple-50 dark:bg-purple-900 ring-2 ring-purple-500 dark:ring-purple-300 shadow-sm transform scale-105' : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:scale-105'"
                 class="flex flex-col items-center p-3 rounded-lg transition-all"
               >
                 <span class="text-3xl mb-2">{{ m.emoji }}</span>
@@ -496,11 +496,11 @@
           </div>
 
           <!-- Triggers -->
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
             <div class="flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-teal-600 mr-2"
+                class="h-5 w-5 text-teal-600 dark:text-teal-300 mr-2"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -512,7 +512,7 @@
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <h4 class="font-medium text-gray-700">
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
                 What triggered this use?
               </h4>
             </div>
@@ -521,14 +521,14 @@
                 *ngFor="let trigger of triggers"
                 type="button"
                 (click)="toggleTrigger(trigger.name)"
-                [ngClass]="selectedTriggers.includes(trigger.name) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'"
+                [ngClass]="selectedTriggers.includes(trigger.name) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'"
                 class="px-4 py-2 rounded-full text-sm transition-all"
               >
                 {{ trigger.name }}
               </button>
             </div>
-            <div *ngIf="showAddTrigger" class="bg-purple-50 p-3 rounded-lg border border-purple-100 mt-3">
-              <label class="block text-xs text-purple-700 font-medium mb-1">
+            <div *ngIf="showAddTrigger" class="bg-purple-50 dark:bg-purple-900/40 p-3 rounded-lg border border-purple-100 dark:border-purple-800 mt-3">
+              <label class="block text-xs text-purple-700 dark:text-purple-300 font-medium mb-1">
                 New Trigger
               </label>
               <div class="flex flex-col sm:flex-row gap-3">
@@ -536,7 +536,7 @@
                   <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      class="h-5 w-5 text-gray-400"
+                      class="h-5 w-5 text-gray-400 dark:text-gray-300"
                       viewBox="0 0 20 20"
                       fill="currentColor"
                     >
@@ -552,7 +552,7 @@
                     [(ngModel)]="newTrigger"
                     name="newTrigger"
                     placeholder="Enter new trigger"
-                    class="pl-12 w-full h-12 rounded-lg border-gray-200 bg-white/80 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
+                    class="pl-12 w-full h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300 dark:hover:border-purple-500"
                     autofocus
                   />
                 </div>
@@ -579,7 +579,7 @@
                   <button
                     type="button"
                     (click)="showAddTrigger = false"
-                    class="px-5 py-3 border border-gray-300 bg-white/80 text-gray-700 rounded-lg hover:bg-gray-50 transition-all flex items-center justify-center"
+                    class="px-5 py-3 border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -602,7 +602,7 @@
               *ngIf="!showAddTrigger"
               type="button"
               (click)="showAddTrigger = true"
-              class="flex items-center text-teal-600 hover:text-teal-800 text-sm font-medium mt-2 transition-all transform hover:translate-x-1"
+              class="flex items-center text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-400 text-sm font-medium mt-2 transition-all transform hover:translate-x-1"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

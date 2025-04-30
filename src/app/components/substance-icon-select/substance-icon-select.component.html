@@ -14,7 +14,7 @@
 <div class="flex flex-row gap-2">
   <div class="flex flex-row items-center gap-2 flex-wrap">
     @for (icon of icons; track icon) {
-      <div class="hover:bg-purple-300 p-2" (click)="onInputChange(icon)" [ngClass]="(value == icon ? 'bg-purple-200' : '') + ' ' + colorClass">
+      <div class="hover:bg-purple-300 dark:hover:bg-purple-700 p-2" (click)="onInputChange(icon)" [ngClass]="(value == icon ? 'bg-purple-200 dark:bg-purple-800' : '') + ' ' + colorClass">
         <!-- <fa-icon [icon]="getIcon(icon)" class="text-2xl" /> -->
          <i class="pi pi-{{getIcon(icon)}}"></i>
       </div>

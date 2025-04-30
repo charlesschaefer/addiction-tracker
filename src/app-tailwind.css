@@ -1,5 +1,6 @@
 @layer base, components, utilities;
 
+@custom-variant dark (&:where(.dark, .dark *));
 /* @import "tailwindcss";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities"; */

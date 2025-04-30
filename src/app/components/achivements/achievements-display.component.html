@@ -8,7 +8,7 @@
         </h2>
         <button
             (click)="toggleExpanded()"
-            class="text-teal-600 hover:text-teal-800 p-1.5 rounded-full hover:bg-teal-50 transition-all"
+            class="text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 p-1.5 rounded-full hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-all"
             [attr.aria-label]="expanded() ? 'Show less' : 'Show more'"
             data-oid="twq2ydv"
         >
@@ -35,21 +35,21 @@
     <!-- Progress bar -->
     <div class="mb-4" data-oid="ujojsk.">
         <div class="flex justify-between items-center mb-1" data-oid="_iijn2_">
-            <span class="text-sm font-medium text-gray-700" data-oid="mjg4mo:">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-200" data-oid="mjg4mo:">
                 Your progress
             </span>
-            <span class="text-sm font-medium text-teal-600" data-oid=":tahtdc">
+            <span class="text-sm font-medium text-teal-600 dark:text-teal-300" data-oid=":tahtdc">
                 {{ progressPercentage() }}%
             </span>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2.5" data-oid=":89vn5z">
+        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5" data-oid=":89vn5z">
             <div
                 class="bg-gradient-to-r from-teal-500 to-blue-500 h-2.5 rounded-full"
                 [ngStyle]="{ width: progressPercentage() + '%' }"
                 data-oid="6udpbnk"
             ></div>
         </div>
-        <div class="mt-1 text-xs text-gray-500 text-right" data-oid="gp6z:2x">
+        <div class="mt-1 text-xs text-gray-500 dark:text-gray-400 text-right" data-oid="gp6z:2x">
             {{ completedCount() }} of {{ totalCount() }} achievements
         </div>
     </div>
@@ -60,7 +60,7 @@
             *ngFor="let category of categories"
             (click)="setCategory(category.id)"
             class="px-3 py-1 rounded-full text-xs font-medium transition-colors"
-            [ngClass]="selectedCategory() === category.id ? category.color : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+            [ngClass]="selectedCategory() === category.id ? category.color : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
             data-oid="l:ytebj"
         >
             {{ category.name }}
@@ -75,13 +75,13 @@
             <div
                 *ngFor="let achievement of displayedAchievements()"
                 class="p-2 md:p-4 rounded-lg border transition-all w-9/20"
-                [ngClass]="achievement.completed ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'"
+                [ngClass]="achievement.completed ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/30' : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30'"
                 data-oid="axp6vfy"
             >
                 <div class="flex items-center" data-oid="6pegl.t">
                     <div
                         class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mr-3"
-                        [ngClass]="achievement.completed ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-500'"
+                        [ngClass]="achievement.completed ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300'"
                         data-oid="y11m0kj"
                     >
                         <!-- @if (achievement.completed) {
@@ -93,12 +93,12 @@
                     <div>
                         <h3
                             class="font-medium text-sm md:text-base"
-                            [ngClass]="achievement.completed ? 'text-green-700' : 'text-gray-700'"
+                            [ngClass]="achievement.completed ? 'text-green-700 dark:text-green-300' : 'text-gray-700 dark:text-gray-200'"
                             data-oid="kz0w0jc"
                         >
                             {{ achievement.title }}
                         </h3>
-                        <p class="text-xs md:text-sm text-gray-600" data-oid="dxbu_wy">
+                        <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400" data-oid="dxbu_wy">
                             {{ achievement.description }}
                         </p>
                     </div>
@@ -106,7 +106,7 @@
             </div>
         </ng-container>
         <ng-template #noAchievements>
-            <div class="text-center py-4 text-gray-500" data-oid="3p:0iqn">
+            <div class="text-center py-4 text-gray-500 dark:text-gray-400" data-oid="3p:0iqn">
                 No achievements in this category yet
             </div>
         </ng-template>
@@ -117,7 +117,7 @@
     <button
         *ngIf="!expanded() && (filteredAchievements()?.length || 0) > (displayedAchievements()?.length || 0)"
         (click)="expanded.set(true)"
-        class="mt-4 w-full py-2 text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg hover:bg-teal-50 transition-colors"
+        class="mt-4 w-full py-2 text-sm text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 border border-teal-200 dark:border-teal-800 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
         data-oid="40h48j1"
     >
         Show {{ (filteredAchievements().length || 0) - (displayedAchievements().length || 0) }} more achievements
@@ -126,7 +126,7 @@
     <button
         *ngIf="expanded()"
         (click)="expanded.set(false)"
-        class="mt-4 w-full py-2 text-sm text-teal-600 hover:text-teal-800 border border-teal-200 rounded-lg hover:bg-teal-50 transition-colors"
+        class="mt-4 w-full py-2 text-sm text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 border border-teal-200 dark:border-teal-800 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
         data-oid="fa6ds_-"
     >
         Show less

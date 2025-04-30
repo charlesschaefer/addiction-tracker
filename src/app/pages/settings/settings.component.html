@@ -1,22 +1,22 @@
-<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 text-gray-800 transition-all duration-300">
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
   <main class="max-w-5xl mx-auto px-4 py-8 relative">
     <!-- Page Title -->
     <div class="mb-8">
       <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
         Settings
       </h2>
-      <p class="text-gray-500 text-center">
+      <p class="text-gray-500 dark:text-gray-400 text-center">
         Manage your app settings and security preferences
       </p>
     </div>
 
     <!-- Settings Content -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
         Security Settings
       </h3>
 
-      <div *ngIf="success" class="mb-6 p-4 bg-green-50 rounded-lg border border-green-100">
+      <div *ngIf="success" class="mb-6 p-4 bg-green-50 dark:bg-green-900/40 rounded-lg border border-green-100 dark:border-green-800">
         <div class="flex">
           <div class="flex-shrink-0">
             <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -24,16 +24,16 @@
             </svg>
           </div>
           <div class="ml-3">
-            <p class="text-sm text-green-700">{{ success }}</p>
+            <p class="text-sm text-green-700 dark:text-green-300">{{ success }}</p>
           </div>
         </div>
       </div>
 
       <div class="space-y-6">
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800">Password Protection</h4>
-            <p class="text-sm text-gray-600 mt-1">
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">Password Protection</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               {{ isProtected ? 'Your data is protected with a password' : 'Your data is not currently password protected' }}
             </p>
           </div>
@@ -42,13 +42,13 @@
               <div class="flex space-x-2">
                 <button
                   (click)="showChangePassword = !showChangePassword"
-                  class="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-md hover:bg-purple-200 transition-colors text-sm"
+                  class="px-3 py-1.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors text-sm"
                 >
                   Change Password
                 </button>
                 <button
                   (click)="showChangePassword = false; currentPassword = ''"
-                  class="px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors text-sm"
+                  class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm"
                 >
                   Disable Protection
                 </button>
@@ -57,7 +57,7 @@
             <ng-template #enableBtn>
               <button
                 (click)="showChangePassword = true"
-                class="px-3 py-1.5 bg-teal-100 text-teal-700 rounded-md hover:bg-teal-200 transition-colors text-sm"
+                class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-200 rounded-md hover:bg-teal-200 dark:hover:bg-teal-800 transition-colors text-sm"
               >
                 Enable Protection
               </button>
@@ -66,45 +66,45 @@
         </div>
 
         <!-- Enable Protection Form -->
-        <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white rounded-lg border border-gray-200">
-          <h4 class="font-medium text-gray-800 mb-4">Enable Password Protection</h4>
+        <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Enable Password Protection</h4>
           <form (submit)="handleEnableProtection($event)" class="space-y-4">
             <div>
-              <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
               <input
                 id="newPassword"
                 type="password"
                 [(ngModel)]="newPassword"
                 name="newPassword"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Create a password"
                 required
               />
             </div>
             <div>
-              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
               <input
                 id="confirmPassword"
                 type="password"
                 [(ngModel)]="confirmPassword"
                 name="confirmPassword"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Confirm your password"
                 required
               />
             </div>
-            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             <div class="flex justify-end space-x-2">
               <button
                 type="button"
                 (click)="showChangePassword = false; error = ''"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors"
+                class="px-4 py-2 bg-teal-600 dark:bg-teal-700 text-white rounded-md hover:bg-teal-700 dark:hover:bg-teal-800 transition-colors"
               >
                 Enable Protection
               </button>
@@ -113,57 +113,57 @@
         </div>
 
         <!-- Change Password Form -->
-        <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white rounded-lg border border-gray-200">
-          <h4 class="font-medium text-gray-800 mb-4">Change Password</h4>
+        <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Change Password</h4>
           <form (submit)="handleChangePassword($event)" class="space-y-4">
             <div>
-              <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+              <label for="currentPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
               <input
                 id="currentPassword"
                 type="password"
                 [(ngModel)]="currentPassword"
                 name="currentPassword"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Enter current password"
                 required
               />
             </div>
             <div>
-              <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
               <input
                 id="newPassword"
                 type="password"
                 [(ngModel)]="newPassword"
                 name="newPassword"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Create a new password"
                 required
               />
             </div>
             <div>
-              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
               <input
                 id="confirmPassword"
                 type="password"
                 [(ngModel)]="confirmPassword"
                 name="confirmPassword"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Confirm your new password"
                 required
               />
             </div>
-            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             <div class="flex justify-end space-x-2">
               <button
                 type="button"
                 (click)="showChangePassword = false; error = ''"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
+                class="px-4 py-2 bg-purple-600 dark:bg-purple-700 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-800 transition-colors"
               >
                 Change Password
               </button>
@@ -172,33 +172,33 @@
         </div>
 
         <!-- Disable Protection Form -->
-        <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white rounded-lg border border-gray-200">
-          <h4 class="font-medium text-gray-800 mb-4">Disable Password Protection</h4>
+        <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Disable Password Protection</h4>
           <form (submit)="handleDisableProtection($event)" class="space-y-4">
             <div>
-              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
               <input
                 id="currentPasswordDisable"
                 type="password"
                 [(ngModel)]="currentPassword"
                 name="currentPasswordDisable"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
                 placeholder="Enter current password"
                 required
               />
             </div>
-            <p *ngIf="error" class="text-sm text-red-600">{{ error }}</p>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
             <div class="flex justify-end space-x-2">
               <button
                 type="button"
                 (click)="currentPassword = ''; error = ''"
-                class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                class="px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 transition-colors"
               >
                 Disable Protection
               </button>
@@ -206,7 +206,7 @@
           </form>
         </div>
 
-        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+        <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
           <div class="flex">
             <div class="flex-shrink-0">
               <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -214,7 +214,7 @@
               </svg>
             </div>
             <div class="ml-3">
-              <p class="text-sm text-blue-700">
+              <p class="text-sm text-blue-700 dark:text-blue-300">
                 Password protection helps keep your recovery data private.
                 Your password is stored locally on your device and is not sent to any server.
               </p>
@@ -225,7 +225,7 @@
     </div>
 
     <!-- Additional Settings -->
-    <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100">
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
         App Settings
       </h3>
@@ -241,14 +241,14 @@
             Export Data
           </button>
         </div> -->
-        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800">Clear All Data</h4>
-            <p class="text-sm text-gray-600 mt-1">
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">Clear All Data</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Permanently delete all your recovery data
             </p>
           </div>
-          <button class="px-3 py-1.5 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors text-sm" (click)="showClearDataDialog = true">
+          <button class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm" (click)="showClearDataDialog = true">
             Clear Data
           </button>
         </div>
@@ -262,14 +262,14 @@
         data-oid="e7t:uie"
     >
         <div
-            class="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full animate-scaleIn"
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 max-w-md w-full animate-scaleIn"
             data-oid="2najl.b"
         >
             <div class="flex items-center mb-4" data-oid="0zo19-x">
-                <div class="bg-red-100 p-2 rounded-full mr-3" data-oid="-zm38xa">
+                <div class="bg-red-100 dark:bg-red-900 p-2 rounded-full mr-3" data-oid="-zm38xa">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-red-600"
+                        class="h-6 w-6 text-red-600 dark:text-red-300"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -284,18 +284,18 @@
                         />
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900" data-oid="-b6n-vk">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100" data-oid="-b6n-vk">
                     Confirm Data Deletion
                 </h3>
             </div>
 
             <div
-                class="bg-red-50 border-l-4 border-red-500 p-4 mb-6"
+                class="bg-red-50 dark:bg-red-900/40 border-l-4 border-red-500 dark:border-red-700 p-4 mb-6"
                 data-oid="w61b2yy"
             >
                 <div class="flex" data-oid="xom53f2">
                     <div class="ml-3" data-oid="35as.3f">
-                        <p class="text-sm text-red-700" data-oid="69rk09_">
+                        <p class="text-sm text-red-700 dark:text-red-300" data-oid="69rk09_">
                             <strong data-oid="-q5q9l9">Warning:</strong> This action
                             cannot be undone. All your recovery data, including
                             substance records, motivational factors, and progress
@@ -305,9 +305,9 @@
                 </div>
             </div>
 
-            <p class="mb-4 text-gray-700" data-oid=":x4fok5">
+            <p class="mb-4 text-gray-700 dark:text-gray-300" data-oid=":x4fok5">
                 To confirm, please type
-                <strong class="font-bold text-red-600" data-oid="ymnjc.v">
+                <strong class="font-bold text-red-600 dark:text-red-300" data-oid="ymnjc.v">
                     CLEAR ALL DATA
                 </strong>
                 in the field below:
@@ -319,13 +319,13 @@
                 [(ngModel)]="clearDataConfirmation"
                 (change)="setClearDataConfirmation($event.target)"
                 placeholder="Type CLEAR ALL DATA"
-                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-red-500 focus:border-red-500 mb-6"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-red-500 focus:border-red-500 dark:focus:ring-red-400 dark:focus:border-red-400 mb-6"
             />
 
             <div class="flex justify-end space-x-3" data-oid="vyco363">
                 <button
                     (click)="setShowClearDataDialog(false) && setClearDataConfirmation('')"
-                    class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                    class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     data-oid="jtinhj6"
                 >
                     Cancel
@@ -334,7 +334,7 @@
                     (click)="validateClearData()"
                     [disabled]="clearDataConfirmation !== 'CLEAR ALL DATA'"
                     class="px-4 py-2 rounded-lg text-white transition-colors "
-                    [ngClass]="clearDataConfirmation === 'CLEAR ALL DATA' ? 'bg-red-600 hover:bg-red-700': 'bg-red-300 cursor-not-allowed'"
+                    [ngClass]="clearDataConfirmation === 'CLEAR ALL DATA' ? 'bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800': 'bg-red-300 dark:bg-red-600/40 cursor-not-allowed'"
                 >
                     Permanently Delete All Data
                 </button>

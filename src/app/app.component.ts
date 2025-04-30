@@ -187,7 +187,7 @@ export class AppComponent implements OnInit {
         }
         if (userTheme != currentTheme) {
             console.log(userTheme, currentTheme);
-            this.themeService.switchTheme(userTheme);
+            this.themeService.switchTheme();
         }
 
         const detectAchievements = () => {
@@ -454,5 +454,13 @@ export class AppComponent implements OnInit {
             detail: 'This is an important step for your recovery',
             life: 3000
         })
+    }
+
+    get isDarkMode() {
+        return this.themeService.getCurrentTheme() === 'dark';
+    }
+
+    toggleTheme() {
+        this.themeService.switchTheme();
     }
 }

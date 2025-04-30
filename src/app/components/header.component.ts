@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
-
+import { ThemeService } from "../services/theme.service";
 import { LockButtonComponent } from "./lock-button.component";
 
 @Component({
@@ -12,7 +12,6 @@ import { LockButtonComponent } from "./lock-button.component";
         CommonModule, 
         RouterModule, 
         LockButtonComponent,
-
     ],
     templateUrl: "./header.component.html",
 })
@@ -29,14 +28,14 @@ export class HeaderComponent {
     ];
 
     settingsLinks = [
-        { href: "/settings", label: "Security settings", icon: false },
+        { href: "/settings", label: "App Settings", icon: false },
         { href: "/settings/backup", label: "Backup", icon: false },
         { href: "/settings/sync", label: "Sync", icon: false },
         { href: "/about", label: "About", icon: false },
     ];
     settingsMenuOpen: boolean = false;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, public themeService: ThemeService) {}
 
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -44,5 +43,13 @@ export class HeaderComponent {
 
     isSettingsLinkActive(link: { href: string }): boolean {
         return this.router.isActive(link.href, true);
-      }
+    }
+
+    toggleTheme() {
+        this.themeService.switchTheme();
+    }
+
+    isDarkMode() {
+        return this.themeService.getCurrentTheme() === 'dark';
+    }
 }
