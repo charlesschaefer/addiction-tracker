@@ -12,8 +12,8 @@ import { firstValueFrom } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 
-import { OtpGeneratorService } from '../services/otp-generator.service';
-import { BackupService } from '../services/backup.service';
+import { OtpGeneratorService } from '../../services/otp-generator.service';
+import { BackupService } from '../../services/backup.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({
@@ -131,5 +131,11 @@ export class SynchronizationComponent {
                 }
             });
         });
+    }
+
+    closeDialogs(): void {
+        // Logic to close dialogs
+        this.sendToOthersVisible = false;
+        this.getFromOthersVisible = false;
     }
 }

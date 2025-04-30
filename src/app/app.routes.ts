@@ -9,9 +9,9 @@ import { CostComponent } from "./cost/cost.component";
 import { VersionComponent } from "./version/version.component";
 import { UsageIntervalComponent } from "./usage-interval/usage-interval.component";
 import { RecommendationsComponent } from "./recommendations/recommendations.component";
-import { BackupComponent } from "./backup/backup.component";
+import { BackupComponent } from "./pages/backup/backup.component";
 import { RespirationComponent } from "./respiration/respiration.component";
-import { SynchronizationComponent } from "./synchronization/synchronization.component";
+import { SynchronizationComponent } from "./pages/synchronization/synchronization.component";
 import { UsageEntriesComponent } from "./pages/usage-entries/usage-entries.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { LoginComponent } from "./pages/login/login.component";
@@ -25,17 +25,16 @@ import { SettingsComponent } from "./pages/settings/settings.component";
 
 export const routes: Routes = [
     { path: "", component: HomeComponent },
-    { path: "usage-add", component: UsageAddComponent },
+    // { path: "usage-add", component: UsageAddComponent },
     { path: "usage-track", component: UsageTrackComponent },
     { path: "substance-add", component: SubstanceAddComponent },
     { path: "cost-add", component: CostAddComponent },
     { path: "cost", component: CostComponent },
     { path: "recommendations", component: RecommendationsComponent },
     { path: "usage-interval", component: UsageIntervalComponent },
-    { path: "backup", component: BackupComponent },
-    { path: "respiration", component: RespirationComponent },
-    { path: "about", component: VersionComponent },
-    { path: "sync", component: SynchronizationComponent },
+    // { path: "backup", component: BackupComponent },
+    // { path: "respiration", component: RespirationComponent },
+    // { path: "sync", component: SynchronizationComponent },
     /** New routes */
     { path: "login", component: LoginComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
@@ -46,5 +45,8 @@ export const routes: Routes = [
     { path: "alternative-activity-analytics", component: AlternativeActivityAnalyticsComponent },
     { path: "financial-impact", component: FinancialImpactComponent },
     { path: "triggers", component: TriggersComponent },
-    { path: "settings", component: SettingsComponent }
+    { path: "settings", component: SettingsComponent },
+    { path: "settings/backup", component: BackupComponent },
+    { path: "settings/sync", component: SynchronizationComponent },
+    { path: "about", component: VersionComponent },
 ];
