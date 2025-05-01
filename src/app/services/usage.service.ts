@@ -9,12 +9,18 @@ import { Changes, DataUpdatedService } from './data-updated.service';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
+/**
+ * Used for grouping intermediate usage data before aggregation.
+ */
 export interface IntermediaryUsage {
     quantity: number[];
     craving: number[];
     sentiment: number[];
 }
 
+/**
+ * Represents a finalized usage entry after aggregation.
+ */
 export interface FinalUsage {
     quantity: number;
     craving: number;
@@ -35,6 +41,9 @@ export class UsageService extends ServiceAbstract<Usages> {
     usageHistoryCache?: UsageDto[];
     loadingHistory = false;
 
+    /**
+     * Injects dependencies for usage logic.
+     */
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
@@ -43,6 +52,10 @@ export class UsageService extends ServiceAbstract<Usages> {
         this.setTable();
     }
 
+    /**
+     * Adds a usage entry and notifies data update service.
+     * @param usage Usage entry to add
+     */
     override add(usage: UsageAddDto) {
         return super.add(usage).then(() => {
             console.log("Entrou no usage.add()")
@@ -56,14 +69,27 @@ export class UsageService extends ServiceAbstract<Usages> {
         })
     }
 
+    /**
+     * Groups usages by hour.
+     * @param usages Array of usages
+     */
     groupByHour(usages: Usages[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'hour');
     }
 
+    /**
+     * Groups usages by day.
+     * @param usages Array of usages
+     */
     groupByDay(usages: Usages[]): Map<number, Map<string, FinalUsage>> {
         return this.groupBy(usages, 'day');
     }
 
+    /**
+     * Groups usages by hour or day, aggregates values.
+     * @param usages Array of usages
+     * @param groupType "hour" or "day"
+     */
     private groupBy(usages: Usages[], groupType: "hour" | "day"): Map<number, Map<string, FinalUsage>> {
         const substance = new Map<number, Map<string, IntermediaryUsage>>();
         // create a map with data vectors, without calculating yet
@@ -93,7 +119,6 @@ export class UsageService extends ServiceAbstract<Usages> {
             substance.set(usage.substance, group);
         });
 
-
         // calculates averages and sums of data
         const finalGroup = new Map<number, Map<string, FinalUsage>>();
         substance.forEach((usage, substanceId) => {
@@ -117,6 +142,10 @@ export class UsageService extends ServiceAbstract<Usages> {
         return finalGroup;
     }
 
+    /**
+     * Converts a grouped map of usages to an array of usage DTOs.
+     * @param groupMap Grouped usage map
+     */
     groupMapToUsages(groupMap: Map<number, Map<string, FinalUsage>>): Usages[] {
         const usageDtos: Usages[] = [];
         groupMap.forEach((usages) => {
@@ -136,6 +165,10 @@ export class UsageService extends ServiceAbstract<Usages> {
         return usageDtos;
     }
 
+    /**
+     * Returns the most used trigger and its total quantity.
+     * @param result Array of usages
+     */
     getMostUsedTrigger(result: Usages[]): [string, number] {
         let usageTriggers = new Map<string, number>();
         result.forEach(usage => {
@@ -152,6 +185,12 @@ export class UsageService extends ServiceAbstract<Usages> {
         return usageTriggers.entries().next().value as [string, number];
     }
 
+    /**
+     * Calculates the number of days since the last usage.
+     * Uses cache if available.
+     * @param usageHistory Optional usage history array
+     * @param useCache Whether to use cached value
+     */
     calculateSobrietyDays(usageHistory?: UsageDto[], useCache: boolean = true): number {
         if (useCache && this.sobrietyDaysCache) return this.sobrietyDaysCache;
         

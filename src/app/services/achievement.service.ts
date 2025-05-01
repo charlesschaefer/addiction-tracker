@@ -26,6 +26,9 @@ type Achievements = AchievementDto | AchievementAddDto;
 export class AchievementService extends ServiceAbstract<Achievements> {
     protected override storeName: 'achievement' = 'achievement';
 
+    /**
+     * Injects dependencies for achievement logic.
+     */
     constructor(
         protected override dbService: DbService,
         private usageService: UsageService,
@@ -371,6 +374,10 @@ export class AchievementService extends ServiceAbstract<Achievements> {
         }
     }
 
+    /**
+     * Returns a resource that fetches and sanitizes achievement icons.
+     * @param achievements Signal of achievements to fetch icons for
+     */
     getAchievementsWithIcon(achievements: InputSignal<AchievementDto[]> | WritableSignal<AchievementDto[]>) {
         return resource<SafeIconAchievement[], AchievementDto[]>({
             request: () => (achievements()),
