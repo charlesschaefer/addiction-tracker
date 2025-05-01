@@ -6,12 +6,18 @@ import { TableKeys } from "../app.db";
 
 type AlternativeActivities = AlternativeActivityDto | AlternativeActivityAddDto;
 
+/**
+ * Service for managing alternative activities.
+ */
 @Injectable({
     providedIn: "root",
 })
 export class AlternativeActivityService extends ServiceAbstract<AlternativeActivities> {
     protected override storeName: 'alternative_activity' = 'alternative_activity';
 
+    /**
+     * Injects the database service and sets up the table.
+     */
     constructor(
         protected override dbService: DbService
     ) {

@@ -5,6 +5,9 @@ import { DbService } from "./db.service";
 import { DatabaseChangeType } from "dexie-observable/api";
 import { Changes, DataUpdatedService } from "./data-updated.service";
 
+/**
+ * Counts for alternative activity usage.
+ */
 export interface UsageFillingCounts {
     activity: number;
     count: number;
@@ -12,6 +15,9 @@ export interface UsageFillingCounts {
     failCount: number;
 }
 
+/**
+ * Service for managing usage filling entries.
+ */
 @Injectable({
     providedIn: "root",
 })
@@ -19,6 +25,9 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
     protected override storeName: "usage_filling" =
         "usage_filling";
 
+    /**
+     * Injects dependencies for usage filling logic.
+     */
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
@@ -27,6 +36,10 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
         this.setTable();
     }
 
+    /**
+     * Adds a usage filling entry and notifies data update service.
+     * @param usage Usage filling entry to add
+     */
     override add(usage: UsageFillingAddDto) {
         return super.add(usage).then(() => {
             this.dataUpdatedService?.next([{
@@ -36,9 +49,12 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
                 type: DatabaseChangeType.Create,
                 source: ''
             }] as Changes[]);
-        })
+        });
     }
 
+    /**
+     * Returns a map of alternative activity counts and success/fail stats.
+     */
     getAlternativeActivityCounts(): Promise<Map<number, UsageFillingCounts>> {
         return this.list().then(fillings => {
             const counts: Map<number, UsageFillingCounts> = new Map();
@@ -65,6 +81,6 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
 
                 return counts;
             }, counts);
-        })
+        });
     }
 }

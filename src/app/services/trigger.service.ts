@@ -6,13 +6,18 @@ import { DbService } from './db.service';
 
 type Triggers = TriggerDto | TriggerAddDto;
 
-
+/**
+ * Service for managing triggers.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class TriggerService extends ServiceAbstract<Triggers> {
     protected override storeName: 'trigger' = 'trigger';
     
+    /**
+     * Injects the database service and sets up the table.
+     */
     constructor(
         protected override dbService: DbService,
     ) {

@@ -10,6 +10,9 @@ import { UsageService } from './usage.service';
 import { TriggerService } from './trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
 
+/**
+ * Structure for backup data.
+ */
 export interface BackupData {
     cost: CostDto[];
     substance: SubstanceDto[];
@@ -17,13 +20,19 @@ export interface BackupData {
     trigger: TriggerDto[];
 }
 
+/**
+ * Service for handling backup and restore of user data.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class BackupService {
-    
+    /** Holds the encrypted backup string. */
     encryptedBackup: string;
 
+    /**
+     * Injects required services for backup/restore.
+     */
     constructor(
         private costService: CostService,
         private substanceService: SubstanceService,
@@ -31,6 +40,10 @@ export class BackupService {
         private triggerService: TriggerService,
     ) { }
     
+    /**
+     * Creates a backup of all user data, encrypts it, and returns a Subject with the encrypted string.
+     * @param encryptKey Encryption key
+     */
     backupData(encryptKey: string): Subject<string> {
         let backupObj: BackupData;
         
@@ -66,6 +79,11 @@ export class BackupService {
         return backupSubject$;
     }
 
+    /**
+     * Restores backup data from an encrypted string.
+     * @param encryptedData Encrypted backup string
+     * @param decryptKey Decryption key
+     */
     restoreBackup(encryptedData: string, decryptKey: string) {
         let jsonBackup;
         console.log("Encrypted data: ", encryptedData, "decryptKey", decryptKey);
@@ -89,12 +107,6 @@ export class BackupService {
         this.substanceService.clear();
         this.costService.clear();
 
-        // const savedData$ = forkJoin({
-        //     substance: this.substanceService.bulkAdd(jsonBackup.substance),
-        //     trigger: this.triggerService.bulkAdd(jsonBackup.trigger),
-        //     usage: this.usageService.bulkAdd(jsonBackup.usage),
-        //     cost: this.costService.bulkAdd(jsonBackup.cost)
-        // });
         const backupResponse$ = new Subject();
 
         this.substanceService.bulkAdd(jsonBackup.substance).then(() => {
@@ -115,25 +127,14 @@ export class BackupService {
                 console.log("Errro: ", err);
             });
 
-
-        // savedData$.subscribe({
-        //     next: (result) => {
-        //         console.log("Emitindo o próximo", result);
-        //     },
-        //     complete: () =>  {
-        //         console.log("Finished restauring the backup");
-        //         backupResponse$.complete();
-        //     },
-        //     error: (err) => {
-        //         console.log("Couldn't save the backup: ", err);
-        //         backupResponse$.error(err);
-        //     }
-        // });
-
         return backupResponse$;
 
     }
 
+    /**
+     * Converts date fields in backup data from string to Date objects.
+     * @param jsonBackup Backup data object
+     */
     rehydrateDateFields(jsonBackup: BackupData): BackupData {
         jsonBackup.cost.forEach((value, index) => {
             jsonBackup.cost[index].date = new Date(value.date);

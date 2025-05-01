@@ -11,13 +11,18 @@ import { SubstanceDto } from '../dto/substance.dto';
 
 type Costs = CostDto | CostAddDto;
 
+/**
+ * Service for managing cost entries and calculations.
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class CostService extends ServiceAbstract<Costs> {
     protected override storeName: 'cost' = 'cost';
     
-
+    /**
+     * Injects dependencies for cost logic.
+     */
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
@@ -26,6 +31,10 @@ export class CostService extends ServiceAbstract<Costs> {
         this.setTable();
     }
 
+    /**
+     * Adds a cost entry and notifies data update service.
+     * @param costs Cost entry to add
+     */
     override add(costs: CostAddDto) {
         return super.add(costs).then(() => {
             this.dataUpdatedService?.next([{
@@ -35,9 +44,12 @@ export class CostService extends ServiceAbstract<Costs> {
                 type: DatabaseChangeType.Create,
                 source: ''
             }] as Changes[]);
-        })
+        });
     }
 
+    /**
+     * Returns the total spent across all costs.
+     */
     getTotalSpent() {
         return this.table.toArray().then(data => {
             return data.reduce((acc, item) => {    
@@ -46,6 +58,10 @@ export class CostService extends ServiceAbstract<Costs> {
         });
     }
 
+    /**
+     * Returns the total spent for a specific substance.
+     * @param substanceId Substance ID
+     */
     getTotalSpentBySubstance(substanceId: number) {
         return this.table.where('substance').equals(substanceId).toArray().then(data => {
             data.reduce((acc, item) => {    
@@ -54,6 +70,11 @@ export class CostService extends ServiceAbstract<Costs> {
         });
     }
 
+    /**
+     * Prepares cost data grouped by substance for visualization.
+     * @param usageHistory Usage history array
+     * @param substances Map of substance IDs to substance DTOs
+     */
     prepareCostBySubstanceData(usageHistory: UsageDto[], substances: Map<number, SubstanceDto>) {
         const substanceCosts: { [key: string]: number } = {};
         usageHistory.forEach((entry) => {
@@ -72,10 +93,19 @@ export class CostService extends ServiceAbstract<Costs> {
         }));
     }
 
+    /**
+     * Calculates total spending from usage history.
+     * @param usageHistory Usage history array
+     */
     calculateTotalSpending(usageHistory: UsageDto[]): number {
         return usageHistory.reduce((total, entry) => total + (entry.cost || 0), 0);
     }
 
+    /**
+     * Calculates spending for a given period.
+     * @param usageHistory Usage history array
+     * @param period Time period ("week", "month", "year", "all")
+     */
     calculateSpendingByPeriod(usageHistory: UsageDto[], period: "week" | "month" | "year" | "all" = "all"): number {
         const now = new Date();
         let startDate: Date;
@@ -100,16 +130,31 @@ export class CostService extends ServiceAbstract<Costs> {
             .reduce((total, entry) => total + (entry.cost || 0), 0);
     }
 
+    /**
+     * Projects annual spending based on monthly average.
+     * @param usageHistory Usage history array
+     */
     projectAnnualSpending(usageHistory: UsageDto[]): number {
         const monthlySpending = this.calculateSpendingByPeriod(usageHistory, "month");
         return monthlySpending * 12;
     }
 
+    /**
+     * Calculates potential savings over a number of years.
+     * @param usageHistory Usage history array
+     * @param years Number of years
+     */
     calculatePotentialSavings(usageHistory: UsageDto[], years: number): number {
         const annualSpending = this.projectAnnualSpending(usageHistory);
         return annualSpending * years;
     }
 
+    /**
+     * Calculates investment growth with annual savings and interest.
+     * @param usageHistory Usage history array
+     * @param years Number of years
+     * @param interestRate Annual interest rate (default 7%)
+     */
     calculateInvestmentGrowth(usageHistory: UsageDto[], years: number, interestRate = 0.07): number {
         const annualSavings = this.projectAnnualSpending(usageHistory);
         let total = 0;
@@ -119,6 +164,10 @@ export class CostService extends ServiceAbstract<Costs> {
         return total;
     }
 
+    /**
+     * Prepares daily spending trend data for the last 30 days.
+     * @param usageHistory Usage history array
+     */
     prepareSpendingTrendData(usageHistory: UsageDto[]) {
         const spendingByDate: { [key: string]: number } = {};
         const dates: string[] = [];

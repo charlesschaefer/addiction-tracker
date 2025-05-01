@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * Service for managing application theme (light/dark mode).
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class ThemeService {
+    /** Current theme ("light" or "dark"). */
     currentTheme = 'light';
 
+    /**
+     * Initializes theme from localStorage or system preference.
+     */
     constructor() {
         // On service init, set theme from localStorage or system preference
         const savedTheme = localStorage.getItem('theme');
@@ -16,10 +23,17 @@ export class ThemeService {
         }
     }
 
+    /**
+     * Switches between light and dark themes.
+     */
     switchTheme() {
         this.setDarkMode(this.currentTheme !== 'dark');
     }
 
+    /**
+     * Sets dark mode on or off.
+     * @param isDark Whether to enable dark mode
+     */
     setDarkMode(isDark: boolean) {
         const html = document.documentElement;
         if (isDark) {
@@ -33,6 +47,9 @@ export class ThemeService {
         }
     }
 
+    /**
+     * Gets the current theme.
+     */
     getCurrentTheme() {
         return this.currentTheme;
     }
