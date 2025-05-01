@@ -83,8 +83,9 @@ parts:
       npm run tauri build -- --bundles deb
       dpkg -x src-tauri/target/release/bundle/deb/*.deb $SNAPCRAFT_PART_INSTALL/
       if [ -d $SNAPCRAFT_PART_INSTALL/usr/share/icons/hicolor/32x32/apps ]; then
-        sed -i -e "s|Icon=addiction-tracker|Icon=/usr/share/icons/hicolor/32x32/apps/addiction-tracker.png|g" $SNAPCRAFT_PART_INSTALL/usr/share/applications/addiction-tracker.desktop
+        sed -i -e "s|Icon=addiction-tracker|Icon=/usr/share/icons/hicolor/32x32/apps/addiction-tracker.png|g" $SNAPCRAFT_PART_INSTALL/usr/share/applications/Addiction\ Tracker.desktop
       fi
+      cp $SNAPCRAFT_PART_INSTALL/usr/share/applications/Addiction\ Tracker.desktop $SNAPCRAFT_PART_INSTALL/usr/share/applications/addiction-tracker.desktop
 slots:
   dbus-daemon:
     interface: dbus
