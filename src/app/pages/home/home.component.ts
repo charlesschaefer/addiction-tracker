@@ -10,28 +10,29 @@ import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
 import { NavigationCardsComponent } from "../../components/navigation-cards.component";
 import { AchievementsMilestonesComponent } from "../../components/achivements/achievements-milestones.component";
-import { RecordSubstanceUseComponent } from "../../components/record-substance-use.component";
 import { SubstanceService } from "../../services/substance.service";
-import { SubstanceDto } from "../../dto/substance.dto";
-import { AlternativeActivityOverlayComponent } from "../../components/alternative-activity/alternative-activity-overlay.component";
 
 import svg1 from "../../../assets/icons/usage-entries.svg";
 import svg2 from "../../../assets/icons/heart.svg";
 import svg3 from "../../../assets/icons/dashboard.svg";
 import svg4 from "../../../assets/icons/analytics.svg";
-import { DateTime } from "luxon";
-import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobriety-card/sobriety-card.component";
+import {
+    SobrietyCardComponent,
+    SobrietyCardStyle,
+} from "../../components/sobriety-card/sobriety-card.component";
 import { OnboardingFlowComponent } from "../../components/onboarding-flow.component";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-home",
     imports: [
-    CommonModule,
-    NavigationCardsComponent,
-    AchievementsMilestonesComponent,
-    SobrietyCardComponent,
-    OnboardingFlowComponent
-],
+        CommonModule,
+        NavigationCardsComponent,
+        AchievementsMilestonesComponent,
+        SobrietyCardComponent,
+        OnboardingFlowComponent, 
+        TranslocoModule
+    ],
     templateUrl: "./home.component.html",
     styleUrl: "./home.component.scss",
 })
@@ -40,7 +41,6 @@ export class HomeComponent implements OnInit {
     usageHistory: UsageDto[] = [];
     motivationalFactors: MotivationalFactorDto[] = [];
     achievements: AchievementDto[] = [];
-    
 
     showBreathingPrompt = false;
 
@@ -88,13 +88,13 @@ export class HomeComponent implements OnInit {
             gradientFrom: "from-indigo-600",
             gradientTo: "to-purple-600",
             title: "Alternatives",
-            description: "See which alternative activities work best for you based on your data.",
+            description:
+                "See which alternative activities work best for you based on your data.",
             linkText: "View Analytics",
             icon: svg4, //`/assets/icons/analytics.svg`
         },
     ];
     sobrietyComponentStyle = SobrietyCardStyle.YEAR_COMPLETION;
-
 
     constructor(
         private joyrideService: JoyrideService,
@@ -103,9 +103,8 @@ export class HomeComponent implements OnInit {
         private substanceService: SubstanceService,
         private usageService: UsageService,
         private motivationalFactorService: MotivationalFactorService
-    ) {
-    }
-    
+    ) {}
+
     ngOnInit(): void {
         this.showOnboardingFlow = !localStorage.getItem("onboardingCompleted");
         // const sawGuidedTour = this.cookieService.get("sawGuidedTour");
@@ -160,5 +159,4 @@ export class HomeComponent implements OnInit {
         localStorage.setItem("onboardingCompleted", "true");
         this.showOnboardingFlow = false;
     }
-    
 }

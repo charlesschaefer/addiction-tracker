@@ -4,13 +4,13 @@ import { AchievementsDisplayComponent } from "../../components/achivements/achie
 import { AchievementDto, SafeIconAchievement } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
 import { RouterLink } from "@angular/router";
-import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import { DomSanitizer } from "@angular/platform-browser";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
     selector: "app-achievements",
     standalone: true,
-    imports: [CommonModule, AchievementsDisplayComponent, RouterLink],
+    imports: [CommonModule, AchievementsDisplayComponent, TranslocoModule],
     templateUrl: "./achievements.component.html",
 })
 export class AchievementsComponent implements OnInit {
@@ -62,6 +62,7 @@ export class AchievementsComponent implements OnInit {
     constructor(
         private achievementService: AchievementService,
         private sanitizer: DomSanitizer,
+        private translateService: TranslocoService,
     ) { }
 
     ngOnInit() {

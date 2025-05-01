@@ -7,11 +7,12 @@ import { SubstanceAddDto, SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-financial-impact",
     standalone: true,
-    imports: [CommonModule, FinancialImpactCardComponent, ChartModule],
+    imports: [CommonModule, FinancialImpactCardComponent, ChartModule, TranslocoModule],
     templateUrl: "./financial-impact.component.html",
 })
 export class FinancialImpactComponent implements OnInit {

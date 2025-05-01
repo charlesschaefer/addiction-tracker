@@ -12,11 +12,12 @@ import { DateTime, DateTimeFormatOptions } from "luxon";
 import { FormsModule } from "@angular/forms";
 import { SelectModule } from "primeng/select";
 import { MessageService } from "primeng/api";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-usage-entries",
     standalone: true,
-    imports: [CommonModule, FormsModule, SelectModule],
+    imports: [CommonModule, FormsModule, SelectModule, TranslocoModule],
     templateUrl: "./usage-entries.component.html",
 })
 export class UsageEntriesComponent implements OnInit {

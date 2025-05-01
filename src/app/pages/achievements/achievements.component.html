@@ -10,10 +10,10 @@
     <div class="mb-8">
       <h2
         class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
-        Your Achievements
+        {{ 'Your Achievements' | transloco }}
       </h2>
       <p class="text-gray-500 dark:text-gray-400 text-center">
-        See how you&apos;re doing on your recovery journey
+        {{ "See how you're doing on your recovery journey" | transloco }}
       </p>
     </div>
     <!-- <div class="mb-6 flex items-center justify-between">
@@ -26,15 +26,15 @@
     </div> -->
     <div class="card p-6 mb-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md border border-gray-100 dark:border-gray-800">
       <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">Achievement Progress</h2>
+        <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-2">{{ 'Achievement Progress' | transloco }}</h2>
         <p class="text-gray-600 dark:text-gray-400">
-          Track your recovery journey through these milestones. Each achievement represents progress in your path to wellness.
+          {{ 'Track your recovery journey through these milestones. Each achievement represents progress in your path to wellness.' | transloco }}
         </p>
       </div>
       <app-achievements-display [achievements]="achievements()"></app-achievements-display>
     </div>
     <div class="card p-6 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md border border-gray-100 dark:border-gray-800">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Upcoming Achievements</h2>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">{{ 'Upcoming Achievements' | transloco }}</h2>
       <div class="space-y-4">
         <div *ngFor="let achievement of achievementUncompleted()" class="p-4 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg">
           <div class="flex items-center">

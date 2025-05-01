@@ -9,17 +9,27 @@ import { SubstanceDto } from "../../dto/substance.dto";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
 import { MotivationalFactorInputComponent } from "../../components/motivational-factor-input.component";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-motivational-factors",
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule, ToastModule, MotivationalFactorInputComponent],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ToastModule,
+        MotivationalFactorInputComponent,
+        TranslocoModule,
+    ],
     templateUrl: "./motivational-factors.component.html",
 })
 export class MotivationalFactorsComponent implements OnInit {
     substances: SubstanceDto[] = [];
     selectedSubstance = signal<number | null>(null);
-    substancesMotivationalFactors = signal<Map<number, MotivationalFactorDto[]>>(new Map());
+    substancesMotivationalFactors = signal<
+        Map<number, MotivationalFactorDto[]>
+    >(new Map());
     motivationalFactors = computed(() => {
         console.log("Recomputando os fatores motivacionais");
         const selected = this.selectedSubstance();
@@ -48,7 +58,7 @@ export class MotivationalFactorsComponent implements OnInit {
             if (this.substances.length > 0) {
                 this.selectedSubstance.set(this.substances[0].id);
             }
-            
+
             this.loadMotivationalFactors();
         });
     }
@@ -59,9 +69,9 @@ export class MotivationalFactorsComponent implements OnInit {
                 const substanceFactors = factors.filter(
                     (factor) => factor.substance === substance.id
                 ) as MotivationalFactorDto[];
-                this.substancesMotivationalFactors.update(factor => {
-                    factor.set(substance.id, substanceFactors)
-                    
+                this.substancesMotivationalFactors.update((factor) => {
+                    factor.set(substance.id, substanceFactors);
+
                     // returning a new Map to trigger the signal
                     // This is necessary because the signal does not detect changes in the Map object
                     // when we use the set method
@@ -142,7 +152,11 @@ export class MotivationalFactorsComponent implements OnInit {
         this.showDeleteConfirm = null;
     }
 
-    addMotivationalFactor(data: {substance: number, type: string, content: string}) {
+    addMotivationalFactor(data: {
+        substance: number;
+        type: string;
+        content: string;
+    }) {
         console.log("Adding motivational factor");
         if (!this.currentSubstance) {
             this.messageService.add({

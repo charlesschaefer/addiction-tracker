@@ -4,11 +4,12 @@ import { RouterModule } from "@angular/router";
 import { UsageFillingCounts, UsageFillingService } from "../../services/usage-filling.service";
 import { AlternativeActivityService } from "../../services/alternative-activity.service";
 import { AlternativeActivityDto } from "../../dto/alternative-activity.dto";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-alternative-activity-analytics",
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, TranslocoModule],
     templateUrl: "./alternative-activity-analytics.component.html",
 })
 export class AlternativeActivityAnalyticsComponent implements OnInit {

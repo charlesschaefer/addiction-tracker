@@ -3,17 +3,17 @@
     <!-- Page Title -->
     <div class="mb-8">
       <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
-        Trigger Analysis
+        {{ 'Trigger Analysis' | transloco }}
       </h2>
       <p class="text-gray-500 dark:text-gray-400 text-center">
-        Understand what triggers your substance use to develop better coping strategies
+        {{ 'Understand what triggers your substance use to develop better coping strategies' | transloco }}
       </p>
     </div>
 
     <!-- Substance Selector -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
-        Filter by Substance
+        {{ 'Filter by Substance' | transloco }}
       </h3>
       <div class="flex flex-wrap gap-2">
         <button
@@ -23,7 +23,7 @@
             : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
           class="px-4 py-2 rounded-full text-sm transition-all"
         >
-          All Substances
+          {{ 'All Substances' | transloco }}
         </button>
         <button
           *ngFor="let substance of substances"
@@ -41,7 +41,7 @@
     <!-- Trigger Distribution -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
-        {{ selectedSubstance === 'all' ? 'Overall Trigger Distribution' : (selectedSubstance + ' Trigger Distribution') }}
+        {{ selectedSubstance === 'all' ? ('Overall Trigger Distribution' | transloco) : (selectedSubstance + ' ' + ('Trigger Distribution' | transloco)) }}
       </h3>
       <div class="h-80">
         <div *ngIf="hasTriggerData(); else noTriggerData" class="h-full">
@@ -51,8 +51,8 @@
           <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
             <p class="text-center">
               {{ selectedSubstance === 'all' 
-                ? 'No trigger data available yet. Start recording your substance use to see trigger patterns.' 
-                : 'No trigger data available for this substance yet. Record some usage to see trigger patterns.' }}
+                ? ('No trigger data available yet. Start recording your substance use to see trigger patterns.' | transloco)
+                : ('No trigger data available for this substance yet. Record some usage to see trigger patterns.' | transloco) }}
             </p>
           </div>
         </ng-template>
@@ -62,7 +62,7 @@
     <!-- Triggers by Substance -->
     <div *ngIf="selectedSubstance === 'all'" class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
-        Triggers by Substance
+        {{ 'Triggers by Substance' | transloco }}
       </h3>
       <div class="h-96">
         <div *ngIf="hasSubstanceData(); else noSubstanceData" class="h-full">
@@ -71,7 +71,7 @@
         <ng-template #noSubstanceData>
           <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
             <p class="text-center">
-              No substance data available yet. Start recording your substance use to see patterns across different substances.
+              {{ 'No substance data available yet. Start recording your substance use to see patterns across different substances.' | transloco }}
             </p>
           </div>
         </ng-template>
@@ -81,47 +81,47 @@
     <!-- Trigger Insights -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
-        Understanding Your Triggers
+        {{ 'Understanding Your Triggers' | transloco }}
       </h3>
       <div class="space-y-4">
         <div class="p-4 bg-purple-50 dark:bg-purple-900/40 rounded-lg border border-purple-100 dark:border-purple-800">
-          <h4 class="font-semibold text-purple-800 dark:text-purple-200 mb-2">What are triggers?</h4>
+          <h4 class="font-semibold text-purple-800 dark:text-purple-200 mb-2">{{ 'What are triggers?' | transloco }}</h4>
           <p class="text-gray-700 dark:text-gray-200">
-            Triggers are situations, emotions, or environments that create urges to use substances. Identifying your personal triggers is a crucial step in developing effective coping strategies.
+            {{ 'Triggers are situations, emotions, or environments that create urges to use substances. Identifying your personal triggers is a crucial step in developing effective coping strategies.' | transloco }}
           </p>
         </div>
         <div class="p-4 bg-orange-50 dark:bg-orange-900/40 rounded-lg border border-orange-100 dark:border-orange-800">
-          <h4 class="font-semibold  text-orange-800 dark:text-orange-200 mb-2">Common Emotional Triggers</h4>
+          <h4 class="font-semibold  text-orange-800 dark:text-orange-200 mb-2">{{ 'Common Emotional Triggers' | transloco }}</h4>
           <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
-            <li>Stress and anxiety</li>
-            <li>Sadness or depression</li>
-            <li>Boredom</li>
-            <li>Anger or frustration</li>
-            <li>Loneliness</li>
+            <li>{{ 'Stress and anxiety' | transloco }}</li>
+            <li>{{ 'Sadness or depression' | transloco }}</li>
+            <li>{{ 'Boredom' | transloco }}</li>
+            <li>{{ 'Anger or frustration' | transloco }}</li>
+            <li>{{ 'Loneliness' | transloco }}</li>
           </ul>
         </div>
         <div class="p-4 bg-teal-50 dark:bg-teal-900/40 rounded-lg border border-teal-100 dark:border-teal-800">
-          <h4 class="font-semibold  text-teal-800 dark:text-teal-200 mb-2">Common Environmental Triggers</h4>
+          <h4 class="font-semibold  text-teal-800 dark:text-teal-200 mb-2">{{ 'Common Environmental Triggers' | transloco }}</h4>
           <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
-            <li>Social gatherings where substances are present</li>
-            <li>Specific locations associated with past use</li>
-            <li>Being around certain people</li>
-            <li>Celebrations or special occasions</li>
-            <li>Stressful work or home environments</li>
+            <li>{{ 'Social gatherings where substances are present' | transloco }}</li>
+            <li>{{ 'Specific locations associated with past use' | transloco }}</li>
+            <li>{{ 'Being around certain people' | transloco }}</li>
+            <li>{{ 'Celebrations or special occasions' | transloco }}</li>
+            <li>{{ 'Stressful work or home environments' | transloco }}</li>
           </ul>
         </div>
         <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
-          <h4 class="font-semibold  text-blue-800 dark:text-blue-200 mb-2">Coping Strategies</h4>
+          <h4 class="font-semibold  text-blue-800 dark:text-blue-200 mb-2">{{ 'Coping Strategies' | transloco }}</h4>
           <p class="text-gray-700 dark:text-gray-200 mb-2">
-            Once you've identified your triggers, you can develop strategies to manage them:
+            {{ "Once you've identified your triggers, you can develop strategies to manage them:" | transloco }}
           </p>
           <ul class="list-disc pl-5 text-gray-700 dark:text-gray-200 space-y-1">
-            <li>Practice mindfulness and breathing exercises</li>
-            <li>Develop a support network of friends and family</li>
-            <li>Consider professional counseling or support groups</li>
-            <li>Create a list of alternative activities</li>
-            <li>Avoid high-risk situations when possible</li>
-            <li>Develop healthy stress management techniques</li>
+            <li>{{ 'Practice mindfulness and breathing exercises' | transloco }}</li>
+            <li>{{ 'Develop a support network of friends and family' | transloco }}</li>
+            <li>{{ 'Consider professional counseling or support groups' | transloco }}</li>
+            <li>{{ 'Create a list of alternative activities' | transloco }}</li>
+            <li>{{ 'Avoid high-risk situations when possible' | transloco }}</li>
+            <li>{{ 'Develop healthy stress management techniques' | transloco }}</li>
           </ul>
         </div>
       </div>

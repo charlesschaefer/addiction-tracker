@@ -3,10 +3,10 @@
         <!-- Page Title -->
         <div class="mb-8">
             <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
-                Financial Impact
+                {{ 'Financial Impact' | transloco }}
             </h2>
             <p class="text-gray-500 dark:text-gray-400 text-center">
-                Understand the financial cost of substance use and potential savings from recovery
+                {{ 'Understand the financial cost of substance use and potential savings from recovery' | transloco }}
             </p>
         </div>
 
@@ -18,7 +18,7 @@
         <!-- Spending Trend -->
         <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
             <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-                Spending Trend (Last 30 Days)
+                {{ 'Spending Trend (Last 30 Days)' | transloco }}
             </h3>
             <div class="h-80">
                 <div *ngIf="hasSpendingTrendData(); else noSpendingTrendData" class="h-full">
@@ -27,7 +27,7 @@
                 <ng-template #noSpendingTrendData>
                     <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
                         <p class="text-center">
-                            No spending data available for the last 30 days. Start recording your substance use to see spending trends.
+                            {{ 'No spending data available for the last 30 days. Start recording your substance use to see spending trends.' | transloco }}
                         </p>
                     </div>
                 </ng-template>
@@ -37,27 +37,26 @@
         <!-- Investment Potential -->
         <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
             <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-                Investment Potential
+                {{ 'Investment Potential' | transloco }}
             </h3>
             <p class="text-gray-700 dark:text-gray-200 mb-6">
-                If you invested the money you would have spent on substances, here's how
-                much it could grow over time (assuming a 7% average annual return):
+                {{ "If you invested the money you would have spent on substances, here's how much it could grow over time (assuming a 7% average annual return):" | transloco }}
             </p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
-                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">5 Years</h4>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '5 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
                         {{ calculateInvestmentGrowth(5) | currency }}
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
-                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">10 Years</h4>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '10 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
                         {{ calculateInvestmentGrowth(10) | currency }}
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
-                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">20 Years</h4>
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '20 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
                         {{ calculateInvestmentGrowth(20) | currency }}
                     </div>
@@ -72,10 +71,7 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-blue-700 dark:text-blue-300">
-                            These calculations are based on your recorded usage and assume
-                            you invest the money you would have spent on substances. The
-                            potential growth uses a 7% average annual return, which is a
-                            common long-term stock market average. Actual returns may vary.
+                            {{ 'These calculations are based on your recorded usage and assume you invest the money you would have spent on substances. The potential growth uses a 7% average annual return, which is a common long-term stock market average. Actual returns may vary.' | transloco }}
                         </p>
                     </div>
                 </div>
@@ -85,7 +81,7 @@
         <!-- Alternative Uses for Money -->
         <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
             <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                What Else Could You Do With This Money?
+                {{ 'What Else Could You Do With This Money?' | transloco }}
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-4">
@@ -97,9 +93,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-800 dark:text-gray-100">Travel</h4>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Travel' | transloco }}</h4>
                             <p class="text-gray-600 dark:text-gray-400">
-                                With {{ calculatePotentialSavings(1) | currency }} saved in a year, you could take a vacation to a destination you've always wanted to visit.
+                                {{ 'With' | transloco }} {{ calculatePotentialSavings(1) | currency }} {{ "saved in a year, you could take a vacation to a destination you've always wanted to visit." | transloco }}
                             </p>
                         </div>
                     </div>
@@ -110,9 +106,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-800 dark:text-gray-100">Education</h4>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Education' | transloco }}</h4>
                             <p class="text-gray-600 dark:text-gray-400">
-                                You could invest in courses, certifications, or even start saving for a degree to advance your career.
+                                {{ 'You could invest in courses, certifications, or even start saving for a degree to advance your career.' | transloco }}
                             </p>
                         </div>
                     </div>
@@ -125,9 +121,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-800 dark:text-gray-100">Home Improvements</h4>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Home Improvements' | transloco }}</h4>
                             <p class="text-gray-600 dark:text-gray-400">
-                                Create a more comfortable living space with renovations or new furniture that will last for years.
+                                {{ 'Create a more comfortable living space with renovations or new furniture that will last for years.' | transloco }}
                             </p>
                         </div>
                     </div>
@@ -138,9 +134,9 @@
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-medium text-gray-800 dark:text-gray-100">Health & Wellness</h4>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Health & Wellness' | transloco }}</h4>
                             <p class="text-gray-600 dark:text-gray-400">
-                                Invest in your physical and mental health with gym memberships, therapy, or wellness retreats.
+                                {{ 'Invest in your physical and mental health with gym memberships, therapy, or wellness retreats.' | transloco }}
                             </p>
                         </div>
                     </div>

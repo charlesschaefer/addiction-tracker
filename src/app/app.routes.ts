@@ -1,7 +1,5 @@
 import { Routes } from "@angular/router";
 
-import { UsageComponent } from "./usage/usage.component";
-import { UsageAddComponent } from "./usage-add/usage-add.component";
 import { UsageTrackComponent } from "./usage-track/usage-track.component";
 import { SubstanceAddComponent } from "./substance-add/substance-add.component";
 import { CostAddComponent } from "./cost-add/cost-add.component";
@@ -10,7 +8,6 @@ import { VersionComponent } from "./version/version.component";
 import { UsageIntervalComponent } from "./usage-interval/usage-interval.component";
 import { RecommendationsComponent } from "./recommendations/recommendations.component";
 import { BackupComponent } from "./pages/backup/backup.component";
-import { RespirationComponent } from "./respiration/respiration.component";
 import { SynchronizationComponent } from "./pages/synchronization/synchronization.component";
 import { UsageEntriesComponent } from "./pages/usage-entries/usage-entries.component";
 import { HomeComponent } from "./pages/home/home.component";

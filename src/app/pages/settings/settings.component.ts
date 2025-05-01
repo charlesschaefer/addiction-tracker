@@ -4,11 +4,12 @@ import { FormsModule } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { DATABASE_NAME } from "../../app.db";
 import { Dexie } from "dexie";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-settings-page",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslocoModule],
     templateUrl: "./settings.component.html",
 })
 export class SettingsComponent {

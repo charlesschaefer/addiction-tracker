@@ -9,7 +9,11 @@ import { FinancialImpactCardComponent } from "../../components/financial-impact-
 import { CostService } from "../../services/cost.service";
 import { SubstanceAnalysisCardComponent } from "../../components/substance-analysis-card.component";
 import { DateTime } from "luxon";
-import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobriety-card/sobriety-card.component";
+import {
+    SobrietyCardComponent,
+    SobrietyCardStyle,
+} from "../../components/sobriety-card/sobriety-card.component";
+import { TranslocoModule } from "@jsverse/transloco";
 
 interface UsageEntry {
     id: number;
@@ -26,11 +30,17 @@ interface UsageEntry {
 @Component({
     selector: "app-recovery-dashboard",
     standalone: true,
-    imports: [CommonModule, FormsModule, FinancialImpactCardComponent, SubstanceAnalysisCardComponent, SobrietyCardComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        FinancialImpactCardComponent,
+        SubstanceAnalysisCardComponent,
+        SobrietyCardComponent,
+        TranslocoModule
+    ],
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
-
     selectedAnalysisSubstance: string = "all";
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
@@ -42,7 +52,7 @@ export class RecoveryDashboardComponent implements OnInit {
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
-        private costService: CostService,
+        private costService: CostService
     ) {
         this.initChartOptions();
     }
@@ -52,7 +62,12 @@ export class RecoveryDashboardComponent implements OnInit {
             this.usageHistory.set(usages as UsageDto[]);
         });
         this.substanceService.list().then((subs) => {
-            this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
+            this.substances.set(
+                this.substanceService.getDataAsMap(subs, "id") as Map<
+                    number,
+                    SubstanceDto
+                >
+            );
         });
     }
 
@@ -61,7 +76,9 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     getSubstanceNames(): string[] {
-        return Array.from(this.substances().values()).map(substance => substance.name);
+        return Array.from(this.substances().values()).map(
+            (substance) => substance.name
+        );
     }
 
     calculateSobrietyDays(): number {
@@ -71,7 +88,8 @@ export class RecoveryDashboardComponent implements OnInit {
     prepareUsageBySubstanceData() {
         const substanceCounts: { [key: string]: number } = {};
         this.usageHistory().forEach((entry) => {
-            const substanceName = this.substances().get(entry.substance)?.name as string;
+            const substanceName = this.substances().get(entry.substance)
+                ?.name as string;
             if (substanceCounts[substanceName]) {
                 substanceCounts[substanceName]++;
             } else {
@@ -89,7 +107,8 @@ export class RecoveryDashboardComponent implements OnInit {
             return this.usageHistory();
         }
         return this.usageHistory().filter(
-            (entry) => entry.substance.toString() === this.selectedAnalysisSubstance
+            (entry) =>
+                entry.substance.toString() === this.selectedAnalysisSubstance
         );
     }
 
@@ -97,8 +116,8 @@ export class RecoveryDashboardComponent implements OnInit {
         this.chartOptions = {
             plugins: {
                 legend: {
-                    position: 'bottom'
-                }
+                    position: "bottom",
+                },
             },
             responsive: true,
             maintainAspectRatio: false,
@@ -107,25 +126,28 @@ export class RecoveryDashboardComponent implements OnInit {
                     stacked: true,
                     title: {
                         display: true,
-                        text: 'Triggers'
+                        text: "Triggers",
                     },
                     ticks: {
                         maxRotation: 45,
                         minRotation: 45,
-                        callback: function(value: any) {
+                        callback: function (value: any) {
                             const date = new Date(value);
-                            return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-                        }
-                    }
+                            return date.toLocaleDateString("en-US", {
+                                day: "numeric",
+                                month: "short",
+                            });
+                        },
+                    },
                 },
                 y: {
                     stacked: true,
                     title: {
                         display: true,
-                        text: 'Number of Entries'
-                    }
-                }
-            }
+                        text: "Number of Entries",
+                    },
+                },
+            },
         };
     }
 
@@ -153,7 +175,8 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareMoodTrendData() {
-        const moodByDate: { [key: string]: { total: number; count: number } } = {};
+        const moodByDate: { [key: string]: { total: number; count: number } } =
+            {};
         const moodValues: { [key: string]: number } = {
             Sad: 1,
             Anxious: 2,
@@ -173,7 +196,8 @@ export class RecoveryDashboardComponent implements OnInit {
         filteredHistory.forEach((entry) => {
             const entryDate = new Date(entry.datetime);
             if (moodByDate[entryDate.toISOString()]) {
-                moodByDate[entryDate.toISOString()].total += moodValues[entry.sentiment] || 3;
+                moodByDate[entryDate.toISOString()].total +=
+                    moodValues[entry.sentiment] || 3;
                 moodByDate[entryDate.toISOString()].count++;
             }
         });
@@ -181,13 +205,16 @@ export class RecoveryDashboardComponent implements OnInit {
             date: date.toISOString(),
             sentiment:
                 moodByDate[date.toISOString()].count > 0
-                    ? moodByDate[date.toISOString()].total / moodByDate[date.toISOString()].count
+                    ? moodByDate[date.toISOString()].total /
+                      moodByDate[date.toISOString()].count
                     : null,
         }));
     }
 
     prepareCravingTrendData() {
-        const cravingByDate: { [key: string]: { total: number; count: number } } = {};
+        const cravingByDate: {
+            [key: string]: { total: number; count: number };
+        } = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -208,7 +235,8 @@ export class RecoveryDashboardComponent implements OnInit {
             date: date.toISOString(),
             craving:
                 cravingByDate[date.toISOString()].count > 0
-                    ? cravingByDate[date.toISOString()].total / cravingByDate[date.toISOString()].count
+                    ? cravingByDate[date.toISOString()].total /
+                      cravingByDate[date.toISOString()].count
                     : null,
         }));
     }
@@ -218,7 +246,10 @@ export class RecoveryDashboardComponent implements OnInit {
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
         return usageData.map((item, index) => ({
-            date: new Date(item.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
+            date: new Date(item.date).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "short",
+            }),
             usage: item.usage,
             mood: moodData[index].sentiment,
             craving: cravingData[index].craving,
@@ -230,7 +261,8 @@ export class RecoveryDashboardComponent implements OnInit {
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
             entry.trigger?.forEach((trigger) => {
-                triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
+                triggerCounts[trigger.name] =
+                    (triggerCounts[trigger.name] || 0) + 1;
             });
         });
         return Object.keys(triggerCounts).map((trigger) => ({
@@ -240,15 +272,23 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareCostBySubstanceData() {
-        return this.costService.prepareCostBySubstanceData(this.usageHistory(), this.substances());
+        return this.costService.prepareCostBySubstanceData(
+            this.usageHistory(),
+            this.substances()
+        );
     }
 
     calculateTotalSpending(): number {
         return this.costService.calculateTotalSpending(this.usageHistory());
     }
 
-    calculateSpendingByPeriod(period: "week" | "month" | "year" | "all" = "all"): number {
-        return this.costService.calculateSpendingByPeriod(this.usageHistory(), period);
+    calculateSpendingByPeriod(
+        period: "week" | "month" | "year" | "all" = "all"
+    ): number {
+        return this.costService.calculateSpendingByPeriod(
+            this.usageHistory(),
+            period
+        );
     }
 
     projectAnnualSpending(): number {
@@ -256,11 +296,17 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     calculatePotentialSavings(years: number): number {
-        return this.costService.calculatePotentialSavings(this.usageHistory(), years);
+        return this.costService.calculatePotentialSavings(
+            this.usageHistory(),
+            years
+        );
     }
 
     calculateInvestmentGrowth(years: number, interestRate = 0.07): number {
-        return this.costService.calculateInvestmentGrowth(this.usageHistory(), years);
+        return this.costService.calculateInvestmentGrowth(
+            this.usageHistory(),
+            years
+        );
     }
 
     prepareSpendingTrendData() {

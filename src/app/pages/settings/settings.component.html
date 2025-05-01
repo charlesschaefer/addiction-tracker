@@ -3,17 +3,17 @@
     <!-- Page Title -->
     <div class="mb-8">
       <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
-        Settings
+        {{ 'Settings' | transloco }}
       </h2>
       <p class="text-gray-500 dark:text-gray-400 text-center">
-        Manage your app settings and security preferences
+        {{ 'Manage your app settings and security preferences' | transloco }}
       </p>
     </div>
 
     <!-- Settings Content -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-        Security Settings
+        {{ 'Security Settings' | transloco }}
       </h3>
 
       <div *ngIf="success" class="mb-6 p-4 bg-green-50 dark:bg-green-900/40 rounded-lg border border-green-100 dark:border-green-800">
@@ -32,9 +32,9 @@
       <div class="space-y-6">
         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800 dark:text-gray-100">Password Protection</h4>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Password Protection' | transloco }}</h4>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {{ isProtected ? 'Your data is protected with a password' : 'Your data is not currently password protected' }}
+              {{ isProtected ? ('Your data is protected with a password' | transloco) : ('Your data is not currently password protected' | transloco) }}
             </p>
           </div>
           <div>
@@ -44,13 +44,13 @@
                   (click)="showChangePassword = !showChangePassword"
                   class="px-3 py-1.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors text-sm"
                 >
-                  Change Password
+                  {{ 'Change Password' | transloco }}
                 </button>
                 <button
                   (click)="showChangePassword = false; currentPassword = ''"
                   class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm"
                 >
-                  Disable Protection
+                  {{ 'Disable Protection' | transloco }}
                 </button>
               </div>
             </ng-container>
@@ -59,7 +59,7 @@
                 (click)="showChangePassword = true"
                 class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-200 rounded-md hover:bg-teal-200 dark:hover:bg-teal-800 transition-colors text-sm"
               >
-                Enable Protection
+                {{ 'Enable Protection' | transloco }}
               </button>
             </ng-template>
           </div>
@@ -67,29 +67,29 @@
 
         <!-- Enable Protection Form -->
         <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Enable Password Protection</h4>
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Enable Password Protection' | transloco }}</h4>
           <form (submit)="handleEnableProtection($event)" class="space-y-4">
             <div>
-              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'New Password' | transloco }}</label>
               <input
                 id="newPassword"
                 type="password"
                 [(ngModel)]="newPassword"
                 name="newPassword"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Create a password"
+                placeholder="{{ 'Create a password' | transloco }}"
                 required
               />
             </div>
             <div>
-              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Confirm Password' | transloco }}</label>
               <input
                 id="confirmPassword"
                 type="password"
                 [(ngModel)]="confirmPassword"
                 name="confirmPassword"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Confirm your password"
+                placeholder="{{ 'Confirm your password' | transloco }}"
                 required
               />
             </div>
@@ -100,13 +100,13 @@
                 (click)="showChangePassword = false; error = ''"
                 class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                Cancel
+                {{ 'Cancel' | transloco }}
               </button>
               <button
                 type="submit"
                 class="px-4 py-2 bg-teal-600 dark:bg-teal-700 text-white rounded-md hover:bg-teal-700 dark:hover:bg-teal-800 transition-colors"
               >
-                Enable Protection
+                {{ 'Enable Protection' | transloco }}
               </button>
             </div>
           </form>
@@ -114,41 +114,41 @@
 
         <!-- Change Password Form -->
         <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Change Password</h4>
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Change Password' | transloco }}</h4>
           <form (submit)="handleChangePassword($event)" class="space-y-4">
             <div>
-              <label for="currentPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
+              <label for="currentPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Current Password' | transloco }}</label>
               <input
                 id="currentPassword"
                 type="password"
                 [(ngModel)]="currentPassword"
                 name="currentPassword"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Enter current password"
+                placeholder="{{ 'Enter current password' | transloco }}"
                 required
               />
             </div>
             <div>
-              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'New Password' | transloco }}</label>
               <input
                 id="newPassword"
                 type="password"
                 [(ngModel)]="newPassword"
                 name="newPassword"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Create a new password"
+                placeholder="{{ 'Create a new password' | transloco }}"
                 required
               />
             </div>
             <div>
-              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm New Password</label>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Confirm New Password' | transloco }}</label>
               <input
                 id="confirmPassword"
                 type="password"
                 [(ngModel)]="confirmPassword"
                 name="confirmPassword"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Confirm your new password"
+                placeholder="{{ 'Confirm your new password' | transloco }}"
                 required
               />
             </div>
@@ -159,13 +159,13 @@
                 (click)="showChangePassword = false; error = ''"
                 class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                Cancel
+                {{ 'Cancel' | transloco }}
               </button>
               <button
                 type="submit"
                 class="px-4 py-2 bg-purple-600 dark:bg-purple-700 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-800 transition-colors"
               >
-                Change Password
+                {{ 'Change Password' | transloco }}
               </button>
             </div>
           </form>
@@ -173,17 +173,17 @@
 
         <!-- Disable Protection Form -->
         <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">Disable Password Protection</h4>
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Disable Password Protection' | transloco }}</h4>
           <form (submit)="handleDisableProtection($event)" class="space-y-4">
             <div>
-              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Current Password</label>
+              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Current Password' | transloco }}</label>
               <input
                 id="currentPasswordDisable"
                 type="password"
                 [(ngModel)]="currentPassword"
                 name="currentPasswordDisable"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
-                placeholder="Enter current password"
+                placeholder="{{ 'Enter current password' | transloco }}"
                 required
               />
             </div>
@@ -194,13 +194,13 @@
                 (click)="currentPassword = ''; error = ''"
                 class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                Cancel
+                {{ 'Cancel' | transloco }}
               </button>
               <button
                 type="submit"
                 class="px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 transition-colors"
               >
-                Disable Protection
+                {{ 'Disable Protection' | transloco }}
               </button>
             </div>
           </form>
@@ -215,8 +215,7 @@
             </div>
             <div class="ml-3">
               <p class="text-sm text-blue-700 dark:text-blue-300">
-                Password protection helps keep your recovery data private.
-                Your password is stored locally on your device and is not sent to any server.
+                {{ 'Password protection helps keep your recovery data private. Your password is stored locally on your device and is not sent to any server.' | transloco }}
               </p>
             </div>
           </div>
@@ -227,20 +226,20 @@
     <!-- Additional Settings -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-        App Settings
+        {{ 'App Settings' | transloco }}
       </h3>
       <div class="space-y-4">
         <!-- App Theme Option -->
         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800 dark:text-gray-100">App Theme</h4>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'App Theme' | transloco }}</h4>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Choose between light and dark theme
+              {{ 'Choose between light and dark theme' | transloco }}
             </p>
           </div>
           <div class="flex items-center">
             <span class="mr-3 text-sm text-gray-600 dark:text-gray-300">
-              {{ darkMode ? 'Dark' : 'Light' }}
+              {{ darkMode ? ('Dark' | transloco) : ('Light' | transloco) }}
             </span>
             <button
               (click)="toggleDarkMode()"
@@ -259,9 +258,9 @@
         <!-- Language Option -->
         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800 dark:text-gray-100">Language</h4>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Language' | transloco }}</h4>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Select your preferred language
+              {{ 'Select your preferred language' | transloco }}
             </p>
           </div>
           <div class="flex space-x-2">
@@ -270,27 +269,27 @@
               [ngClass]="language === 'en' ? 'bg-purple-100 text-purple-700 font-medium' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'"
               class="px-3 py-1.5 rounded-md transition-colors text-sm"
             >
-              English
+              {{ 'English' | transloco }}
             </button>
             <button
               (click)="setLanguage('pt-BR')"
               [ngClass]="language === 'pt-BR' ? 'bg-purple-100 text-purple-700 font-medium' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'"
               class="px-3 py-1.5 rounded-md transition-colors text-sm"
             >
-              Português
+              {{ 'Português' | transloco }}
             </button>
           </div>
         </div>
         <!-- Clear All Data Option -->
         <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div>
-            <h4 class="font-medium text-gray-800 dark:text-gray-100">Clear All Data</h4>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Clear All Data' | transloco }}</h4>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              Permanently delete all your recovery data
+              {{ 'Permanently delete all your recovery data' | transloco }}
             </p>
           </div>
           <button class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm" (click)="showClearDataDialog = true">
-            Clear Data
+            {{ 'Clear Data' | transloco }}
           </button>
         </div>
       </div>
@@ -326,7 +325,7 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100" data-oid="-b6n-vk">
-                    Confirm Data Deletion
+                    {{ 'Confirm Data Deletion' | transloco }}
                 </h3>
             </div>
 
@@ -337,21 +336,18 @@
                 <div class="flex" data-oid="xom53f2">
                     <div class="ml-3" data-oid="35as.3f">
                         <p class="text-sm text-red-700 dark:text-red-300" data-oid="69rk09_">
-                            <strong data-oid="-q5q9l9">Warning:</strong> This action
-                            cannot be undone. All your recovery data, including
-                            substance records, motivational factors, and progress
-                            tracking will be permanently deleted.
+                            <strong data-oid="-q5q9l9">{{ 'Warning:' | transloco }}</strong> {{ 'This action cannot be undone. All your recovery data, including substance records, motivational factors, and progress tracking will be permanently deleted.' | transloco }}
                         </p>
                     </div>
                 </div>
             </div>
 
             <p class="mb-4 text-gray-700 dark:text-gray-300" data-oid=":x4fok5">
-                To confirm, please type
+                {{ 'To confirm, please type' | transloco }}
                 <strong class="font-bold text-red-600 dark:text-red-300" data-oid="ymnjc.v">
-                    CLEAR ALL DATA
+                    {{ 'CLEAR ALL DATA' | transloco }}
                 </strong>
-                in the field below:
+                {{ 'in the field below:' | transloco }}
             </p>
 
             <input
@@ -359,7 +355,7 @@
                 name="clear"
                 [(ngModel)]="clearDataConfirmation"
                 (change)="setClearDataConfirmation($event.target)"
-                placeholder="Type CLEAR ALL DATA"
+                placeholder="{{ 'Type CLEAR ALL DATA' | transloco }}"
                 class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-red-500 focus:border-red-500 dark:focus:ring-red-400 dark:focus:border-red-400 mb-6"
             />
 
@@ -369,7 +365,7 @@
                     class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                     data-oid="jtinhj6"
                 >
-                    Cancel
+                    {{ 'Cancel' | transloco }}
                 </button>
                 <button
                     (click)="validateClearData()"
@@ -377,7 +373,7 @@
                     class="px-4 py-2 rounded-lg text-white transition-colors "
                     [ngClass]="clearDataConfirmation === 'CLEAR ALL DATA' ? 'bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800': 'bg-red-300 dark:bg-red-600/40 cursor-not-allowed'"
                 >
-                    Permanently Delete All Data
+                    {{ 'Permanently Delete All Data' | transloco }}
                 </button>
             </div>
         </div>

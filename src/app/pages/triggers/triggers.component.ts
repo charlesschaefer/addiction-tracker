@@ -5,13 +5,14 @@ import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
 import { TriggerDto } from "../../dto/trigger.dto";
-import { ChartModule } from 'primeng/chart';
+import { ChartModule } from "primeng/chart";
 import { TriggerService } from "../../services/trigger.service";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-triggers-page",
     standalone: true,
-    imports: [CommonModule, ChartModule],
+    imports: [CommonModule, ChartModule, TranslocoModule],
     templateUrl: "./triggers.component.html",
 })
 export class TriggersComponent implements OnInit {
@@ -55,19 +56,19 @@ export class TriggersComponent implements OnInit {
         this.pieChartOptions = {
             plugins: {
                 legend: {
-                    position: 'bottom'
-                }
+                    position: "bottom",
+                },
             },
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
         };
 
         // Bar chart options
         this.barChartOptions = {
             plugins: {
                 legend: {
-                    position: 'bottom'
-                }
+                    position: "bottom",
+                },
             },
             responsive: true,
             maintainAspectRatio: false,
@@ -76,27 +77,27 @@ export class TriggersComponent implements OnInit {
                     stacked: true,
                     title: {
                         display: true,
-                        text: 'Triggers'
+                        text: "Triggers",
                     },
                     ticks: {
                         maxRotation: 45,
-                        minRotation: 45
-                    }
+                        minRotation: 45,
+                    },
                 },
                 y: {
                     stacked: true,
                     title: {
                         display: true,
-                        text: 'Number of Entries'
-                    }
-                }
-            }
+                        text: "Number of Entries",
+                    },
+                },
+            },
         };
     }
 
     updateCharts() {
         this.updatePieChart();
-        if (this.selectedSubstance === 'all') {
+        if (this.selectedSubstance === "all") {
             this.updateBarChart();
         }
     }
@@ -104,41 +105,51 @@ export class TriggersComponent implements OnInit {
     updatePieChart() {
         const triggerData = this.prepareTriggerData();
         this.pieChartData = {
-            labels: triggerData.map(item => item.name),
-            datasets: [{
-                data: triggerData.map(item => item.value),
-                backgroundColor: this.COLORS,
-                hoverBackgroundColor: this.COLORS
-            }]
+            labels: triggerData.map((item) => item.name),
+            datasets: [
+                {
+                    data: triggerData.map((item) => item.value),
+                    backgroundColor: this.COLORS,
+                    hoverBackgroundColor: this.COLORS,
+                },
+            ],
         };
     }
 
     updateBarChart() {
         const triggerBySubstanceData = this.prepareTriggerBySubstanceData();
-        
-        if (this.selectedSubstance === 'all') {
+
+        if (this.selectedSubstance === "all") {
             // Create datasets for each substance
             const datasets = this.substances.map((substance, index) => ({
                 label: substance.name,
-                data: triggerBySubstanceData.map(item => item[substance.name] || 0),
-                backgroundColor: this.COLORS[index % this.COLORS.length]
+                data: triggerBySubstanceData.map(
+                    (item) => item[substance.name] || 0
+                ),
+                backgroundColor: this.COLORS[index % this.COLORS.length],
             }));
 
             this.barChartData = {
-                labels: this.triggers.map(trigger => trigger.name),
-                datasets: datasets
+                labels: this.triggers.map((trigger) => trigger.name),
+                datasets: datasets,
             };
         } else {
             // Single substance view
-            const substance = this.substances.find(s => s.name === this.selectedSubstance);
+            const substance = this.substances.find(
+                (s) => s.name === this.selectedSubstance
+            );
             if (substance) {
                 this.barChartData = {
-                    labels: this.triggers.map(trigger => trigger.name),
-                    datasets: [{
-                        label: substance.name,
-                        data: triggerBySubstanceData.map(item => item[substance.name] || 0),
-                        backgroundColor: this.COLORS[0]
-                    }]
+                    labels: this.triggers.map((trigger) => trigger.name),
+                    datasets: [
+                        {
+                            label: substance.name,
+                            data: triggerBySubstanceData.map(
+                                (item) => item[substance.name] || 0
+                            ),
+                            backgroundColor: this.COLORS[0],
+                        },
+                    ],
                 };
             }
         }
@@ -150,14 +161,14 @@ export class TriggersComponent implements OnInit {
                 ...this.barChartOptions.plugins,
                 tooltip: {
                     callbacks: {
-                        label: function(context: any) {
-                            const label = context.dataset.label || '';
+                        label: function (context: any) {
+                            const label = context.dataset.label || "";
                             const value = context.raw || 0;
                             return `${label}: ${value} entries`;
-                        }
-                    }
-                }
-            }
+                        },
+                    },
+                },
+            },
         };
     }
 
@@ -165,7 +176,9 @@ export class TriggersComponent implements OnInit {
         if (this.selectedSubstance === "all") {
             return this.usageHistory;
         }
-        const substance = this.substances.find(s => s.name === this.selectedSubstance);
+        const substance = this.substances.find(
+            (s) => s.name === this.selectedSubstance
+        );
         if (!substance) {
             return this.usageHistory;
         }
@@ -177,9 +190,9 @@ export class TriggersComponent implements OnInit {
     prepareTriggerData() {
         const triggerCounts: { [key: string]: number } = {};
         const filteredHistory = this.getFilteredUsageHistory();
-        
+
         // Initialize counts for all triggers
-        this.triggers.forEach(trigger => {
+        this.triggers.forEach((trigger) => {
             triggerCounts[trigger.name] = 0;
         });
 
@@ -197,7 +210,7 @@ export class TriggersComponent implements OnInit {
             .filter(([_, count]) => count > 0)
             .map(([name, value]) => ({
                 name,
-                value
+                value,
             }));
     }
 
@@ -211,10 +224,16 @@ export class TriggersComponent implements OnInit {
         });
 
         this.usageHistory.forEach((entry) => {
-            const substanceName = this.substances.find(s => s.id === entry.substance)?.name;
+            const substanceName = this.substances.find(
+                (s) => s.id === entry.substance
+            )?.name;
             if (substanceName) {
                 (entry.trigger || []).forEach((trigger) => {
-                    if (triggerBySubstance[substanceName] && triggerBySubstance[substanceName][trigger.name] !== undefined) {
+                    if (
+                        triggerBySubstance[substanceName] &&
+                        triggerBySubstance[substanceName][trigger.name] !==
+                            undefined
+                    ) {
                         triggerBySubstance[substanceName][trigger.name]++;
                     }
                 });
@@ -224,7 +243,8 @@ export class TriggersComponent implements OnInit {
         return this.triggers.map((trigger) => {
             const data: any = { name: trigger.name };
             this.substances.forEach((substance) => {
-                data[substance.name] = triggerBySubstance[substance.name][trigger.name] || 0;
+                data[substance.name] =
+                    triggerBySubstance[substance.name][trigger.name] || 0;
             });
             return data;
         });
@@ -241,10 +261,10 @@ export class TriggersComponent implements OnInit {
     }
 
     hasSubstanceData(): boolean {
-        if (this.selectedSubstance === 'all') {
+        if (this.selectedSubstance === "all") {
             const triggerBySubstanceData = this.prepareTriggerBySubstanceData();
-            return triggerBySubstanceData.some(item => 
-                this.substances.some(substance => item[substance.name] > 0)
+            return triggerBySubstanceData.some((item) =>
+                this.substances.some((substance) => item[substance.name] > 0)
             );
         }
         return false;
