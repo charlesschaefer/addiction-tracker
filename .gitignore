@@ -37,7 +37,6 @@ yarn-error.log
 testem.log
 /typings
 src-tauri/.cargo
-src-tauri/gen
 *.snap
 
 # System files
