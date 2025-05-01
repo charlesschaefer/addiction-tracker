@@ -70,6 +70,13 @@ parts:
     source: .
     override-build: |
       set -eu
+      if [ -f .env ]; then
+        echo "Using existing .env file"
+        source .env
+      else
+        echo "No .env file found, exiting"
+        exit 1
+      fi
       rustup default stable
       npm clean-install --include prod --include dev --include peer
       npm install --save-dev @tauri-apps/cli @tauri-apps/api rollup
