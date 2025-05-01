@@ -1,0 +1,158 @@
+name: 'publish-android'
+
+on:
+    push:
+        branches:
+            - release
+
+    workflow_dispatch:
+
+jobs:
+    publish-android:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: write
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Java
+              uses: actions/setup-java@v4
+              with:
+                  distribution: 'zulu'
+                  java-version: '17'
+
+            - name: Setup Android SDK
+              uses: android-actions/setup-android@v3
+
+            - name: Install NDK
+              run: sdkmanager "ndk;27.0.11902837"
+            
+            - name: setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  #cache: 'npm'
+            
+            - name: Get npm cache directory
+              id: npm-cache-dir
+              shell: bash
+              run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+
+            - name: Restore npm cache
+              uses: actions/cache/restore@v4
+              id: npm-cache-restore
+              with:
+                path: ${{ steps.npm-cache-dir.outputs.dir }}
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+            - name: Install dependencies
+              run: npm install
+            
+            - name: Generate npm cache
+              uses: actions/cache/save@v4
+              if: steps.npm-cache-restore.outputs.cache-hit != 'true'
+              id: npm-cache-save
+              with:
+                path: ${{ steps.npm-cache-dir.outputs.dir }}
+                key: ${{ steps.npm-cache-restore.outputs.cache-primary-key }}
+
+            - name: install Rust stable
+              uses: dtolnay/rust-toolchain@stable
+              with:
+                  targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+            
+            # - name: Install dependencies
+            #   run: pnpm install
+
+            - name: setup Android signing
+              env:
+                ANDROID_RELEASE_KEY: ${{ secrets.ANDROID_RELEASE_KEY }}
+                ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+                ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+                ANDROID_RELEASE_KEYSTORE: ${{ secrets.ANDROID_RELEASE_KEYSTORE }}
+              run: |
+                echo "keyAlias=$ANDROID_RELEASE_KEY" > src-tauri/gen/android/keystore.properties
+                echo "storePassword=$ANDROID_RELEASE_PASSWORD" >> src-tauri/gen/android/keystore.properties
+                echo "keyPassword=$ANDROID_RELEASE_KEY_PASSWORD" >> src-tauri/gen/android/keystore.properties
+                base64 -d <<< "$ANDROID_RELEASE_KEYSTORE" > $RUNNER_TEMP/keystore.jks
+                echo "storeFile="$RUNNER_TEMP"/keystore.jks" >> src-tauri/gen/android/keystore.properties
+
+            - name: Check src-tauri permissions
+              run: |
+                ls -al `find src-tauri/gen/`
+                ls -al src-tauri/ src-tauri/*
+                ls -al $RUNNER_TEMP
+                cat src-tauri/gen/android/keystore.properties
+
+
+            - name: Restore Cargo cache
+              uses: actions/cache/restore@v4
+              id: cargo-cache-restore
+              with:
+                path: |
+                  ~/.cargo/
+                  addiction-tracker/target/
+                key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+            - name: Restore gradle cache
+              uses: actions/cache/restore@v4
+              id: gradle-cache-restore
+              with:
+                path: |
+                  ~/.gradle/
+                key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+                
+            - name: Build app bundle
+              run: npm run tauri android build 
+              # run: npm run tauri info
+              env:
+                  NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
+                  GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
+                  GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
+
+            - name: Create gradle cache
+              uses: actions/cache/save@v4
+              id: gradle-cache-create
+              with:
+                path: |
+                  ~/.gradle/
+                key: ${{ steps.gradle-cache-restore.outputs.cache-primary-key }}
+            
+            - name: Create cargo cache
+              uses: actions/cache/save@v4
+              id: cargo-cache-save
+              with:
+                path: |
+                  ~/.cargo/
+                  addiction-tracker/target/
+                key: ${{ steps.cargo-cache-restore.outputs.cache-primary-key }}
+
+            - name: Shows the generated packages
+              run: |
+                  echo "Files on the outputs directory, apk"
+                  find src-tauri/gen/android/app/build/outputs/ -name "*.apk"
+                  echo "Files on the outputs directory, aab"
+                  find src-tauri/gen/android/app/build/outputs/ -name "*.aab"
+
+            - name: Get Node project version
+              id: package-version
+              uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+            - name: Publish
+              uses: softprops/action-gh-release@v1
+              with:
+                  draft: true
+                  name: App v${{ steps.package-version.outputs.current-version}} (Android)
+                  tag_name: android-v${{ steps.package-version.outputs.current-version}}
+                  generate_release_notes: true
+                  files: |
+                      src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk
+                      src-tauri/gen/android/app/build/outputs/bundle/universalRelease/app-universal-release.aab
+            
+            - name: Google Play AAB Upload
+              uses: italankin/google-play-aab-uploader@1.3
+              with:
+                package-name: com.addictiontracker
+                aab-path: src-tauri/gen/android/app/build/outputs/bundle/universalRelease/app-universal-release.aab
+                key-json: '${{ secrets.GOOGLE_SERVICE_KEY_JSON }}'
+            
