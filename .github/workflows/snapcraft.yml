@@ -1,0 +1,34 @@
+name: Snapcraft Builds
+
+on:
+    push:
+        branches:
+            - release
+    workflow_dispatch:
+
+jobs:
+  build-snapcraft:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: setup node
+      uses: actions/setup-node@v4
+      with:
+          node-version: lts/*
+          #cache: 'npm'
+
+    - name: Build Snap package
+      uses: snapcore/action-build@v1
+      id: build
+      env: 
+        GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
+        GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
+    
+    - name: Publish to snap store
+      uses: snapcore/action-publish@v1
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
+      with:
+        snap: ${{ steps.build.outputs.snap }}
+        release: edge
