@@ -21,8 +21,6 @@ import {
 import { ThemeService } from "./services/theme.service";
 import { invoke } from "@tauri-apps/api/core";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
-import { firstValueFrom } from "rxjs";
-import { LockButtonComponent } from "./components/lock-button.component";
 import { HeaderComponent } from "./components/header.component";
 import { ToastModule } from "primeng/toast";
 import { DataUpdatedService } from "./services/data-updated.service";
@@ -161,7 +159,6 @@ export class AppComponent implements OnInit {
         private achievementService: AchievementService,
         private substanceService: SubstanceService,
         private messageService: MessageService,
-        private usageService: UsageService,
     ) {
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {

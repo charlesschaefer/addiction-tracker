@@ -24,10 +24,25 @@ export class SettingsComponent {
     clearDataConfirmation = "";
     showClearDataDialog = false;
     clearDataConfirmed: boolean = false;
+    darkMode = false;
+    language = 'en';
 
     constructor(
-        private messageService: MessageService
-    ) {}
+        private messageService: MessageService,
+    ) {
+        // Load theme and language from localStorage if available
+        if (typeof window !== 'undefined') {
+            const storedTheme = localStorage.getItem('theme');
+            if (storedTheme) {
+                this.darkMode = storedTheme === 'dark';
+                this.applyTheme();
+            }
+            const storedLang = localStorage.getItem('language');
+            if (storedLang) {
+                this.language = storedLang;
+            }
+        }
+    }
 
     enableProtection(password: string) {
         this.isProtected = true;
@@ -132,5 +147,31 @@ export class SettingsComponent {
         } catch (e) {
             console.error("Error trying to delete database: ", e);
         }
+    }
+
+    toggleDarkMode() {
+        this.darkMode = !this.darkMode;
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+        }
+        this.applyTheme();
+    }
+
+    applyTheme() {
+        if (typeof document !== 'undefined') {
+            if (this.darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+    }
+
+    setLanguage(lang: string) {
+        this.language = lang;
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('language', lang);
+        }
+        // Optionally, trigger i18n language change here
     }
 }

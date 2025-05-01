@@ -15,7 +15,8 @@ export class OnboardingFlowComponent {
     confirmPassword = "";
     enableDataProtection = false;
     passwordError = "";
-    totalSteps = 8;
+    //totalSteps = 8;
+    totalSteps = 7;
 
     goToNextStep() {
         if (this.currentStep < this.totalSteps) {

@@ -21,6 +21,7 @@ import svg3 from "../../../assets/icons/dashboard.svg";
 import svg4 from "../../../assets/icons/analytics.svg";
 import { DateTime } from "luxon";
 import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobriety-card/sobriety-card.component";
+import { OnboardingFlowComponent } from "../../components/onboarding-flow.component";
 
 @Component({
     selector: "app-home",
@@ -28,14 +29,14 @@ import { SobrietyCardComponent, SobrietyCardStyle } from "../../components/sobri
     CommonModule,
     NavigationCardsComponent,
     AchievementsMilestonesComponent,
-    SobrietyCardComponent
+    SobrietyCardComponent,
+    OnboardingFlowComponent
 ],
     templateUrl: "./home.component.html",
     styleUrl: "./home.component.scss",
 })
 export class HomeComponent implements OnInit {
-    
-
+    showOnboardingFlow = true;
     usageHistory: UsageDto[] = [];
     motivationalFactors: MotivationalFactorDto[] = [];
     achievements: AchievementDto[] = [];
@@ -102,13 +103,15 @@ export class HomeComponent implements OnInit {
         private substanceService: SubstanceService,
         private usageService: UsageService,
         private motivationalFactorService: MotivationalFactorService
-    ) {}
-
+    ) {
+    }
+    
     ngOnInit(): void {
-        const sawGuidedTour = this.cookieService.get("sawGuidedTour");
-        if (!sawGuidedTour) {
-            this.initializeGuidedTour();
-        }
+        this.showOnboardingFlow = !localStorage.getItem("onboardingCompleted");
+        // const sawGuidedTour = this.cookieService.get("sawGuidedTour");
+        // if (!sawGuidedTour) {
+        //     this.initializeGuidedTour();
+        // }
 
         this.achievementService.list().then((achievements) => {
             this.achievements = achievements as AchievementDto[];
@@ -153,5 +156,9 @@ export class HomeComponent implements OnInit {
         throw new Error("Method not implemented.");
     }
 
+    completeOnboarding() {
+        localStorage.setItem("onboardingCompleted", "true");
+        this.showOnboardingFlow = false;
+    }
     
 }
