@@ -48,9 +48,9 @@ parts:
     build-snaps:
       - node/20/stable
       - rustup/latest/stable
-    build-environment:
-      - GOOGLE_GEMINI_PROJECT_NAME: $GOOGLE_GEMINI_PROJECT_NAME
-      - GOOGLE_GEMINI_API: $GOOGLE_GEMINI_API
+    # build-environment:
+    #   - GOOGLE_GEMINI_PROJECT_NAME: $GOOGLE_GEMINI_PROJECT_NAME
+    #   - GOOGLE_GEMINI_API: $GOOGLE_GEMINI_API
     build-packages:
       - libwebkit2gtk-4.1-dev
       - build-essential
