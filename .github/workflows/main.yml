@@ -36,7 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm' # Set this to npm, yarn or pnpm.
+          #cache: 'npm' # Set this to npm, yarn or pnpm.
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable # Set this to dtolnay/rust-toolchain@nightly
@@ -51,15 +51,24 @@ jobs:
 
       - name: install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        run: npm install # change this to npm or pnpm depending on which one you use.
+        #run: npm install --save-dev @tauri-apps/cli # change this to npm or pnpm depending on which one you use.
+        run: |
+          npm clean-install --include prod --include dev --include peer --verbose
+          npm install --save-dev @tauri-apps/cli @tauri-apps/api rollup
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: Build the app bundles and signatures, when available
+        id: build
+        uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
+            GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'App v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
-          args: ${{ matrix.args }}
+            tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+            releaseName: 'App v__VERSION__'
+            releaseBody: 'See the assets to download this version and install.'
+            releaseDraft: true
+            prerelease: false
+            #includeUpdaterJson: true
+            #updaterJsonPreferNsis: true
+            args: ${{ matrix.args }}
