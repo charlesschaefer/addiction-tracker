@@ -5,11 +5,12 @@ import { UsageDto } from "../dto/usage.dto";
 import { SubstanceDto } from "../dto/substance.dto";
 import { ChartData } from "chart.js";
 import { SentimentService } from "../services/sentiment.service";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-substance-analysis-card",
     standalone: true,
-    imports: [CommonModule, ChartModule],
+    imports: [CommonModule, ChartModule, TranslocoModule],
     templateUrl: "./substance-analysis-card.component.html",
 })
 export class SubstanceAnalysisCardComponent {

@@ -22,6 +22,7 @@ import { CostAddDto } from "../dto/cost.dto";
 import { MessageService } from "primeng/api";
 import { UsageFillingService } from "../services/usage-filling.service";
 import { UsageFillingAddDto } from "../dto/usage-filling.dto";
+import { TranslocoModule } from "@jsverse/transloco";
 
 /**
  * Angular component for recording substance use.
@@ -36,6 +37,7 @@ import { UsageFillingAddDto } from "../dto/usage-filling.dto";
         SelectModule,
         SubstanceIconSelectComponent,
         DatePickerModule,
+        TranslocoModule
     ],
     templateUrl: "./record-substance-use.component.html",
 })

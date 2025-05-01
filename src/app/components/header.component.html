@@ -10,7 +10,7 @@
             <img class="w-[400px] max-w-full h-auto" src="/assets/logo.png" alt="Addiction Tracker" />
           </a>
           <p class="text-gray-500 mt-0.5 text-xs sm:text-sm">
-            Track your habits. Take control of your life.
+            {{ 'Track your habits. Take control of your life.' | transloco }}
           </p>
         </div>
       </div>
@@ -76,8 +76,8 @@
           <div class="flex items-center">
             <img class="w-[40px] h-[40px]" src="/assets/icon.svg" alt="Addiction Tracker" />
             <div class="ml-3">
-              <h1 class="text-lg font-semibold text-purple-700">Addiction Tracker</h1>
-              <p class="text-xs text-gray-500">Your journey to wellness</p>
+              <h1 class="text-lg font-semibold text-purple-700">{{ 'Addiction Tracker' | transloco }}</h1>
+              <p class="text-xs text-gray-500">{{ 'Your journey to wellness' | transloco }}</p>
             </div>
           </div>
         </a>
@@ -88,7 +88,7 @@
         </button>
       </div>
       <nav class="flex-1 p-4 bg-[#FFFFFF] h-[fit-content]">
-        <h2 class="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-4 pl-2">Navigation</h2>
+        <h2 class="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-4 pl-2">{{ 'Navigation' | transloco }}</h2>
         <ul class="space-y-2">
           <li *ngFor="let link of navLinks">
             <a [routerLink]="link.href" class="flex items-center py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300over:bg-gray-50 hover:text-purple-600" routerLinkActive="bg-purple-100 text-purple-700 font-medium shadow-sm" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
@@ -135,7 +135,7 @@
       </nav>
       <div class="p-5 border-t border-gray-200 bg-gray-50">
         <div class="flex flex-col items-center">
-          <p class="text-xs text-gray-500 mb-3">Secure your recovery data</p>
+          <p class="text-xs text-gray-500 mb-3">{{ 'Secure your recovery data' | transloco }}</p>
           <app-lock-button></app-lock-button>
         </div>
       </div>

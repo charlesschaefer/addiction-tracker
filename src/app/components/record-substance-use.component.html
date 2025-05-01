@@ -3,7 +3,7 @@
     <div class="sticky top-0 p-5 z-99 bg-black/3 backdrop-blur-sm rounded-xl">
       <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm pt-3 pb-3 border-b border-gray-100 dark:border-gray-800 z-100 shadow-sm p-4 rounded-xl">
         <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
-          Record Substance Use
+          {{ 'Record Substance Use' | transloco }}
         </h2>
         <div class="flex flex-row items-center gap-2">
           <button
@@ -25,7 +25,7 @@
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
                   />
               </svg>
-              Give Up
+              {{ 'Give Up' | transloco }}
           </button>
           <button
             (click)="close.emit()"
@@ -55,7 +55,7 @@
         <!-- Substance selection -->
         <div class="mb-6">
           <h3 class="text-base font-medium text-gray-700 dark:text-gray-300 mb-4" *ngIf="!showAddSubstance">
-            Select a substance
+            {{ 'Select a substance' | transloco }}
           </h3>
           <div 
             *ngIf="!showAddSubstance && (currentMotivationalFactor !== null || (selectedSubstance && !showAddSubstance))" 
@@ -63,7 +63,7 @@
           >
             <div class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
               <h2 class="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">
-                Remember why you want to quit {{ selectedSubstance?.name ?? "using substances" }}
+                {{ 'Remember why you want to quit' | transloco }} {{ selectedSubstance?.name ?? ("using substances" | transloco) }}
               </h2>
               <ng-container *ngIf="currentMotivationalFactor; else noMotivation">
                 <div>
@@ -76,24 +76,24 @@
               </ng-container>
               <ng-template #noMotivation>
                 <p class="text-gray-600 dark:text-gray-400 italic">
-                  "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this."
+                  {{ "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this." | transloco }}
                 </p>
               </ng-template>
             </div>
           </div>
           <div *ngIf="showAddSubstance" class="bg-gradient-to-br from-purple-50 to-purple-100/70 dark:from-purple-900 dark:to-purple-900/70 p-5 rounded-xl border border-purple-200 dark:border-purple-800 shadow-sm animate-fadeIn">
             <h3 class="text-xl font-semibold bg-gradient-to-r from-purple-700 to-purple-500 bg-clip-text text-transparent mb-2">
-              Add New Substance
+              {{ 'Add New Substance' | transloco }}
             </h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Start by giving your substance a name. This will help you track your usage patterns over time.
+              {{ 'Start by giving your substance a name. This will help you track your usage patterns over time.' | transloco }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 mb-4">
               <input
                 type="text"
                 [(ngModel)]="newSubstance"
                 name="newSubstance"
-                placeholder="Substance name"
+                placeholder="{{ 'Substance name' | transloco }}"
                 class="flex-1 rounded-lg border-gray-300 dark:border-gray-700 p-4 bg-white/60 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
               />
               <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" class="mb-4" />
@@ -116,14 +116,14 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                Add
+                {{ 'Add' | transloco }}
               </button>
               <button
                 type="button"
                 (click)="showAddSubstance = false"
                 class="px-5 py-3 border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center"
               >
-                Cancel
+                {{ 'Cancel' | transloco }}
               </button>
             </div>
           </div>
@@ -156,7 +156,7 @@
                 clip-rule="evenodd"
               />
             </svg>
-            Add New Substance
+            {{ 'Add New Substance' | transloco }}
           </button>
         </div>
 
@@ -165,7 +165,7 @@
           <div class="mt-6 mb-8 flex items-center">
             <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
             <span class="px-3 text-sm font-medium text-purple-600 dark:text-purple-300">
-              Usage Details
+              {{ 'Usage Details' | transloco }}
             </span>
             <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
           </div>
@@ -191,17 +191,17 @@
               </div>
               <div>
                 <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
-                  When did you use it?
+                  {{ 'When did you use it?' | transloco }}
                 </h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                  Record the date and time of your substance use
+                  {{ 'Record the date and time of your substance use' | transloco }}
                 </p>
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-4">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Date and time
+                  {{ 'Date and time' | transloco }}
                 </label>
                 <p-datepicker 
                   [(ngModel)]="datetime" 
@@ -238,17 +238,17 @@
               </div>
               <div>
                 <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
-                  How much did you use?
+                  {{ 'How much did you use?' | transloco }}
                 </h4>
                 <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                  Record the amount and cost of your substance use
+                  {{ 'Record the amount and cost of your substance use' | transloco }}
                 </p>
               </div>
             </div>
             <div class="space-y-6">
               <div class="space-y-2">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                  Amount
+                  {{ 'Amount' | transloco }}
                 </label>
                 <div class="flex items-center">
                   <button
@@ -284,7 +284,7 @@
                       name="amount"
                       class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
                       min="1"
-                      placeholder="Enter amount"
+                      placeholder="{{ 'Enter amount' | transloco }}"
                     />
                   </div>
                   <button
@@ -299,13 +299,13 @@
                   </button>
                 </div>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
-                  Enter the number of units consumed
+                  {{ 'Enter the number of units consumed' | transloco }}
                 </p>
               </div>
               <div class="mt-6">
                 <div *ngIf="showCostInput" class="space-y-2 animate-fadeIn">
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                    Cost ($)
+                    {{ 'Cost ($)' | transloco }}
                   </label>
                   <div class="flex items-center">
                     <button
@@ -339,7 +339,7 @@
                         type="number"
                         [(ngModel)]="cost"
                         name="cost"
-                        placeholder="Enter cost"
+                        placeholder="{{ 'Enter cost' | transloco }}"
                         class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
                         step="0.01"
                         min="0"
@@ -357,7 +357,7 @@
                     </button>
                   </div>
                   <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
-                    Enter the cost in dollars
+                    {{ 'Enter the cost in dollars' | transloco }}
                   </p>
                 </div>
                 <button
@@ -378,7 +378,7 @@
                       clip-rule="evenodd"
                     />
                   </svg>
-                  Add cost information
+                  {{ 'Add cost information' | transloco }}
                 </button>
               </div>
             </div>
@@ -408,14 +408,14 @@
                 />
               </svg>
               <h4 class="font-medium text-gray-700 dark:text-gray-300">
-                How intense was your craving?
+                {{ 'How intense was your craving?' | transloco }}
               </h4>
             </div>
             <div class="px-2">
               <div class="flex justify-between mb-2">
-                <span class="text-xs text-gray-500 dark:text-gray-400">Mild (1)</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">Moderate (5)</span>
-                <span class="text-xs text-gray-500 dark:text-gray-400">Severe (10)</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Mild (1)' | transloco }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Moderate (5)' | transloco }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Severe (10)' | transloco }}</span>
               </div>
               <input
                 type="range"
@@ -450,10 +450,10 @@
                 <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium">
                   {{
                     cravingIntensity <= 3
-                      ? 'Mild craving'
+                      ? ('Mild craving' | transloco)
                       : cravingIntensity <= 7
-                      ? 'Moderate craving'
-                      : 'Severe craving'
+                      ? ('Moderate craving' | transloco)
+                      : ('Severe craving' | transloco)
                   }}
                 </p>
               </div>
@@ -478,7 +478,7 @@
                 />
               </svg>
               <h4 class="font-medium text-gray-700 dark:text-gray-300">
-                How were you feeling?
+                {{ 'How were you feeling?' | transloco }}
               </h4>
             </div>
             <div class="grid grid-cols-5 gap-2 sm:gap-4">
@@ -490,7 +490,7 @@
                 class="flex flex-col items-center p-3 rounded-lg transition-all"
               >
                 <span class="text-3xl mb-2">{{ m.emoji }}</span>
-                <span class="text-xs font-medium">{{ m.label }}</span>
+                <span class="text-xs font-medium">{{ m.label | transloco }}</span>
               </button>
             </div>
           </div>
@@ -513,7 +513,7 @@
                 />
               </svg>
               <h4 class="font-medium text-gray-700 dark:text-gray-300">
-                What triggered this use?
+                {{ 'What triggered this use?' | transloco }}
               </h4>
             </div>
             <div class="flex flex-wrap gap-2 mb-3">
@@ -529,7 +529,7 @@
             </div>
             <div *ngIf="showAddTrigger" class="bg-purple-50 dark:bg-purple-900/40 p-3 rounded-lg border border-purple-100 dark:border-purple-800 mt-3">
               <label class="block text-xs text-purple-700 dark:text-purple-300 font-medium mb-1">
-                New Trigger
+                {{ 'New Trigger' | transloco }}
               </label>
               <div class="flex flex-col sm:flex-row gap-3">
                 <div class="relative flex-1">
@@ -551,7 +551,7 @@
                     type="text"
                     [(ngModel)]="newTrigger"
                     name="newTrigger"
-                    placeholder="Enter new trigger"
+                    placeholder="{{ 'Enter new trigger' | transloco }}"
                     class="pl-12 w-full h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300 dark:hover:border-purple-500"
                     autofocus
                   />
@@ -574,7 +574,7 @@
                         clip-rule="evenodd"
                       />
                     </svg>
-                    Add
+                    {{ 'Add' | transloco }}
                   </button>
                   <button
                     type="button"
@@ -593,7 +593,7 @@
                         clip-rule="evenodd"
                       />
                     </svg>
-                    Cancel
+                    {{ 'Cancel' | transloco }}
                   </button>
                 </div>
               </div>
@@ -616,7 +616,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              Add new trigger
+              {{ 'Add new trigger' | transloco }}
             </button>
           </div>
 
@@ -639,7 +639,7 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                Record Usage
+                {{ 'Record Usage' | transloco }}
               </button>
               
               <button
@@ -659,7 +659,7 @@
                     clip-rule="evenodd"
                   />
                 </svg>
-                I Decided Not To Use
+                {{ 'I Decided Not To Use' | transloco }}
               </button>
             </div>
           </div>

@@ -4,7 +4,7 @@
             class="text-lg md:text-xl font-semibold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent"
             data-oid="ip94t_-"
         >
-            Achievements & Milestones
+            {{ 'Achievements & Milestones' | transloco }}
         </h2>
         <button
             (click)="toggleExpanded()"
@@ -36,7 +36,7 @@
     <div class="mb-4" data-oid="ujojsk.">
         <div class="flex justify-between items-center mb-1" data-oid="_iijn2_">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-200" data-oid="mjg4mo:">
-                Your progress
+                {{ 'Your progress' | transloco }}
             </span>
             <span class="text-sm font-medium text-teal-600 dark:text-teal-300" data-oid=":tahtdc">
                 {{ progressPercentage() }}%
@@ -50,7 +50,7 @@
             ></div>
         </div>
         <div class="mt-1 text-xs text-gray-500 dark:text-gray-400 text-right" data-oid="gp6z:2x">
-            {{ completedCount() }} of {{ totalCount() }} achievements
+            {{ completedCount() }} {{ 'of' | transloco }} {{ totalCount() }} {{ 'achievements' | transloco }}
         </div>
     </div>
 
@@ -69,7 +69,7 @@
 
     <!-- Achievements list -->
     <div class="space-y-3 md:space-y-4">
-      <h2>Displayed Achievements: {{displayedAchievements()?.length}}</h2>
+      <h2>{{ 'Displayed Achievements:' | transloco }} {{displayedAchievements()?.length}}</h2>
       <div class="flex flex-row flex-wrap gap-4 justify-center">
         <ng-container *ngIf="(displayedAchievements()?.length || 0) > 0; else noAchievements">
             <div
@@ -107,7 +107,7 @@
         </ng-container>
         <ng-template #noAchievements>
             <div class="text-center py-4 text-gray-500 dark:text-gray-400" data-oid="3p:0iqn">
-                No achievements in this category yet
+                {{ 'No achievements in this category yet' | transloco }}
             </div>
         </ng-template>
       </div>
@@ -120,7 +120,7 @@
         class="mt-4 w-full py-2 text-sm text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 border border-teal-200 dark:border-teal-800 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
         data-oid="40h48j1"
     >
-        Show {{ (filteredAchievements().length || 0) - (displayedAchievements().length || 0) }} more achievements
+        {{ 'Show' | transloco }} {{ (filteredAchievements().length || 0) - (displayedAchievements().length || 0) }} {{ 'more achievements' | transloco }}
     </button>
 
     <button
@@ -129,7 +129,7 @@
         class="mt-4 w-full py-2 text-sm text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-200 border border-teal-200 dark:border-teal-800 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/30 transition-colors"
         data-oid="fa6ds_-"
     >
-        Show less
+        {{ 'Show less' | transloco }}
     </button>
 
     <div>
@@ -139,7 +139,7 @@
           routerLink="/achievements"
           routerLinkActive="hidden"
       >
-          View All Achievements
+          {{ 'View All Achievements' | transloco }}
       </a>
     </div>
     

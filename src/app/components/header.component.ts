@@ -4,6 +4,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { ThemeService } from "../services/theme.service";
 import { LockButtonComponent } from "./lock-button.component";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-header",
@@ -12,6 +13,7 @@ import { LockButtonComponent } from "./lock-button.component";
         CommonModule, 
         RouterModule, 
         LockButtonComponent,
+        TranslocoModule
     ],
     templateUrl: "./header.component.html",
 })

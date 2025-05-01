@@ -3,29 +3,29 @@
   <!-- Current Spending Card -->
   <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-          Current Spending
+          {{ 'Current Spending' | transloco }}
       </h3>
       <div class="space-y-4">
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">Past Week</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ 'Past Week' | transloco }}</span>
               <span class="font-semibold text-lg">
                   {{ calculateSpendingByPeriod('week') | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">Past Month</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ 'Past Month' | transloco }}</span>
               <span class="font-semibold text-lg">
                   {{ calculateSpendingByPeriod('month') | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">Past Year</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ 'Past Year' | transloco }}</span>
               <span class="font-semibold text-lg">
                   {{ calculateSpendingByPeriod('year') | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-purple-100 dark:border-purple-800">
-              <span class="text-gray-700 dark:text-gray-200 font-semibold ">Total All Time</span>
+              <span class="text-gray-700 dark:text-gray-200 font-semibold ">{{ 'Total All Time' | transloco }}</span>
               <span class="text-2xl font-bold text-purple-600 dark:text-purple-300">
                   {{ calculateTotalSpending() | currency }}
               </span>
@@ -36,30 +36,30 @@
   <!-- Potential Savings Card -->
   <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-          Potential Savings
+          {{ 'Potential Savings' | transloco }}
       </h3>
       <div class="space-y-4">
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">Projected Annual Cost</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ 'Projected Annual Cost' | transloco }}</span>
               <span class="font-semibold text-lg text-red-500 dark:text-red-400">
                   {{ projectAnnualSpending() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">1 Year of Sobriety</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ '1 Year of Sobriety' | transloco }}</span>
               <span class="font-semibold text-lg text-green-600 dark:text-green-400">
                   +{{ calculatePotentialSavings(1) | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">5 Years of Sobriety</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ '5 Years of Sobriety' | transloco }}</span>
               <span class="font-semibold text-lg text-green-600 dark:text-green-400">
                   +{{ calculatePotentialSavings(5) | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-orange-100 dark:border-orange-800">
               <span class="text-gray-700 dark:text-gray-200 font-semibold ">
-                  10 Years of Sobriety
+                  {{ '10 Years of Sobriety' | transloco }}
               </span>
               <span class="text-2xl font-bold text-orange-600 dark:text-orange-400">
                   +{{ calculatePotentialSavings(10) | currency }}
@@ -72,7 +72,7 @@
 <!-- Spending Distribution -->
 <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
   <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-      Spending Distribution
+      {{ 'Spending Distribution' | transloco }}
   </h3>
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Pie chart placeholder -->
@@ -83,7 +83,7 @@
       <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
               <h4 class="text-base font-medium text-gray-700 dark:text-gray-200">
-                  Detailed Cost Breakdown
+                  {{ 'Detailed Cost Breakdown' | transloco }}
               </h4>
           </div>
           <div class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -99,7 +99,7 @@
                   </span>
               </div>
               <div class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 font-medium">
-                  <span>Total</span>
+                  <span>{{ 'Total' | transloco }}</span>
                   <span>{{ calculateTotalSpending() | currency }}</span>
               </div>
           </div>

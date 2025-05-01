@@ -1,11 +1,12 @@
 import { CommonModule } from "@angular/common";
 import { Component, Output, EventEmitter } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-protection-setup-dialog",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslocoModule],
     templateUrl: "./protection-setup-dialog.component.html",
 })
 export class ProtectionSetupDialogComponent {

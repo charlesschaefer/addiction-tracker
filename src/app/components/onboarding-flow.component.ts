@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { Component, Output, EventEmitter } from "@angular/core";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-onboarding-flow",
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslocoModule],
     templateUrl: "./onboarding-flow.component.html",
 })
 export class OnboardingFlowComponent {

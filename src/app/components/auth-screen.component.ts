@@ -5,11 +5,12 @@ import { Router } from "@angular/router";
 //import { AuthService } from "../../services/auth.service";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-auth-screen",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslocoModule],
     templateUrl: "./auth-screen.component.html",
 })
 export class AuthScreenComponent {

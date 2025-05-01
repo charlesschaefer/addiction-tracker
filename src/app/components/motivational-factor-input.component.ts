@@ -2,12 +2,13 @@ import { CommonModule } from "@angular/common";
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MotivationalFactorDto } from "../dto/motivational-factor.dto";
+import { TranslocoModule } from "@jsverse/transloco";
 
 
 @Component({
     selector: "app-motivational-factor-input",
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, TranslocoModule],
     templateUrl: "./motivational-factor-input.component.html",
 })
 export class MotivationalFactorInputComponent {

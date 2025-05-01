@@ -6,11 +6,12 @@ import { ButtonModule } from "primeng/button";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import { AchievementService } from "../../services/achievement.service";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-achievements-display",
     standalone: true,
-    imports: [CommonModule, RouterLink, ButtonModule, RouterLinkActive],
+    imports: [CommonModule, RouterLink, ButtonModule, RouterLinkActive, TranslocoModule],
     templateUrl: "./achievements-display.component.html",
 })
 export class AchievementsDisplayComponent {

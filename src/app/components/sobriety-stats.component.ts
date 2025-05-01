@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-sobriety-stats",
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, TranslocoModule],
     templateUrl: "./sobriety-stats.component.html",
 })
 export class SobrietyStatsComponent {

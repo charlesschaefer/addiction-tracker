@@ -5,11 +5,12 @@ import {
 import { CommonModule } from "@angular/common";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
+import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({
     selector: "app-achievements-milestones",
     standalone: true,
-    imports: [AchievementsDisplayComponent, CommonModule],
+    imports: [AchievementsDisplayComponent, CommonModule, TranslocoModule],
     templateUrl: "./achievements-milestones.component.html",
 })
 export class AchievementsMilestonesComponent implements OnInit {

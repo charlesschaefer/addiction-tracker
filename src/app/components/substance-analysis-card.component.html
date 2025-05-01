@@ -1,6 +1,6 @@
 <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800">
   <h2 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
-    Substance Analysis
+    {{ 'Substance Analysis' | transloco }}
   </h2>
   <!-- Substance Selector Tabs -->
   <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
@@ -10,7 +10,7 @@
         class="mr-2 inline-block py-2 px-4 text-sm font-medium"
         [ngClass]="selectedAnalysisSubstance === 'all' ? 'text-purple-600 dark:text-purple-300 border-b-2 border-purple-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent'"
       >
-        All Substances
+        {{ 'All Substances' | transloco }}
       </button>
       <button
         *ngFor="let substance of substances.values()"
@@ -24,20 +24,20 @@
   </div>
   <!-- Usage by Substance Chart -->
   <div *ngIf="selectedAnalysisSubstance === 'all'" class="mb-8">
-    <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">Usage by Substance</h3>
+    <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">{{ 'Usage by Substance' | transloco }}</h3>
     <div *ngIf="hasUsageData(); else noUsageData" class="h-[350px]">
       <p-chart type="bar" [data]="prepareUsageBySubstanceData()" [options]="barOptions" height="300" width="300"></p-chart>
     </div>
     <ng-template #noUsageData>
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
-        <p class="text-center">No usage data available yet. Start recording your substance use to see patterns.</p>
+        <p class="text-center">{{ 'No usage data available yet. Start recording your substance use to see patterns.' | transloco }}</p>
       </div>
     </ng-template>
   </div>
   <!-- Combined Trend Chart -->
   <div class="mb-8">
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">
-      {{ selectedAnalysisSubstance === 'all' ? 'Overall Trends (Last 14 Days)' : (selectedAnalysisSubstance + ' Trends (Last 14 Days)') }}
+      {{ selectedAnalysisSubstance === 'all' ? ('Overall Trends (Last 14 Days)' | transloco) : (selectedAnalysisSubstance + ' ' + ('Trends (Last 14 Days)' | transloco)) }}
     </h3>
     <div *ngIf="hasDataForSelectedSubstance(); else noTrendData" class="h-[350px]">
       <p-chart type="line" [data]="prepareCombinedTrendData()" [options]="lineOptions" height="300" width="300"></p-chart>
@@ -46,8 +46,8 @@
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
         <p class="text-center">
           {{ selectedAnalysisSubstance === 'all' 
-            ? 'No trend data available yet. Start recording your substance use to see patterns.' 
-            : 'No data available for ' + selectedAnalysisSubstance + ' yet. Record some usage to see trends.' }}
+            ? ('No trend data available yet. Start recording your substance use to see patterns.' | transloco)
+            : ('No data available for ' + selectedAnalysisSubstance + ' yet. Record some usage to see trends.' | transloco) }}
         </p>
       </div>
     </ng-template>
@@ -55,7 +55,7 @@
   <!-- Trigger Analysis for Selected Substance -->
   <div>
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">
-      {{ selectedAnalysisSubstance === 'all' ? 'Overall Trigger Analysis' : (selectedAnalysisSubstance + ' Trigger Analysis') }}
+      {{ selectedAnalysisSubstance === 'all' ? ('Overall Trigger Analysis' | transloco) : (selectedAnalysisSubstance + ' ' + ('Trigger Analysis' | transloco)) }}
     </h3>
     <div *ngIf="hasTriggerData(); else noTriggerData" class="h-[350px]">
       <p-chart type="pie" [data]="prepareTriggerData()" [options]="pieOptions" height="300" width="300"></p-chart>
@@ -64,8 +64,8 @@
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
         <p class="text-center">
           {{ selectedAnalysisSubstance === 'all' 
-            ? 'No trigger data available yet. Start recording your substance use to see trigger patterns.' 
-            : 'No trigger data available for ' + selectedAnalysisSubstance + ' yet. Record some usage to see trigger patterns.' }}
+            ? ('No trigger data available yet. Start recording your substance use to see trigger patterns.' | transloco)
+            : ('No trigger data available for ' + selectedAnalysisSubstance + ' yet. Record some usage to see trigger patterns.' | transloco) }}
         </p>
       </div>
     </ng-template>
