@@ -17,6 +17,11 @@ jobs:
       with:
           node-version: lts/*
           #cache: 'npm'
+    
+    - name: Prepare environment variables
+      run: |
+        echo "export GOOGLE_GEMINI_PROJECT_NAME=\"${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}\"" >> .env
+        echo "export GOOGLE_GEMINI_API=\"${{ secrets.GOOGLE_GEMINI_API }}\"" >> .env
 
     - name: Build Snap package
       uses: snapcore/action-build@v1
@@ -24,11 +29,6 @@ jobs:
       env: 
         GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
         GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
-    
-    - name: Prepare environment variables
-      run: |
-        echo "export GOOGLE_GEMINI_PROJECT_NAME=\"${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}\"" >> .env
-        echo "export GOOGLE_GEMINI_API=\"${{ secrets.GOOGLE_GEMINI_API }}\"" >> .env
     
     - name: Publish to snap store
       uses: snapcore/action-publish@v1
