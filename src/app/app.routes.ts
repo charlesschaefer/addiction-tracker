@@ -24,7 +24,6 @@ import { TriggersComponent } from "./pages/triggers/triggers.component";
 import { SettingsComponent } from "./pages/settings/settings.component";
 
 export const routes: Routes = [
-    { path: "", component: HomeComponent },
     // { path: "usage-add", component: UsageAddComponent },
     { path: "usage-track", component: UsageTrackComponent },
     { path: "substance-add", component: SubstanceAddComponent },
@@ -36,6 +35,7 @@ export const routes: Routes = [
     // { path: "respiration", component: RespirationComponent },
     // { path: "sync", component: SynchronizationComponent },
     /** New routes */
+    { path: "", component: HomeComponent },
     { path: "login", component: LoginComponent },
     { path: "usage-entries", component: UsageEntriesComponent },
     { path: "motivational-factors", component: MotivationalFactorsComponent },

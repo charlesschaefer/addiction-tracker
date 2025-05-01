@@ -124,25 +124,25 @@ export class HomeComponent implements OnInit {
     }
 
     initializeGuidedTour() {
-        this.joyrideService
-            .startTour({
-                steps: [
-                    "firstStep",
-                    "substanceAdd@substance-add",
-                    "dialMenu",
-                    "usageAdd@usage-add",
-                    "triggerAdd@usage-add",
-                    "usageTrack@usage-track",
-                    "costAdd@cost-add",
-                    "recommendations@recommendations",
-                    "substanceAddStart@substance-add",
-                ],
-            })
-            .subscribe({
-                complete: () => {
-                    this.cookieService.set("sawGuidedTour", "1");
-                },
-            });
+        // this.joyrideService
+        //     .startTour({
+        //         steps: [
+        //             "firstStep",
+        //             "substanceAdd@substance-add",
+        //             "dialMenu",
+        //             "usageAdd@usage-add",
+        //             "triggerAdd@usage-add",
+        //             "usageTrack@usage-track",
+        //             "costAdd@cost-add",
+        //             "recommendations@recommendations",
+        //             "substanceAddStart@substance-add",
+        //         ],
+        //     })
+        //     .subscribe({
+        //         complete: () => {
+        //             this.cookieService.set("sawGuidedTour", "1");
+        //         },
+        //     });
     }
 
     calculateSobrietyDays(usageHistory: UsageDto[]): number {
