@@ -9,8 +9,8 @@
         {{ 'Manage your app settings and security preferences' | transloco }}
       </p>
     </div>
-
-    <!-- Settings Content -->
+<!-- 
+    < !-- Settings Content -- >
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
       <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
         {{ 'Security Settings' | transloco }}
@@ -63,9 +63,9 @@
               </button>
             </ng-template>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Enable Protection Form -->
+        <!-- < !-- Enable Protection Form -- >
         <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Enable Password Protection' | transloco }}</h4>
           <form (submit)="handleEnableProtection($event)" class="space-y-4">
@@ -112,7 +112,7 @@
           </form>
         </div>
 
-        <!-- Change Password Form -->
+        < !-- Change Password Form -- >
         <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Change Password' | transloco }}</h4>
           <form (submit)="handleChangePassword($event)" class="space-y-4">
@@ -171,7 +171,7 @@
           </form>
         </div>
 
-        <!-- Disable Protection Form -->
+        < !-- Disable Protection Form -- >
         <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
           <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Disable Password Protection' | transloco }}</h4>
           <form (submit)="handleDisableProtection($event)" class="space-y-4">
@@ -204,9 +204,9 @@
               </button>
             </div>
           </form>
-        </div>
+        </div> -->
 
-        <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
+        <!-- <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
           <div class="flex">
             <div class="flex-shrink-0">
               <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -221,7 +221,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- Additional Settings -->
     <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">

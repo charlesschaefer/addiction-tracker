@@ -26,11 +26,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="px"
-     inkscape:zoom="0.25"
-     inkscape:cx="264"
-     inkscape:cy="338"
+     inkscape:zoom="0.9825838"
+     inkscape:cx="-547.536"
+     inkscape:cy="203.03612"
      inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-height="1009"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -244,7 +244,7 @@
        x="-972.21643"
        y="390.09082"
        id="text1-7-7"
-       inkscape:export-filename="..\src\assets\logo.png"
+       inkscape:export-filename="..\src\assets\logo-dark.png"
        inkscape:export-xdpi="58.294346"
        inkscape:export-ydpi="58.294346"><tspan
          sodipodi:role="line"
@@ -274,6 +274,44 @@
     <path
        id="rect2-1-7-1"
        d="m -530.04577,361.09722 36.6504,-26.71528 v 56.13194 h -36.6504 z"
+       style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062;stroke-linecap:butt;stroke-linejoin:miter"
+       sodipodi:nodetypes="ccccc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#efefef;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-960.76434"
+       y="90.811722"
+       id="text1-7-7-5"
+       inkscape:export-filename="..\src\assets\logo-dark.png"
+       inkscape:export-xdpi="58.294346"
+       inkscape:export-ydpi="58.294346"><tspan
+         sodipodi:role="line"
+         id="tspan1-0-5-0"
+         x="-960.76434"
+         y="90.811722"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:74.6667px;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#efefef;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1">Addiction</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:74.6667px;fill:#efefef;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-457.52774"
+       y="92.436539"
+       id="text2-6-6-5"
+       inkscape:export-filename="..\src\assets\logo.png"
+       inkscape:export-xdpi="58.294346"
+       inkscape:export-ydpi="58.294346"><tspan
+         sodipodi:role="line"
+         id="tspan2-5-8-0"
+         x="-457.52774"
+         y="92.436539"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Titan One';-inkscape-font-specification:'Titan One';fill:#efefef;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1">Tracker</tspan></text>
+    <path
+       id="rect2-5-1-5"
+       d="m -554.72733,32.820688 h 36.1417 v 29.16223 l -36.1417,26.96971 z"
+       style="fill:#8b5cf6;fill-opacity:1;stroke-width:0.930534;stroke-linecap:butt;stroke-linejoin:miter"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       id="rect2-1-7-1-9"
+       d="m -518.59373,61.818118 36.6504,-26.71528 v 56.13194 h -36.6504 z"
        style="fill:#f68e5e;fill-opacity:1;stroke-width:0.937062;stroke-linecap:butt;stroke-linejoin:miter"
        sodipodi:nodetypes="ccccc" />
   </g>

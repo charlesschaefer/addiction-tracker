@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { ThemeService } from "../services/theme.service";
@@ -9,15 +9,10 @@ import { TranslocoModule } from "@jsverse/transloco";
 @Component({
     selector: "app-header",
     standalone: true,
-    imports: [
-        CommonModule, 
-        RouterModule, 
-        LockButtonComponent,
-        TranslocoModule
-    ],
+    imports: [CommonModule, RouterModule, LockButtonComponent, TranslocoModule],
     templateUrl: "./header.component.html",
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
     mobileMenuOpen = false;
     mobileSettingsOpen: boolean = false;
     navLinks = [
@@ -37,7 +32,13 @@ export class HeaderComponent {
     ];
     settingsMenuOpen: boolean = false;
 
-    constructor(private router: Router, public themeService: ThemeService) {}
+    theme = signal("light");
+
+    constructor(private router: Router, public themeService: ThemeService) { }
+
+    ngOnInit(): void {
+        this.theme.set(this.themeService.getCurrentTheme()());
+    }
 
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -52,6 +53,6 @@ export class HeaderComponent {
     }
 
     isDarkMode() {
-        return this.themeService.getCurrentTheme() === 'dark';
+        return this.themeService.getCurrentTheme()() === "dark";
     }
 }

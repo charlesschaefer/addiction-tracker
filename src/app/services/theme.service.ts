@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 /**
  * Service for managing application theme (light/dark mode).
@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 })
 export class ThemeService {
     /** Current theme ("light" or "dark"). */
-    currentTheme = 'light';
+    currentTheme = signal('light');
 
     /**
      * Initializes theme from localStorage or system preference.
@@ -27,7 +27,7 @@ export class ThemeService {
      * Switches between light and dark themes.
      */
     switchTheme() {
-        this.setDarkMode(this.currentTheme !== 'dark');
+        this.setDarkMode(this.currentTheme() !== 'dark');
     }
 
     /**
@@ -38,11 +38,11 @@ export class ThemeService {
         const html = document.documentElement;
         if (isDark) {
             html.classList.add('dark');
-            this.currentTheme = 'dark';
+            this.currentTheme.set('dark');
             localStorage.setItem('theme', 'dark');
         } else {
             html.classList.remove('dark');
-            this.currentTheme = 'light';
+            this.currentTheme.set('light');
             localStorage.setItem('theme', 'light');
         }
     }

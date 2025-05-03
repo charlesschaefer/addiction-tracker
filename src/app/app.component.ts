@@ -177,7 +177,7 @@ export class AppComponent implements OnInit {
 
         this.setupMenu();
 
-        const currentTheme = this.themeService.getCurrentTheme();
+        const currentTheme = this.themeService.getCurrentTheme()();
         let userTheme = localStorage.getItem("theme");
         if (!userTheme) {
             userTheme = currentTheme;
@@ -224,7 +224,7 @@ export class AppComponent implements OnInit {
     switchTheme() {
         this.themeService.switchTheme();
 
-        const currentTheme = this.themeService.getCurrentTheme();
+        const currentTheme = this.themeService.getCurrentTheme()();
         localStorage.setItem("theme", currentTheme);
     }
 
@@ -454,7 +454,7 @@ export class AppComponent implements OnInit {
     }
 
     get isDarkMode() {
-        return this.themeService.getCurrentTheme() === 'dark';
+        return this.themeService.getCurrentTheme()() === 'dark';
     }
 
     toggleTheme() {
