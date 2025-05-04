@@ -30,31 +30,36 @@ import { AlternativeActivityOverlayComponent } from "./components/alternative-ac
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
 import { UsageService } from "./services/usage.service";
-import { SobrietyCardComponent, SobrietyCardStyle } from "./components/sobriety-card/sobriety-card.component";
+import {
+    SobrietyCardComponent,
+    SobrietyCardStyle,
+} from "./components/sobriety-card/sobriety-card.component";
+import { AddRecordButtonComponent } from "./components/add-record-button.component";
 
 @Component({
     selector: "app-root",
     standalone: true,
     imports: [
-    RouterOutlet,
-    MatMenuModule,
-    MatIconModule,
-    ToolbarModule,
-    MenuModule,
-    ButtonModule,
-    SpeedDialModule,
-    JoyrideModule,
-    TieredMenuModule,
-    MenuModule,
-    TranslocoModule,
-    CommonModule,
-    MenubarModule,
-    HeaderComponent,
-    ToastModule,
-    RecordSubstanceUseComponent,
-    AlternativeActivityOverlayComponent,
-    SobrietyCardComponent
-],
+        RouterOutlet,
+        MatMenuModule,
+        MatIconModule,
+        ToolbarModule,
+        MenuModule,
+        ButtonModule,
+        SpeedDialModule,
+        JoyrideModule,
+        TieredMenuModule,
+        MenuModule,
+        TranslocoModule,
+        CommonModule,
+        MenubarModule,
+        HeaderComponent,
+        ToastModule,
+        RecordSubstanceUseComponent,
+        AlternativeActivityOverlayComponent,
+        SobrietyCardComponent,
+        AddRecordButtonComponent,
+    ],
     providers: [CookieService, RouterLink, MessageService],
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
@@ -139,14 +144,32 @@ export class AppComponent implements OnInit {
 
     /** List of alternative activities. */
     alternativeActivities: any[] = [
-        { id: 1, name: 'Breathing Exercise', count: 0, successCount: 0, failCount: 0 },
-        { id: 2, name: 'Drink Water', count: 0, successCount: 0, failCount: 0 },
-        { id: 3, name: 'Take a Walk', count: 0, successCount: 0, failCount: 0 },
-        { id: 4, name: 'Stretching', count: 0, successCount: 0, failCount: 0 },
-        { id: 5, name: 'Healthy Snack', count: 0, successCount: 0, failCount: 0 },
-        { id: 6, name: 'Call a Friend', count: 0, successCount: 0, failCount: 0 }
+        {
+            id: 1,
+            name: "Breathing Exercise",
+            count: 0,
+            successCount: 0,
+            failCount: 0,
+        },
+        { id: 2, name: "Drink Water", count: 0, successCount: 0, failCount: 0 },
+        { id: 3, name: "Take a Walk", count: 0, successCount: 0, failCount: 0 },
+        { id: 4, name: "Stretching", count: 0, successCount: 0, failCount: 0 },
+        {
+            id: 5,
+            name: "Healthy Snack",
+            count: 0,
+            successCount: 0,
+            failCount: 0,
+        },
+        {
+            id: 6,
+            name: "Call a Friend",
+            count: 0,
+            successCount: 0,
+            failCount: 0,
+        },
     ];
-    
+
     /** The currently selected activity for feedback. */
     currentActivity: any = null;
     sobrietyComponentStyle = SobrietyCardStyle.BADGE;
@@ -158,7 +181,7 @@ export class AppComponent implements OnInit {
         private dataUpdatedService: DataUpdatedService,
         private achievementService: AchievementService,
         private substanceService: SubstanceService,
-        private messageService: MessageService,
+        private messageService: MessageService
     ) {
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {
@@ -202,6 +225,10 @@ export class AppComponent implements OnInit {
 
         this.substanceService.list().then((substances) => {
             this.substances.set(substances as SubstanceDto[]);
+            if (!substances.length) {
+                this.showAddSubstance = true;
+                this.showRecordPopup = true;
+            }
         });
     }
 
@@ -250,7 +277,9 @@ export class AppComponent implements OnInit {
                         //icon: "pi pi-chart-line",
                     } as MenuItem,
                     {
-                        label: this.translateService.translate("Intervalos de Consumo"),
+                        label: this.translateService.translate(
+                            "Intervalos de Consumo"
+                        ),
                         routerLink: "/usage-interval",
                         //icon: "pi pi-clock",
                     } as MenuItem,
@@ -265,12 +294,16 @@ export class AppComponent implements OnInit {
                         //icon: "pi pi-book",
                     } as MenuItem,
                     {
-                        label: this.translateService.translate("Acompanhar Gastos"),
+                        label: this.translateService.translate(
+                            "Acompanhar Gastos"
+                        ),
                         routerLink: "/cost",
                         //icon: "pi pi-wallet",
                     } as MenuItem,
                     {
-                        label: this.translateService.translate("Adicionar Gastos"),
+                        label: this.translateService.translate(
+                            "Adicionar Gastos"
+                        ),
                         routerLink: "/cost-add",
                         //icon: "pi pi-money-bill",
                     } as MenuItem,
@@ -301,7 +334,9 @@ export class AppComponent implements OnInit {
                 label: this.translateService.translate("Configurações"),
                 items: [
                     {
-                        label: this.translateService.translate("Adicionar Substância"),
+                        label: this.translateService.translate(
+                            "Adicionar Substância"
+                        ),
                         routerLink: "/substance-add",
                         // icon: "pi pi-user-minus",
                     } as MenuItem,
@@ -311,7 +346,9 @@ export class AppComponent implements OnInit {
                         // icon: "pi pi-lock",
                     } as MenuItem,
                     {
-                        label: this.translateService.translate("Sincronizar dispositivos"),
+                        label: this.translateService.translate(
+                            "Sincronizar dispositivos"
+                        ),
                         routerLink: "/sync",
                         // icon: "pi pi-sync",
                     } as MenuItem,
@@ -324,11 +361,15 @@ export class AppComponent implements OnInit {
                         label: this.translateService.translate("Idioma"),
                         items: [
                             {
-                                label: this.translateService.translate("Português"),
+                                label: this.translateService.translate(
+                                    "Português"
+                                ),
                                 command: () => this.switchLanguage("pt-br"),
                             },
                             {
-                                label: this.translateService.translate("Inglês"),
+                                label: this.translateService.translate(
+                                    "Inglês"
+                                ),
                                 command: () => this.switchLanguage("en"),
                             },
                         ],
@@ -354,7 +395,7 @@ export class AppComponent implements OnInit {
     setShowRecordPopup(val: boolean) {
         this.showRecordPopup = val;
     }
-    
+
     setShowMotivationalFactors(val: boolean) {
         this.showMotivationalFactors = val;
     }
@@ -371,18 +412,22 @@ export class AppComponent implements OnInit {
 
     handleAlternativeSelected(activityId: number) {
         // Find the selected alternative activity
-        const selectedActivity = this.alternativeActivities.find(alt => alt.id === activityId);
+        const selectedActivity = this.alternativeActivities.find(
+            (alt) => alt.id === activityId
+        );
         if (!selectedActivity) return;
-        
+
         // Create a record of this activity and update count
-        const activityIndex = this.alternativeActivities.findIndex(a => a.id === activityId);
+        const activityIndex = this.alternativeActivities.findIndex(
+            (a) => a.id === activityId
+        );
         if (activityIndex >= 0) {
             this.alternativeActivities[activityIndex] = {
                 ...this.alternativeActivities[activityIndex],
-                count: this.alternativeActivities[activityIndex].count + 1
+                count: this.alternativeActivities[activityIndex].count + 1,
             };
         }
-        
+
         // Set the current activity for reference
         this.currentActivity = {
             id: selectedActivity.id,
@@ -399,12 +444,12 @@ export class AppComponent implements OnInit {
         feedback?: string
     ): void {
         if (!activity) return;
-        
+
         // Update the alternative activity success/fail counts
         const activityIndex = this.alternativeActivities.findIndex(
             (a) => a.id === activity.id
         );
-        
+
         if (activityIndex >= 0) {
             const updatedActivity = {
                 ...this.alternativeActivities[activityIndex],
@@ -415,16 +460,16 @@ export class AppComponent implements OnInit {
                     ? this.alternativeActivities[activityIndex].failCount + 1
                     : this.alternativeActivities[activityIndex].failCount,
             };
-            
+
             this.alternativeActivities[activityIndex] = updatedActivity;
         }
-        
+
         // Update the current activity with feedback results
         // if (this.currentActivity) {
         //     this.currentActivity.wasSuccessful = wasSuccessful;
         //     this.currentActivity.feedback = feedback;
         // }
-        
+
         // Close any related dialogs or prompts
         this.showBreathingPrompt = false;
     }
@@ -442,19 +487,19 @@ export class AppComponent implements OnInit {
     }
 
     handleGiveUpUsage() {
-        this.showRecordPopup = false; 
-        this.showBreathingPrompt = false
+        this.showRecordPopup = false;
+        this.showBreathingPrompt = false;
 
         this.messageService.add({
-            severity: 'success',
-            summary: 'Congratulations for this decision',
-            detail: 'This is an important step for your recovery',
-            life: 3000
-        })
+            severity: "success",
+            summary: "Congratulations for this decision",
+            detail: "This is an important step for your recovery",
+            life: 3000,
+        });
     }
 
     get isDarkMode() {
-        return this.themeService.getCurrentTheme()() === 'dark';
+        return this.themeService.getCurrentTheme()() === "dark";
     }
 
     toggleTheme() {

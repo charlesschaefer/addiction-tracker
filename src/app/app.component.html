@@ -6,14 +6,15 @@
 
   <section class="main">
     <!-- Floating Add Button -->
-    <button (click)="onAddRecordClick()"
+    <!-- <button (click)="onAddRecordClick()"
       class="fixed bottom-6 sm:bottom-8 right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-xl flex items-center justify-center hover:from-purple-600 hover:to-orange-600 dark:hover:from-purple-400 dark:hover:to-orange-400 transition-all z-10 transform hover:scale-105 active:scale-95"
       [attr.aria-label]="'Add new record' | transloco">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24"
         stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
-    </button>
+    </button> -->
+    <app-add-record-button (click)="onAddRecordClick()"></app-add-record-button>
 
     <!-- Add Usage Record Form Popup -->
     @if (showRecordPopup) {

@@ -107,10 +107,6 @@ export class HomeComponent implements OnInit {
 
     ngOnInit(): void {
         this.showOnboardingFlow = !localStorage.getItem("onboardingCompleted");
-        // const sawGuidedTour = this.cookieService.get("sawGuidedTour");
-        // if (!sawGuidedTour) {
-        //     this.initializeGuidedTour();
-        // }
 
         this.achievementService.list().then((achievements) => {
             this.achievements = achievements as AchievementDto[];
@@ -158,5 +154,6 @@ export class HomeComponent implements OnInit {
     completeOnboarding() {
         localStorage.setItem("onboardingCompleted", "true");
         this.showOnboardingFlow = false;
+        window.location.reload();
     }
 }

@@ -144,7 +144,8 @@ export class SettingsComponent {
 
     clearAllData() {
         try {
-            Dexie.delete(DATABASE_NAME)
+            Dexie.delete(DATABASE_NAME);
+            localStorage.clear();
         } catch (e) {
             console.error("Error trying to delete database: ", e);
         }
