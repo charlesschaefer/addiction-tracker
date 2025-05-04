@@ -1,40 +1,51 @@
-<header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm border-b border-gray-100 dark:border-gray-800">
+<header
+  class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-30 shadow-sm border-b border-gray-100 dark:border-gray-800">
   <div class="max-w-5xl mx-auto px-2 sm:px-4 py-2 sm:py-3">
     <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <a routerLink="/">
-          <img class="block sm:hidden w-[40px] h-[40px]" src="/assets/icon.svg" alt="Addiction Tracker" />
-        </a>
+      <div class="flex items-center mr-5">
+        <div class="block sm:hidden">
+          <a routerLink="/">
+            <div class="flex items-center flex-row">
+              <img class="w-[40px] h-[40px]" src="/assets/icon.svg" alt="Addiction Tracker" />
+              <div class="ml-3 flex flex-col">
+                <h1 class="text-lg font-semibold text-purple-700">{{ 'Addiction Tracker' | transloco }}</h1>
+                <p class="text-gray-500 mt-0.5 text-xs sm:text-sm">
+                  {{ 'Track your habits. Take control of your life.' | transloco }}
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
         <div class="hidden sm:block">
           <a routerLink="/">
-            @let sufix = theme() == 'dark' ? '-dark' : '';
-            <img class="w-[400px] max-w-full h-auto" src="/assets/logo{{sufix}}.png" alt="Addiction Tracker" />
+            <img class="w-[400px] max-w-full h-auto" src="/assets/logo2.png" alt="Addiction Tracker" />
           </a>
           <p class="text-gray-500 mt-0.5 text-xs sm:text-sm">
             {{ 'Track your habits. Take control of your life.' | transloco }}
           </p>
         </div>
       </div>
-      <button
-        (click)="toggleMobileMenu()"
-        aria-label="Toggle mobile menu"
-        [attr.aria-expanded]="mobileMenuOpen"
-        class="md:hidden flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-colors"
-      >
+      <button (click)="toggleMobileMenu()" aria-label="Toggle mobile menu" [attr.aria-expanded]="mobileMenuOpen"
+        class="md:hidden flex items-center justify-center p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           @if (mobileMenuOpen) {
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           } @else {
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           }
         </svg>
       </button>
       <div class="hidden md:flex items-center space-x-4" #desktopNav>
-        <a *ngFor="let link of navLinks" [routerLink]="link.href" class="transition-colors text-gray-600 hover:text-purple-600" routerLinkActive="text-purple-600 font-medium" [routerLinkActiveOptions]="{ exact: true }">
+        <a *ngFor="let link of navLinks" [routerLink]="link.href"
+          class="transition-colors text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400" routerLinkActive="text-purple-600 dark:text-purple-400 font-medium"
+          [routerLinkActiveOptions]="{ exact: true }">
           <ng-container *ngIf="link.icon; else labelText">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </ng-container>
           <ng-template #labelText>{{ link.label }}</ng-template>
@@ -43,25 +54,22 @@
         <ng-container *ngTemplateOutlet="themeSwitcher"></ng-container>
         <!-- Settings dropdown (desktop) -->
         <div class="relative" (clickOutside)="settingsMenuOpen = false" #settingsMenuRef>
-          <button
-            (click)="settingsMenuOpen = !settingsMenuOpen"
-            class="transition-colors p-1.5 rounded-full"
-            [ngClass]="{'text-purple-600 bg-purple-50': settingsMenuOpen, 'text-gray-600 hover:text-purple-600 hover:bg-purple-50': !settingsMenuOpen}"
-            [attr.aria-expanded]="settingsMenuOpen"
-            aria-haspopup="true"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <button (click)="settingsMenuOpen = !settingsMenuOpen" class="transition-colors p-1.5 rounded-full"
+            [ngClass]="{'text-purple-600 bg-purple-50 dark:text-purple-400 dark:bg-purple-950': settingsMenuOpen, 'text-gray-600 hover:text-purple-600 hover:bg-purple-50 dark:text-gray-400 dark:hover:text-purple-400 dark:hover:bg-purple-950': !settingsMenuOpen}"
+            [attr.aria-expanded]="settingsMenuOpen" aria-haspopup="true">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </button>
-          <div *ngIf="settingsMenuOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-100 animate-fadeIn">
-            <a *ngFor="let link of settingsLinks"
-              [routerLink]="link.href"
-              class="block px-4 py-2 text-sm"
-              [ngClass]="{'bg-purple-50 text-purple-700': isSettingsLinkActive(link), 'text-gray-700 hover:bg-gray-50 hover:text-purple-600': !isSettingsLinkActive(link)}"
-              (click)="settingsMenuOpen = false"
-            >
+          <div *ngIf="settingsMenuOpen"
+            class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg py-1 z-50 border border-gray-100 dark:border-gray-800 animate-fadeIn">
+            <a *ngFor="let link of settingsLinks" [routerLink]="link.href" class="block px-4 py-2 text-sm"
+              [ngClass]="{'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300': isSettingsLinkActive(link), 'text-gray-700 hover:bg-gray-50 hover:text-purple-600 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-purple-400': !isSettingsLinkActive(link)}"
+              (click)="settingsMenuOpen = false">
               {{ link.label }}
             </a>
           </div>
@@ -71,34 +79,46 @@
     </div>
   </div>
   <!-- Mobile menu drawer (simplified, add overlay and nav as needed) -->
-  <div *ngIf="mobileMenuOpen" class="fixed inset-0 z-40">
+  <div *ngIf="mobileMenuOpen" class="fixed inset-0 z-40 backdrop-blur-sm h-screen">
     <div class="absolute inset-0 bg-black opacity-60" (click)="mobileMenuOpen = false"></div>
-    <div class="absolute top-0 left-0 w-4/5 max-w-sm h-full bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-xl flex flex-col">
-      <div class="p-5 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-purple-50 to-white">
+    <div
+      class="absolute top-0 left-0 w-4/5 max-w-sm h-screen bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-xl flex flex-col">
+      <div
+        class="p-5 border-b border-gray-200 flex items-center justify-between bg-gradient-to-r from-purple-50 to-white dark:from-purple-950/50 dark:to-gray-900">
         <a routerLink="/">
           <div class="flex items-center">
             <img class="w-[40px] h-[40px]" src="/assets/icon.svg" alt="Addiction Tracker" />
             <div class="ml-3">
               <h1 class="text-lg font-semibold text-purple-700">{{ 'Addiction Tracker' | transloco }}</h1>
-              <p class="text-xs text-gray-500">{{ 'Your journey to wellness' | transloco }}</p>
+              <p class="text-xs text-gray-500">
+                {{ 'Track your habits. Take control of your life.' | transloco }}
+              </p>
             </div>
           </div>
         </a>
-        <button class="text-gray-500 hover:text-gray-700 dark:text-gray-300-2 rounded-full hover:bg-gray-100" (click)="mobileMenuOpen = false" aria-label="Close menu">
+        <button class="text-gray-500 hover:text-gray-700 dark:text-gray-300-2 rounded-full hover:bg-gray-100"
+          (click)="mobileMenuOpen = false" aria-label="Close menu">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
-      <nav class="flex-1 p-4 bg-[#FFFFFF] h-[fit-content]">
-        <h2 class="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-4 pl-2">{{ 'Navigation' | transloco }}</h2>
+      <nav class="flex-1 p-4 bg-white dark:bg-gray-900/80 h-[fit-content]">
+        <h2 class="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-300 font-semibold mb-4 pl-2">{{
+          'Navigation' | transloco }}</h2>
         <ul class="space-y-2">
           <li *ngFor="let link of navLinks">
-            <a [routerLink]="link.href" class="flex items-center py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300over:bg-gray-50 hover:text-purple-600" routerLinkActive="bg-purple-100 text-purple-700 font-medium shadow-sm" [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
+            <a [routerLink]="link.href"
+              class="flex items-center py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-950 hover:text-purple-600 dark:hover:text-purple-400"
+              routerLinkActive="bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-3 00 font-semibold shadow-sm"
+              [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
               <ng-container *ngIf="link.icon; else navLabel">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </ng-container>
               <ng-template #navLabel>{{ link.label }}</ng-template>
@@ -108,27 +128,15 @@
           <li class="mt-4">
             <button
               class="flex items-center w-full py-3 px-4 rounded-lg transition-colors text-gray-700 dark:text-gray-300over:bg-gray-50 hover:text-purple-600 font-semibold"
-              (click)="mobileSettingsOpen = !mobileSettingsOpen"
-              [attr.aria-expanded]="mobileSettingsOpen"
-              aria-controls="mobile-settings-menu"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+              (click)="mobileSettingsOpen = !mobileSettingsOpen" [attr.aria-expanded]="mobileSettingsOpen"
+              aria-controls="mobile-settings-menu">
               Settings
-              <svg class="ml-auto h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path [attr.d]="mobileSettingsOpen ? 'M6 18L18 6M6 6l12 12' : 'M19 9l-7 7-7-7'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
             </button>
-            <ul *ngIf="mobileSettingsOpen" id="mobile-settings-menu" class="pl-8 mt-2 space-y-1">
+            <ul id="mobile-settings-menu" class="pl-8 mt-2 space-y-1">
               <li *ngFor="let link of settingsLinks">
-                <a [routerLink]="link.href"
-                  class="flex items-center py-2 px-2 rounded-lg transition-colors"
+                <a [routerLink]="link.href" class="flex items-center py-2 px-2 rounded-lg transition-colors"
                   routerLinkActive="bg-purple-100 text-purple-700 font-medium shadow-sm"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="mobileMenuOpen = false"
-                >
+                  [routerLinkActiveOptions]="{ exact: true }" (click)="mobileMenuOpen = false">
                   {{ link.label }}
                 </a>
               </li>
@@ -137,7 +145,7 @@
         </ul>
       </nav>
       <!-- Theme toggle button -->
-      <div class="p-5 border-t border-gray-200 bg-gray-50">
+      <div class="p-2 border-t border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950">
         <div class="flex flex-col items-center">
           <p class="text-xs text-gray-500 mb-3" *ngIf="isDarkMode()">{{ 'Light theme' | transloco }}</p>
           <p class="text-xs text-gray-500 mb-3" *ngIf="!isDarkMode()">{{ 'Dark theme' | transloco }}</p>
@@ -152,13 +160,12 @@
 
 <!-- Theme toggle button -->
 <ng-template #themeSwitcher>
-  <button
-    (click)="toggleTheme()"
-    class="transition-colors rounded-full w-6 h-6 pl-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
-    [ngClass]="{'text-yellow-500 bg-yellow-50': isDarkMode(), 'text-gray-600 hover:text-purple-600 hover:bg-purple-50': !isDarkMode()}"
-    aria-label="Toggle dark mode"
-  >
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <button (click)="toggleTheme()"
+    class="rounded-full w-6 h-6 pl-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
+    [ngClass]="{'text-yellow-500': isDarkMode(), 'text-gray-600 hover:text-purple-600 hover:bg-purple-50': !isDarkMode()}"
+    aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-purple-600 dark:text-yellow-500" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor">
       <ng-container *ngIf="!isDarkMode(); else sunIcon">
         <!-- Moon icon -->
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
