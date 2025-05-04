@@ -88,7 +88,7 @@
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {{ 'Start by giving your substance a name. This will help you track your usage patterns over time.' | transloco }}
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+            <div class="flex flex-col gap-4 mb-4">
               <input
                 type="text"
                 [(ngModel)]="newSubstance"
@@ -203,16 +203,18 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                   {{ 'Date and time' | transloco }}
                 </label>
-                <p-datepicker 
+                <p-calendar
                   [(ngModel)]="datetime" 
                   name="date" 
                   [showTime]="true"
                   [showIcon]="true" 
-                  [showButtonBar]="true" 
+                  [showButtonBar]="true"
+                  [autofocus]="true"
+                  iconDisplay="input"
                   
                   class="w-full"
                   inputStyleClass="h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
-                ></p-datepicker>
+                />
               </div>
             </div>
           </div>

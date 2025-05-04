@@ -23,6 +23,7 @@ import { MessageService } from "primeng/api";
 import { UsageFillingService } from "../services/usage-filling.service";
 import { UsageFillingAddDto } from "../dto/usage-filling.dto";
 import { TranslocoModule } from "@jsverse/transloco";
+import { CalendarModule } from "primeng/calendar";
 
 /**
  * Angular component for recording substance use.
@@ -36,7 +37,7 @@ import { TranslocoModule } from "@jsverse/transloco";
         FormsModule,
         SelectModule,
         SubstanceIconSelectComponent,
-        DatePickerModule,
+        CalendarModule,
         TranslocoModule
     ],
     templateUrl: "./record-substance-use.component.html",
@@ -206,7 +207,7 @@ export class RecordSubstanceUseComponent implements OnInit {
                     )) as SubstanceDto;
                     this.substanceCreationStep = "motivation";
 
-                    this.addSubstance.emit(substanceObj as SubstanceDto);
+                    //this.addSubstance.emit(substanceObj as SubstanceDto);
                 })
                 .catch((error) => {
                     console.error("Error adding substance:", error);
