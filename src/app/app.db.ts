@@ -13,7 +13,7 @@ import { TriggerData } from './data/trigger.data';
 import { trigger } from '@angular/animations';
 
 export type TableKeys = 'substance' | 'usage' | 'trigger' | 'cost' | 'recommendation' | 'alternative_activity' | 'motivational_factor' | 'usage_filling' | 'achievement';
-export const DATABASE_NAME = 'addiction_tracker';
+export const DATABASE_NAME = 'usage-control'; // 'addiction_tracker';
 
 export class AppDb extends Dexie {
     substance!: Table<SubstanceDto, number>;
