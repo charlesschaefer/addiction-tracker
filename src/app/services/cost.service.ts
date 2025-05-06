@@ -168,26 +168,73 @@ export class CostService extends ServiceAbstract<Costs> {
      * Prepares daily spending trend data for the last 30 days.
      * @param usageHistory Usage history array
      */
-    prepareSpendingTrendData(usageHistory: UsageDto[]) {
-        const spendingByDate: { [key: string]: number } = {};
+    async prepareSpendingTrendData(usageHistory: UsageDto[]) {
+        const spendingByDate: Map<string, number> = new Map();
+        const costByDate: Map<string, number> = new Map();
         const dates: string[] = [];
         const today = new Date();
+        const substances = usageHistory.reduce((acc, curr) => {
+            if (!acc.some((substance) => substance == curr.substance)) {
+                acc.push(curr.substance);
+            }
+            return acc;
+        }, [] as number[]);
+
         for (let i = 29; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
             const dateStr = date.toISOString().split("T")[0];
             dates.push(dateStr);
-            spendingByDate[dateStr] = 0;
+            spendingByDate.set(dateStr, 0);
         }
         usageHistory.forEach((entry) => {
-            if (spendingByDate[entry.datetime.toISOString().split("T")[0]] !== undefined && entry.cost) {
-                spendingByDate[entry.datetime.toISOString().split("T")[0]] += entry.cost;
+            if (spendingByDate.has(entry.datetime.toISOString().split("T")[0]) && entry.cost) {
+                spendingByDate.set(entry.datetime.toISOString().split("T")[0], entry.cost);
             }
         });
+
+        const substanceCosts: Map<number, Map<string, number>> = new Map();
+        for (let substance of substances) {
+            const cost = await this.getCostBySubstanceAndDate(substance, dates)
+             substanceCosts.set(substance, cost);
+        }
+
+        const finalCosts = new Map<String, number>();
+        Array.from(spendingByDate.keys()).forEach((date: string) => {
+            finalCosts.set(date, Array.from(substanceCosts.values()).reduce((acc, curr) => {
+                return acc + (curr.get(date) || 0);
+            }, 0));
+        });
+
         return dates.map((date) => ({
             date,
-            spending: spendingByDate[date],
+            spending: finalCosts.get(date) ?? spendingByDate.get(date),
         }));
     }
     
+    /**
+     * Prepares cost data for a specific substance and date list.
+     * 
+     * @param substanceId Substance ID
+     * @param date Array of date strings in YYYY-MM-DD format
+     */
+    getCostBySubstanceAndDate(substanceId: number, date: string[]): Promise<Map<string, number>> {
+        return this.table
+            .where('substance')
+            .equals(substanceId)
+            .filter((cost) => date.includes(cost.date.toISOString().split("T")[0]))
+            .toArray()
+            .then((data) => {
+                const costByDate = new Map<string, number>();
+                return data.reduce((prev, curr) => {
+                    const dateStr = curr.date.toISOString().split("T")[0];
+                    if (prev.has(dateStr)) {
+                        prev.set(dateStr, prev.get(dateStr)! + curr.value);
+                    } else {
+                        prev.set(dateStr, curr.value);
+                    }
+                    return prev;
+                }, costByDate);
+            });
+    }
 }

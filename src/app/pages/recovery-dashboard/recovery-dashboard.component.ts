@@ -308,8 +308,4 @@ export class RecoveryDashboardComponent implements OnInit {
             years
         );
     }
-
-    prepareSpendingTrendData() {
-        return this.costService.prepareSpendingTrendData(this.usageHistory());
-    }
 }

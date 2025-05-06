@@ -68,27 +68,29 @@ export class FinancialImpactComponent implements OnInit {
     }
 
     updateSpendingTrendChart() {
-        const trendData = this.prepareSpendingTrendData();
-        if (trendData.length > 0) {
-            this.spendingTrendData = {
-                labels: trendData.map(item => {
-                    const date = new Date(item.date);
-                    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
-                }),
-                datasets: [{
-                    label: 'Daily Spending',
-                    data: trendData.map(item => item.spending),
-                    fill: true,
-                    borderColor: '#8B5CF6',
-                    backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                    tension: 0.4
-                }]
-            };
-        }
+        this.prepareSpendingTrendData().then(trendData => {
+            if (trendData.length > 0) {
+                this.spendingTrendData = {
+                    labels: trendData.map(item => {
+                        const date = new Date(item.date);
+                        return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    }),
+                    datasets: [{
+                        label: 'Daily Spending',
+                        data: trendData.map(item => item.spending),
+                        fill: true,
+                        borderColor: '#8B5CF6',
+                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                        tension: 0.4
+                    }]
+                };
+            }
+        });
     }
 
     hasSpendingTrendData(): boolean {
-        const trendData = this.prepareSpendingTrendData();
+        const trendData = this.spendingTrendData?.datasets[0]?.data || [];
+        // Check if the trendData array has any data points 
         return trendData.length > 0;
     }
 
@@ -116,7 +118,7 @@ export class FinancialImpactComponent implements OnInit {
         return this.costService.calculateInvestmentGrowth(this.usageHistory(), years);
     }
 
-    prepareSpendingTrendData() {
+    async prepareSpendingTrendData() {
         return this.costService.prepareSpendingTrendData(this.usageHistory());
     }
 }
