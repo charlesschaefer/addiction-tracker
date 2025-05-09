@@ -10,10 +10,7 @@
             </p>
         </div>
 
-        <app-financial-impact-card 
-              [calculatePotentialSavings]="calculatePotentialSavings" [calculateSpendingByPeriod]="calculateSpendingByPeriod"
-              [calculateTotalSpending]="calculateTotalSpending" [prepareCostBySubstanceData]="prepareCostBySubstanceData"
-              [projectAnnualSpending]="projectAnnualSpending" [COLORS]="COLORS" />
+        <app-financial-impact-card [COLORS]="COLORS" [usageCosts]="costs()" />
 
         <!-- Spending Trend -->
         <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
@@ -46,19 +43,19 @@
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '5 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
-                        {{ calculateInvestmentGrowth(5) | currency }}
+                        {{ calculateInvestmentGrowth(5, undefined, costs()) | currency }}
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '10 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
-                        {{ calculateInvestmentGrowth(10) | currency }}
+                        {{ calculateInvestmentGrowth(10, undefined, costs()) | currency }}
                     </div>
                 </div>
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
                     <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '20 Years' | transloco }}</h4>
                     <div class="text-2xl font-bold text-green-600 dark:text-green-300">
-                        {{ calculateInvestmentGrowth(20) | currency }}
+                        {{ calculateInvestmentGrowth(20, undefined, costs()) | currency }}
                     </div>
                 </div>
             </div>
@@ -95,7 +92,7 @@
                         <div>
                             <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Travel' | transloco }}</h4>
                             <p class="text-gray-600 dark:text-gray-400">
-                                {{ 'With' | transloco }} {{ calculatePotentialSavings(1) | currency }} {{ "saved in a year, you could take a vacation to a destination you've always wanted to visit." | transloco }}
+                                {{ 'With' | transloco }} {{ calculatePotentialSavings(1, costs()) | currency }} {{ "saved in a year, you could take a vacation to a destination you've always wanted to visit." | transloco }}
                             </p>
                         </div>
                     </div>

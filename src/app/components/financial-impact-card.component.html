@@ -9,25 +9,25 @@
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ 'Past Week' | transloco }}</span>
               <span class="font-semibold text-lg">
-                  {{ calculateSpendingByPeriod('week') | currency }}
+                  {{ spendingByWeek() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ 'Past Month' | transloco }}</span>
               <span class="font-semibold text-lg">
-                  {{ calculateSpendingByPeriod('month') | currency }}
+                  {{ spendingByMonth() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ 'Past Year' | transloco }}</span>
               <span class="font-semibold text-lg">
-                  {{ calculateSpendingByPeriod('year') | currency }}
+                  {{ spendingByYear() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-purple-100 dark:border-purple-800">
               <span class="text-gray-700 dark:text-gray-200 font-semibold ">{{ 'Total All Time' | transloco }}</span>
               <span class="text-2xl font-bold text-purple-600 dark:text-purple-300">
-                  {{ calculateTotalSpending() | currency }}
+                  {{ totalSpending() | currency }}
               </span>
           </div>
       </div>
@@ -42,19 +42,19 @@
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ 'Projected Annual Cost' | transloco }}</span>
               <span class="font-semibold text-lg text-red-500 dark:text-red-400">
-                  {{ projectAnnualSpending() | currency }}
+                  {{ projectedAnnual() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ '1 Year of Sobriety' | transloco }}</span>
               <span class="font-semibold text-lg text-green-600 dark:text-green-400">
-                  +{{ calculatePotentialSavings(1) | currency }}
+                  +{{ potentialSavings1() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center">
               <span class="text-gray-600 dark:text-gray-300">{{ '5 Years of Sobriety' | transloco }}</span>
               <span class="font-semibold text-lg text-green-600 dark:text-green-400">
-                  +{{ calculatePotentialSavings(5) | currency }}
+                  +{{ potentialSavings5() | currency }}
               </span>
           </div>
           <div class="flex justify-between items-center pt-4 border-t border-orange-100 dark:border-orange-800">
@@ -62,7 +62,7 @@
                   {{ '10 Years of Sobriety' | transloco }}
               </span>
               <span class="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                  +{{ calculatePotentialSavings(10) | currency }}
+                  +{{ potentialSavings10() | currency }}
               </span>
           </div>
       </div>
@@ -77,8 +77,7 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Pie chart placeholder -->
       <div class="h-64 flex items-center justify-center">
-          <!-- Integrate ngx-charts or similar for actual chart -->
-          <p-chart type="pie" [data]="preparePieChartData()" [options]="pieOptions" height="250" [plugins]="plugins"></p-chart>
+          <p-chart type="pie" [data]="pieChartData()" [options]="pieOptions" height="250" [plugins]="plugins"></p-chart>
       </div>
       <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -87,7 +86,7 @@
               </h4>
           </div>
           <div class="divide-y divide-gray-200 dark:divide-gray-700">
-              <div *ngFor="let item of prepareCostBySubstanceData(); let i = index"
+              <div *ngFor="let item of costBySubstance(); let i = index"
                    class="flex justify-between items-center p-4 hover:bg-gray-50 dark:hover:bg-gray-800">
                   <div class="flex items-center">
                       <div class="w-3 h-3 rounded-full mr-2"
@@ -100,7 +99,7 @@
               </div>
               <div class="flex justify-between items-center p-4 bg-gray-50 dark:bg-gray-800 font-medium">
                   <span>{{ 'Total' | transloco }}</span>
-                  <span>{{ calculateTotalSpending() | currency }}</span>
+                  <span>{{ totalSpending() | currency }}</span>
               </div>
           </div>
       </div>

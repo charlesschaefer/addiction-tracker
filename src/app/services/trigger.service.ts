@@ -24,4 +24,12 @@ export class TriggerService extends ServiceAbstract<Triggers> {
         super();
         this.setTable();
     }
+
+    /**
+     * Returns all trigger labels (names).
+     * In a real app, this could fetch from DB or config.
+     */
+    async getTriggerLabels(): Promise<string[]> {
+        return this.list().then(triggers => triggers.map(trigger => trigger.name));
+    }
 }

@@ -8,6 +8,7 @@ import { FinancialImpactCardComponent } from "../../components/financial-impact-
 import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';
 import { TranslocoModule } from "@jsverse/transloco";
+import { CostDto } from "../../dto/cost.dto";
 
 @Component({
     selector: "app-financial-impact",
@@ -20,11 +21,14 @@ export class FinancialImpactComponent implements OnInit {
 
     usageHistory = signal<UsageDto[]>([]);
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
-    
+
     // Chart data
     spendingTrendData: any;
     spendingTrendOptions: any;
-    
+
+    // New: Store cost table data
+    costs = signal<any[]>([]);
+
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
@@ -34,13 +38,18 @@ export class FinancialImpactComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.usageService.list().then((usages) => {
-            this.usageHistory.set(usages as UsageDto[]);
-            this.updateSpendingTrendChart();
+        // Fetch all costs from the cost table
+        this.costService.list().then((costs) => {
+            this.costs.set(costs);
+            this.updateSpendingTrendChart(costs as CostDto[]);
         });
         this.substanceService.list().then((subs) => {
             this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
-            this.updateSpendingTrendChart();
+            this.updateSpendingTrendChart(this.costs());
+        });
+        // Usage history is still fetched for other purposes if needed
+        this.usageService.list().then((usages) => {
+            this.usageHistory.set(usages as UsageDto[]);
         });
     }
 
@@ -67,8 +76,8 @@ export class FinancialImpactComponent implements OnInit {
         };
     }
 
-    updateSpendingTrendChart() {
-        this.prepareSpendingTrendData().then(trendData => {
+    updateSpendingTrendChart(costs: CostDto[]) {
+        this.prepareSpendingTrendData(costs).then(trendData => {
             if (trendData.length > 0) {
                 this.spendingTrendData = {
                     labels: trendData.map(item => {
@@ -94,31 +103,32 @@ export class FinancialImpactComponent implements OnInit {
         return trendData.length > 0;
     }
 
-    prepareCostBySubstanceData() {
-        return this.costService.prepareCostBySubstanceData(this.usageHistory(), this.substances());
+    prepareCostBySubstanceData(costs: CostDto[]) {
+        // Use cost table data instead of usageHistory
+        return this.costService.prepareCostBySubstanceDataFromCosts(costs, this.substances());
     }
 
-    calculateTotalSpending(): number {
-        return this.costService.calculateTotalSpending(this.usageHistory());
+    calculateTotalSpending(costs: CostDto[]): number {
+        return this.costService.calculateTotalSpendingFromCosts(costs);
     }
 
-    calculateSpendingByPeriod(period: "week" | "month" | "year" | "all" = "all"): number {
-        return this.costService.calculateSpendingByPeriod(this.usageHistory(), period);
+    calculateSpendingByPeriod(period: "week" | "month" | "year" | "all" = "all", costs: CostDto[]): number {
+        return this.costService.calculateSpendingByPeriodFromCosts(costs, period);
     }
 
-    projectAnnualSpending(): number {
-        return this.costService.projectAnnualSpending(this.usageHistory());
+    projectAnnualSpending(costs: CostDto[]): number {
+        return this.costService.projectAnnualSpendingFromCosts(costs);
     }
 
-    calculatePotentialSavings(years: number): number {
-        return this.costService.calculatePotentialSavings(this.usageHistory(), years);
+    calculatePotentialSavings(years: number, costs: CostDto[]): number {
+        return this.costService.calculatePotentialSavingsFromCosts(costs, years);
     }
 
-    calculateInvestmentGrowth(years: number, interestRate = 0.07): number {
-        return this.costService.calculateInvestmentGrowth(this.usageHistory(), years);
+    calculateInvestmentGrowth(years: number, interestRate = 0.07, costs: CostDto[]): number {
+        return this.costService.calculateInvestmentGrowthFromCosts(costs, years, interestRate);
     }
 
-    async prepareSpendingTrendData() {
-        return this.costService.prepareSpendingTrendData(this.usageHistory());
+    async prepareSpendingTrendData(costs: CostDto[]) {
+        return this.costService.prepareSpendingTrendDataFromCosts(costs);
     }
 }

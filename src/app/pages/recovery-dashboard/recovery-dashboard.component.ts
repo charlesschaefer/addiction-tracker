@@ -14,6 +14,9 @@ import {
     SobrietyCardStyle,
 } from "../../components/sobriety-card/sobriety-card.component";
 import { TranslocoModule } from "@jsverse/transloco";
+import { SentimentService } from "../../services/sentiment.service";
+import { TriggerService } from "../../services/trigger.service";
+import { Signal, computed } from "@angular/core";
 
 interface UsageEntry {
     id: number;
@@ -49,10 +52,17 @@ export class RecoveryDashboardComponent implements OnInit {
     chartOptions: any;
     sobrietyComponentStyle = SobrietyCardStyle.SIMPLE_DAYS;
 
+    usageBySubstance = signal<any[]>([]);
+    triggerData = signal<any[]>([]);
+    moodCravingCorrelation = signal<any[]>([]);
+    triggerCravingCorrelation = signal<any[]>([]);
+
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
-        private costService: CostService
+        private costService: CostService,
+        private sentimentService: SentimentService,
+        private triggerService: TriggerService
     ) {
         this.initChartOptions();
     }
@@ -60,6 +70,7 @@ export class RecoveryDashboardComponent implements OnInit {
     ngOnInit() {
         this.usageService.list().then((usages) => {
             this.usageHistory.set(usages as UsageDto[]);
+            this.updatePreparedData();
         });
         this.substanceService.list().then((subs) => {
             this.substances.set(
@@ -68,7 +79,17 @@ export class RecoveryDashboardComponent implements OnInit {
                     SubstanceDto
                 >
             );
+            this.updatePreparedData();
         });
+    }
+
+    updatePreparedData() {
+        // Only update if both usageHistory and substances are loaded
+        if (!this.usageHistory() || !this.substances()) return;
+        this.usageBySubstance.set(this.prepareUsageBySubstanceData());
+        this.triggerData.set(this.prepareTriggerData());
+        this.prepareMoodCravingCorrelationDataAsync();
+        this.prepareTriggerCravingCorrelationDataAsync();
     }
 
     setSelectedAnalysisSubstance(substance: string) {
@@ -119,8 +140,8 @@ export class RecoveryDashboardComponent implements OnInit {
                     position: "bottom",
                 },
             },
-            responsive: true,
-            maintainAspectRatio: false,
+            // responsive: true,
+            // maintainAspectRatio: false,
             scales: {
                 x: {
                     stacked: true,
@@ -271,41 +292,38 @@ export class RecoveryDashboardComponent implements OnInit {
         }));
     }
 
-    prepareCostBySubstanceData() {
-        return this.costService.prepareCostBySubstanceData(
+    /**
+     * Prepares data for Mood vs Craving correlation chart.
+     * Returns array: [{ mood: string, emoji: string, avgCraving: number, count: number }]
+     */
+    prepareMoodCravingCorrelationData() {
+        return this.usageService.getMoodCravingCorrelation(
             this.usageHistory(),
-            this.substances()
+            this.sentimentService.getSentimentLabels()
         );
     }
 
-    calculateTotalSpending(): number {
-        return this.costService.calculateTotalSpending(this.usageHistory());
-    }
-
-    calculateSpendingByPeriod(
-        period: "week" | "month" | "year" | "all" = "all"
-    ): number {
-        return this.costService.calculateSpendingByPeriod(
+    /**
+     * Prepares data for Trigger vs Craving correlation chart.
+     * Returns array: [{ trigger: string, avgCraving: number, count: number }]
+     */
+    async prepareTriggerCravingCorrelationDataAsync() {
+        const labels = await this.triggerService.getTriggerLabels();
+        const data = this.usageService.getTriggerCravingCorrelation(
             this.usageHistory(),
-            period
-        );
+            labels
+        ).sort((a, b) => b.avgCraving > a.avgCraving ? 1 : -1);
+        
+        this.triggerCravingCorrelation.set(data.slice(0, 8));
     }
 
-    projectAnnualSpending(): number {
-        return this.costService.projectAnnualSpending(this.usageHistory());
-    }
-
-    calculatePotentialSavings(years: number): number {
-        return this.costService.calculatePotentialSavings(
+    // Change these to async if needed (for trigger labels)
+    async prepareMoodCravingCorrelationDataAsync() {
+        const labels = this.sentimentService.getSentimentLabels();
+        const data = this.usageService.getMoodCravingCorrelation(
             this.usageHistory(),
-            years
+            labels
         );
-    }
-
-    calculateInvestmentGrowth(years: number, interestRate = 0.07): number {
-        return this.costService.calculateInvestmentGrowth(
-            this.usageHistory(),
-            years
-        );
+        this.moodCravingCorrelation.set(data);
     }
 }

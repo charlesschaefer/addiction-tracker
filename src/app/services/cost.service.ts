@@ -237,4 +237,132 @@ export class CostService extends ServiceAbstract<Costs> {
                 }, costByDate);
             });
     }
+
+    // --- NEW METHODS USING COST TABLE DATA ---
+
+    /**
+     * Prepares cost data grouped by substance for visualization, using cost table.
+     * @param costs Array of cost entries
+     * @param substances Map of substance IDs to substance DTOs
+     */
+    prepareCostBySubstanceDataFromCosts(costs: any[], substances: Map<number, SubstanceDto>) {
+        const substanceCosts: { [key: string]: number } = {};
+        if (!substances) return [];
+        costs.forEach((entry) => {
+            if (!entry.substance) return;
+            if (!substances.has(entry.substance)) return;
+            const substanceName = substances.get(entry.substance)?.name as string;
+            if (entry.value) {
+                if (substanceCosts[substanceName]) {
+                    substanceCosts[substanceName] += entry.value;
+                } else {
+                    substanceCosts[substanceName] = entry.value;
+                }
+            }
+        });
+        return Object.keys(substanceCosts).map((substance) => ({
+            name: substance,
+            value: substanceCosts[substance],
+        }));
+    }
+
+    /**
+     * Calculates total spending from cost table.
+     * @param costs Array of cost entries
+     */
+    calculateTotalSpendingFromCosts(costs: any[]): number {
+        return costs.reduce((total, entry) => total + (entry.value || 0), 0);
+    }
+
+    /**
+     * Calculates spending for a given period from cost table.
+     * @param costs Array of cost entries
+     * @param period Time period ("week", "month", "year", "all")
+     */
+    calculateSpendingByPeriodFromCosts(costs: any[], period: "week" | "month" | "year" | "all" = "all"): number {
+        const now = new Date();
+        let startDate: Date;
+        switch (period) {
+            case "week":
+                startDate = new Date(now);
+                startDate.setDate(now.getDate() - 7);
+                break;
+            case "month":
+                startDate = new Date(now);
+                startDate.setMonth(now.getMonth() - 1);
+                break;
+            case "year":
+                startDate = new Date(now);
+                startDate.setFullYear(now.getFullYear() - 1);
+                break;
+            default:
+                startDate = new Date(0);
+        }
+        return costs
+            .filter((entry) => new Date(entry.date) >= startDate)
+            .reduce((total, entry) => total + (entry.value || 0), 0);
+    }
+
+    /**
+     * Projects annual spending based on monthly average from cost table.
+     * @param costs Array of cost entries
+     */
+    projectAnnualSpendingFromCosts(costs: any[]): number {
+        const monthlySpending = this.calculateSpendingByPeriodFromCosts(costs, "month");
+        return monthlySpending * 12;
+    }
+
+    /**
+     * Calculates potential savings over a number of years from cost table.
+     * @param costs Array of cost entries
+     * @param years Number of years
+     */
+    calculatePotentialSavingsFromCosts(costs: any[], years: number): number {
+        const annualSpending = this.projectAnnualSpendingFromCosts(costs);
+        return annualSpending * years;
+    }
+
+    /**
+     * Calculates investment growth with annual savings and interest from cost table.
+     * @param costs Array of cost entries
+     * @param years Number of years
+     * @param interestRate Annual interest rate (default 7%)
+     */
+    calculateInvestmentGrowthFromCosts(costs: any[], years: number, interestRate = 0.07): number {
+        const annualSavings = this.projectAnnualSpendingFromCosts(costs);
+        let total = 0;
+        for (let i = 0; i < years; i++) {
+            total = (total + annualSavings) * (1 + interestRate);
+        }
+        return total;
+    }
+
+    /**
+     * Prepares daily spending trend data for the last 30 days from cost table.
+     * @param costs Array of cost entries
+     */
+    async prepareSpendingTrendDataFromCosts(costs: any[]) {
+        const spendingByDate: Map<string, number> = new Map();
+        const dates: string[] = [];
+        const today = new Date();
+
+        for (let i = 29; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(today.getDate() - i);
+            const dateStr = date.toISOString().split("T")[0];
+            dates.push(dateStr);
+            spendingByDate.set(dateStr, 0);
+        }
+        costs.forEach((entry) => {
+            const dateStr = new Date(entry.date).toISOString().split("T")[0];
+            if (spendingByDate.has(dateStr) && entry.value) {
+                spendingByDate.set(dateStr, (spendingByDate.get(dateStr) || 0) + entry.value);
+            }
+        });
+
+        return dates.map((date) => ({
+            date,
+            spending: spendingByDate.get(date) ?? 0,
+        }));
+    }
 }

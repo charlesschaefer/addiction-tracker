@@ -17,4 +17,11 @@ export class SentimentService {
         { emoji: "🙂", label: "Good" },
         { emoji: "😄", label: "Great" },
     ];
+
+    /**
+     * Returns all sentiment labels.
+     */
+    getSentimentLabels(): string[] {
+        return SentimentService.sentiments.map(s => s.label);
+    }
 }

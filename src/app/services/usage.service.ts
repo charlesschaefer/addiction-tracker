@@ -57,7 +57,7 @@ export class UsageService extends ServiceAbstract<Usages> {
      * @param usage Usage entry to add
      */
     override add(usage: UsageAddDto) {
-        return super.add(usage).then(() => {
+        return super.add(usage).then(async () => {
             console.log("Entrou no usage.add()")
             this.dataUpdatedService?.next([{
                 key: 'id', 
@@ -66,6 +66,15 @@ export class UsageService extends ServiceAbstract<Usages> {
                 type: DatabaseChangeType.Create,
                 source: ''
             }] as Changes[]);
+            // Add cost to cost table if present
+            if (usage.cost !== undefined) {
+                // Assumes dbService has a method to add to the 'cost' table
+                await this.dbService.dbService.table('cost').add({
+                    substance: usage.substance,
+                    cost: usage.cost,
+                    datetime: usage.datetime
+                });
+            }
         })
     }
 
@@ -219,5 +228,64 @@ export class UsageService extends ServiceAbstract<Usages> {
         const sobrietyDays = Math.abs(Math.round(DateTime.fromJSDate(highestDate).diff(DateTime.now(), "days").days));
         this.sobrietyDaysCache = sobrietyDays;
         return sobrietyDays;
+    }
+
+    /**
+     * Returns correlation between mood (sentiment) and craving.
+     * @param usageHistory Array of usage entries
+     * @param sentimentLabels Array of sentiment labels to include
+     * @returns Array of { mood, avgCraving, count }
+     */
+    getMoodCravingCorrelation(
+        usageHistory: UsageDto[],
+        sentimentLabels: string[]
+    ): { mood: string; avgCraving: number; count: number }[] {
+        const result: { [mood: string]: { total: number; count: number } } = {};
+        sentimentLabels.forEach(label => {
+            result[label] = { total: 0, count: 0 };
+        });
+        usageHistory.forEach(entry => {
+            const mood = entry.sentiment;
+            if (mood && result[sentimentLabels[mood]] !== undefined && typeof entry.craving === "number") {
+                result[sentimentLabels[mood]].total += entry.craving;
+                result[sentimentLabels[mood]].count += 1;
+            }
+        });
+        return sentimentLabels.map(mood => ({
+            mood,
+            avgCraving: result[mood].count > 0 ? result[mood].total / result[mood].count : 0,
+            count: result[mood].count
+        }));
+    }
+
+    /**
+     * Returns correlation between trigger and craving.
+     * @param usageHistory Array of usage entries
+     * @param triggerLabels Array of trigger names to include
+     * @returns Array of { trigger, avgCraving, count }
+     */
+    getTriggerCravingCorrelation(
+        usageHistory: UsageDto[],
+        triggerLabels: string[]
+    ): { trigger: string; avgCraving: number; count: number }[] {
+        const result: { [trigger: string]: { total: number; count: number } } = {};
+        triggerLabels.forEach(label => {
+            result[label] = { total: 0, count: 0 };
+        });
+        usageHistory.forEach(entry => {
+            if (Array.isArray(entry.trigger)) {
+                entry.trigger.forEach(trigger => {
+                    if (trigger && result[trigger.name] !== undefined && typeof entry.craving === "number") {
+                        result[trigger.name].total += entry.craving;
+                        result[trigger.name].count += 1;
+                    }
+                });
+            }
+        });
+        return triggerLabels.map(trigger => ({
+            trigger,
+            avgCraving: result[trigger].count > 0 ? result[trigger].total / result[trigger].count : 0,
+            count: result[trigger].count
+        }));
     }
 }
