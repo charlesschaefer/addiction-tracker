@@ -183,11 +183,17 @@ export class AppComponent implements OnInit {
         private substanceService: SubstanceService,
         private messageService: MessageService
     ) {
+        translateService.setDefaultLang("en");
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {
             userLanguage = "en";
         }
-        this.translateService.setActiveLang(userLanguage);
+        this.translateService
+            .setActiveLang(userLanguage)
+            // .selectTranslation(userLanguage)
+            // .subscribe(translation => {
+            //     console.log("Loaded the translations for the language ", userLanguage);
+            // });
     }
 
     ngOnInit(): void {
@@ -230,6 +236,15 @@ export class AppComponent implements OnInit {
                 this.showRecordPopup = true;
             }
         });
+
+        // this.translateService.setActiveLang("pt-br");
+        // this.translateService.selectTranslation('pt-br').subscribe((trans) => {
+        //     console.error("Translations:", trans);
+        //     this.translateService.selectTranslate('Your Journey to Recovery', undefined, "pt-br").subscribe((translation) => {
+        //         console.log("Lingua atual: ", this.translateService.getActiveLang(), this.translateService.getAvailableLangs());
+        //         console.log("Your path journey bla bla", translation);
+        //     });
+        // });
     }
 
     async notify() {

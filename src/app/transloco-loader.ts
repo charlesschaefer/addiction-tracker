@@ -10,6 +10,7 @@ export class TranslocoHttpLoader implements TranslocoLoader {
     constructor(private http: HttpClient) {}
 
     getTranslation(lang: string): Observable<any> {
+        lang = lang.toLowerCase();
         return this.http.get(`/assets/i18n/${lang}.json`);
     }
 } 

@@ -393,18 +393,18 @@ export class AchievementService extends ServiceAbstract<Achievements> {
                 const saferAchievements: SafeIconAchievement[] = [];
     
                 return Promise.all(achievements.map(achievement => {
-                    console.log("Fetching the icon at: ", achievement.icon);
+                    //console.log("Fetching the icon at: ", achievement.icon);
                     return fetchfn(achievement?.icon as string)
                 })).then(async (responses): Promise<SafeIconAchievement[]> => {
-                    console.warn("Finished running all the promises", responses);
+                    //console.warn("Finished running all the promises", responses);
                     const filledAchievements: number[] = [];
                     return Promise.all(responses.map(async (response, idx) => {
                         const icon = await response.text();
-                        console.warn(`We got the icon text for the icon number ${idx+1}: `, icon);
+                        //console.warn(`We got the icon text for the icon number ${idx+1}: `, icon);
                         let saferAchievement:SafeIconAchievement = {} as SafeIconAchievement;
                         for (let achievement of achievements) {
                             if (filledAchievements.indexOf(achievement.id) < 0 && response.url.includes(achievement.icon as string)) {
-                                console.log("Updating saferAchievements: ", achievement);
+                                //console.log("Updating saferAchievements: ", achievement);
                                 saferAchievement = {...achievement, safeIcon: this.sanitizer.bypassSecurityTrustHtml(icon as string)} as SafeIconAchievement;
                                 filledAchievements.push(achievement.id);
                                 break;

@@ -21,7 +21,7 @@ import {
     SobrietyCardStyle,
 } from "../../components/sobriety-card/sobriety-card.component";
 import { OnboardingFlowComponent } from "../../components/onboarding-flow.component";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
     selector: "app-home",
@@ -44,56 +44,8 @@ export class HomeComponent implements OnInit {
 
     showBreathingPrompt = false;
 
-    cards = [
-        {
-            href: "/usage-entries",
-            iconColor: "text-purple-600",
-            bgColor: "bg-purple-100",
-            gradientFrom: "from-purple-600",
-            gradientTo: "to-orange-500",
-            title: "Usage Entries",
-            description:
-                "View and manage your substance usage records and track your progress over time.",
-            linkText: "View Entries",
-            icon: svg1, //`/assets/icons/usage-entries.svg`
-        },
-        {
-            href: "/motivational-factors",
-            iconColor: "text-orange-600",
-            bgColor: "bg-orange-100",
-            gradientFrom: "from-orange-600",
-            gradientTo: "to-red-600",
-            title: "Motivations",
-            description:
-                "Manage your personal motivations to stay on track with your recovery journey.",
-            linkText: "Manage Motivations",
-            icon: svg2, //`/assets/icons/heart.svg`
-        },
-        {
-            href: "/recovery-dashboard",
-            iconColor: "text-teal-600",
-            bgColor: "bg-teal-100",
-            gradientFrom: "from-teal-600",
-            gradientTo: "to-blue-600",
-            title: "Dashboard",
-            description:
-                "Visualize your recovery journey with detailed charts and analytics.",
-            linkText: "View Dashboard",
-            icon: svg3, //`/assets/icons/dashboard.svg`
-        },
-        {
-            href: "/alternative-activity-analytics",
-            iconColor: "text-indigo-600",
-            bgColor: "bg-indigo-100",
-            gradientFrom: "from-indigo-600",
-            gradientTo: "to-purple-600",
-            title: "Alternatives",
-            description:
-                "See which alternative activities work best for you based on your data.",
-            linkText: "View Analytics",
-            icon: svg4, //`/assets/icons/analytics.svg`
-        },
-    ];
+    cards?: any;
+
     sobrietyComponentStyle = SobrietyCardStyle.YEAR_COMPLETION;
 
     constructor(
@@ -102,7 +54,8 @@ export class HomeComponent implements OnInit {
         private achievementService: AchievementService,
         private substanceService: SubstanceService,
         private usageService: UsageService,
-        private motivationalFactorService: MotivationalFactorService
+        private motivationalFactorService: MotivationalFactorService,
+        private translateService: TranslocoService,
     ) {}
 
     ngOnInit(): void {
@@ -119,6 +72,57 @@ export class HomeComponent implements OnInit {
         this.motivationalFactorService.list().then((factors) => {
             this.motivationalFactors = factors as MotivationalFactorDto[];
         });
+
+        this.cards = [
+            {
+                href: "/usage-entries",
+                iconColor: "text-purple-600",
+                bgColor: "bg-purple-100",
+                gradientFrom: "from-purple-600",
+                gradientTo: "to-orange-500",
+                title: this.translateService.translate("Usage Entries"),
+                description:
+                    this.translateService.translate("View and manage your substance usage records and track your progress over time."),
+                linkText: this.translateService.translate("View Entries"),
+                icon: svg1, //`/assets/icons/usage-entries.svg`
+            },
+            {
+                href: "/motivational-factors",
+                iconColor: "text-orange-600",
+                bgColor: "bg-orange-100",
+                gradientFrom: "from-orange-600",
+                gradientTo: "to-red-600",
+                title: this.translateService.translate("Motivations"),
+                description:
+                    this.translateService.translate("Manage your personal motivations to stay on track with your recovery journey."),
+                linkText: this.translateService.translate("Manage Motivations"),
+                icon: svg2, //`/assets/icons/heart.svg`
+            },
+            {
+                href: "/recovery-dashboard",
+                iconColor: "text-teal-600",
+                bgColor: "bg-teal-100",
+                gradientFrom: "from-teal-600",
+                gradientTo: "to-blue-600",
+                title: this.translateService.translate("Dashboard"),
+                description:
+                    this.translateService.translate("Visualize your recovery journey with detailed charts and analytics."),
+                linkText: this.translateService.translate("View Dashboard"),
+                icon: svg3, //`/assets/icons/dashboard.svg`
+            },
+            {
+                href: "/alternative-activity-analytics",
+                iconColor: "text-indigo-600",
+                bgColor: "bg-indigo-100",
+                gradientFrom: "from-indigo-600",
+                gradientTo: "to-purple-600",
+                title: this.translateService.translate("Alternatives"),
+                description:
+                    this.translateService.translate("See which alternative activities work best for you based on your data."),
+                linkText: this.translateService.translate("View Analytics"),
+                icon: svg4, //`/assets/icons/analytics.svg`
+            },
+        ];
     }
 
     initializeGuidedTour() {

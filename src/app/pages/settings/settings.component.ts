@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { DATABASE_NAME } from "../../app.db";
 import { Dexie } from "dexie";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
     selector: "app-settings-page",
@@ -30,6 +30,7 @@ export class SettingsComponent {
 
     constructor(
         private messageService: MessageService,
+        private translateService: TranslocoService
     ) {
         // Load theme and language from localStorage if available
         if (typeof window !== 'undefined') {
@@ -169,11 +170,11 @@ export class SettingsComponent {
         }
     }
 
-    setLanguage(lang: string) {
+    setLanguage(lang: 'en' | 'pt-br' | 'es') {
         this.language = lang;
         if (typeof window !== 'undefined') {
             localStorage.setItem('language', lang);
         }
-        // Optionally, trigger i18n language change here
+        this.translateService.setActiveLang(lang);
     }
 }

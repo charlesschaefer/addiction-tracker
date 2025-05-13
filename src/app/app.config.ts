@@ -29,14 +29,15 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(TranslocoModule),
     provideTransloco({
       config: { 
-        availableLangs: ['en', 'pt-br'],
-        defaultLang: 'pt-br',
+        availableLangs: ['en', 'pt-br', 'es'],
+        defaultLang: 'en',
         fallbackLang: 'en',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),
         missingHandler: {
           allowEmpty: true,
-          logMissingKey: true
+          logMissingKey: true,
+          useFallbackTranslation: false
         }
       },
       loader: TranslocoHttpLoader
