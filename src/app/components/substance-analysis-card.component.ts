@@ -3,9 +3,9 @@ import { Component, Input } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../dto/usage.dto";
 import { SubstanceDto } from "../dto/substance.dto";
-import { ChartData } from "chart.js";
+import { Chart, ChartData, ChartOptions, CoreScaleOptions, Scale, Tick } from "chart.js";
 import { SentimentService } from "../services/sentiment.service";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
     selector: "app-substance-analysis-card",
@@ -20,8 +20,7 @@ export class SubstanceAnalysisCardComponent {
     selectedAnalysisSubstance: string = "all";
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
-    // Chart options
-    barOptions = {
+    barOptions: ChartOptions = {
         plugins: {
             legend: {
                 display: false
@@ -34,7 +33,7 @@ export class SubstanceAnalysisCardComponent {
         }
     };
 
-    lineOptions = {
+    lineOptions: ChartOptions = {
         plugins: {
             legend: {
                 display: true
@@ -42,8 +41,12 @@ export class SubstanceAnalysisCardComponent {
             tooltip: {
                 callbacks: {
                     label: (context: any) => {
-                        const mood = SentimentService.sentiments[context.parsed.y];
-                        return `${mood.emoji}: ${mood.label}`;
+                        const prefix = context?.dataset.label + ": ";
+                        if (context.datasetIndex === 1) {
+                            const mood = SentimentService.sentiments[context.parsed.y];
+                            return `${prefix} ${mood.emoji} ${mood.label}`;
+                        }
+                        return prefix + context?.formattedValue;
                     }
                 }
             }
@@ -51,17 +54,40 @@ export class SubstanceAnalysisCardComponent {
         scales: {
             y: {
                 beginAtZero: true
+            },
+            y1: {
+                type: 'linear',
+                position: 'right',
+                min: -1,
+                max: 4,
+                ticks: {
+                    color: 'black',
+                    stepSize: 1,
+                    callback: (value: number | string) => {
+                        if (value != -1) {
+                            const mood = SentimentService.sentiments[value as number];
+                            return `${mood.emoji} ${mood.label}`;
+                        }
+                        return '';
+                    }
+                },
+                grid: {
+                    drawOnChartArea: false,
+                    drawTicks: true,
+                }
             }
         }
     };
 
-    pieOptions = {
+    pieOptions: ChartOptions = {
         plugins: {
             legend: {
                 position: 'right'
             }
         }
     };
+
+    constructor(private translateService: TranslocoService) {}
 
     setSelectedAnalysisSubstance(substance: string) {
         this.selectedAnalysisSubstance = substance;
@@ -80,6 +106,10 @@ export class SubstanceAnalysisCardComponent {
         );
     }
 
+    /**
+     * Prepares chart data showing usage count for each substance.
+     * @returns {ChartData} Chart.js data object for substance usage.
+     */
     prepareUsageBySubstanceData(): ChartData {
         const substanceCounts: { [key: string]: number } = {};
         this.usageHistory.forEach((entry) => {
@@ -105,6 +135,10 @@ export class SubstanceAnalysisCardComponent {
         return returnData;
     }
 
+    /**
+     * Prepares an array of daily usage counts for the selected substance (or all).
+     * @returns {Array<{date: string, usage: number}>} Array of usage per day.
+     */
     prepareSubstanceUsageData() {
         const usageByDate: { [key: string]: number } = {};
         const dates: Date[] = [];
@@ -129,15 +163,12 @@ export class SubstanceAnalysisCardComponent {
         }));
     }
 
+    /**
+     * Prepares an array of average mood values per day for the selected substance (or all).
+     * @returns {Array<{date: string, sentiment: number|null}>} Array of average mood per day.
+     */
     prepareMoodTrendData() {
         const moodByDate: { [key: string]: { total: number; count: number } } = {};
-        const moodValues: { [key: string]: number } = {
-            Sad: 1,
-            Anxious: 2,
-            Neutral: 3,
-            Good: 4,
-            Great: 5,
-        };
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -150,19 +181,28 @@ export class SubstanceAnalysisCardComponent {
         filteredHistory.forEach((entry) => {
             const entryDate = new Date(entry.datetime);
             const dateKey = entryDate.toISOString().split('T')[0];
-            if (moodByDate[dateKey]) {
-                moodByDate[dateKey].total += moodValues[entry.sentiment] || 3;
+            if (moodByDate[dateKey] && entry.sentiment !== null) {
+                const moodIndex = entry.sentiment;
+                moodByDate[dateKey].total += moodIndex;
                 moodByDate[dateKey].count++;
             }
         });
-        return dates.map((date) => ({
-            date: date.toISOString(),
-            sentiment: moodByDate[date.toISOString().split('T')[0]].count > 0 
-                ? moodByDate[date.toISOString().split('T')[0]].total / moodByDate[date.toISOString().split('T')[0]].count 
-                : null,
-        }));
+        return dates.map((date) => {
+            const dateKey = date.toISOString().split('T')[0];
+            const moodData = moodByDate[dateKey];
+            return {
+                date: date.toISOString(),
+                sentiment: moodData.count > 0 
+                    ? Math.round(moodData.total / moodData.count) 
+                    : null,
+            };
+        });
     }
 
+    /**
+     * Prepares an array of average craving values per day for the selected substance (or all).
+     * @returns {Array<{date: string, craving: number|null}>} Array of average craving per day.
+     */
     prepareCravingTrendData() {
         const cravingByDate: { [key: string]: { total: number; count: number } } = {};
         const dates: Date[] = [];
@@ -190,6 +230,10 @@ export class SubstanceAnalysisCardComponent {
         }));
     }
 
+    /**
+     * Prepares combined chart data for usage, mood, and craving trends over time.
+     * @returns {ChartData} Chart.js data object for combined trends.
+     */
     prepareCombinedTrendData(): ChartData {
         const usageData = this.prepareSubstanceUsageData();
         const moodData = this.prepareMoodTrendData();
@@ -198,42 +242,53 @@ export class SubstanceAnalysisCardComponent {
         const secondColor = firstColor == this.COLORS.length - 1 ? 0 : firstColor + 1;
         const thirdColor = secondColor == this.COLORS.length - 1 ? 0 : secondColor + 1;
 
-        return {
+        const chartData =  {
             labels: usageData.map(item => {
                 const date = new Date(item.date);
                 return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
             }),
             datasets: [
                 {
-                    label: 'Usage',
+                    label: this.translateService.translate('Usage'),
                     data: usageData.map(item => item.usage),
                     borderColor: this.COLORS[firstColor],
+                    backgroundColor: this.COLORS[firstColor] + '80',
                     tension: 0.4,
                     fill: true,
-                    backgroundColor: this.COLORS[firstColor] + '80',
+                    borderDash: [],
                     order: 3
                 },
                 {
-                    label: 'Mood',
-                    data: moodData.map(item => item.sentiment),
+                    yAxisID: 'y1',
+                    label: this.translateService.translate('Mood'),
+                    data: moodData.map(item => item.sentiment !== null ? item.sentiment : -1),
                     borderColor: this.COLORS[secondColor],
                     backgroundColor: this.COLORS[secondColor] + '80',
                     tension: 0.4,
+                    fill: false,
                     borderDash: [2, 2],
                     order: 2,
                 },
                 {
-                    label: 'Craving',
-                    data: cravingData.map(item => item.craving),
+                    label: this.translateService.translate('Craving'),
+                    data: cravingData.map(item => item.craving ?? 0),
                     borderColor: this.COLORS[thirdColor],
                     backgroundColor: this.COLORS[thirdColor] + '80',
                     tension: 0.4,
+                    fill: false,
+                    borderDash: [],
                     order: 1
                 }
             ]
         };
+        console.log("chartData", chartData);
+        return chartData;
     }
 
+    /**
+     * Prepares chart data for trigger occurrence counts.
+     * @returns {ChartData} Chart.js data object for triggers.
+     */
     prepareTriggerData(): ChartData {
         const triggerCounts: { [key: string]: number } = {};
         const filteredHistory = this.getFilteredUsageHistory();
@@ -271,3 +326,4 @@ export class SubstanceAnalysisCardComponent {
 function randBeetween(start: number, end: number): number {
     return Math.floor(Math.random() * (end - start + 1) + start);
 }
+

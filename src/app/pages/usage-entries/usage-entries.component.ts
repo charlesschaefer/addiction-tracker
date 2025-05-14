@@ -133,6 +133,12 @@ export class UsageEntriesComponent implements OnInit {
 
     loadUsageEntries() {
         this.usageService.list().then(async (data) => {
+            // sort by date, from newest to oldest
+            data.sort((a, b) => {
+                const dateA = DateTime.fromJSDate(a.datetime);
+                const dateB = DateTime.fromJSDate(b.datetime);
+                return dateB.toMillis() - dateA.toMillis();
+            });
             this.usageEntries.set(data as UsageDto[]);
         });
     }

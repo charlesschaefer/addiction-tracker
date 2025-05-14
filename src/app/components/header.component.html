@@ -36,7 +36,7 @@
         </svg>
       </button>
       <div class="hidden md:flex items-center space-x-4" #desktopNav>
-        <a *ngFor="let link of navLinks" [routerLink]="link.href"
+        <a *ngFor="let link of navLinks" [routerLink]="link['href']"
           class="transition-colors text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400" routerLinkActive="text-purple-600 dark:text-purple-400 font-medium"
           [routerLinkActiveOptions]="{ exact: true }">
           <ng-container *ngIf="link.icon; else labelText">
@@ -67,7 +67,7 @@
           </button>
           <div *ngIf="settingsMenuOpen"
             class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg py-1 z-50 border border-gray-100 dark:border-gray-800 animate-fadeIn">
-            <a *ngFor="let link of settingsLinks" [routerLink]="link.href" class="block px-4 py-2 text-sm"
+            <a *ngFor="let link of settingsLinks" [routerLink]="link['href']" class="block px-4 py-2 text-sm"
               [ngClass]="{'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300': isSettingsLinkActive(link), 'text-gray-700 hover:bg-gray-50 hover:text-purple-600 dark:text-gray-300 dark:hover:bg-gray-950 dark:hover:text-purple-400': !isSettingsLinkActive(link)}"
               (click)="settingsMenuOpen = false">
               {{ link.label }}

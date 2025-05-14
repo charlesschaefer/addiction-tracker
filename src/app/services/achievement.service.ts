@@ -13,6 +13,7 @@ import { UsageFillingDto } from '../dto/usage-filling.dto';
 import { TableKeys } from '../app.db';
 import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslocoService } from '@jsverse/transloco';
 
 type Achievements = AchievementDto | AchievementAddDto;
 
@@ -36,6 +37,7 @@ export class AchievementService extends ServiceAbstract<Achievements> {
         private motivationalFactorService: MotivationalFactorService,
         private alternativeActivityService: AlternativeActivityService,
         private sanitizer: DomSanitizer,
+        private translate: TranslocoService,
     ) {
         super();
         this.setTable();
@@ -404,6 +406,8 @@ export class AchievementService extends ServiceAbstract<Achievements> {
                         let saferAchievement:SafeIconAchievement = {} as SafeIconAchievement;
                         for (let achievement of achievements) {
                             if (filledAchievements.indexOf(achievement.id) < 0 && response.url.includes(achievement.icon as string)) {
+                                achievement.title = this.translate.translate(achievement.title);
+                                achievement.description = this.translate.translate(achievement.description);
                                 //console.log("Updating saferAchievements: ", achievement);
                                 saferAchievement = {...achievement, safeIcon: this.sanitizer.bypassSecurityTrustHtml(icon as string)} as SafeIconAchievement;
                                 filledAchievements.push(achievement.id);

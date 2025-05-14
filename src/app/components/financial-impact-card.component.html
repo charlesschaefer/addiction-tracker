@@ -40,7 +40,7 @@
       </h3>
       <div class="space-y-4">
           <div class="flex justify-between items-center">
-              <span class="text-gray-600 dark:text-gray-300">{{ 'Projected Annual Cost' | transloco }}</span>
+              <span class="text-gray-600 dark:text-gray-300">{{ 'Projected Annual Cost' | transloco }}*</span>
               <span class="font-semibold text-lg text-red-500 dark:text-red-400">
                   {{ projectedAnnual() | currency }}
               </span>
@@ -64,6 +64,11 @@
               <span class="text-2xl font-bold text-orange-600 dark:text-orange-400">
                   +{{ potentialSavings10() | currency }}
               </span>
+          </div>
+          <div class="flex justify-center items-center">
+            <span class="text-sm text-gray-600 dark:text-gray-300">
+              * {{ 'based on last month spending' | transloco }}
+            </span>
           </div>
       </div>
   </div>

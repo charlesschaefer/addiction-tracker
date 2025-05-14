@@ -1,3 +1,4 @@
+import { TranslocoService } from "@jsverse/transloco";
 import { AlternativeActivityDto } from "../dto/alternative-activity.dto";
 
 export class AlternativeActivityData {
@@ -39,4 +40,15 @@ export class AlternativeActivityData {
             duration: 10
         },
     ];
+
+    constructor(
+        private translateService: TranslocoService,
+    ) {
+        this.translateService.translate("Breathing Exercise");
+        this.translateService.translate("Drink Water");
+        this.translateService.translate("Take a Walk");
+        this.translateService.translate("Stretching");
+        this.translateService.translate("Healthy Snack");
+        this.translateService.translate("Call a Friend");
+    }
 }

@@ -149,9 +149,9 @@
     <div class="flex flex-col items-center mb-6">
       <div class="relative mb-4">
         <!-- Animated breathing circle -->
+        <!-- [ngClass]="getBreathingAnimationClass()" -->
         <div 
           class="w-48 h-48 rounded-full flex items-center justify-center transition-transform duration-500 ease-in-out transform"
-          [ngClass]="getBreathingAnimationClass()"
           style="border: 8px solid #0d9488; background-color: rgba(204, 251, 241, 0.2);"
         >
           <div class="text-teal-700 font-semibold text-2xl">{{currentBreath}}/{{totalBreaths}}</div>

@@ -308,23 +308,9 @@ export class RecordSubstanceUseComponent implements OnInit {
                 craving: parseInt(this.cravingIntensity.toString()),
             } as UsageAddDto;
 
-            // if the uesr filled the cost input, we need to store it
-            let costData: CostAddDto | undefined = undefined;
-            if (this.cost) {
-                costData = {
-                    value: parseFloat(this.cost),
-                    substance: this.selectedSubstance.id,
-                    date: this.datetime,
-                };
-            }
-
             await this.usageService.add(newUsage);
             
             try {
-                if (costData) {
-                    await this.costService.add(costData as CostAddDto);
-                }
-                
                 // Record usage-filling with kept_usage = true
                 const usageFilling: UsageFillingAddDto = {
                     datetime: new Date(),

@@ -223,10 +223,7 @@ export class AppComponent implements OnInit {
 
         this.dataUpdatedService.subscribe("cost", detectAchievements);
         this.dataUpdatedService.subscribe("usage", detectAchievements);
-        this.dataUpdatedService.subscribe(
-            "motivational_factor",
-            detectAchievements
-        );
+        this.dataUpdatedService.subscribe("motivational_factor", detectAchievements);
         this.dataUpdatedService.subscribe("usage_filling", detectAchievements);
 
         this.substanceService.list().then((substances) => {

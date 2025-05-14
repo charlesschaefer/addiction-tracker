@@ -4,7 +4,13 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { ThemeService } from "../services/theme.service";
 import { LockButtonComponent } from "./lock-button.component";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
+
+interface AppMenuItem {
+    href: string;
+    label: string;
+    icon: boolean;
+}
 
 @Component({
     selector: "app-header",
@@ -15,29 +21,40 @@ import { TranslocoModule } from "@jsverse/transloco";
 export class HeaderComponent implements OnInit {
     mobileMenuOpen = false;
     mobileSettingsOpen: boolean = false;
-    navLinks = [
-        { href: "/", label: "Home", icon: false },
-        { href: "/usage-entries", label: "Entries", icon: false },
-        { href: "/recovery-dashboard", label: "Dashboard", icon: false },
-        { href: "/triggers", label: "Triggers", icon: false },
-        { href: "/financial-impact", label: "Finances", icon: false },
-        //{ href: "/settings", label: "Settings", icon: true },
-    ];
 
-    settingsLinks = [
-        { href: "/settings", label: "App Settings", icon: false },
-        { href: "/settings/backup", label: "Backup", icon: false },
-        { href: "/settings/sync", label: "Sync", icon: false },
-        { href: "/about", label: "About", icon: false },
-    ];
+    navLinks: AppMenuItem[] = [];
+    settingsLinks: AppMenuItem[] = [];
+    
     settingsMenuOpen: boolean = false;
 
     theme = signal("light");
 
-    constructor(private router: Router, public themeService: ThemeService) { }
+    constructor(
+        private router: Router, 
+        public themeService: ThemeService,
+        private translateService: TranslocoService,
+    ) { }
 
     ngOnInit(): void {
         this.theme.set(this.themeService.getCurrentTheme()());
+        // Initialize navLinks and settingsLinks with translations only after the translation is loaded
+        this.translateService.selectTranslate("About").subscribe(translation => {
+            this.navLinks = [
+                { href: "/", label: this.translateService.translate("Home"), icon: false },
+                { href: "/usage-entries", label: this.translateService.translate("Entries"), icon: false },
+                { href: "/recovery-dashboard", label: this.translateService.translate("Dashboard"), icon: false },
+                { href: "/triggers", label: this.translateService.translate("Triggers"), icon: false },
+                { href: "/financial-impact", label: this.translateService.translate("Finances"), icon: false },
+                //{ href: "/settings", label: this.translateService.translate("Settings"), icon: true },
+            ];
+
+            this.settingsLinks = [
+                { href: "/settings", label: this.translateService.translate("App Settings"), icon: false },
+                { href: "/settings/backup", label: this.translateService.translate("Backup"), icon: false },
+                { href: "/settings/sync", label: this.translateService.translate("Sync"), icon: false },
+                { href: "/about", label: this.translateService.translate("About"), icon: false },
+            ];
+        })
     }
 
     toggleMobileMenu() {

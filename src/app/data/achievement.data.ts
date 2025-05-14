@@ -1,3 +1,4 @@
+import { TranslocoService } from "@jsverse/transloco";
 import { AchievementDto } from "../dto/achievement.dto";
 
 
@@ -100,4 +101,46 @@ export class AchievementData {
             icon: '/assets/icons/alternatives.svg'
         },
     ];
+
+    constructor(
+        private translateService: TranslocoService,
+    ) {
+        this.translateService.translate('First Step');
+        this.translateService.translate('Record your first entry');
+
+        this.translateService.translate('1 Week Milestone');
+        this.translateService.translate('Maintain 7 days of sobriety');
+
+        this.translateService.translate('1 Month Strong');
+        this.translateService.translate('Maintain 30 days of sobriety');
+
+        this.translateService.translate('Trigger Awareness');
+        this.translateService.translate('Identify 5 different triggers');
+
+        this.translateService.translate('3 Month Journey');
+        this.translateService.translate('Maintain 90 days of sobriety');
+
+        this.translateService.translate('Alternative Explorer');
+        this.translateService.translate('Try 3 different alternative activities');
+
+        this.translateService.translate('Breathing Master');
+        this.translateService.translate('Complete 5 breathing exercises');
+
+        this.translateService.translate('Motivation Collector');
+        this.translateService.translate('Add 3 motivational factors');
+
+        this.translateService.translate('Motivation Driven');
+        this.translateService.translate('Use motivational factors to avoid substance use 3 times');
+
+        this.translateService.translate('Money Saver');
+        this.translateService.translate('Save $100 by avoiding substance use');
+
+        this.translateService.translate('Consistent Tracker');
+        this.translateService.translate('Record entries for 10 consecutive days');
+
+        this.translateService.translate('Alternative Success');
+        this.translateService.translate('Successfully use alternatives 5 times to avoid substance use');
+
+
+    }
 }

@@ -304,11 +304,12 @@ export class CostService extends ServiceAbstract<Costs> {
     }
 
     /**
-     * Projects annual spending based on monthly average from cost table.
+     * Projects annual spending based on the total spent in the last month.
      * @param costs Array of cost entries
      */
-    projectAnnualSpendingFromCosts(costs: any[]): number {
+    projectAnnualSpendingFromCosts(costs: CostDto[]): number {
         const monthlySpending = this.calculateSpendingByPeriodFromCosts(costs, "month");
+
         return monthlySpending * 12;
     }
 

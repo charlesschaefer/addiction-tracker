@@ -1,3 +1,4 @@
+import { TranslocoService } from "@jsverse/transloco";
 import { TriggerDto } from "../dto/trigger.dto";
 
 export class TriggerData {
@@ -55,6 +56,24 @@ export class TriggerData {
             name: 'Sleepiness',
         },
     ];
+
+    constructor(
+        private translateService: TranslocoService,
+    ) {
+        this.translateService.translate('Stress');
+        this.translateService.translate('Social gathering');
+        this.translateService.translate('Boredom');
+        this.translateService.translate('Anxiety');
+        this.translateService.translate('Celebration');
+        this.translateService.translate('Hungry');
+        this.translateService.translate('Angry');
+        this.translateService.translate('Loneliness');
+        this.translateService.translate('Tired');
+        this.translateService.translate('Sadness');
+        this.translateService.translate('Frustration');
+        this.translateService.translate('Excitement');
+        this.translateService.translate('Sleepiness');
+    }
 }
 
 

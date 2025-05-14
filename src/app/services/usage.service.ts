@@ -6,6 +6,7 @@ import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { DbService } from './db.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
 import { Changes, DataUpdatedService } from './data-updated.service';
+import { CostAddDto, CostDto } from '../dto/cost.dto';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -71,9 +72,9 @@ export class UsageService extends ServiceAbstract<Usages> {
                 // Assumes dbService has a method to add to the 'cost' table
                 await this.dbService.dbService.table('cost').add({
                     substance: usage.substance,
-                    cost: usage.cost,
-                    datetime: usage.datetime
-                });
+                    value: usage.cost,
+                    date: usage.datetime
+                } as CostAddDto);
             }
         })
     }
