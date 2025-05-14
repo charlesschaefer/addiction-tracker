@@ -1,169 +1,186 @@
 <div>
-    <main class="max-w-5xl mx-auto px-4 py-8 relative">
-        <!-- Dashboard Title -->
-        <div class="mb-8">
-            <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
-                {{ 'Your Recovery Dashboard' | transloco }}
-            </h2>
-            <p class="text-gray-500 dark:text-gray-400 text-center">
-                {{ 'Track your progress and visualize your journey to recovery' | transloco }}
-            </p>
+  <main class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Dashboard Title -->
+    <div class="mb-8">
+      <h2
+        class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+        {{ 'Your Recovery Dashboard' | transloco }}
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400 text-center">
+        {{ 'Track your progress and visualize your journey to recovery' | transloco }}
+      </p>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="space-y-8">
+      <!-- Sobriety Tracker -->
+      <div
+        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 flex flex-col items-center">
+        <app-sobriety-card [usageHistory]="usageHistory()" [componentStyle]="sobrietyComponentStyle"
+          [useCache]="false" />
+        <div class="text-gray-500 dark:text-gray-400">
+          {{ 'Total Entries' | transloco }}: {{ usageHistory().length }}
         </div>
+      </div>
 
-        <!-- Dashboard Content -->
-        <div class="space-y-8">
-            <!-- Sobriety Tracker -->
-            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 flex flex-col items-center">
-                <app-sobriety-card [usageHistory]="usageHistory()" [componentStyle]="sobrietyComponentStyle" [useCache]="false" />
-                <div class="text-gray-500 dark:text-gray-400">
-                    {{ 'Total Entries' | transloco }}: {{ usageHistory().length }}
-                </div>
-            </div>
+      <!-- Substance Analysis Section -->
+      <app-substance-analysis-card [usageHistory]="usageHistory()"
+        [substances]="substances()"></app-substance-analysis-card>
 
-            <!-- Substance Analysis Section -->
-            <app-substance-analysis-card
-                [usageHistory]="usageHistory()"
-                [substances]="substances()"
-            ></app-substance-analysis-card>
-
-            <!-- Financial Impact -->
-            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
-              <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-                  {{ 'Financial Impact' | transloco }}
-              </h3>
-              <app-financial-impact-card [COLORS]="COLORS" />
-            </div>
-
-             <!-- Mood vs Craving Correlation -->
-          <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
-              <h3 class="text-xl font-semibold mb-2 text-gray-800">
-                  {{ 'Mood and Craving Correlation' | transloco }}
-              </h3>
-              <p class="text-gray-600 mb-6">
-                  {{ 'Understanding how your mood affects cravings can help you develop better coping strategies.' | transloco }}
-              </p>
-              <div class="grid grid-cols-5 gap-4 mb-4">
-                  <ng-container *ngFor="let item of moodCravingCorrelation()">
-                      <div class="flex flex-col items-center">
-                          <div class="text-2xl mb-2">
-                              <!-- Emoji mapping: you may want to map this in TS for more flexibility -->
-                              <ng-container [ngSwitch]="item.mood">
-                                  <span *ngSwitchCase="'Sad'">😢</span>
-                                  <span *ngSwitchCase="'Anxious'">😟</span>
-                                  <span *ngSwitchCase="'Neutral'">😐</span>
-                                  <span *ngSwitchCase="'Good'">🙂</span>
-                                  <span *ngSwitchCase="'Great'">😄</span>
-                                  <span *ngSwitchDefault>😐</span>
-                              </ng-container>
-                          </div>
-                          <div class="text-sm font-medium mb-2">
-                              {{ item.mood }}
-                          </div>
-                          <div class="relative w-20 h-28 flex items-end">
-                              <div class="w-full h-full bg-gray-100 rounded-lg flex items-end">
-                                  <div
-                                      class="w-full rounded-b-lg"
-                                      [ngClass]="{
+      <!-- Mood vs Craving Correlation -->
+      <div
+        class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">
+          {{ 'Mood and Craving Correlation' | transloco }}
+        </h3>
+        <p class="text-gray-600 mb-6">
+          {{ 'Understanding how your mood affects cravings can help you develop better coping strategies.' | transloco
+          }}
+        </p>
+        <div class="grid grid-cols-5 gap-4 mb-4">
+          <ng-container *ngFor="let item of moodCravingCorrelation()">
+            <div class="flex flex-col items-center">
+              <div class="text-2xl mb-2">
+                <!-- Emoji mapping: you may want to map this in TS for more flexibility -->
+                <ng-container [ngSwitch]="item.mood">
+                  <span *ngSwitchCase="'Sad'">😢</span>
+                  <span *ngSwitchCase="'Anxious'">😟</span>
+                  <span *ngSwitchCase="'Neutral'">😐</span>
+                  <span *ngSwitchCase="'Good'">🙂</span>
+                  <span *ngSwitchCase="'Great'">😄</span>
+                  <span *ngSwitchDefault>😐</span>
+                </ng-container>
+              </div>
+              <div class="text-sm font-medium mb-2">
+                {{ item.mood }}
+              </div>
+              <div class="relative w-20 h-28 flex items-end">
+                <div class="w-full h-full bg-gray-100 rounded-lg flex items-end">
+                  <div class="w-full rounded-b-lg" [ngClass]="{
                                           'bg-red-500': item.avgCraving >= 7,
                                           'bg-orange-500': item.avgCraving >= 5 && item.avgCraving < 7,
                                           'bg-yellow-500': item.avgCraving >= 4 && item.avgCraving < 5,
                                           'bg-green-500': item.avgCraving < 4
-                                      }"
-                                      [style.height.%]="item.avgCraving * 10"
-                                  ></div>
-                              </div>
-                              <div class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">
-                                  {{ item.avgCraving | number:'1.1-2' }}
-                              </div>
-                          </div>
-                      </div>
-                  </ng-container>
+                                      }" [style.height.%]="item.avgCraving * 10"></div>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">
+                  {{ item.avgCraving | number:'1.1-2' }}
+                </div>
               </div>
-              <div class="text-sm text-gray-500 text-center">
-                  {{ 'Average craving intensity (0-10) based on mood state' | transloco }}
-              </div>
-          </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="text-sm text-gray-500 text-center">
+          {{ 'Average craving intensity (0-10) based on mood state' | transloco }}
+        </div>
+      </div>
 
-          <!-- Trigger vs Craving Correlation -->
-          <div class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
-              <h3 class="text-xl font-semibold mb-2 text-gray-800">
-                  {{ 'Trigger and Craving Correlation' | transloco }}
-              </h3>
-              <p class="text-gray-600 mb-6">
-                  {{ 'Identify which triggers lead to the strongest cravings to better prepare for high-risk situations.' | transloco }}
-              </p>
-              <div class="flex items-end justify-between space-x-4 mb-2">
-                  <ng-container *ngFor="let item of triggerCravingCorrelation()">
-                      <div class="flex flex-col items-center w-28">
-                          <div class="relative w-full h-48 flex items-end">
-                              <div class="w-full h-full bg-gray-100 rounded-lg flex items-end">
-                                  <div
-                                      class="w-full rounded-b-lg"
-                                      [ngClass]="{
+      <!-- Trigger vs Craving Correlation -->
+      <div
+        class="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
+        <h3 class="text-xl font-semibold mb-2 text-gray-800">
+          {{ 'Trigger and Craving Correlation' | transloco }}
+        </h3>
+        <p class="text-gray-600 mb-6">
+          {{ 'Identify which triggers lead to the strongest cravings to better prepare for high-risk situations.' |
+          transloco }}
+        </p>
+        <div class="flex items-end justify-between space-x-4 mb-2 overflow-x-auto">
+          <ng-container *ngFor="let item of triggerCravingCorrelation()">
+            <div class="flex flex-col items-center w-28">
+              <div class="relative w-full h-48 flex items-end">
+                <div class="w-full h-full bg-gray-100 rounded-lg flex items-end">
+                  <div class="w-full rounded-b-lg" [ngClass]="{
                                           'bg-red-500': item.avgCraving >= 8,
                                           'bg-orange-500': item.avgCraving >= 7 && item.avgCraving < 8,
                                           'bg-yellow-500': item.avgCraving >= 6 && item.avgCraving < 7,
                                           'bg-green-500': item.avgCraving < 6
-                                      }"
-                                      [style.height.%]="item.avgCraving * 10"
-                                  ></div>
-                              </div>
-                              <div class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">
-                                  {{ item.avgCraving | number:'1.1-2' }}
-                              </div>
-                          </div>
-                          <div class="mt-2 text-sm font-medium text-center">
-                              {{ item.trigger }}
-                          </div>
-                          <div class="flex items-center mt-1">
-                              <ng-container [ngSwitch]="true">
-                                  <ng-container *ngSwitchCase="item.avgCraving >= 8">
-                                      <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                      </svg>
-                                      <span class="text-xs text-gray-500 ml-1">High risk</span>
-                                  </ng-container>
-                                  <ng-container *ngSwitchCase="item.avgCraving >= 6">
-                                      <svg class="h-4 w-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                      </svg>
-                                      <span class="text-xs text-gray-500 ml-1">Moderate risk</span>
-                                  </ng-container>
-                                  <ng-container *ngSwitchDefault>
-                                      <svg class="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                      </svg>
-                                      <span class="text-xs text-gray-500 ml-1">Lower risk</span>
-                                  </ng-container>
-                              </ng-container>
-                          </div>
-                          <div class="mt-1 text-xs text-gray-500">
-                              {{ item.count }} {{ 'entries' | transloco }}
-                          </div>
-                      </div>
+                                      }" [style.height.%]="item.avgCraving * 10"></div>
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">
+                  {{ item.avgCraving | number:'1.1-2' }}
+                </div>
+              </div>
+              <div class="mt-2 text-sm font-medium text-center text-nowrap">
+                {{ item.trigger }}
+              </div>
+              <div class="flex items-center mt-1 text-nowrap">
+                <ng-container [ngSwitch]="true">
+                  <ng-container *ngSwitchCase="item.avgCraving >= 8">
+                    <svg class="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-xs text-gray-500 ml-1">High risk</span>
                   </ng-container>
+                  <ng-container *ngSwitchCase="item.avgCraving >= 6 && item.avgCraving < 8">
+                    <svg class="h-4 w-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-xs text-gray-500 ml-1">Moderate risk</span>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <svg class="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    <span class="text-xs text-gray-500 ml-1">Lower risk</span>
+                  </ng-container>
+                </ng-container>
               </div>
-              <div class="text-xs text-gray-500 text-center mt-2">
-                  {{ 'Average craving intensity (0-10) based on trigger' | transloco }}
+              <div class="mt-1 text-xs text-gray-500">
+                {{ item.count }} {{ 'entries' | transloco }}
               </div>
-
-              <div class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
-                  <h4 class="font-semibold text-blue-700 mb-2" >
-                      Insight
-                  </h4>
-                  <p class="text-gray-700 text-sm" >
-                      <span class="font-semibold" >
-                          {{ triggerCravingCorrelation()[0].trigger }} and {{ triggerCravingCorrelation()[1].trigger }}
-                      </span>
-                      are your highest-risk triggers, with craving intensities of 
-                      {{ triggerCravingCorrelation()[0].avgCraving | number:'1.1-2' }} and
-                      {{ triggerCravingCorrelation()[1].avgCraving | number:'1.1-2' }} , respectively.
-                      respectively. Consider developing specific coping strategies for these
-                      situations, such as deep breathing exercises, mindfulness practices, or
-                      having a support person to call.
-                  </p>
-              </div>
-          </div>
+            </div>
+          </ng-container>
         </div>
-    </main>
+        <div class="text-xs text-gray-500 text-center mt-2">
+          {{ 'Average craving intensity (0-10) based on trigger' | transloco }}
+        </div>
+
+        <div class="mt-6 bg-blue-50 p-4 rounded-lg border border-blue-100">
+          <h4 class="font-semibold text-blue-700 mb-2">
+            Insight
+          </h4>
+          <p class="text-gray-700 text-sm">
+            <span class="font-semibold">
+              {{ triggerCravingCorrelation()[0].trigger }} {{'and' | transloco}} {{
+              triggerCravingCorrelation()[1].trigger }}
+            </span>
+            {{ "are your highest-risk triggers, with craving intensities of {{intensity1}} and {{intensity2}}, respectively." | transloco: {
+                intensity1: triggerCravingCorrelation()[0].avgCraving | number:'1.1-2',
+                intensity2: triggerCravingCorrelation()[1].avgCraving | number:'1.1-2'
+              } 
+            }}
+            {{ "Consider developing specific coping strategies for these situations, such as deep breathing exercises, mindfulness practices, or having a support person to call." | transloco }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Financial Impact -->
+      <div
+        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mt-10">
+        <h3
+          class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+          {{ 'Financial Impact' | transloco }}
+        </h3>
+        <app-financial-impact-card [COLORS]="COLORS" />
+        <div class="mt-6 text-center">
+          <a [routerLink]="['/financial-impact']"
+            class="inline-flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors duration-300 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" data-oid="ly--vye">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" data-oid="pi.52qk" />
+            </svg>
+            {{ "View Detailed Financial Impact Analysis" | transloco }}
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
 </div>

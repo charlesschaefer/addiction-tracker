@@ -21,11 +21,11 @@ import {
 import { ThemeService } from "./services/theme.service";
 import { invoke } from "@tauri-apps/api/core";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
-import { HeaderComponent } from "./components/header.component";
+import { HeaderComponent } from "./components/header/header.component";
 import { ToastModule } from "primeng/toast";
 import { DataUpdatedService } from "./services/data-updated.service";
 import { AchievementService } from "./services/achievement.service";
-import { RecordSubstanceUseComponent } from "./components/record-substance-use.component";
+import { RecordSubstanceUseComponent } from "./components/substance/record-substance-use.component";
 import { AlternativeActivityOverlayComponent } from "./components/alternative-activity/alternative-activity-overlay.component";
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
@@ -33,8 +33,8 @@ import { UsageService } from "./services/usage.service";
 import {
     SobrietyCardComponent,
     SobrietyCardStyle,
-} from "./components/sobriety-card/sobriety-card.component";
-import { AddRecordButtonComponent } from "./components/add-record-button.component";
+} from "./components/sobriety/sobriety-card.component";
+import { AddRecordButtonComponent } from "./components/add-record-button/add-record-button.component";
 
 @Component({
     selector: "app-root",

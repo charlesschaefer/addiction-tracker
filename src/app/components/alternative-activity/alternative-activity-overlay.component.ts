@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { UsageFillingService } from "../../services/usage-filling.service";
 import { UsageFillingAddDto } from "../../dto/usage-filling.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
     selector: "app-alternative-activity-overlay",
@@ -51,7 +51,10 @@ export class AlternativeActivityOverlayComponent {
     /** Reference to Math for use in template */
     Math = Math;
 
-    constructor(private usageFillingService: UsageFillingService) {}
+    constructor(
+        private usageFillingService: UsageFillingService,
+        private translateService: TranslocoService
+    ) {}
 
     select(activityId: number) {
         // Find the activity object from the ID (assuming it's passed from parent)
@@ -254,13 +257,13 @@ export class AlternativeActivityOverlayComponent {
     getBreathingInstruction(): string {
         switch (this.breathingStep) {
             case 1:
-                return "Inhale slowly through your nose...";
+                return this.translateService.translate("Inhale slowly through your nose...");
             case 2:
-                return "Hold your breath...";
+                return this.translateService.translate("Hold your breath...");
             case 3:
-                return "Exhale slowly through your mouth...";
+                return this.translateService.translate("Exhale slowly through your mouth...");
             case 4:
-                return "Hold briefly...";
+                return this.translateService.translate("Hold briefly...");
             default:
                 return "";
         }

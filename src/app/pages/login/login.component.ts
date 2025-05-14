@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { AuthScreenComponent } from "../../components/auth-screen.component";
+import { AuthScreenComponent } from "../../components/auth/auth-screen.component";
 
 // You should implement/use an AuthService with isAuthenticated and isProtected observables or properties.
 //import { AuthService } from '../../services/auth.service';

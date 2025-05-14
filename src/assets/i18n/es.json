@@ -560,5 +560,15 @@
     "Consistent Tracker": "Rastreador consistente",
     "Record entries for 10 consecutive days": "Registra entradas durante 10 días consecutivos",
     "Alternative Success": "Éxito alternativo",
-    "Successfully use alternatives 5 times to avoid substance use": "Usa alternativas con éxito 5 veces para evitar el consumo de sustancias"
+    "Successfully use alternatives 5 times to avoid substance use": "Usa alternativas con éxito 5 veces para evitar el consumo de sustancias",
+    "and": "y",
+    "are your highest-risk triggers, with craving intensities of {{intensity1}} and {{intensity2}}, respectively.": "son tus desencadenantes de mayor riesgo, con intensidades de antojo de {{intensity1}} y {{intensity2}}, respectivamente.",
+    "Consider developing specific coping strategies for these situations, such as deep breathing exercises, mindfulness practices, or having a support person to call.": "Considera desarrollar estrategias específicas de afrontamiento para estas situaciones, como ejercicios de respiración profunda, prácticas de atención plena o tener una persona de apoyo a quien llamar.",
+    "Inhale slowly through your nose...": "Inhala lentamente por la nariz...",
+    "Hold your breath...": "Aguanta la respiración...",
+    "Exhale slowly through your mouth...": "Exhala lentamente por la boca...",
+    "Hold briefly...": "Aguanta brevemente...",
+    "View Detailed Financial Impact Analysis": "Ver análisis detallado del impacto financiero",
+    "View all Usage Entries": "Ver todas las entradas de uso",
+    "View detailed triggers analysis": "Ver análisis detallado de desencadenantes"
 }

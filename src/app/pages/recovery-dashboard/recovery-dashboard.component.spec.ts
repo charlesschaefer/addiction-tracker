@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecoveryDashboardComponent } from './recovery-dashboard.component';
-import { By } from '@angular/platform-browser';
 
 describe('RecoveryDashboardComponent', () => {
     let component: RecoveryDashboardComponent;
@@ -21,7 +20,7 @@ describe('RecoveryDashboardComponent', () => {
     });
 
     it('should generate sample data on init if usageHistory is empty', () => {
-        component.usageHistory = [];
+        component.usageHistory.set([]);
         component.ngOnInit();
         expect(component.usageHistory.length).toBeGreaterThan(0);
     });
@@ -30,38 +29,37 @@ describe('RecoveryDashboardComponent', () => {
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
-        component.usageHistory = [
+        component.usageHistory.set([
             {
                 id: 1,
-                substance: 'Alcohol',
-                date: yesterday.toISOString().split('T')[0],
-                time: '12:00',
-                amount: '1 drink',
-                mood: 'Good',
-                triggers: [],
+                substance: 1,
+                datetime: yesterday,
+                quantity: 1,
+                sentiment: 4,
+                trigger: [],
                 cost: 10,
-                cravingIntensity: 5,
+                craving: 5,
             },
-        ];
+        ]);
         expect(component.calculateSobrietyDays()).toBe(1);
     });
 
     it('should prepare usage by substance data', () => {
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: '2024-01-01', time: '12:00', amount: '', mood: 'Good', triggers: [], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Cigarettes', date: '2024-01-02', time: '13:00', amount: '', mood: 'Good', triggers: [], cost: 5, cravingIntensity: 3 },
-            { id: 3, substance: 'Alcohol', date: '2024-01-03', time: '14:00', amount: '', mood: 'Good', triggers: [], cost: 8, cravingIntensity: 2 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: new Date('2024-01-01'), quantity: 0, sentiment: 4, trigger: [], cost: 10, craving: 5 },
+            { id: 2, substance: 2, datetime: new Date('2024-01-02'), quantity: 0, sentiment: 4, trigger: [], cost: 5, craving: 3 },
+            { id: 3, substance: 1, datetime: new Date('2024-01-03'), quantity: 0, sentiment: 4, trigger: [], cost: 8, craving: 2 },
+        ]);
         const data = component.prepareUsageBySubstanceData();
         expect(data.find(d => d.name === 'Alcohol')?.count).toBe(2);
         expect(data.find(d => d.name === 'Cigarettes')?.count).toBe(1);
     });
 
     it('should filter usage history by selected substance', () => {
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: '2024-01-01', time: '12:00', amount: '', mood: 'Good', triggers: [], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Cigarettes', date: '2024-01-02', time: '13:00', amount: '', mood: 'Good', triggers: [], cost: 5, cravingIntensity: 3 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: new Date('2024-01-01'), quantity: 0, sentiment: 4, trigger: [], cost: 10, craving: 5 },
+            { id: 2, substance: 2, datetime: new Date('2024-01-02'), quantity: 0, sentiment: 4, trigger: [], cost: 5, craving: 3 },
+        ]);
         component.selectedAnalysisSubstance = 'Alcohol';
         const filtered = component.getFilteredUsageHistory();
         expect(filtered.length).toBe(1);
@@ -69,10 +67,10 @@ describe('RecoveryDashboardComponent', () => {
     });
 
     it('should prepare trigger data', () => {
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: '2024-01-01', time: '12:00', amount: '', mood: 'Good', triggers: ['Stress', 'Boredom'], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Alcohol', date: '2024-01-02', time: '13:00', amount: '', mood: 'Good', triggers: ['Stress'], cost: 5, cravingIntensity: 3 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: new Date('2024-01-01'), quantity: 0, sentiment: 4, trigger: ['Stress', 'Boredom'], cost: 10, craving: 5 },
+            { id: 2, substance: 1, datetime: new Date('2024-01-02'), quantity: 0, sentiment: 4, trigger: ['Stress'], cost: 5, craving: 3 },
+        ]);
         component.selectedAnalysisSubstance = 'Alcohol';
         const triggers = component.prepareTriggerData();
         const stress = triggers.find(t => t.name === 'Stress');
@@ -82,10 +80,10 @@ describe('RecoveryDashboardComponent', () => {
     });
 
     it('should calculate total spending', () => {
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: '2024-01-01', time: '12:00', amount: '', mood: 'Good', triggers: [], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Cigarettes', date: '2024-01-02', time: '13:00', amount: '', mood: 'Good', triggers: [], cost: 5, cravingIntensity: 3 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: new Date('2024-01-01'), quantity: 0, sentiment: 4, trigger: [], cost: 10, craving: 5 },
+            { id: 2, substance: 2, datetime: new Date('2024-01-02'), quantity: 0, sentiment: 4, trigger: [], cost: 5, craving: 3 },
+        ]);
         expect(component.calculateTotalSpending()).toBe(15);
     });
 
@@ -96,11 +94,11 @@ describe('RecoveryDashboardComponent', () => {
         const lastMonth = new Date(today);
         lastMonth.setDate(today.getDate() - 20);
 
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: today.toISOString().split('T')[0], time: '12:00', amount: '', mood: 'Good', triggers: [], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Cigarettes', date: lastWeek.toISOString().split('T')[0], time: '13:00', amount: '', mood: 'Good', triggers: [], cost: 5, cravingIntensity: 3 },
-            { id: 3, substance: 'Cannabis', date: lastMonth.toISOString().split('T')[0], time: '14:00', amount: '', mood: 'Good', triggers: [], cost: 8, cravingIntensity: 2 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: today, quantity: 0, sentiment: 4, trigger: [], cost: 10, craving: 5 },
+            { id: 2, substance: 2, datetime: lastWeek, quantity: 0, sentiment: 4, trigger: [], cost: 5, craving: 3 },
+            { id: 3, substance: 3, datetime: lastMonth, quantity: 0, sentiment: 4, trigger: [], cost: 8, craving: 2 },
+        ]);
 
         expect(component.calculateSpendingByPeriod('week')).toBe(15);
         expect(component.calculateSpendingByPeriod('month')).toBe(23);
@@ -119,11 +117,11 @@ describe('RecoveryDashboardComponent', () => {
     });
 
     it('should prepare cost by substance data', () => {
-        component.usageHistory = [
-            { id: 1, substance: 'Alcohol', date: '2024-01-01', time: '12:00', amount: '', mood: 'Good', triggers: [], cost: 10, cravingIntensity: 5 },
-            { id: 2, substance: 'Alcohol', date: '2024-01-02', time: '13:00', amount: '', mood: 'Good', triggers: [], cost: 5, cravingIntensity: 3 },
-            { id: 3, substance: 'Cigarettes', date: '2024-01-03', time: '14:00', amount: '', mood: 'Good', triggers: [], cost: 8, cravingIntensity: 2 },
-        ];
+        component.usageHistory.set([
+            { id: 1, substance: 1, datetime: new Date('2024-01-01'), quantity: 0, sentiment: 4, trigger: [], cost: 10, craving: 5 },
+            { id: 2, substance: 1, datetime: new Date('2024-01-02'), quantity: 0, sentiment: 4, trigger: [], cost: 5, craving: 3 },
+            { id: 3, substance: 2, datetime: new Date('2024-01-03'), quantity: 0, sentiment: 4, trigger: [], cost: 8, craving: 2 },
+        ]);
         const costs = component.prepareCostBySubstanceData();
         expect(costs.find(c => c.name === 'Alcohol')?.value).toBe(15);
         expect(costs.find(c => c.name === 'Cigarettes')?.value).toBe(8);

@@ -8,7 +8,7 @@ import { SubstanceService } from "../../services/substance.service";
 import { SubstanceDto } from "../../dto/substance.dto";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
-import { MotivationalFactorInputComponent } from "../../components/motivational-factor-input.component";
+import { MotivationalFactorInputComponent } from "../../components/motivational-factor/motivational-factor-input.component";
 import { TranslocoModule } from "@jsverse/transloco";
 
 @Component({

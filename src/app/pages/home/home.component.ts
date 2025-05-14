@@ -8,7 +8,7 @@ import { UsageDto } from "../../dto/usage.dto";
 import { MotivationalFactorDto } from "../../dto/motivational-factor.dto";
 import { AchievementDto } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
-import { NavigationCardsComponent } from "../../components/navigation-cards.component";
+import { NavigationCardsComponent } from "../../components/navigation-cards/navigation-cards.component";
 import { AchievementsMilestonesComponent } from "../../components/achivements/achievements-milestones.component";
 import { SubstanceService } from "../../services/substance.service";
 
@@ -19,8 +19,8 @@ import svg4 from "../../../assets/icons/analytics.svg";
 import {
     SobrietyCardComponent,
     SobrietyCardStyle,
-} from "../../components/sobriety-card/sobriety-card.component";
-import { OnboardingFlowComponent } from "../../components/onboarding-flow.component";
+} from "../../components/sobriety/sobriety-card.component";
+import { OnboardingFlowComponent } from "../../components/onboarding/onboarding-flow.component";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 
 @Component({
@@ -124,7 +124,7 @@ export class HomeComponent implements OnInit {
                         this.translateService.translate("See which alternative activities work best for you based on your data."),
                     linkText: this.translateService.translate("View Analytics"),
                     icon: svg4, //`/assets/icons/analytics.svg`
-                },
+                }
             ];
         });
     }

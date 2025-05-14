@@ -5,18 +5,19 @@ import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
-import { FinancialImpactCardComponent } from "../../components/financial-impact-card.component";
+import { FinancialImpactCardComponent } from "../../components/financial-impact-card/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
-import { SubstanceAnalysisCardComponent } from "../../components/substance-analysis-card.component";
+import { SubstanceAnalysisCardComponent } from "../../components/substance/substance-analysis-card.component";
 import { DateTime } from "luxon";
 import {
     SobrietyCardComponent,
     SobrietyCardStyle,
-} from "../../components/sobriety-card/sobriety-card.component";
+} from "../../components/sobriety/sobriety-card.component";
 import { TranslocoModule } from "@jsverse/transloco";
 import { SentimentService } from "../../services/sentiment.service";
 import { TriggerService } from "../../services/trigger.service";
 import { Signal, computed } from "@angular/core";
+import { RouterLink } from "@angular/router";
 
 interface UsageEntry {
     id: number;
@@ -39,7 +40,8 @@ interface UsageEntry {
         FinancialImpactCardComponent,
         SubstanceAnalysisCardComponent,
         SobrietyCardComponent,
-        TranslocoModule
+        TranslocoModule,
+        RouterLink
     ],
     templateUrl: "./recovery-dashboard.component.html",
 })
