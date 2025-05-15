@@ -74,4 +74,4 @@ jobs:
             args: ${{ matrix.args }}
 
       - name: Check windows build package
-        run: ls dist/addiction-tracker/assets/i18n/
+        run: ls dist/addiction-tracker/browser/assets/i18n/
