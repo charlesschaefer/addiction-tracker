@@ -25,7 +25,7 @@
     "@angular/material-luxon-adapter": "^19.2.9",
     "@angular/platform-browser": "^19.2.6",
     "@angular/platform-browser-dynamic": "^19.2.6",
-    "@angular/router": "^19.2.6",
+    "@angular/router": "^19.2.11",
     "@google/generative-ai": "^0.14.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
