@@ -1,6 +1,6 @@
 [package]
 name = "addiction-tracker"
-version = "0.0.10"
+version = "0.0.11"
 description = "Addiction Tracker"
 authors = ["Charles Schaefer"]
 edition = "2021"
@@ -23,6 +23,7 @@ tauri-plugin-notification = "2"
 hostname = "0.4.1"
 tiny_http = "0.12.0"
 local-ip-addr = "0.1.1"
+tauri-plugin-http = "2"
 
 [build]
 rustc-wrapper = "/usr/bin/sccache"

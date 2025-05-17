@@ -1,0 +1,671 @@
+<div class="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center z-30 p-2 sm:p-4 md:p-6 overflow-y-auto animate-fadeIn">
+  <div class="bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl p-5 sm:p-7 pt-0 sm:pt-0 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative border border-gray-100 dark:border-gray-800 animate-scaleIn">
+    <div class="sticky top-0 p-5 z-99 bg-black/3 backdrop-blur-sm rounded-xl">
+      <div class="flex justify-between items-center mb-5 sticky top-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm pt-3 pb-3 border-b border-gray-100 dark:border-gray-800 z-100 shadow-sm p-4 rounded-xl">
+        <h2 class="text-lg sm:text-xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+          {{ 'Record Substance Use' | transloco }}
+        </h2>
+        <div class="flex flex-row items-center gap-2">
+          <button
+              (click)="handleGiveUpUsage()"
+              class="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-green-500 to-teal-500 text-white text-sm font-medium rounded-full hover:from-green-600 hover:to-teal-600 transition-all shadow-sm hover:shadow transform hover:scale-105 active:scale-95 cursor-pointer"
+              aria-label="Give up this substance"
+          >
+              <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  class="h-4 w-4" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+              >
+                  <path 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round" 
+                      strokeWidth={2} 
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
+                  />
+              </svg>
+              {{ 'Give Up' | transloco }}
+          </button>
+          <button
+            (click)="close.emit()"
+            class="text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 p-1.5 rounded-full hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all cursor-pointer"
+            aria-label="Close popup"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="py-2">
+      <form (ngSubmit)="onSubmit($event)">
+        <!-- Substance selection -->
+        <div class="mb-6">
+          <h3 class="text-base font-medium text-gray-700 dark:text-gray-300 mb-4" *ngIf="!showAddSubstance">
+            {{ 'Select a substance' | transloco }}
+          </h3>
+          <div 
+            *ngIf="!showAddSubstance && (currentMotivationalFactor !== null || (selectedSubstance && !showAddSubstance))" 
+            class="mb-4 animate-fadeIn"
+          >
+            <div class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+              <h2 class="text-sm font-medium text-purple-700 dark:text-purple-300 mb-2">
+                {{ 'Remember why you want to quit' | transloco }} {{ selectedSubstance?.name ?? ("using substances" | transloco) }}
+              </h2>
+              <ng-container *ngIf="currentMotivationalFactor; else noMotivation">
+                <div>
+                  <span *ngIf="currentMotivationalFactor.type === 'text'">
+                    {{ currentMotivationalFactor.content }}
+                  </span>
+                  <img *ngIf="currentMotivationalFactor.type === 'image'" [src]="currentMotivationalFactor.content" class="max-h-40 rounded-lg shadow-sm" />
+                  <audio *ngIf="currentMotivationalFactor.type === 'audio'" [src]="currentMotivationalFactor.content" controls></audio>
+                </div>
+              </ng-container>
+              <ng-template #noMotivation>
+                <p class="text-gray-600 dark:text-gray-400 italic">
+                  {{ "You haven't added any motivational factors for this substance yet. Consider adding some to help you in moments like this." | transloco }}
+                </p>
+              </ng-template>
+            </div>
+          </div>
+          <div *ngIf="showAddSubstance" class="bg-gradient-to-br from-purple-50 to-purple-100/70 dark:from-purple-900 dark:to-purple-900/70 p-5 rounded-xl border border-purple-200 dark:border-purple-800 shadow-sm animate-fadeIn">
+            <h3 class="text-xl font-semibold bg-gradient-to-r from-purple-700 to-purple-500 bg-clip-text text-transparent mb-2">
+              {{ 'Add New Substance' | transloco }}
+            </h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              {{ 'Start by giving your substance a name. This will help you track your usage patterns over time.' | transloco }}
+            </p>
+            <div class="flex flex-col gap-4 mb-4">
+              <input
+                type="text"
+                [(ngModel)]="newSubstance"
+                name="newSubstance"
+                placeholder="{{ 'Substance name' | transloco }}"
+                class="flex-1 rounded-lg border-gray-300 dark:border-gray-700 p-4 bg-white/60 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+              />
+              <app-substance-icon-select [(ngModel)]="newSubstanceIcon" name="substanceIcon" class="mb-4" />
+            </div>
+            <div class="flex gap-3 justify-end">
+              <button
+                type="button"
+                (click)="handleAddSubstance()"
+                class="px-5 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {{ 'Add' | transloco }}
+              </button>
+              <button
+                type="button"
+                (click)="showAddSubstance = false"
+                class="px-5 py-3 border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center"
+              >
+                {{ 'Cancel' | transloco }}
+              </button>
+            </div>
+          </div>
+          <div *ngIf="!showAddSubstance" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-5">
+            <button
+              *ngFor="let substance of substances"
+              type="button"
+              (click)="handleSelectSubstance(substance)"
+              [ngClass]="selectedSubstance?.name === substance.name ? 'border-teal-500 bg-teal-50 dark:bg-teal-900 text-teal-700 dark:text-teal-200 shadow-md' : 'border-gray-100 dark:border-gray-700 hover:border-teal-300 hover:bg-teal-50 dark:hover:bg-teal-900/40 text-gray-700 dark:text-gray-200'"
+              class="p-4 rounded-xl border-2 text-center transition-all flex flex-col items-center"
+            >
+              <i *ngIf="substance.icon" class="pi pi-{{substance.icon}} mb-3"></i>
+              {{ substance.name }}
+            </button>
+          </div>
+          <button *ngIf="!showAddSubstance"
+            type="button"
+            (click)="showAddSubstance = true"
+            class="w-full py-4 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-300 hover:border-teal-300 dark:hover:border-teal-500 hover:bg-teal-50 dark:hover:bg-teal-900/40 transition-all flex items-center justify-center transform hover:scale-[1.02]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-2"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {{ 'Add New Substance' | transloco }}
+          </button>
+        </div>
+
+        <!-- Usage Details -->
+        <div *ngIf="selectedSubstance && !showAddSubstance">
+          <div class="mt-6 mb-8 flex items-center">
+            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
+            <span class="px-3 text-sm font-medium text-purple-600 dark:text-purple-300">
+              {{ 'Usage Details' | transloco }}
+            </span>
+            <div class="h-0.5 flex-1 bg-gradient-to-r from-transparent via-teal-100 dark:via-teal-900 to-transparent"></div>
+          </div>
+
+          <!-- Date and Time -->
+          <div class="bg-white/90 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-6">
+              <div class="bg-purple-100 dark:bg-purple-900 p-2.5 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-purple-600 dark:text-purple-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
+                  {{ 'When did you use it?' | transloco }}
+                </h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                  {{ 'Record the date and time of your substance use' | transloco }}
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="space-y-4">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  {{ 'Date and time' | transloco }}
+                </label>
+                <p-calendar
+                  [(ngModel)]="datetime" 
+                  name="date" 
+                  [showTime]="true"
+                  [showIcon]="true" 
+                  [showButtonBar]="true"
+                  iconDisplay="input"
+                  
+                  class="w-full"
+                  inputStyleClass="h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div class="bg-white/90 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-8 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-6">
+              <div class="bg-teal-100 dark:bg-teal-900 p-2.5 rounded-lg mr-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-teal-600 dark:text-teal-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-800 dark:text-gray-300 text-lg">
+                  {{ 'How much did you use?' | transloco }}
+                </h4>
+                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">
+                  {{ 'Record the amount and cost of your substance use' | transloco }}
+                </p>
+              </div>
+            </div>
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                  {{ 'Amount' | transloco }}
+                </label>
+                <div class="flex items-center">
+                  <button
+                    type="button"
+                    (click)="decreaseAmount()"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-l-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
+                    aria-label="Decrease amount"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                      <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                  <div class="relative flex-1 group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-teal-500 dark:group-hover:text-teal-300 transition-colors"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                        />
+                      </svg>
+                    </div>
+                    <input
+                      type="number"
+                      [(ngModel)]="amount"
+                      name="amount"
+                      class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
+                      min="1"
+                      placeholder="{{ 'Enter amount' | transloco }}"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    (click)="increaseAmount()"
+                    class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-r-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
+                    aria-label="Increase amount"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                      <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
+                  {{ 'Enter the number of units consumed' | transloco }}
+                </p>
+              </div>
+              <div class="mt-6">
+                <div *ngIf="showCostInput" class="space-y-2 animate-fadeIn">
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                    {{ 'Cost ($)' | transloco }}
+                  </label>
+                  <div class="flex items-center">
+                    <button
+                      type="button"
+                      (click)="decreaseAmount()"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-l-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
+                      aria-label="Decrease cost"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                        <path fill-rule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                    <div class="relative flex-1 group">
+                      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-teal-500 dark:group-hover:text-teal-300 transition-colors"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="number"
+                        [(ngModel)]="cost"
+                        name="cost"
+                        placeholder="{{ 'Enter cost' | transloco }}"
+                        class="pl-12 w-full border-y border-gray-200 dark:border-gray-700 shadow-sm focus:border-teal-500 focus:ring focus:ring-teal-200 focus:ring-opacity-50 h-12 transition-all hover:border-teal-300 dark:hover:border-teal-500 group-hover:border-teal-300 dark:group-hover:border-teal-500"
+                        step="0.01"
+                        min="0"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      (click)="increaseAmount()"
+                      class="h-12 w-12 flex items-center justify-center bg-gray-100 dark:bg-gray-700 hover:bg-teal-100 dark:hover:bg-teal-900 text-gray-700 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-300 rounded-r-lg border border-gray-200 dark:border-gray-700 hover:border-teal-300 dark:hover:border-teal-500 transition-all duration-200 transform active:scale-95"
+                      aria-label="Increase cost"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 20 20" stroke="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 ml-1">
+                    {{ 'Enter the cost in dollars' | transloco }}
+                  </p>
+                </div>
+                <button
+                  *ngIf="!showCostInput"
+                  type="button"
+                  (click)="showCostInput = true"
+                  class="flex items-center text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-400 text-sm font-medium mt-2 transition-all transform hover:translate-x-2 hover:scale-105 bg-teal-50 dark:bg-teal-900 hover:bg-teal-100 dark:hover:bg-teal-800 px-4 py-2 rounded-lg"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 mr-2"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  {{ 'Add cost information' | transloco }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Craving Intensity -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-orange-500 dark:text-orange-300 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"
+                />
+              </svg>
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
+                {{ 'How intense was your craving?' | transloco }}
+              </h4>
+            </div>
+            <div class="px-2">
+              <div class="flex justify-between mb-2">
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Mild (1)' | transloco }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Moderate (5)' | transloco }}</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ 'Severe (10)' | transloco }}</span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="10"
+                [(ngModel)]="cravingIntensity"
+                name="cravingIntensity"
+                class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-orange-500 dark:accent-orange-300"
+              />
+              <div class="mt-4 flex flex-col items-center">
+                <div
+                  class="relative flex items-center justify-center mb-2"
+                >
+                  <div
+                    class="w-24 h-24 rounded-full border-8 flex items-center justify-center"
+                    [style.borderColor]="getCravingColor(cravingIntensity)"
+                    [style.background]="
+                      'conic-gradient(' +
+                      getCravingColor(cravingIntensity) +
+                      ' ' +
+                      (cravingIntensity * 10) +
+                      '%, transparent 0)'
+                    "
+                  >
+                    <div
+                      class="w-16 h-16 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-2xl font-bold"
+                    >
+                      {{cravingIntensity}}
+                    </div>
+                  </div>
+                </div>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2 font-medium">
+                  {{
+                    cravingIntensity <= 3
+                      ? ('Mild craving' | transloco)
+                      : cravingIntensity <= 7
+                      ? ('Moderate craving' | transloco)
+                      : ('Severe craving' | transloco)
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sentiment selection -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-teal-600 dark:text-teal-300 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
+                {{ 'How were you feeling?' | transloco }}
+              </h4>
+            </div>
+            <div class="grid grid-cols-5 gap-2 sm:gap-4">
+              <button
+                *ngFor="let m of sentiments"
+                type="button"
+                (click)="sentiment = m.label"
+                [ngClass]="sentiment === m.label ? 'bg-purple-50 dark:bg-purple-900 ring-2 ring-purple-500 dark:ring-purple-300 shadow-sm transform scale-105' : 'hover:bg-gray-50 dark:hover:bg-gray-700 border border-transparent hover:border-gray-200 dark:hover:border-gray-600 hover:scale-105'"
+                class="flex flex-col items-center p-3 rounded-lg transition-all"
+              >
+                <span class="text-3xl mb-2">{{ m.emoji }}</span>
+                <span class="text-xs font-medium">{{ m.label | transloco }}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Triggers -->
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 mb-6 shadow-sm hover:shadow-md transition-all duration-300 transform hover:scale-[1.01]">
+            <div class="flex items-center mb-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-teal-600 dark:text-teal-300 mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <h4 class="font-medium text-gray-700 dark:text-gray-300">
+                {{ 'What triggered this use?' | transloco }}
+              </h4>
+            </div>
+            <div class="flex flex-wrap gap-2 mb-3">
+              <button
+                *ngFor="let trigger of triggers"
+                type="button"
+                (click)="toggleTrigger(trigger.name)"
+                [ngClass]="selectedTriggers.includes(trigger.name) ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'"
+                class="px-4 py-2 rounded-full text-sm transition-all"
+              >
+                {{ trigger.name }}
+              </button>
+            </div>
+            <div *ngIf="showAddTrigger" class="bg-purple-50 dark:bg-purple-900/40 p-3 rounded-lg border border-purple-100 dark:border-purple-800 mt-3">
+              <label class="block text-xs text-purple-700 dark:text-purple-300 font-medium mb-1">
+                {{ 'New Trigger' | transloco }}
+              </label>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                  <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 text-gray-400 dark:text-gray-300"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    [(ngModel)]="newTrigger"
+                    name="newTrigger"
+                    placeholder="{{ 'Enter new trigger' | transloco }}"
+                    class="pl-12 w-full h-12 rounded-lg border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 transition-all hover:border-purple-300 dark:hover:border-purple-500"
+                    autofocus
+                  />
+                </div>
+                <div class="flex gap-3">
+                  <button
+                    type="button"
+                    (click)="handleAddTrigger()"
+                    class="px-5 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition-all shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    {{ 'Add' | transloco }}
+                  </button>
+                  <button
+                    type="button"
+                    (click)="showAddTrigger = false"
+                    class="px-5 py-3 border border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-5 w-5 mr-2"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    {{ 'Cancel' | transloco }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button
+              *ngIf="!showAddTrigger"
+              type="button"
+              (click)="showAddTrigger = true"
+              class="flex items-center text-teal-600 dark:text-teal-300 hover:text-teal-800 dark:hover:text-teal-400 text-sm font-medium mt-2 transition-all transform hover:translate-x-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              {{ 'Add new trigger' | transloco }}
+            </button>
+          </div>
+
+          <!-- Submit button -->
+          <div class="mt-8">
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button
+                type="submit"
+                class="w-full py-4 bg-gradient-to-r from-purple-500 to-orange-500 text-white font-medium rounded-xl hover:from-purple-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg flex items-center justify-center transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {{ 'Record Usage' | transloco }}
+              </button>
+              
+              <button
+                type="button"
+                (click)="handleGiveUpUsage()"
+                class="w-full py-4 bg-gradient-to-r from-teal-500 to-green-500 text-white font-medium rounded-xl hover:from-teal-600 hover:to-green-600 transition-all shadow-md hover:shadow-lg flex items-center justify-center transform hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+                {{ 'I Decided Not To Use' | transloco }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

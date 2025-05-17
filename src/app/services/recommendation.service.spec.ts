@@ -7,7 +7,7 @@ import { RecommendationService } from './recommendation.service';
 import { RecommendationDto } from '../dto/recommendation.dto';
 
 describe('RecommendationService', () => {
-  let service: RecommendationService<RecommendationDto>;
+  let service: RecommendationService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

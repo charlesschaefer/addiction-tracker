@@ -1,0 +1,38 @@
+<main class="max-w-5xl mx-auto px-4 py-8 relative">
+  <!-- Introduction -->
+  <section class="mb-10 text-center max-w-3xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+      {{ 'Your Journey to Recovery' | transloco }}
+    </h2>
+    <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+      {{ 'Track your substance use, identify triggers, and monitor your progress over time. Understanding your patterns is the first step toward positive change.' | transloco }}
+    </p>
+  </section>
+
+ 
+
+  <!-- Navigation Buttons -->
+  <app-navigation-cards
+    [cards]="cards"
+  />
+  
+
+  <!-- Sobriety Stats -->
+  <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+    <div class="flex items-center justify-between gap-4 flex-col mb-6 md:grid md:grid-cols-3">
+      <!-- Sobriety data -->
+      <app-sobriety-card [usageHistory]="usageHistory" [componentStyle]="sobrietyComponentStyle" [useCache]="false" class="md:grid md:col-span-2" />
+      <div class="text-center md:col-3">
+        <div class="text-4xl font-bold text-green-600 dark:text-green-300">{{ usageHistory.length }}</div>
+        <div class="text-gray-600 dark:text-gray-300 mt-1">{{ 'Total Entries' | transloco }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Achievements -->
+  <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800">
+    <app-achievements-milestones (viewAll)="navigateToAchievements()"></app-achievements-milestones>
+  </div>
+</main>
+
+<app-onboarding-flow *ngIf="showOnboardingFlow" (complete)="completeOnboarding()" />

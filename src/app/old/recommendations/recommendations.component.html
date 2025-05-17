@@ -1,0 +1,26 @@
+<div 
+    joyrideStep="recommendations"
+    [title]="'Recomendações personalizadas' | transloco"
+    [text]="'Por fim, você pode obter dicas personalizadas de como lidar com cada um dos seus gatilhos na nossa seção de recomendações.' | transloco"
+    stepPosition="center"
+>
+    <p-panel [header]="'Recomendações para Gatilhos' | transloco">
+        <p-table [value]="triggers">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>{{ 'Gatilho' | transloco }}</th>
+                    <th>{{ 'Ações' | transloco }}</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-trigger>
+                <tr>
+                    <td>{{ trigger.name}} </td>
+                    <td>
+                        <p-button class="recommendation-button" icon="pi pi-search" [label]="'Ver recomendação' | transloco" (onClick)="showRecommendation(trigger.name)" />
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-panel>
+    <app-recommendation [trigger]="trigger" *ngIf="trigger" />
+</div>

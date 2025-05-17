@@ -1,0 +1,144 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+    <main class="max-w-5xl mx-auto px-4 py-8 relative">
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+                {{ 'Financial Impact' | transloco }}
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400 text-center">
+                {{ 'Understand the financial cost of substance use and potential savings from recovery' | transloco }}
+            </p>
+        </div>
+
+        <app-financial-impact-card [COLORS]="COLORS" [usageCosts]="costs()" />
+
+        <!-- Spending Trend -->
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+            <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">
+                {{ 'Spending Trend (Last 30 Days)' | transloco }}
+            </h3>
+            <div class="h-80">
+                <div *ngIf="hasSpendingTrendData(); else noSpendingTrendData" class="h-full">
+                    <p-chart type="line" [data]="spendingTrendData" [options]="spendingTrendOptions" height="300" width="300" />
+                </div>
+                <ng-template #noSpendingTrendData>
+                    <div class="h-full flex items-center justify-center text-gray-500 dark:text-gray-400">
+                        <p class="text-center">
+                            {{ 'No spending data available for the last 30 days. Start recording your substance use to see spending trends.' | transloco }}
+                        </p>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <!-- Investment Potential -->
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+            <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                {{ 'Investment Potential' | transloco }}
+            </h3>
+            <p class="text-gray-700 dark:text-gray-200 mb-6">
+                {{ "If you invested the money you would have spent on substances, here's how much it could grow over time (assuming a 7% average annual return):" | transloco }}
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '5 Years' | transloco }}</h4>
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-300">
+                        {{ calculateInvestmentGrowth(5, undefined, costs()) | currency }}
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '10 Years' | transloco }}</h4>
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-300">
+                        {{ calculateInvestmentGrowth(10, undefined, costs()) | currency }}
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/40 dark:to-emerald-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 text-center">
+                    <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">{{ '20 Years' | transloco }}</h4>
+                    <div class="text-2xl font-bold text-green-600 dark:text-green-300">
+                        {{ calculateInvestmentGrowth(20, undefined, costs()) | currency }}
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700 dark:text-blue-300">
+                            {{ 'These calculations are based on your recorded usage and assume you invest the money you would have spent on substances. The potential growth uses a 7% average annual return, which is a common long-term stock market average. Actual returns may vary.' | transloco }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alternative Uses for Money -->
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+            <h3 class="text-xl font-semibold mb-5 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                {{ 'What Else Could You Do With This Money?' | transloco }}
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 dark:text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                                <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1v-5h2.05a2.5 2.5 0 014.9 0H19a1 1 0 001-1V5a1 1 0 00-1-1H3z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Travel' | transloco }}</h4>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ 'With' | transloco }} {{ calculatePotentialSavings(1, costs()) | currency }} {{ "saved in a year, you could take a vacation to a destination you've always wanted to visit." | transloco }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 dark:text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Education' | transloco }}</h4>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ 'You could invest in courses, certifications, or even start saving for a degree to advance your career.' | transloco }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 dark:text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Home Improvements' | transloco }}</h4>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ 'Create a more comfortable living space with renovations or new furniture that will last for years.' | transloco }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 rounded-full mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600 dark:text-purple-300" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M7 2a1 1 0 00-.707 1.707L7 4.414v3.758a1 1 0 01-.293.707l-4 4C.817 14.769 2.156 18 4.828 18h10.343c2.673 0 4.012-3.231 2.122-5.121l-4-4A1 1 0 0113 8.172V4.414l.707-.707A1 1 0 0013 2H7zm2 6.172V4h2v4.172a3 3 0 00.879 2.12l1.168 1.168a4 4 0 01-2.278.584l-.29.194V7.828a1 1 0 01.293-.707L8 6.172zM8 7.828V4h2v3.828a3 3 0 01.879 2.12l-1.168 1.168a4 4 0 01-2.278-.584l-.29-.194V7.828a1 1 0 01.293-.707L8 6.172z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Health & Wellness' | transloco }}</h4>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ 'Invest in your physical and mental health with gym memberships, therapy, or wellness retreats.' | transloco }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

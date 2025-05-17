@@ -1,4 +1,4 @@
-import { TriggerAddDto } from "./trigger.dto";
+import { TriggerAddDto, TriggerDto } from "./trigger.dto";
 
 export interface UsageDto {
     id: number;
@@ -7,7 +7,8 @@ export interface UsageDto {
     datetime: Date;
     sentiment: number;
     craving: number;
-    trigger: TriggerAddDto[] | null;
+    trigger: TriggerAddDto[] | TriggerDto[] | null;
+    cost?: number;
 }
 
 export type UsageAddDto = Omit<UsageDto, "id">;

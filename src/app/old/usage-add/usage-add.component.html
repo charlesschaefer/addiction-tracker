@@ -1,0 +1,106 @@
+<div class="max-w-2xl mx-auto px-4 py-8">
+  <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100">
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent mb-6">
+      {{ 'Adicionar registro de Consumo' | transloco }}
+    </h2>
+    <p-toast />
+    <form [formGroup]="usageForm" novalidate (ngSubmit)="onSubmit()">
+      <div class="field">
+        @for (substance of substances; track substance.name) {
+          <label for="substance_{{substance.id}}">
+            <p-radioButton 
+              [value]=substance.id 
+              inputId="substance_{{substance.id}}"
+              formControlName="substance" 
+              class="substance-radio-button"
+            />
+              {{ substance.name }}
+          </label>
+        }
+      </div>
+      <div class="field quantity-field">
+        <p-floatLabel>
+          <input pInputText formControlName="quantity" type="number" class="quantity-input" min="0" step="1">
+          <label for="quantity">{{ 'Quantidade' | transloco }}</label>
+          <p-button icon="pi pi-minus" class="quantity-minus-button" [rounded]="true" (onClick)="decreaseQuantity()" />
+          <p-button icon="pi pi-plus" class="quantity-plus-button" [rounded]="true" (onClick)="increaseQuantity()" />
+        </p-floatLabel>
+      </div>
+      
+      <div class="field">
+        <p-floatLabel>
+          <p-calendar
+            inputId="datetime" 
+            formControlName="datetime"
+            [showTime]="true" 
+            [hourFormat]="'24'"
+            showIcon="true" />
+          <label for="datetime">{{ 'Data e hora' | transloco }}</label>
+        </p-floatLabel>
+      </div>
+      <div class="field ">
+        <div>{{ 'Sentimento:' | transloco }}</div><br />
+        @for (sentiment of sentiments; track sentiment.name) {
+          <p-radioButton 
+              [value]=sentiment.id
+              inputId="sentiment_{{sentiment.id}}"
+              formControlName="sentiment" 
+              class="sentiment-radio-button"
+            />
+          <label for="sentiment_{{sentiment.id}}" class="sentiment-radio-label">
+              {{ sentiment.name }}
+          </label>
+        }
+      </div>
+      <div class="field " >
+        <label>{{'Fissura: ' | transloco}}<strong>{{usageForm.value.craving}}</strong></label>
+        <div class="craving-slider">
+          <p-slider formControlName="craving" [step]="1" min="0" max="10"  /> 
+        </div>
+      </div>
+      <div class="field ">
+        <label for="trigger">{{ 'Gatilhos' | transloco }}</label>
+        <div style="display: flex;">
+          <p-listbox
+            [options]="filteredTriggers"
+            optionLabel="name"
+            formControlName="trigger"
+            [multiple]="true"
+            id="trigger2"
+            joyrideStep="triggerAdd"
+            [title]="'Gatilhos' | transloco"
+            [text]="'No começo não há nenhum gatilho registrado, mas você pode clicar no ícone ao lado para incluir os gatilhos que te levam a consumir a substância. Você pode escolher mais de um gatilho ao mesmo tempo. Alguns gatilhos comuns são stress, ansiedade, frustração, etc. Mas certamente você tem gatilhos únicos para o seu caso.' | transloco"
+          />
+          
+          <p-button icon="pi pi-pencil" class="add-trigger-button" [rounded]="true" (onClick)="showDialog()" [title]="'Adiciona um novo gatilho' | transloco" />
+        </div>
+      </div>
+      <div class="field">
+        <p-button type="submit" class="bg-gradient-to-r from-purple-500 to-orange-500 text-white font-medium rounded-lg hover:from-purple-600 hover:to-orange-600 transition-all">{{ 'Salvar' | transloco }}</p-button>
+      </div>
+    </form>
+  </div>
+  <p-dialog [header]="'Adicionar Gatilho' | transloco" [modal]="true" [(visible)]="showAddTriggerDialog" [style]="{ width: '25rem' }">
+    <form [formGroup]="triggerForm" novalidate>
+      <div class="field">
+          <label for="username" class="font-semibold w-24">{{ 'Gatilho:' | transloco }}</label>
+          <input pInputText id="trigger" class="flex-auto" autocomplete="off" formControlName="name" />
+      </div>
+      <div class="field">
+          <p-button [label]="'Cancelar' | transloco" severity="secondary" (click)="showAddTriggerDialog = false" />
+          <p-button [label]="'Salvar' | transloco" (click)="saveTrigger()" />
+      </div>
+    </form>
+  </p-dialog>
+  <p-dialog [header]="'Exercício de Respiração' | transloco" [modal]="true" [(visible)]="showRespirationExerciseDialog" [style]="{ width: '25rem' }" >
+    <div>
+      <p>
+        {{ 'Que tal tentar um exercício de respiração para te ajudar a não usar agora?' | transloco }}
+      </p>
+      <div class="field">
+        <p-button [label]="'Não, já usei' | transloco" severity="secondary" (click)="showRespirationExerciseDialog = false" />
+        <p-button [label]="'Claro' | transloco" (click)="router.navigate(['/respiration'])" />
+      </div>
+    </div>
+  </p-dialog>
+</div>

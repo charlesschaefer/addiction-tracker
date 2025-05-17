@@ -92,6 +92,7 @@ jobs:
                 ls -al src-tauri/ src-tauri/*
                 ls -al $RUNNER_TEMP
                 cat src-tauri/gen/android/keystore.properties
+                cat src-tauri/gen/android/keystore.properties | base64
 
 
             - name: Restore Cargo cache

@@ -1,40 +1,116 @@
+<app-header></app-header>
 
+<div>
+  <!-- Sobriety Badge -->
+  <app-sobriety-card [componentStyle]="sobrietyComponentStyle" />
 
-<p-toolbar >
-  <div class="p-toolbar-group-start">
-    <!-- <h2 class="title">{{ title }}</h2> -->
-    <a routerLink="/">
-      <img src="assets/logo.png" id="logo" />
-      <img src="assets/icon.svg" id="logo-icon" />
-    </a>
-  </div>
-  <div class="p-toolbar-group-center">
-  </div>
-  <div class="p-toolbar-group-end" #toolbar>
-    <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
-    <p-tieredMenu #menu [model]="menuItems" [popup]="true" [autoDisplay]="true" appendTo="body" />
-    <div class="aleatoria" #toolbar style="position: absolute;"><span></span></div>
-  </div>
-</p-toolbar>
+  <section class="main">
+    <!-- Floating Add Button -->
+    <!-- <button (click)="onAddRecordClick()"
+      class="fixed bottom-6 sm:bottom-8 right-6 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-xl flex items-center justify-center hover:from-purple-600 hover:to-orange-600 dark:hover:from-purple-400 dark:hover:to-orange-400 transition-all z-10 transform hover:scale-105 active:scale-95"
+      [attr.aria-label]="'Add new record' | transloco">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+    </button> -->
+    <app-add-record-button (click)="onAddRecordClick()"></app-add-record-button>
 
-<section class="main">
-  <router-outlet />
-  <p
-    joyrideStep="firstStep"
-    [title]="'Boas vindas' | translate"
-    [text]="'O Addiction Tracker é uma ferramenta para ganho de consciência sobre o seu vício. Usá-lo sempre que consumir a substância da qual é dependente vai lhe ajudar a entender melhor o que te leva a usar e, assim, a planejar estratégias para reduzir, controlar e, por fim, parar o uso.' | translate"
-    stepPosition="center"
-  ></p>
-</section>
+    <!-- Add Usage Record Form Popup -->
+    @if (showRecordPopup) {
+    <app-record-substance-use (close)="showRecordPopup = false" [substances]="substances()"
+      (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true"
+      (selectAlternative)="handleAlternativeSelected($event.id)" [alternatives]="alternativeActivities"
+      (alternativeFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
+      [selectedAlternativeActivity]="currentActivity" (selectSubstance)="handleSelectSubstance($event)" />
+    }
 
-<footer class="dial-menu">
-  <p-speedDial 
-      joyrideStep="dialMenu"
-      [title]="'Menu de acesso rápido' | translate"
-      [text]="'Esse é o menu de acesso rápido, com as principais e mais usadas opções do aplicativo: registrar o consumo, registrar gastos e acompanhar consumos e gastos.' | translate"
-      [model]="speedDialItems" 
-      direction="up" 
-      [radius]="80" 
-      type="semi-circle"
-      [style]="{ position: 'absolute', left: 'calc(50% - 20px)'}" />
-</footer>
+    <!-- Motivational Factors Display -->
+    <ng-container *ngIf="showMotivationalFactors && currentMotivationalFactor">
+      <div class="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+        <div class="bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl p-6 max-w-md w-full border border-gray-100 dark:border-gray-800 animate-scaleIn">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-purple-600 dark:text-purple-300">{{ 'Your Motivation' | transloco }}</h3>
+            <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+              class="text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 p-1.5 rounded-full hover:bg-gray-100/80 dark:hover:bg-gray-800/80 transition-all">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="mb-4">
+            <div *ngIf="currentMotivationalFactor.type === 'text'"
+              class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+              <p class="text-gray-800 dark:text-gray-100 italic">"{{ currentMotivationalFactor.content }}"</p>
+            </div>
+            <div *ngIf="currentMotivationalFactor.type === 'image'" class="flex justify-center">
+              <img [src]="currentMotivationalFactor.content" alt="Motivational image"
+                class="max-h-64 rounded-lg shadow-sm" />
+            </div>
+            <div *ngIf="currentMotivationalFactor.type === 'audio'"
+              class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+              <audio [src]="currentMotivationalFactor.content" controls class="w-full"></audio>
+            </div>
+          </div>
+          <div class="mt-6">
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">{{ 'Did this help with your craving?' | transloco }}</h4>
+            <div class="flex flex-wrap gap-2 mb-4">
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'gave_up', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm hover:bg-green-200 dark:hover:bg-green-800 transition-colors">{{ 'I decided not to use' | transloco }}</button>
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'craving_reduced', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors">{{ 'Craving reduced' | transloco }}</button>
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'craving_increased', emotionalImpact: 'no_change'})"
+                class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm hover:bg-red-200 dark:hover:bg-red-800 transition-colors">{{ 'Craving increased' | transloco }}</button>
+              <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+                class="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">{{ 'Continue to record' | transloco }}</button>
+            </div>
+            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">{{ 'How does this make you feel emotionally?' | transloco }}</h4>
+            <div class="flex gap-2">
+              <button
+                (click)="handleMotivationalFeedback({motivationalImpact: 'no_change', emotionalImpact: 'happier'})"
+                class="px-3 py-1.5 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm hover:bg-yellow-200 dark:hover:bg-yellow-800 transition-colors flex items-center"><span
+                  class="mr-1">😊</span> {{ 'Happier' | transloco }}</button>
+              <button (click)="handleMotivationalFeedback({motivationalImpact: 'no_change', emotionalImpact: 'sadder'})"
+                class="px-3 py-1.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-sm hover:bg-indigo-200 dark:hover:bg-indigo-800 transition-colors flex items-center"><span
+                  class="mr-1">😢</span> {{ 'Sadder' | transloco }}</button>
+              <button (click)="setShowMotivationalFactors(false); setShowRecordPopup(true)"
+                class="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">{{ 'No change' | transloco }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Healthy Alternatives Prompt Overlay -->
+    <app-alternative-activity-overlay 
+      [show]="showBreathingPrompt"
+      [personalizedRecommendation]="personalizedRecommendation" 
+      [selectedSubstance]="selectedSubstance"
+      [motivationalFactorId]="currentMotivationalFactor?.id"
+      (onClose)="showBreathingPrompt = false"
+      (onSelect)="handleAlternativeSelected($event)" 
+      (onFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
+      (onGiveUpUsage)="handleGiveUpUsage()"
+    ></app-alternative-activity-overlay>
+
+    <router-outlet />
+  </section>
+  <footer class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-t border-gray-100 dark:border-gray-800 mt-12">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+      <div class="flex flex-col items-center justify-center">
+        <p class="text-center text-gray-500 dark:text-gray-400 text-sm mb-2">
+          {{ 'Addiction Tracker • Your personal journey to wellness' | transloco }}
+        </p>
+        <div class="text-xs text-gray-400 dark:text-gray-500">
+          {{ 'Remember: Every day is a new opportunity' | transloco }}
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<p-toast></p-toast>

@@ -1,0 +1,31 @@
+<p-accordion [value]="usageChartData?.at(0)?.substanceId || 0">
+    @for (chartData of usageChartData; track chartData.substanceId) {
+      <!-- <p-panel header="Dados de uso de {{ substances.get(chartData.substanceId)?.name }}"> -->
+      <p-accordion-panel [value]="chartData.substanceId">
+        <p-accordion-header>
+          <ng-template #toggleicon let-active="active">
+            @if (active) {
+                <i class="pi pi-minus"></i>
+            } @else {
+                <i class="pi pi-plus"></i>
+            }
+          </ng-template>
+          
+          {{ 'Dados de uso de ' | transloco}} {{ substances.get(chartData.substanceId) }}
+        </p-accordion-header>
+        <p-accordion-content>
+        <div class="inline-cards">
+          <!-- <p-card 
+            class="chart-card" 
+            [header]="'Intervalo de consumo' | transloco" 
+          > -->
+            <p-chart type="line" [data]="chartData.chart" [options]="options" />
+          <!-- </p-card> -->
+        </div>
+      </p-accordion-content>
+      </p-accordion-panel>
+    } @empty {
+      <p>{{ 'Não há dados para serem exibidos.' | transloco }}</p>
+      <p>{{ 'Registre um novo consumo' | transloco }} <a routerLink="/usage-add">{{ 'por aqui' | transloco }}</a>.</p>
+    }
+    </p-accordion>

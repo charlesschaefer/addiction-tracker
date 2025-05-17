@@ -1,0 +1,122 @@
+<div class="max-w-5xl mx-auto px-4 py-8">
+    <div class="mb-6 flex items-center">
+        <a routerLink="/" class="text-purple-600 dark:text-purple-300 hover:text-purple-800 dark:hover:text-purple-400 mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" [attr.stroke-width]="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+        </a>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+            {{ 'Alternative Activity Analytics' | transloco }}
+        </h1>
+    </div>
+
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-800 mb-8">
+        <h2 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">
+            {{ 'Effectiveness of Alternative Activities' | transloco }}
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            {{ 'This analysis shows which alternative activities have been most effective in helping you avoid substance use.' | transloco }}
+        </p>
+
+        <div *ngIf="loading" class="flex justify-center py-8">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+        </div>
+        <ng-container *ngIf="!loading">
+            <!-- Success Rate Bar Chart -->
+            <div class="mb-8">
+                <h3 class="text-lg font-medium mb-4 text-gray-700 dark:text-gray-200">
+                    {{ 'Success Rate by Activity' | transloco }}
+                </h3>
+                <div class="space-y-4">
+                    <div *ngFor="let activity of sortedAlternatives()" class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium text-gray-800 dark:text-gray-100">{{ alternativeActivities.get(activity.activity)?.name }}</span>
+                            <span class="text-sm font-medium">
+                                {{ activity.count > 0 ? (calculateSuccessRate(activity) | number:'1.0-0') + ('% success rate' | transloco) : ('No data yet' | transloco) }}
+                            </span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                            <div
+                                class="bg-gradient-to-r from-purple-500 to-orange-500 h-2.5 rounded-full"
+                                [style.width.%]="calculateSuccessRate(activity)">
+                            </div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            <span>{{ 'Used' | transloco }} {{ activity.count }} {{ 'times' | transloco }}</span>
+                            <span>
+                                {{ 'Successful:' | transloco }} {{ activity.successCount }} | {{ 'Failed:' | transloco }} {{ activity.failCount }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-purple-50 dark:bg-purple-900/40 p-4 rounded-lg border border-purple-100 dark:border-purple-800">
+                    <h4 class="text-sm font-medium text-purple-700 dark:text-purple-300 mb-1">
+                        {{ 'Most Effective Activity' | transloco }}
+                    </h4>
+                    <div *ngIf="sortedAlternatives().length > 0; else noData1" class="text-xl font-semibold text-purple-800 dark:text-purple-100">
+                        {{ alternativeActivities.get(sortedAlternatives()[0].activity)?.name }}
+                    </div>
+                    <ng-template #noData1>
+                        <div class="text-gray-500 dark:text-gray-400">{{ 'No data yet' | transloco }}</div>
+                    </ng-template>
+                </div>
+
+                <div class="bg-teal-50 dark:bg-teal-900/40 p-4 rounded-lg border border-teal-100 dark:border-teal-800">
+                    <h4 class="text-sm font-medium text-teal-700 dark:text-teal-300 mb-1">
+                        {{ 'Total Alternatives Used' | transloco }}
+                    </h4>
+                    <div class="text-xl font-semibold text-teal-800 dark:text-teal-100">
+                        {{ totalUsed() }}
+                    </div>
+                </div>
+
+                <div class="bg-orange-50 dark:bg-orange-900/40 p-4 rounded-lg border border-orange-100 dark:border-orange-800">
+                    <h4 class="text-sm font-medium text-orange-700 dark:text-orange-300 mb-1">
+                        {{ 'Overall Success Rate' | transloco }}
+                    </h4>
+                    <div *ngIf="alternativeActivitiesCounts().length > 0; else noData2" class="text-xl font-semibold text-orange-800 dark:text-orange-100">
+                        {{ overallSuccessRate() | number:'1.0-0' }}%
+                    </div>
+                    <ng-template #noData2>
+                        <div class="text-gray-500 dark:text-gray-400">{{ 'No data yet' | transloco }}</div>
+                    </ng-template>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="bg-gradient-to-r from-purple-50 to-orange-50 dark:from-purple-900/40 dark:to-orange-900/40 p-6 rounded-lg border border-purple-100 dark:border-purple-800">
+                <h3 class="text-lg font-medium mb-3 text-gray-800 dark:text-gray-100">
+                    {{ 'Personalized Recommendations' | transloco }}
+                </h3>
+                <ng-container *ngIf="sortedAlternatives().length > 0; else noRecommendations">
+                    <p class="text-gray-700 dark:text-gray-200 mb-3">
+                        {{ 'Based on your data, here are your most effective alternatives:' | transloco }}
+                    </p>
+                    <ol class="list-decimal list-inside space-y-2 pl-2">
+                        <li *ngFor="let activity of sortedAlternatives().slice(0,3)" class="text-gray-800 dark:text-gray-100">
+                            <span class="font-medium">{{ alternativeActivities.get(activity.activity)?.name }}</span>
+                            <span *ngIf="activity.count > 0" class="text-sm text-gray-600 dark:text-gray-400 ml-2">
+                                ({{ calculateSuccessRate(activity) | number:'1.0-0' }}% {{ 'success rate' | transloco }})
+                            </span>
+                        </li>
+                    </ol>
+                    <div class="mt-4 p-3 bg-white/70 dark:bg-gray-900/70 rounded-lg">
+                        <p class="text-gray-700 dark:text-gray-200">
+                            <span class="font-medium">{{ 'Pro tip:' | transloco }}</span>
+                            {{ 'Try to use' | transloco }} <span class="font-medium">{{ alternativeActivities.get(sortedAlternatives()[0].activity)?.name }}</span> {{ 'more often, as it has been your most effective strategy for avoiding substance use.' | transloco }}
+                        </p>
+                    </div>
+                </ng-container>
+                <ng-template #noRecommendations>
+                    <p class="text-gray-700 dark:text-gray-200">
+                        {{ 'Start using alternative activities to see personalized recommendations here.' | transloco }}
+                    </p>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
+</div>

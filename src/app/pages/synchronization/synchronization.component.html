@@ -1,0 +1,117 @@
+<div class="sync-page min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+  <div class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Page Title -->
+    <div class="mb-8 text-center">
+      <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+        {{ 'Synchronize data with other devices' | transloco }}
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400">
+        {{ 'Transfer your data securely between your devices' | transloco }}
+      </p>
+    </div>
+
+    <!-- Sync Options -->
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <div class="flex justify-center space-x-4 mb-6">
+        <button
+          pButton
+          [label]="'Send data to other device' | transloco"
+          [class.bg-purple-600]="sendToOthersVisible"
+          [class.text-white]="sendToOthersVisible"
+          [class.bg-gray-100]="!sendToOthersVisible"
+          [class.text-gray-700]="!sendToOthersVisible"
+          (click)="openToOthers()"
+        ></button>
+        <button
+          pButton
+          [label]="'Get data from other device' | transloco"
+          [class.bg-purple-600]="getFromOthersVisible"
+          [class.text-white]="getFromOthersVisible"
+          [class.bg-gray-100]="!getFromOthersVisible"
+          [class.text-gray-700]="!getFromOthersVisible"
+          (click)="openFromOthers()"
+        ></button>
+      </div>
+
+      <!-- Send Panel -->
+      <div *ngIf="sendToOthersVisible" class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">
+          {{ 'Send data to other device' | transloco }}
+        </h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          {{ 'Open the app on other device, click the button "Get data from other devices" and follow instructions. Then, click the button below:' | transloco }}
+        </p>
+        <div class="mb-6">
+          <button
+            pButton
+            [label]="'Make device discoverable' | transloco"
+            class="w-full"
+            (click)="makeDeviceDiscoverable()"
+          ></button>
+        </div>
+        <div *ngIf="otpData" class="text-center">
+          <p class="text-sm text-gray-700 dark:text-gray-200 mb-2">
+            {{ 'Type the code below on your other device:' | transloco }}
+          </p>
+          <div class="bg-gray-50 dark:bg-gray-800 py-2 px-4 rounded-md inline-block mb-4">
+            <span class="text-xl font-mono tracking-widest font-semibold text-purple-700 dark:text-purple-300">
+              {{ otpData }}
+            </span>
+          </div>
+        </div>
+        <div class="flex justify-between mt-4">
+          <button
+            pButton
+            [label]="'Cancel' | transloco"
+            class="p-button-outlined"
+            (click)="closeDialogs()"
+          ></button>
+        </div>
+      </div>
+
+      <!-- Receive Panel -->
+      <div *ngIf="getFromOthersVisible" class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <h3 class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">
+          {{ 'Get data from other device' | transloco }}
+        </h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          {{ 'Open the app on other device, click the button "Send data to other devices" and click the button "Make device discoverable".' | transloco }}
+        </p>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          {{ 'Then click the button below to look for the device in the network.' | transloco }}
+        </p>
+        <div class="mb-6">
+          <button
+            pButton
+            [label]="'Search devices' | transloco"
+            class="w-full"
+            [disabled]="!enableDiscoverButton"
+            (click)="discoverDevices()"
+          ></button>
+        </div>
+        <div class="mb-6" *ngIf="showOTPField">
+          <p class="text-sm text-gray-700 dark:text-gray-200 mb-2">
+            {{ 'Type the code below' | transloco }}
+          </p>
+          <form novalidate [formGroup]="otpForm" (ngSubmit)="sendEncryptedOTP($event)">
+            <div class="flex justify-center space-x-2 mb-4">
+              <p-inputOtp formControlName="otp" [length]="6"></p-inputOtp>
+            </div>
+            <div class="flex justify-end">
+              <button pButton [label]="'Send' | transloco" type="submit"></button>
+            </div>
+          </form>
+        </div>
+        <div class="flex justify-between">
+          <button
+            pButton
+            [label]="'Cancel' | transloco"
+            class="p-button-outlined"
+            (click)="closeDialogs()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p-toast></p-toast>
+</div>

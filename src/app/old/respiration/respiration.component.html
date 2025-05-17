@@ -1,0 +1,13 @@
+<div class="respiration">
+    <a class="start-animation" (click)="startAnimation($event)" [style]="{'display': showLink ? 'inline' : 'none'}" >{{"Iniciar" | transloco}}</a>
+    <div class="respiration-circle" [style]="{'animation-play-state': playState}" (animationend)="showConfirmationDialog()">
+        
+    </div>
+</div>
+<p-dialog [header]="'Continuar registro de uso?' | transloco" [modal]="true" [(visible)]="showRedirectDialog" [style]="{ width: '25rem' }" >
+    <p>{{ "Após esse exercício, você ainda está com vontade de usar a substância?" | transloco }}</p>
+    <div class="field">
+        <p-button [label]="'Sim' | transloco" severity="secondary" (click)="router.navigate(['/usage-add'], {queryParams: {returning: 1}})"></p-button>
+        <p-button [label]="'Não, cancelar uso' | transloco" (click)="router.navigate(['/'])"></p-button>
+    </div>
+</p-dialog>

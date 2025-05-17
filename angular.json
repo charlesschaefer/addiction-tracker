@@ -31,10 +31,12 @@
             ],
             "styles": [
                 "node_modules/primeicons/primeicons.css",
-                "node_modules/primeflex/primeflex.css",
                 "node_modules/tailwindcss/index.css",
                 "src/styles.scss"
-            ]
+            ],
+            "loader": {
+              ".svg": "text"
+            }
           },
           "configurations": {
             "production": {

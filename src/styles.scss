@@ -1,6 +1,11 @@
-//@import "tailwindcss/base";
+@import "tailwindcss";
+@import "app-tailwind";
+@import "./assets/fonts/style.css";
+/* @import '@angular/material/pre'; */
 
-//@import '@angular/material/pre';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @font-face {
     font-family: 'Segoe UI Regular';
@@ -33,12 +38,155 @@
     src: local('Segoe UI Bold Italic'), url('assets/fonts/Segoe UI Bold Italic.woff') format('woff');
 }
 
-* { font-family: "Segoe UI Regular", Roboto, "Helvetica Neue", sans-serif; }
-html, body { height: 100%; }
-body { margin: 0; }
-
-
-.field {
-    padding: 10px;
-    margin-top: 15px;
+* { 
+    font-family: "Segoe UI Regular", Roboto, "Helvetica Neue", sans-serif;
+    @reference border-border;
 }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes scaleIn {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+@keyframes slideInRight {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+.animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+.animate-scaleIn { animation: scaleIn 0.3s ease-out forwards; }
+.animate-slideInRight { animation: slideInRight 0.4s ease-out forwards; }
+.animate-slideInLeft { animation: slideInLeft 0.4s ease-out forwards; }
+.animate-pulse-slow { animation: pulse 2s infinite; }
+
+:root {
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+}
+/* Dark theme overrides */
+.dark {
+    --background: 222 47% 11%;
+    --foreground: 0 0% 100%;
+    --primary: 222 89% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 16% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 210 16% 20%;
+    --muted-foreground: 0 0% 100%;
+    --accent: 222 89% 53%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 210 16% 20%;
+    --input: 210 16% 20%;
+    --ring: 222 89% 53%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 0 0% 100%;
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 100%;
+    --chart-1: 222 89% 53%;
+    --chart-2: 174 62% 47%;
+    --chart-3: 48 89% 53%;
+    --chart-4: 340 82% 52%;
+    --chart-5: 271 73% 53%;
+  }
+  
+@media (prefers-color-scheme: dark) {
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
+}
+
+@layer utilities {
+    .text-balance { text-wrap: balance; }
+    .mobile-compact { @apply p-2 sm:p-4; }
+    .text-mobile-xs { @apply text-xs sm:text-sm; }
+    .text-mobile-sm { @apply text-sm sm:text-base; }
+    .text-mobile-base { @apply text-base sm:text-lg; }
+    .text-mobile-lg { @apply text-lg sm:text-xl md:text-2xl; }
+    .text-mobile-xl { @apply text-xl sm:text-2xl md:text-3xl; }
+    .text-mobile-2xl { @apply text-2xl sm:text-3xl md:text-4xl; }
+    .heading-mobile-1 { @apply text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight; }
+    .heading-mobile-2 { @apply text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight; }
+    .heading-mobile-3 { @apply text-lg sm:text-xl md:text-2xl font-semibold; }
+    .leading-mobile-tight { @apply leading-tight sm:leading-snug; }
+    .leading-mobile-normal { @apply leading-normal sm:leading-relaxed; }
+    .mobile-container { @apply max-w-full px-2 sm:px-4 md:px-6; }
+    .mobile-spacing-y { @apply my-2 sm:my-3 md:my-4; }
+    .mobile-spacing-x { @apply mx-2 sm:mx-3 md:mx-4; }
+    .text-mobile-paragraph { @apply text-sm sm:text-base leading-relaxed sm:leading-relaxed; }
+    .text-mobile-caption { @apply text-xs sm:text-sm text-gray-500 leading-normal; }
+}
+
+@layer base {
+    * {
+        @reference border-border;
+    }
+    body {
+        @reference bg-background text-foreground;
+    }
+}
+
+

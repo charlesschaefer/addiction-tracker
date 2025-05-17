@@ -7,7 +7,7 @@ import { TriggerService } from './trigger.service';
 import { TriggerAddDto } from '../dto/trigger.dto';
 
 describe('TriggerService', () => {
-  let service: TriggerService<TriggerAddDto>;
+  let service: TriggerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({

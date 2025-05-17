@@ -1,0 +1,389 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+  <main class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+        {{ 'Settings' | transloco }}
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400 text-center">
+        {{ 'Manage your app settings and security preferences' | transloco }}
+      </p>
+    </div>
+<!-- 
+    < !-- Settings Content -- >
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        {{ 'Security Settings' | transloco }}
+      </h3>
+
+      <div *ngIf="success" class="mb-6 p-4 bg-green-50 dark:bg-green-900/40 rounded-lg border border-green-100 dark:border-green-800">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700 dark:text-green-300">{{ success }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Password Protection' | transloco }}</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {{ isProtected ? ('Your data is protected with a password' | transloco) : ('Your data is not currently password protected' | transloco) }}
+            </p>
+          </div>
+          <div>
+            <ng-container *ngIf="isProtected; else enableBtn">
+              <div class="flex space-x-2">
+                <button
+                  (click)="showChangePassword = !showChangePassword"
+                  class="px-3 py-1.5 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-200 rounded-md hover:bg-purple-200 dark:hover:bg-purple-800 transition-colors text-sm"
+                >
+                  {{ 'Change Password' | transloco }}
+                </button>
+                <button
+                  (click)="showChangePassword = false; currentPassword = ''"
+                  class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm"
+                >
+                  {{ 'Disable Protection' | transloco }}
+                </button>
+              </div>
+            </ng-container>
+            <ng-template #enableBtn>
+              <button
+                (click)="showChangePassword = true"
+                class="px-3 py-1.5 bg-teal-100 dark:bg-teal-900 text-teal-700 dark:text-teal-200 rounded-md hover:bg-teal-200 dark:hover:bg-teal-800 transition-colors text-sm"
+              >
+                {{ 'Enable Protection' | transloco }}
+              </button>
+            </ng-template>
+          </div>
+        </div> -->
+
+        <!-- < !-- Enable Protection Form -- >
+        <div *ngIf="showChangePassword && !isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Enable Password Protection' | transloco }}</h4>
+          <form (submit)="handleEnableProtection($event)" class="space-y-4">
+            <div>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'New Password' | transloco }}</label>
+              <input
+                id="newPassword"
+                type="password"
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Create a password' | transloco }}"
+                required
+              />
+            </div>
+            <div>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Confirm Password' | transloco }}</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Confirm your password' | transloco }}"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="showChangePassword = false; error = ''"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {{ 'Cancel' | transloco }}
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-teal-600 dark:bg-teal-700 text-white rounded-md hover:bg-teal-700 dark:hover:bg-teal-800 transition-colors"
+              >
+                {{ 'Enable Protection' | transloco }}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        < !-- Change Password Form -- >
+        <div *ngIf="showChangePassword && isProtected" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Change Password' | transloco }}</h4>
+          <form (submit)="handleChangePassword($event)" class="space-y-4">
+            <div>
+              <label for="currentPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Current Password' | transloco }}</label>
+              <input
+                id="currentPassword"
+                type="password"
+                [(ngModel)]="currentPassword"
+                name="currentPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Enter current password' | transloco }}"
+                required
+              />
+            </div>
+            <div>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'New Password' | transloco }}</label>
+              <input
+                id="newPassword"
+                type="password"
+                [(ngModel)]="newPassword"
+                name="newPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Create a new password' | transloco }}"
+                required
+              />
+            </div>
+            <div>
+              <label for="confirmPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Confirm New Password' | transloco }}</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                [(ngModel)]="confirmPassword"
+                name="confirmPassword"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Confirm your new password' | transloco }}"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="showChangePassword = false; error = ''"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {{ 'Cancel' | transloco }}
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-purple-600 dark:bg-purple-700 text-white rounded-md hover:bg-purple-700 dark:hover:bg-purple-800 transition-colors"
+              >
+                {{ 'Change Password' | transloco }}
+              </button>
+            </div>
+          </form>
+        </div>
+
+        < !-- Disable Protection Form -- >
+        <div *ngIf="isProtected && !showChangePassword" class="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h4 class="font-medium text-gray-800 dark:text-gray-100 mb-4">{{ 'Disable Password Protection' | transloco }}</h4>
+          <form (submit)="handleDisableProtection($event)" class="space-y-4">
+            <div>
+              <label for="currentPasswordDisable" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ 'Current Password' | transloco }}</label>
+              <input
+                id="currentPasswordDisable"
+                type="password"
+                [(ngModel)]="currentPassword"
+                name="currentPasswordDisable"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-purple-500 focus:border-purple-500 dark:focus:ring-purple-400 dark:focus:border-purple-400"
+                placeholder="{{ 'Enter current password' | transloco }}"
+                required
+              />
+            </div>
+            <p *ngIf="error" class="text-sm text-red-600 dark:text-red-400">{{ error }}</p>
+            <div class="flex justify-end space-x-2">
+              <button
+                type="button"
+                (click)="currentPassword = ''; error = ''"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              >
+                {{ 'Cancel' | transloco }}
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 transition-colors"
+              >
+                {{ 'Disable Protection' | transloco }}
+              </button>
+            </div>
+          </form>
+        </div> -->
+
+        <!-- <div class="p-4 bg-blue-50 dark:bg-blue-900/40 rounded-lg border border-blue-100 dark:border-blue-800">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-blue-700 dark:text-blue-300">
+                {{ 'Password protection helps keep your recovery data private. Your password is stored locally on your device and is not sent to any server.' | transloco }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Additional Settings -->
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-xl font-semibold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+        {{ 'App Settings' | transloco }}
+      </h3>
+      <div class="space-y-4">
+        <!-- App Theme Option -->
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'App Theme' | transloco }}</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {{ 'Choose between light and dark theme' | transloco }}
+            </p>
+          </div>
+          <div class="flex items-center">
+            <span class="mr-3 text-sm text-gray-600 dark:text-gray-300">
+              {{ darkMode ? ('Dark' | transloco) : ('Light' | transloco) }}
+            </span>
+            <button
+              (click)="toggleDarkMode()"
+              [ngClass]="darkMode ? 'bg-purple-600' : 'bg-gray-200'"
+              class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              role="switch"
+              [attr.aria-checked]="darkMode"
+            >
+              <span
+                [ngClass]="darkMode ? 'translate-x-6' : 'translate-x-1'"
+                class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <!-- Language Option -->
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Language' | transloco }}</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {{ 'Select your preferred language' | transloco }}
+            </p>
+          </div>
+          <div class="flex space-x-2">
+            <button
+              (click)="setLanguage('en')"
+              [ngClass]="language === 'en' ? 'bg-purple-100 text-purple-700 font-medium' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'"
+              class="px-3 py-1.5 rounded-md transition-colors text-sm"
+            >
+              {{ 'English' | transloco }}
+            </button>
+            <button
+              (click)="setLanguage('pt-br')"
+              [ngClass]="language === 'pt-br' ? 'bg-purple-100 text-purple-700 font-medium' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'"
+              class="px-3 py-1.5 rounded-md transition-colors text-sm"
+            >
+              {{ 'Português' | transloco }}
+            </button>
+            <button
+              (click)="setLanguage('es')"
+              [ngClass]="language === 'es' ? 'bg-purple-100 text-purple-700 font-medium' : 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'"
+              class="px-3 py-1.5 rounded-md transition-colors text-sm"
+            >
+              {{ 'Spanish' | transloco }}
+            </button>
+          </div>
+        </div>
+        <!-- Clear All Data Option -->
+        <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div>
+            <h4 class="font-medium text-gray-800 dark:text-gray-100">{{ 'Clear All Data' | transloco }}</h4>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {{ 'Permanently delete all your recovery data' | transloco }}
+            </p>
+          </div>
+          <button class="px-3 py-1.5 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-md hover:bg-red-200 dark:hover:bg-red-800 transition-colors text-sm" (click)="showClearDataDialog = true">
+            {{ 'Clear Data' | transloco }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Clear Data Confirmation Dialog -->
+  @if (showClearDataDialog) {
+    <div
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+        data-oid="e7t:uie"
+    >
+        <div
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 max-w-md w-full animate-scaleIn"
+            data-oid="2najl.b"
+        >
+            <div class="flex items-center mb-4" data-oid="0zo19-x">
+                <div class="bg-red-100 dark:bg-red-900 p-2 rounded-full mr-3" data-oid="-zm38xa">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 text-red-600 dark:text-red-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        data-oid="2cy9:az"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                            data-oid="b-0vyy1"
+                        />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100" data-oid="-b6n-vk">
+                    {{ 'Confirm Data Deletion' | transloco }}
+                </h3>
+            </div>
+
+            <div
+                class="bg-red-50 dark:bg-red-900/40 border-l-4 border-red-500 dark:border-red-700 p-4 mb-6"
+                data-oid="w61b2yy"
+            >
+                <div class="flex" data-oid="xom53f2">
+                    <div class="ml-3" data-oid="35as.3f">
+                        <p class="text-sm text-red-700 dark:text-red-300" data-oid="69rk09_">
+                            <strong data-oid="-q5q9l9">{{ 'Warning:' | transloco }}</strong> {{ 'This action cannot be undone. All your recovery data, including substance records, motivational factors, and progress tracking will be permanently deleted.' | transloco }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="mb-4 text-gray-700 dark:text-gray-300" data-oid=":x4fok5">
+                {{ 'To confirm, please type' | transloco }}
+                <strong class="font-bold text-red-600 dark:text-red-300" data-oid="ymnjc.v">
+                    {{ 'CLEAR ALL DATA' | transloco }}
+                </strong>
+                {{ 'in the field below:' | transloco }}
+            </p>
+
+            <input
+                type="text"
+                name="clear"
+                [(ngModel)]="clearDataConfirmation"
+                (change)="setClearDataConfirmation($event.target)"
+                placeholder="{{ 'Type CLEAR ALL DATA' | transloco }}"
+                class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 focus:ring-red-500 focus:border-red-500 dark:focus:ring-red-400 dark:focus:border-red-400 mb-6"
+            />
+
+            <div class="flex justify-end space-x-3" data-oid="vyco363">
+                <button
+                    (click)="setShowClearDataDialog(false) && setClearDataConfirmation('')"
+                    class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                    data-oid="jtinhj6"
+                >
+                    {{ 'Cancel' | transloco }}
+                </button>
+                <button
+                    (click)="validateClearData()"
+                    [disabled]="clearDataConfirmation !== 'CLEAR ALL DATA'"
+                    class="px-4 py-2 rounded-lg text-white transition-colors "
+                    [ngClass]="clearDataConfirmation === 'CLEAR ALL DATA' ? 'bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800': 'bg-red-300 dark:bg-red-600/40 cursor-not-allowed'"
+                >
+                    {{ 'Permanently Delete All Data' | transloco }}
+                </button>
+            </div>
+        </div>
+    </div>
+  }
+</div>

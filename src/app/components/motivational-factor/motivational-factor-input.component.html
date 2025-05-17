@@ -1,0 +1,138 @@
+<div class="rounded-xl shadow border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 mb-6">
+  <h3 class="font-medium text-gray-700 dark:text-gray-200 mb-4">{{ 'Add a motivational factor' | transloco }}</h3>
+  <div class="flex space-x-2 mb-4">
+    <button
+      type="button"
+      (click)="type = 'text'"
+      [ngClass]="type === 'text' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      class="px-3 py-2 rounded-md text-sm"
+    >
+      {{ 'Text' | transloco }}
+    </button>
+    <button
+      type="button"
+      (click)="type = 'image'"
+      [ngClass]="type === 'image' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      class="px-3 py-2 rounded-md text-sm"
+    >
+      {{ 'Image' | transloco }}
+    </button>
+    <button
+      type="button"
+      (click)="type = 'audio'"
+      [ngClass]="type === 'audio' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      class="px-3 py-2 rounded-md text-sm"
+    >
+      {{ 'Audio' | transloco }}
+    </button>
+  </div>
+  <ng-container [ngSwitch]="type">
+    <!-- Text Motivation -->
+    <form *ngSwitchCase="'text'" (ngSubmit)="handleTextSubmit()" class="mb-3">
+      <div class="mb-3">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+          {{ 'Why do you want to stop using this substance?' | transloco }}
+        </label>
+        <textarea
+          [(ngModel)]="content"
+          name="content"
+          class="w-full rounded-lg border-gray-300 dark:border-gray-700 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50 dark:bg-gray-900 dark:text-gray-100"
+          rows="3"
+          placeholder="{{ 'E.g., I want to be healthier for my family...' | transloco }}"
+        ></textarea>
+      </div>
+      <div class="flex flex-row gap-6 justify-end">
+        <button
+          type="submit"
+          class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400"
+          [disabled]="!content.trim()"
+        >
+          {{ 'Add Motivation' | transloco }}
+        </button>
+        <button
+          type="button"
+          (click)="close.emit()"
+          class="flex-1 sm:flex-none px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors flex items-center justify-center"
+        >
+          {{ 'Cancel' | transloco }}
+        </button>
+      </div>
+    </form>
+    <!-- Image Motivation -->
+    <div *ngSwitchCase="'image'">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+        {{ 'Upload an image that motivates you to quit' | transloco }}
+      </label>
+      <div class="flex items-center justify-center w-full">
+        <label class="flex flex-col w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+          <div class="flex flex-col items-center justify-center pt-7">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="pt-1 text-sm text-gray-500 dark:text-gray-400">{{ 'Upload an image' | transloco }}</p>
+          </div>
+          <input
+            type="file"
+            class="opacity-0"
+            accept="image/*"
+            (change)="handleImageUpload($event)"
+          />
+        </label>
+      </div>
+    </div>
+    <!-- Audio Motivation -->
+    <div *ngSwitchCase="'audio'">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+        {{ 'Record a voice message to your future self' | transloco }}
+      </label>
+      <div class="flex flex-col items-center">
+        <button
+          *ngIf="!isRecording && !audioURL"
+          type="button"
+          (click)="startRecording()"
+          class="px-4 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors flex items-center"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z"
+              clip-rule="evenodd" />
+          </svg>
+          {{ 'Start Recording' | transloco }}
+        </button>
+        <div *ngIf="isRecording" class="flex flex-col items-center">
+          <div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900 flex items-center justify-center animate-pulse mb-2">
+            <div class="w-8 h-8 rounded-full bg-red-600"></div>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ 'Recording...' | transloco }}</p>
+          <button
+            type="button"
+            (click)="stopRecording()"
+            class="px-4 py-2 bg-gray-600 text-white rounded-full hover:bg-gray-700 transition-colors"
+          >
+            {{ 'Stop Recording' | transloco }}
+          </button>
+        </div>
+        <div *ngIf="audioURL && !isRecording" class="mt-3 w-full">
+          <audio [src]="audioURL" controls class="w-full"></audio>
+          <div class="flex justify-between mt-2">
+            <button
+              type="button"
+              (click)="audioURL = null; audioChunks = []"
+              class="px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors text-sm"
+            >
+              {{ 'Discard' | transloco }}
+            </button>
+            <button
+              type="button"
+              (click)="startRecording()"
+              class="px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors text-sm"
+            >
+              {{ 'Record Again' | transloco }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -15,6 +15,7 @@ mod http;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let mut builder = tauri::Builder::default()
+        .plugin(tauri_plugin_http::init())
         .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             #[cfg(desktop)]
@@ -33,13 +34,13 @@ pub fn run() {
             #[cfg(not(desktop))]
             android::save_backup_file,
             add_notification,
-            get_google_secrets
+            // get_google_secrets
         ]
     );
 
-    let v1 = env!("GOOGLE_GEMINI_PROJECT_NAME").to_string();
-    let v2 = env!("GOOGLE_GEMINI_API").to_string();
-    println!("Valores da API: {} => {}", v1, v2);
+    // let v1 = env!("GOOGLE_GEMINI_PROJECT_NAME").to_string();
+    // let v2 = env!("GOOGLE_GEMINI_API").to_string();
+    // println!("Valores da API: {} => {}", v1, v2);
     
     builder
         .run(tauri::generate_context!())
@@ -66,10 +67,10 @@ struct Secrets {
     api_key: String,
 }
 
-#[tauri::command]
-fn get_google_secrets() -> Secrets {
-    return Secrets {
-        project: env!("GOOGLE_GEMINI_PROJECT_NAME").to_string(),
-        api_key: env!("GOOGLE_GEMINI_API").to_string(),
-    }
-}
+// #[tauri::command]
+// fn get_google_secrets() -> Secrets {
+//     return Secrets {
+//         project: env!("GOOGLE_GEMINI_PROJECT_NAME").to_string(),
+//         api_key: env!("GOOGLE_GEMINI_API").to_string(),
+//     }
+// }

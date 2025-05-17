@@ -1,0 +1,36 @@
+<div 
+  joyrideStep="costAdd"
+  [title]="'Gastos' | transloco"
+  [text]="'Na área de gastos você pode adicionar quanto tem gastado com seu vício para saber como ele tem impactado nas suas finanças' | transloco"
+>
+  <p-panel class="cost-card" [header]="'Adicionar Custo' | transloco">
+    <p-toast />
+    <form [formGroup]="costForm" novalidate (ngSubmit)="onSubmit()">
+      <div class="field">
+        <p-dropdown 
+        [options]="substances"
+        optionLabel="name"
+        optionValue="id"
+        [placeholder]="'Substância' | transloco"
+        formControlName="substance" />
+      </div>
+      <div class="field">
+        <p-floatLabel>
+          <p-inputNumber mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" inputId="value" formControlName="value" locale="pt-BR" />
+          <label for="value">{{ 'Valor gasto' | transloco }}</label>
+        </p-floatLabel>
+      </div>
+      <div class="field">
+        <p-floatLabel>
+          <p-calendar
+            inputId="date" 
+            formControlName="date" />
+          <label for="date">{{ 'Data da compra' | transloco }}</label>
+        </p-floatLabel>
+      </div>
+      <div class="field">
+        <p-button type="submit">{{ 'Salvar' | transloco }}</p-button>
+      </div>
+    </form>
+  </p-panel>
+</div>

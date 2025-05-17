@@ -72,3 +72,6 @@ jobs:
             #includeUpdaterJson: true
             #updaterJsonPreferNsis: true
             args: ${{ matrix.args }}
+
+      - name: Check windows build package
+        run: ls dist/addiction-tracker/browser/assets/i18n/

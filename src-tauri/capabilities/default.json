@@ -4,10 +4,12 @@
   "description": "Capability for the main window",
   "context": "local",
   "windows": [
-    "main", "webview"
+    "main",
+    "webview"
   ],
   "permissions": [
     "core:app:default",
-    "notification:default"
+    "notification:default",
+    "http:default"
   ]
 }

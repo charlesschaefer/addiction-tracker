@@ -1,4 +1,4 @@
-import { ApplicationConfig, DEFAULT_CURRENCY_CODE, importProvidersFrom, LOCALE_ID } from "@angular/core";
+import { ApplicationConfig, DEFAULT_CURRENCY_CODE, importProvidersFrom, LOCALE_ID, isDevMode } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { registerLocaleData } from "@angular/common";
 import localePt from "@angular/common/locales/pt";
@@ -7,19 +7,17 @@ import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { JoyrideModule } from 'ngx-joyride';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslocoModule, provideTransloco } from '@jsverse/transloco';
 import { providePrimeNG } from 'primeng/config';
 import { AppTheme } from './app.theme';
+import { AppDb } from "./app.db";
+import { TranslocoHttpLoader } from './transloco-loader';
 
 import { routes } from "./app.routes";
-import { dbConfig } from "./db.config";
+//import { dbConfig } from "./db.config";
+import { DbService } from "./services/db.service";
 
 registerLocaleData(localePt);
-// AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http);
-}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,15 +26,22 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideLuxonDateAdapter(),
     importProvidersFrom(JoyrideModule.forRoot()),
-    importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig)),
-    importProvidersFrom(TranslateModule.forRoot({
-      loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient]
+    importProvidersFrom(TranslocoModule),
+    provideTransloco({
+      config: { 
+        availableLangs: ['en', 'pt-br', 'es'],
+        defaultLang: 'en',
+        fallbackLang: 'en',
+        reRenderOnLangChange: true,
+        prodMode: !isDevMode(),
+        missingHandler: {
+          allowEmpty: true,
+          logMissingKey: true,
+          useFallbackTranslation: false
+        }
       },
-      defaultLanguage: 'pt-BR'
-    })),
+      loader: TranslocoHttpLoader
+    }),
     {
       provide: LOCALE_ID,
       useValue: 'pt-BR'
@@ -53,6 +58,19 @@ export const appConfig: ApplicationConfig = {
           darkModeSelector: '.dark-mode'
         }
       }
-    })
+    }),
+    {
+      provide: 'AppDb',
+      useClass: AppDb
+    },
+    {
+        provide: 'DbService',
+        useClass: DbService
+    },
+    {
+      provide: TranslocoHttpLoader,
+      useFactory: (http: HttpClient) => new TranslocoHttpLoader(http),
+      deps: [HttpClient]
+    }
   ],
 };
