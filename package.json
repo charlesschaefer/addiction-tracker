@@ -46,7 +46,7 @@
     "dexie-observable": "^4.0.1-beta.13",
     "luxon": "^3.4.4",
     "ngx-cookie-service": "^19.1.2",
-    "ngx-indexed-db": "^18.0.0",
+    "ngx-indexed-db": "^20.0.1",
     "ngx-joyride": "^2.5.0",
     "primeclt": "^0.1.5",
     "primeflex": "^3.3.1",
