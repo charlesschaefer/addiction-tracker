@@ -57,7 +57,7 @@
     "@angular/cli": "^19.2.7",
     "@angular/compiler-cli": "^19.2.6",
     "@bartholomej/ngx-translate-extract": "^8.0.2",
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^9.27.0",
     "@google/generative-ai": "^0.14.1",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
