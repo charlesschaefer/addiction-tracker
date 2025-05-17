@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
-import { dbConfig } from "../db.config";
 
 import { FinalUsage, UsageService, DATE_FORMAT } from './usage.service';
 import { UsageDto } from '../dto/usage.dto';
@@ -14,7 +12,7 @@ describe('UsageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+        //importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
       ],
     });
     service = TestBed.inject(UsageService);

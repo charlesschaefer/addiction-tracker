@@ -4,7 +4,6 @@ import { registerLocaleData } from "@angular/common";
 import localePt from "@angular/common/locales/pt";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
-import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { JoyrideModule } from 'ngx-joyride';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslocoModule, provideTransloco } from '@jsverse/transloco';

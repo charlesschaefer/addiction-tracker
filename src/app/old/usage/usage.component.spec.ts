@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { dbConfig } from "../../db.config";
 
 import { UsageComponent } from './usage.component';
 
@@ -15,7 +13,7 @@ describe('UsageComponent', () => {
       imports: [UsageComponent],
       providers: [
         provideAnimationsAsync(),
-        importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+        // importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
       ]
     })
     .compileComponents();

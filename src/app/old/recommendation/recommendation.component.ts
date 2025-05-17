@@ -32,8 +32,8 @@ export class RecommendationComponent implements OnChanges {
 
 
     async getRecommendation(trigger: string) {
-        const recommendation = await this.recommendationService.fetchRecommendation(trigger);
-        this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
+        // const recommendation = await this.recommendationService.fetchRecommendation(trigger);
+        // this.recommendationText = recommendation.text.replaceAll("\n", "<br />").replaceAll(new RegExp("\\*\\*(.*?)\\*\\*", 'g'), "<strong>$1</strong>");
         this.showRecommendationDialog = true;
     }
 

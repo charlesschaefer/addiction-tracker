@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
-import { dbConfig } from "../db.config";
 
 import { SubstanceService } from './substance.service';
 import { SubstanceAddDto } from '../dto/substance.dto';
@@ -12,7 +10,7 @@ describe('SubstanceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+        //importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
       ],
     });
     service = TestBed.inject(SubstanceService);

@@ -1,7 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { NgxIndexedDBModule } from "ngx-indexed-db";
 import { importProvidersFrom } from '@angular/core';
-import { dbConfig } from "../db.config";
 
 import { CostService } from './cost.service';
 import { CostAddDto } from '../dto/cost.dto';
@@ -12,7 +10,7 @@ describe('CostService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
+        // importProvidersFrom(NgxIndexedDBModule.forRoot(dbConfig))
       ],
     });
     service = TestBed.inject(CostService);
