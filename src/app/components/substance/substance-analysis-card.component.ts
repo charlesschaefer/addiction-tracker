@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input } from "@angular/core";
+import { Component, computed, input, Input } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
-import { Chart, ChartData, ChartOptions, CoreScaleOptions, Scale, Tick } from "chart.js";
+import { ChartData, ChartOptions } from "chart.js";
 import { SentimentService } from "../../services/sentiment.service";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { RouterLink } from "@angular/router";
@@ -16,10 +16,14 @@ import { RouterLink } from "@angular/router";
 })
 export class SubstanceAnalysisCardComponent {
     @Input() usageHistory: UsageDto[] = [];
-    @Input() substances: Map<number, SubstanceDto> = new Map();
-    
-    selectedAnalysisSubstance: string = "all";
-    COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
+    substances = input<Map<number, SubstanceDto>>(new Map<number, SubstanceDto>());
+    substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
+    combinedTrendData = computed<ChartData>(() => this.prepareCombinedTrendData());
+    usageBySubstanceData = computed<ChartData>(() => this.prepareUsageBySubstanceData());
+    triggerData = computed<ChartData>(() => this.prepareTriggerData());
+        
+    selectedAnalysisSubstance = "all";
+    COLORS = ["#8B5CF6", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     barOptions: ChartOptions = {
         responsive: true,
@@ -65,20 +69,27 @@ export class SubstanceAnalysisCardComponent {
                 position: 'right',
                 min: -1,
                 max: 4,
+                border: {
+                    color: "#D68303",
+                },
                 ticks: {
-                    color: 'black',
+                    color: "#D68303",
+                    font: {
+                        size: 18,
+                    },
                     stepSize: 1,
                     callback: (value: number | string) => {
                         if (value != -1) {
                             const mood = SentimentService.sentiments[value as number];
-                            return `${mood.emoji} ${mood.label}`;
+                            return `${mood.emoji}`;// ${mood.label}`;
                         }
                         return '';
                     }
                 },
                 grid: {
-                    drawOnChartArea: false,
+                    drawOnChartArea: true,
                     drawTicks: true,
+                    display: !false,
                 }
             }
         }
@@ -104,7 +115,7 @@ export class SubstanceAnalysisCardComponent {
         if (this.selectedAnalysisSubstance === "all") {
             return this.usageHistory;
         }
-        const substance = Array.from(this.substances.values()).find(s => s.name === this.selectedAnalysisSubstance);
+        const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance);
         if (!substance) {
             return this.usageHistory;
         }
@@ -118,9 +129,9 @@ export class SubstanceAnalysisCardComponent {
      * @returns {ChartData} Chart.js data object for substance usage.
      */
     prepareUsageBySubstanceData(): ChartData {
-        const substanceCounts: { [key: string]: number } = {};
+        const substanceCounts: Record<string, number> = {};
         this.usageHistory.forEach((entry) => {
-            const substanceName = this.substances.get(entry.substance)?.name as string;
+            const substanceName = this.substances().get(entry.substance)?.name as string;
             if (substanceCounts[substanceName]) {
                 substanceCounts[substanceName]++;
             } else {
@@ -147,7 +158,7 @@ export class SubstanceAnalysisCardComponent {
      * @returns {Array<{date: string, usage: number}>} Array of usage per day.
      */
     prepareSubstanceUsageData() {
-        const usageByDate: { [key: string]: number } = {};
+        const usageByDate: Record<string, number> = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -175,7 +186,7 @@ export class SubstanceAnalysisCardComponent {
      * @returns {Array<{date: string, sentiment: number|null}>} Array of average mood per day.
      */
     prepareMoodTrendData() {
-        const moodByDate: { [key: string]: { total: number; count: number } } = {};
+        const moodByDate: Record<string, { total: number; count: number }> = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -211,7 +222,7 @@ export class SubstanceAnalysisCardComponent {
      * @returns {Array<{date: string, craving: number|null}>} Array of average craving per day.
      */
     prepareCravingTrendData() {
-        const cravingByDate: { [key: string]: { total: number; count: number } } = {};
+        const cravingByDate: Record<string, { total: number; count: number }> = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -245,9 +256,9 @@ export class SubstanceAnalysisCardComponent {
         const usageData = this.prepareSubstanceUsageData();
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
-        const firstColor = randBeetween(0, this.COLORS.length);
-        const secondColor = firstColor == this.COLORS.length - 1 ? 0 : firstColor + 1;
-        const thirdColor = secondColor == this.COLORS.length - 1 ? 0 : secondColor + 1;
+        const firstColor = randBeetween(0, this.COLORS.length - 1);
+        const thirdColor = (firstColor === this.COLORS.length - 1) ? 0 : firstColor + 1;
+        const secondColorCode = "#D68303";
 
         const chartData =  {
             labels: usageData.map(item => {
@@ -269,12 +280,23 @@ export class SubstanceAnalysisCardComponent {
                     yAxisID: 'y1',
                     label: this.translateService.translate('Mood'),
                     data: moodData.map(item => item.sentiment !== null ? item.sentiment : -1),
-                    borderColor: this.COLORS[secondColor],
-                    backgroundColor: this.COLORS[secondColor] + '80',
+                    borderColor: secondColorCode,
+                    backgroundColor: secondColorCode + '80',
                     tension: 0.4,
+                    pointStyle: (context: any) => {
+                        if (context.parsed.y !== -1) {
+                            const img = new Image();
+                            img.src = '/assets/emojis/' + context.parsed.y + '.png';
+                            img.width = 17;
+                            img.height = 17;
+                            return img;
+                        }
+                        return 'circle'
+                        //return mood ? mood.emoji : '';
+                    },
                     fill: false,
-                    borderDash: [2, 2],
-                    order: 2,
+                    //borderDash: [2, 2],
+                    order: 1,
                 },
                 {
                     label: this.translateService.translate('Craving'),
@@ -284,7 +306,7 @@ export class SubstanceAnalysisCardComponent {
                     tension: 0.4,
                     fill: false,
                     borderDash: [],
-                    order: 1
+                    order: 2
                 }
             ]
         };
@@ -297,7 +319,7 @@ export class SubstanceAnalysisCardComponent {
      * @returns {ChartData} Chart.js data object for triggers.
      */
     prepareTriggerData(): ChartData {
-        const triggerCounts: { [key: string]: number } = {};
+        const triggerCounts: Record<string, number> = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
             entry.trigger?.forEach((trigger) => {

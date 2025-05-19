@@ -10,7 +10,7 @@
         [ngClass]="selectedAnalysisSubstance === 'all' ? 'text-purple-600 dark:text-purple-300 border-b-2 border-purple-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent'">
         {{ 'All Substances' | transloco }}
       </button>
-      <button *ngFor="let substance of substances.values()" (click)="setSelectedAnalysisSubstance(substance.name)"
+      <button *ngFor="let substance of substanceMap()" (click)="setSelectedAnalysisSubstance(substance.name)"
         class="mr-2 inline-block py-2 px-4 text-sm font-medium"
         [ngClass]="selectedAnalysisSubstance === substance.name ? 'text-purple-600 dark:text-purple-300 border-b-2 border-purple-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent'">
         {{ substance.name }}
@@ -21,7 +21,7 @@
   <div *ngIf="selectedAnalysisSubstance === 'all'" class="mb-8">
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">{{ 'Usage by Substance' | transloco }}</h3>
     <div *ngIf="hasUsageData(); else noUsageData" class="h-[350px]">
-      <p-chart type="bar" [data]="prepareUsageBySubstanceData()" [options]="barOptions" height="300"
+      <p-chart type="bar" [data]="usageBySubstanceData()" [options]="barOptions" height="300"
         width="300"></p-chart>
     </div>
     <ng-template #noUsageData>
@@ -38,7 +38,7 @@
       (selectedAnalysisSubstance + ' ' + ('Trends (Last 14 Days)' | transloco)) }}
     </h3>
     <div *ngIf="hasDataForSelectedSubstance(); else noTrendData" class="h-[350px]">
-      <p-chart type="line" [data]="prepareCombinedTrendData()" [options]="lineOptions" height="300"
+      <p-chart type="line" [data]="combinedTrendData()" [options]="lineOptions" height="300"
         width="300"></p-chart>
     </div>
     <ng-template #noTrendData>
@@ -69,7 +69,7 @@
       ' + ('Trigger Analysis' | transloco)) }}
     </h3>
     <div *ngIf="hasTriggerData(); else noTriggerData" class="h-[350px]">
-      <p-chart type="pie" [data]="prepareTriggerData()" [options]="pieOptions" height="300" width="300"></p-chart>
+      <p-chart type="pie" [data]="triggerData()" [options]="pieOptions" height="300" width="300"></p-chart>
     </div>
     <ng-template #noTriggerData>
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
