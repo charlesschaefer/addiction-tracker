@@ -1,12 +1,11 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
-import { AppDb } from '../app.db';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { DbService } from './db.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
 import { Changes, DataUpdatedService } from './data-updated.service';
-import { CostAddDto, CostDto } from '../dto/cost.dto';
+import { CostAddDto } from '../dto/cost.dto';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -201,7 +200,7 @@ export class UsageService extends ServiceAbstract<Usages> {
      * @param usageHistory Optional usage history array
      * @param useCache Whether to use cached value
      */
-    calculateSobrietyDays(usageHistory?: UsageDto[], useCache: boolean = true): number {
+    calculateSobrietyDays(usageHistory?: UsageDto[], useCache = true): number {
         if (useCache && this.sobrietyDaysCache) return this.sobrietyDaysCache;
         
         if (!usageHistory || !usageHistory.length) {
@@ -241,7 +240,7 @@ export class UsageService extends ServiceAbstract<Usages> {
         usageHistory: UsageDto[],
         sentimentLabels: string[]
     ): { mood: string; avgCraving: number; count: number }[] {
-        const result: { [mood: string]: { total: number; count: number } } = {};
+        const result: Record<string, { total: number; count: number }> = {};
         sentimentLabels.forEach(label => {
             result[label] = { total: 0, count: 0 };
         });
@@ -269,7 +268,7 @@ export class UsageService extends ServiceAbstract<Usages> {
         usageHistory: UsageDto[],
         triggerLabels: string[]
     ): { trigger: string; avgCraving: number; count: number }[] {
-        const result: { [trigger: string]: { total: number; count: number } } = {};
+        const result: Record<string, { total: number; count: number }> = {};
         triggerLabels.forEach(label => {
             result[label] = { total: 0, count: 0 };
         });

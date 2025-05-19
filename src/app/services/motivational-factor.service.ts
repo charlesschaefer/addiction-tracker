@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ServiceAbstract } from "./service.abstract";
 import { MotivationalFactorAddDto, MotivationalFactorDto } from "../dto/motivational-factor.dto";
-import { TableKeys } from "../app.db";
 import { DbService } from "./db.service";
 import { DatabaseChangeType } from "dexie-observable/api";
 import { Changes } from "./data-updated.service";

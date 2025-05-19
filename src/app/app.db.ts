@@ -10,7 +10,6 @@ import { AchievementDto } from "./dto/achievement.dto";
 import { AchievementData } from "./data/achievement.data";
 import { AlternativeActivityData } from "./data/alternative-activity.data";
 import { TriggerData } from "./data/trigger.data";
-import { trigger } from "@angular/animations";
 
 export type TableKeys =
     | "substance"
@@ -104,7 +103,7 @@ export class AppDb extends Dexie {
         return this[table];
     }
 
-    updateTriggerDependents(transaction: Transaction) {
+    updateTriggerDependents(_transaction: Transaction) {
         const triggerTable = this.trigger;
         triggerTable.toArray().then((triggers) => {
             if (triggers.length === 0) {

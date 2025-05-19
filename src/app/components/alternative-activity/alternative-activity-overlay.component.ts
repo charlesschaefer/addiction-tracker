@@ -14,7 +14,6 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 })
 export class AlternativeActivityOverlayComponent {
     @Input() show = false;
-    @Input() personalizedRecommendation?: { name: string; successRate: number };
     @Input() selectedSubstance?: SubstanceDto;
     @Input() motivationalFactorId?: number;
     @Output() onClose = new EventEmitter<void>();
@@ -25,6 +24,8 @@ export class AlternativeActivityOverlayComponent {
         feedback?: string;
     }>();
     @Output() onGiveUpUsage = new EventEmitter<void>();
+
+    personalizedRecommendation?: { name: string; successRate: number };
 
     /** Whether to show the processing dialog */
     showProcessingDialog = false;
@@ -88,7 +89,7 @@ export class AlternativeActivityOverlayComponent {
      * Get activity name from ID
      */
     private getActivityName(id: number): string {
-        const names: { [key: number]: string } = {
+        const names: Record<number, string> = {
             1: "Breathing Exercise",
             2: "Drink Water",
             3: "Take a Walk",

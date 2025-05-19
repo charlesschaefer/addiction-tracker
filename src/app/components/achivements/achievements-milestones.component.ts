@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Output, EventEmitter, OnInit } from "@angular/core";
 import {
     AchievementsDisplayComponent,
 } from "./achievements-display.component";

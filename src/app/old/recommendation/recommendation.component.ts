@@ -4,10 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
-import { UsageDto } from '../../dto/usage.dto';
 import { UsageService } from '../../services/usage.service';
 import { RecommendationService } from '../../services/recommendation.service';
-import { RecommendationDto } from '../../dto/recommendation.dto';
 
 @Component({
     selector: 'app-recommendation',

@@ -28,10 +28,9 @@ import { JoyrideModule } from 'ngx-joyride';
 import { SubstanceService } from '../../services/substance.service';
 import { SubstanceDto } from '../../dto/substance.dto';
 import { UsageService } from '../../services/usage.service';
-import { UsageAddDto, UsageDto } from '../../dto/usage.dto';
+import { UsageAddDto } from '../../dto/usage.dto';
 import { TriggerService } from '../../services/trigger.service';
 import { TriggerAddDto, TriggerDto } from '../../dto/trigger.dto';
-import { firstValueFrom } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 @Component({

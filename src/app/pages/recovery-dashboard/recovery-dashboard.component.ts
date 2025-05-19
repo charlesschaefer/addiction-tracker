@@ -8,7 +8,6 @@ import { SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
 import { SubstanceAnalysisCardComponent } from "../../components/substance/substance-analysis-card.component";
-import { DateTime } from "luxon";
 import {
     SobrietyCardComponent,
     SobrietyCardStyle,
@@ -16,20 +15,7 @@ import {
 import { TranslocoModule } from "@jsverse/transloco";
 import { SentimentService } from "../../services/sentiment.service";
 import { TriggerService } from "../../services/trigger.service";
-import { Signal, computed } from "@angular/core";
 import { RouterLink } from "@angular/router";
-
-interface UsageEntry {
-    id: number;
-    substance: string;
-    date: string;
-    time: string;
-    amount: string;
-    mood: string;
-    triggers: string[];
-    cost: number;
-    cravingIntensity: number;
-}
 
 @Component({
     selector: "app-recovery-dashboard",
@@ -46,7 +32,7 @@ interface UsageEntry {
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
-    selectedAnalysisSubstance: string = "all";
+    selectedAnalysisSubstance = "all";
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     usageHistory = signal<UsageDto[]>([]);
@@ -109,7 +95,7 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareUsageBySubstanceData() {
-        const substanceCounts: { [key: string]: number } = {};
+        const substanceCounts: Record<string, number> = {};
         this.usageHistory().forEach((entry) => {
             const substanceName = this.substances().get(entry.substance)
                 ?.name as string;
@@ -174,47 +160,8 @@ export class RecoveryDashboardComponent implements OnInit {
         };
     }
 
-    initChartOptions() {
-        this.chartOptions = {
-            plugins: {
-                legend: {
-                    position: "bottom",
-                },
-            },
-            // responsive: true,
-            // maintainAspectRatio: false,
-            scales: {
-                x: {
-                    stacked: true,
-                    title: {
-                        display: true,
-                        text: "Triggers",
-                    },
-                    ticks: {
-                        maxRotation: 45,
-                        minRotation: 45,
-                        callback: function (value: any) {
-                            const date = new Date(value);
-                            return date.toLocaleDateString("en-US", {
-                                day: "numeric",
-                                month: "short",
-                            });
-                        },
-                    },
-                },
-                y: {
-                    stacked: true,
-                    title: {
-                        display: true,
-                        text: "Number of Entries",
-                    },
-                },
-            },
-        };
-    }
-
     prepareSubstanceUsageData() {
-        const usageByDate: { [key: string]: number } = {};
+        const usageByDate: Record<string, number> = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -237,9 +184,9 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareMoodTrendData() {
-        const moodByDate: { [key: string]: { total: number; count: number } } =
+        const moodByDate: Record<string, { total: number; count: number }> =
             {};
-        const moodValues: { [key: string]: number } = {
+        const moodValues: Record<string, number> = {
             Sad: 1,
             Anxious: 2,
             Neutral: 3,
@@ -274,9 +221,7 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareCravingTrendData() {
-        const cravingByDate: {
-            [key: string]: { total: number; count: number };
-        } = {};
+        const cravingByDate: Record<string, { total: number; count: number }> = {};
         const dates: Date[] = [];
         const today = new Date();
         for (let i = 13; i >= 0; i--) {
@@ -319,7 +264,7 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareTriggerData() {
-        const triggerCounts: { [key: string]: number } = {};
+        const triggerCounts: Record<string, number> = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
             entry.trigger?.forEach((trigger) => {

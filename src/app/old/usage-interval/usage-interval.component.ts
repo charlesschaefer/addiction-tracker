@@ -12,7 +12,6 @@ import { SubstanceService } from '../../services/substance.service';
 import { SubstanceDto } from '../../dto/substance.dto';
 import { UsageChart } from '../../util/chart-types';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { firstValueFrom } from 'rxjs';
 
 interface UsageInterval {
     datetime: Date;

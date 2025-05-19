@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { firstValueFrom } from "rxjs";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { PanelModule } from "primeng/panel";
@@ -17,7 +16,6 @@ import { SubstanceService } from "../../services/substance.service";
 import { UsageService } from "../../services/usage.service";
 import { TriggerService } from "../../services/trigger.service";
 import { BackupService } from "../../services/backup.service";
-import { MatCommonModule } from "@angular/material/core";
 import { CommonModule } from "@angular/common";
 
 interface SaveFileResult {

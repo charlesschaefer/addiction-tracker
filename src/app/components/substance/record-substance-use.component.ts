@@ -13,12 +13,10 @@ import { MotivationalFactorService } from "../../services/motivational-factor.se
 import { SentimentService } from "../../services/sentiment.service";
 import { SelectModule } from "primeng/select";
 import { SubstanceIconSelectComponent } from "./substance-icon-select.component";
-import { TriggerAddDto, TriggerDto } from "../../dto/trigger.dto";
+import { TriggerDto } from "../../dto/trigger.dto";
 import { TriggerService } from "../../services/trigger.service";
-import { DatePickerModule } from "primeng/datepicker";
 import { UsageAddDto } from "../../dto/usage.dto";
 import { CostService } from "../../services/cost.service";
-import { CostAddDto } from "../../dto/cost.dto";
 import { MessageService } from "primeng/api";
 import { UsageFillingService } from "../../services/usage-filling.service";
 import { UsageFillingAddDto } from "../../dto/usage-filling.dto";
@@ -79,29 +77,29 @@ export class RecordSubstanceUseComponent implements OnInit {
     /** Date of usage. */
     datetime: Date = new Date();
     /** Time of usage. */
-    time: string = "";
+    time = "";
     /** Amount used. */
-    amount: string = "";
+    amount = "";
     /** Mood selected. */
-    mood: string = "";
+    mood = "";
     /** List of available triggers. */
     triggers: TriggerDto[] = [];
     /** List of selected triggers. */
     selectedTriggers: string[] = [];
     /** New trigger input value. */
-    newTrigger: string = "";
+    newTrigger = "";
     /** Whether to show the add trigger input. */
-    showAddTrigger: boolean = false;
+    showAddTrigger = false;
     /** Cost input value. */
-    cost: string = "";
+    cost = "";
     /** Whether to show the cost input. */
-    showCostInput: boolean = false;
+    showCostInput = false;
     /** Craving intensity value. */
-    cravingIntensity: number = 5;
+    cravingIntensity = 5;
     /** New substance input value. */
-    newSubstance: string = "";
+    newSubstance = "";
     /** Whether to show the add substance form. */
-    showAddSubstance: boolean = false;
+    showAddSubstance = false;
     /** Step in the substance creation process. */
     substanceCreationStep: "name" | "motivation" = "name";
     /** ID of the new substance being created. */
@@ -109,9 +107,9 @@ export class RecordSubstanceUseComponent implements OnInit {
     /** Selected substance icon */
     newSubstanceIcon?: string = "tretinha cabolosa";
     /** Whether a motivational factor is being added. */
-    addingMotivationalFactor: boolean = false;
+    addingMotivationalFactor = false;
     /** Selected Sentiment */
-    sentiment: string = "";
+    sentiment = "";
 
     /** List of sentiments for selection. */
     sentiments = SentimentService.sentiments;

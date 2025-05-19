@@ -1,10 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { Component,Output, EventEmitter, input, effect, computed, signal, resource } from "@angular/core";
+import { Component,Output, EventEmitter, input, computed, signal } from "@angular/core";
 import { AchievementDto, SafeIconAchievement } from "../../dto/achievement.dto";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { ButtonModule } from "primeng/button";
-import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
-import { fetch as tauriFetch } from "@tauri-apps/plugin-http";
+import { DomSanitizer } from "@angular/platform-browser";
 import { AchievementService } from "../../services/achievement.service";
 import { TranslocoModule } from "@jsverse/transloco";
 
@@ -56,7 +55,7 @@ export class AchievementsDisplayComponent {
      * @returns An array of `SafeIconAchievement` objects that match the selected criteria.
      */
     filteredAchievements = computed<SafeIconAchievement[]>(() => {
-        const achievements = (this.saferAchievements.value()?.sort((a, b) => a.completed ? -1 : 1) || []) as SafeIconAchievement[];
+        const achievements = (this.saferAchievements.value()?.sort((a, _b) => a.completed ? -1 : 1) || []) as SafeIconAchievement[];
         if (this.selectedCategory() === "all") return achievements;
         return achievements.filter(
             (a) => a.category === this.selectedCategory()

@@ -19,10 +19,7 @@ import { SubstanceService } from '../../services/substance.service';
 import { SubstanceDto } from '../../dto/substance.dto';
 import { ChartData, UsageChart} from '../../util/chart-types';
 import { RecommendationService } from '../../services/recommendation.service';
-import { RecommendationDto } from '../../dto/recommendation.dto';
-import { RecommendationComponent } from '../recommendation/recommendation.component';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { firstValueFrom } from 'rxjs';
 
 
 interface TriggerUsage {

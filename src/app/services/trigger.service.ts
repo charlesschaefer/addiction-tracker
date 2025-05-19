@@ -1,7 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
-import { AppDb } from '../app.db';
 import { DbService } from './db.service';
 import { TranslocoService } from '@jsverse/transloco';
 import { PromiseExtended } from 'dexie';

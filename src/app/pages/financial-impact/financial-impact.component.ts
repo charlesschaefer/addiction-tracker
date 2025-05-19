@@ -3,7 +3,7 @@ import { Component, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
-import { SubstanceAddDto, SubstanceDto } from "../../dto/substance.dto";
+import { SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';

@@ -8,7 +8,6 @@ import { InputOtpModule } from 'primeng/inputotp';
 import { AES } from 'crypto-js';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
-import { firstValueFrom } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
 
@@ -96,7 +95,7 @@ export class SynchronizationComponent {
         });
     }
 
-    sendEncryptedOTP(event: Event) {
+    sendEncryptedOTP(_event: Event) {
         console.log("Sending encripted data. OTP: ", this.otpForm.value.otp);
         const otp = this.otpForm.value.otp as unknown as string;
         

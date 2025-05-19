@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { JoyrideService } from "ngx-joyride";
 import { UsageService } from "../../services/usage.service";
@@ -75,7 +75,7 @@ export class HomeComponent implements OnInit {
 
         // translates the card titles and descriptions only after the translation service is ready
         // and then translates everytime the translation changes (ie. language changes)
-        this.translateService.selectTranslate("Usage Entries").subscribe((trans) => {
+        this.translateService.selectTranslate("Usage Entries").subscribe((_trans) => {
             this.cards = [
                 {
                     href: "/usage-entries",

@@ -1,8 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { CostAddDto, CostDto } from '../dto/cost.dto';
-import { AppDb } from '../app.db';
-import { DbSchema } from 'dexie';
 import { DbService } from './db.service';
 import { Changes, DataUpdatedService } from './data-updated.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
@@ -76,7 +74,7 @@ export class CostService extends ServiceAbstract<Costs> {
      * @param substances Map of substance IDs to substance DTOs
      */
     prepareCostBySubstanceData(usageHistory: UsageDto[], substances: Map<number, SubstanceDto>) {
-        const substanceCosts: { [key: string]: number } = {};
+        const substanceCosts: Record<string, number> = {};
         usageHistory.forEach((entry) => {
             const substanceName = substances.get(entry.substance)?.name as string;
             if (entry.cost) {
@@ -169,8 +167,7 @@ export class CostService extends ServiceAbstract<Costs> {
      * @param usageHistory Usage history array
      */
     async prepareSpendingTrendData(usageHistory: UsageDto[]) {
-        const spendingByDate: Map<string, number> = new Map();
-        const costByDate: Map<string, number> = new Map();
+        const spendingByDate = new Map<string, number>();
         const dates: string[] = [];
         const today = new Date();
         const substances = usageHistory.reduce((acc, curr) => {
@@ -193,13 +190,13 @@ export class CostService extends ServiceAbstract<Costs> {
             }
         });
 
-        const substanceCosts: Map<number, Map<string, number>> = new Map();
-        for (let substance of substances) {
+        const substanceCosts = new Map<number, Map<string, number>>();
+        for (const substance of substances) {
             const cost = await this.getCostBySubstanceAndDate(substance, dates)
              substanceCosts.set(substance, cost);
         }
 
-        const finalCosts = new Map<String, number>();
+        const finalCosts = new Map<string, number>();
         Array.from(spendingByDate.keys()).forEach((date: string) => {
             finalCosts.set(date, Array.from(substanceCosts.values()).reduce((acc, curr) => {
                 return acc + (curr.get(date) || 0);
@@ -246,7 +243,7 @@ export class CostService extends ServiceAbstract<Costs> {
      * @param substances Map of substance IDs to substance DTOs
      */
     prepareCostBySubstanceDataFromCosts(costs: any[], substances: Map<number, SubstanceDto>) {
-        const substanceCosts: { [key: string]: number } = {};
+        const substanceCosts: Record<string, number> = {};
         if (!substances) return [];
         costs.forEach((entry) => {
             if (!entry.substance) return;
@@ -343,7 +340,7 @@ export class CostService extends ServiceAbstract<Costs> {
      * @param costs Array of cost entries
      */
     async prepareSpendingTrendDataFromCosts(costs: any[]) {
-        const spendingByDate: Map<string, number> = new Map();
+        const spendingByDate = new Map<string, number>();
         const dates: string[] = [];
         const today = new Date();
 

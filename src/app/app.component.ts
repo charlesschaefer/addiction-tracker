@@ -10,7 +10,7 @@ import { SpeedDialModule } from "primeng/speeddial";
 import { MenuItem, MessageService } from "primeng/api";
 import { TieredMenuModule } from "primeng/tieredmenu";
 import { MenubarModule } from "primeng/menubar";
-import { JoyrideModule, JoyrideService } from "ngx-joyride";
+import { JoyrideModule } from "ngx-joyride";
 import { CookieService } from "ngx-cookie-service";
 import {
     isPermissionGranted,
@@ -29,7 +29,6 @@ import { RecordSubstanceUseComponent } from "./components/substance/record-subst
 import { AlternativeActivityOverlayComponent } from "./components/alternative-activity/alternative-activity-overlay.component";
 import { SubstanceService } from "./services/substance.service";
 import { SubstanceDto } from "./dto/substance.dto";
-import { UsageService } from "./services/usage.service";
 import {
     SobrietyCardComponent,
     SobrietyCardStyle,
@@ -113,7 +112,6 @@ export class AppComponent implements OnInit {
     showMotivationalFactors = false;
     showMotivationalPrompt = false;
     currentMotivationalFactor: any = null;
-    personalizedRecommendation?: { name: string; successRate: number };
 
     substances = signal<SubstanceDto[]>([]);
 
@@ -197,7 +195,7 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        let window = globalThis.window as Window & {
+        const window = globalThis.window as Window & {
             __TAURI_INTERNALS__?: { invoke: (command: string) => void };
         };
         if (window?.__TAURI_INTERNALS__?.invoke) {
@@ -453,7 +451,7 @@ export class AppComponent implements OnInit {
     handleAlternativeFeedback(
         activity: any,
         wasSuccessful: boolean,
-        feedback?: string
+        _feedback?: string
     ): void {
         if (!activity) return;
 
@@ -486,7 +484,7 @@ export class AppComponent implements OnInit {
         this.showBreathingPrompt = false;
     }
 
-    handleMotivationalFeedback(feedback: any) {
+    handleMotivationalFeedback(_feedback: any) {
         /* ... */
     }
 

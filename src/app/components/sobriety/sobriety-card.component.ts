@@ -18,7 +18,7 @@ export enum SobrietyCardStyle {
 export class SobrietyCardComponent {
     @Input() componentStyle = SobrietyCardStyle.SIMPLE_DAYS;
     @Input() usageHistory: UsageDto[] = [];
-    @Input() useCache: boolean = true;
+    @Input() useCache = true;
 
     styles = SobrietyCardStyle;
 

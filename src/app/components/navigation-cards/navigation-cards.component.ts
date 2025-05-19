@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, Input, OnInit } from "@angular/core";
+import { Component, computed, input } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 

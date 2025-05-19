@@ -24,7 +24,7 @@ export class SettingsComponent {
     showChangePassword = false;
     clearDataConfirmation = "";
     showClearDataDialog = false;
-    clearDataConfirmed: boolean = false;
+    clearDataConfirmed = false;
     darkMode = false;
     language = 'en';
 

@@ -10,7 +10,6 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { firstValueFrom } from 'rxjs';
 import { JoyrideModule } from 'ngx-joyride';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 

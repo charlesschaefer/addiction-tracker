@@ -1,6 +1,5 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, signal } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { ThemeService } from "../../services/theme.service";
 import { LockButtonComponent } from "../auth/lock-button.component";
@@ -20,12 +19,12 @@ interface AppMenuItem {
 })
 export class HeaderComponent implements OnInit {
     mobileMenuOpen = false;
-    mobileSettingsOpen: boolean = false;
+    mobileSettingsOpen = false;
 
     navLinks: AppMenuItem[] = [];
     settingsLinks: AppMenuItem[] = [];
     
-    settingsMenuOpen: boolean = false;
+    settingsMenuOpen = false;
 
     theme = signal("light");
 
@@ -38,7 +37,7 @@ export class HeaderComponent implements OnInit {
     ngOnInit(): void {
         this.theme.set(this.themeService.getCurrentTheme()());
         // Initialize navLinks and settingsLinks with translations only after the translation is loaded
-        this.translateService.selectTranslate("About").subscribe(translation => {
+        this.translateService.selectTranslate("About").subscribe(_translation => {
             this.navLinks = [
                 { href: "/", label: this.translateService.translate("Home"), icon: false },
                 // { href: "/usage-entries", label: this.translateService.translate("Entries"), icon: false },

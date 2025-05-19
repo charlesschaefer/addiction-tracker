@@ -1,11 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal, untracked } from "@angular/core";
+import { Component, computed, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { UsageDto } from "../../dto/usage.dto";
-import { TriggerService } from "../../services/trigger.service";
 import { SubstanceService } from "../../services/substance.service";
-import { TriggerDto } from "../../dto/trigger.dto";
-import { CostService } from "../../services/cost.service";
 import { SentimentService } from "../../services/sentiment.service";
 import { SubstanceDto } from "../../dto/substance.dto";
 import { DateTime, DateTimeFormatOptions } from "luxon";
@@ -32,7 +29,7 @@ export class UsageEntriesComponent implements OnInit {
 
     currentPage = signal<number>(1);
     entriesPerPage = 10;
-    substances: Map<number, SubstanceDto> = new Map();
+    substances = new Map<number, SubstanceDto>();
     moods = SentimentService.sentiments;
 
     currentSubstance = signal<number>(0);
@@ -78,7 +75,7 @@ export class UsageEntriesComponent implements OnInit {
 
     mostCommonTrigger = computed<string>(() => {
         console.warn("Lá vou eu de novo trigger");
-        const triggerCounts: { [key: string]: number } = {};
+        const triggerCounts: Record<string, number> = {};
         this.usageHistory().forEach((entry) => {
             if (entry && entry.trigger) {
                 entry.trigger?.forEach((trigger) => {

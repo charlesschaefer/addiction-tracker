@@ -8,8 +8,6 @@ import { Injectable } from '@angular/core';
 })
 export class OtpGeneratorService {
     
-    constructor() { }
-    
     /**
      * Generates a 6-character OTP using uppercase letters.
      */

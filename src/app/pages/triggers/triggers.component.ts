@@ -188,7 +188,7 @@ export class TriggersComponent implements OnInit {
     }
 
     prepareTriggerData() {
-        const triggerCounts: { [key: string]: number } = {};
+        const triggerCounts: Record<string, number> = {};
         const filteredHistory = this.getFilteredUsageHistory();
 
         // Initialize counts for all triggers

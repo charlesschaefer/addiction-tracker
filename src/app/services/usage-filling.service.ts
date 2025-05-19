@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { UsageFillingAddDto, UsageFillingDto, UsageFillings } from "../dto/usage-filling.dto";
+import { UsageFillingAddDto, UsageFillings } from "../dto/usage-filling.dto";
 import { ServiceAbstract } from "./service.abstract";
 import { DbService } from "./db.service";
 import { DatabaseChangeType } from "dexie-observable/api";
@@ -22,7 +22,7 @@ export interface UsageFillingCounts {
     providedIn: "root",
 })
 export class UsageFillingService extends ServiceAbstract<UsageFillings> {
-    protected override storeName: "usage_filling" =
+    protected override storeName: "usage_filling"  =
         "usage_filling";
 
     /**
@@ -57,7 +57,7 @@ export class UsageFillingService extends ServiceAbstract<UsageFillings> {
      */
     getAlternativeActivityCounts(): Promise<Map<number, UsageFillingCounts>> {
         return this.list().then(fillings => {
-            const counts: Map<number, UsageFillingCounts> = new Map();
+            const counts = new Map<number, UsageFillingCounts>();
             return fillings.reduce((prev, curr) => {
                 if (!curr.alternative_activity || !(curr.alternative_activity > 0)) {
                     return counts;

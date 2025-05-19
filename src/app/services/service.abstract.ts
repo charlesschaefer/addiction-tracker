@@ -1,8 +1,8 @@
 import { Inject, Injectable } from "@angular/core";
 import { Table } from "dexie";
 import { DatabaseChangeType } from "dexie-observable/api";
-import { BehaviorSubject, Observable, from } from "rxjs";
-import { AppDb, TableKeys } from "../app.db";
+import { BehaviorSubject } from "rxjs";
+import { TableKeys } from "../app.db";
 import { Changes, DataUpdatedService } from "./data-updated.service";
 import { DbService } from "./db.service";
 

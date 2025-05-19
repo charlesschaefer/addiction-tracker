@@ -392,19 +392,17 @@ export class AchievementService extends ServiceAbstract<Achievements> {
                     fetchfn = fetch;
                 }
     
-                const saferAchievements: SafeIconAchievement[] = [];
-    
                 return Promise.all(achievements.map(achievement => {
                     //console.log("Fetching the icon at: ", achievement.icon);
                     return fetchfn(achievement?.icon as string)
                 })).then(async (responses): Promise<SafeIconAchievement[]> => {
                     //console.warn("Finished running all the promises", responses);
                     const filledAchievements: number[] = [];
-                    return Promise.all(responses.map(async (response, idx) => {
+                    return Promise.all(responses.map(async (response, _idx) => {
                         const icon = await response.text();
                         //console.warn(`We got the icon text for the icon number ${idx+1}: `, icon);
                         let saferAchievement:SafeIconAchievement = {} as SafeIconAchievement;
-                        for (let achievement of achievements) {
+                        for (const achievement of achievements) {
                             if (filledAchievements.indexOf(achievement.id) < 0 && response.url.includes(achievement.icon as string)) {
                                 achievement.title = this.translate.translate(achievement.title);
                                 achievement.description = this.translate.translate(achievement.description);

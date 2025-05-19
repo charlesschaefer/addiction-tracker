@@ -1,9 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, effect, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal } from "@angular/core";
 import { AchievementsDisplayComponent } from "../../components/achivements/achievements-display.component";
 import { AchievementDto, SafeIconAchievement } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
-import { RouterLink } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 

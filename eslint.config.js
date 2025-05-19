@@ -9,6 +9,10 @@ console.log(unusedImports)
 module.exports = tseslint.config(
   {
     files: ["**/*.ts"],
+    ignores: [
+        "src/app/old/**/*.ts",
+        "**/*.spec.ts"
+    ],
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
@@ -65,6 +69,9 @@ module.exports = tseslint.config(
   },
   {
     files: ["**/*.html"],
+    ignores: [
+        "src/app/old/**/*.html"
+    ],
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,

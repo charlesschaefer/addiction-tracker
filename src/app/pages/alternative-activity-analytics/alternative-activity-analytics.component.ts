@@ -14,7 +14,7 @@ import { TranslocoModule } from "@jsverse/transloco";
 })
 export class AlternativeActivityAnalyticsComponent implements OnInit {
     alternativeActivitiesCounts = signal<UsageFillingCounts[]>([]);
-    alternativeActivities: Map<number, AlternativeActivityDto> = new Map();
+    alternativeActivities = new Map<number, AlternativeActivityDto>();
     loading = true;
 
     sortedAlternatives = computed<UsageFillingCounts[]>(() =>  {

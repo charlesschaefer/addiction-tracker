@@ -28,7 +28,7 @@ export class SubstanceIconSelectComponent implements ControlValueAccessor {
     @Input() colorClass = "";
 
     constructor() {
-        const iconList = Object.keys(SubstanceIcon);
+        //const iconList = Object.keys(SubstanceIcon);
         // iconList.forEach((icon) => {
         //     const iconName = SubstanceIcon[icon as keyof typeof SubstanceIcon];
         //     this.icons.set(iconName, icon);//SubstanceIcon[icon as keyof typeof SubstanceIcon]);

@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { importProvidersFrom } from '@angular/core';
 
 
 import { TriggerService } from './trigger.service';
-import { TriggerAddDto } from '../dto/trigger.dto';
 
 describe('TriggerService', () => {
   let service: TriggerService;

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, Inject, Input, LOCALE_ID, OnInit, signal } from "@angular/core";
+import { Component, Inject, Input, LOCALE_ID, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { CostService } from "../../services/cost.service";

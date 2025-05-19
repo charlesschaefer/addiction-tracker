@@ -1,10 +1,7 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { RecommendationDto, RecommendationAddDto } from '../dto/recommendation.dto';
-import { AppDb } from '../app.db';
-import { firstValueFrom } from 'rxjs';
 //import { GoogleGenerativeAI } from '@google/generative-ai';
-import { invoke } from '@tauri-apps/api/core';
 import { DbService } from './db.service';
 
 /**

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { importProvidersFrom } from '@angular/core';
 
 import { CostComponent } from './cost.component';
 

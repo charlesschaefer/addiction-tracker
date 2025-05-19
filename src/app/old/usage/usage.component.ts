@@ -18,9 +18,7 @@ import { SubstanceService } from '../../services/substance.service';
 import { SubstanceDto } from '../../dto/substance.dto';
 import { PaginatedComponent, SubstanceGroupedItem } from '../../util/paginated-component';
 import { RecommendationService } from '../../services/recommendation.service';
-import { RecommendationDto } from '../../dto/recommendation.dto';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-import { firstValueFrom } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 
