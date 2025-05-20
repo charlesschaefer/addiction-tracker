@@ -44,6 +44,7 @@ jobs:
             - name: Store Android SDK and NDK cache
               uses: actions/cache/save@v4
               id: ndk-cache-save
+              if: steps.ndk-cache-restore.outputs.cache-hit != 'true'
               with:
                 path: ${{ github.workspace }}/android-sdk
                 key: ${{ runner.os }}-android-sdk-and-ndk
@@ -137,13 +138,14 @@ jobs:
               run: npm run tauri android build 
               # run: npm run tauri info
               env:
-                  NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
+                  NDK_HOME: ${{ github.workspace }}/android-sdk/ndk/27.0.11902837
                   GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
                   GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
 
             - name: Create gradle cache
               uses: actions/cache/save@v4
               id: gradle-cache-create
+              if: steps.gradle-cache-restore.outputs.cache-hit != 'true'
               with:
                 path: |
                   ~/.gradle/
@@ -152,6 +154,7 @@ jobs:
             - name: Create cargo cache
               uses: actions/cache/save@v4
               id: cargo-cache-save
+              if: steps.cargo-cache-restore.outputs.cache-hit != 'true'
               with:
                 path: |
                   ~/.cargo/
