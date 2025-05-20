@@ -26,6 +26,9 @@ jobs:
               with:
                 path: ${{ github.workspace }}/android-sdk
                 key: ${{ runner.os }}-android-sdk-and-ndk
+              env:
+                ANDROID_HOME: ${{ github.workspace }}/android-sdk
+                ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
 
             - name: Setup Android SDK
               uses: android-actions/setup-android@v3
