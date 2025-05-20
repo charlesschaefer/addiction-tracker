@@ -20,27 +20,40 @@ jobs:
                   distribution: 'zulu'
                   java-version: '17'
 
+            - name: Recover Android SDK and NDK cache
+              uses: actions/cache/restore@v4
+              id: ndk-cache-restore
+              with:
+                path: ${{ github.workspace }}/android-sdk
+                key: ${{ runner.os }}-android-sdk-and-ndk
+
             - name: Setup Android SDK
               uses: android-actions/setup-android@v3
+              if: steps.ndk-cache-restore.outputs.cache-hit != 'true'
               env:
-                  ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
-                  ANDROID_HOME: ${{ github.workspace }}/android-sdk
+                ANDROID_HOME: ${{ github.workspace }}/android-sdk
+                ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
 
-            - name: Setup Android NDK
-              uses: nttld/setup-ndk@v1.5.0
-              id: setup-ndk
+            - name: Install NDK
+              run: sdkmanager "ndk;27.0.11902837"
+              if: steps.ndk-cache-restore.outputs.cache-hit != 'true'
+              env:
+                ANDROID_HOME: ${{ github.workspace }}/android-sdk
+                ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
+            
+            - name: Store Android SDK and NDK cache
+              uses: actions/cache/save@v4
+              id: ndk-cache-save
               with:
-                  ndk-version: "27.0.11902837"
-                  link-to-sdk: true
-                  local-cache: true
-                  add-to-path: true
+                path: ${{ github.workspace }}/android-sdk
+                key: ${{ runner.os }}-android-sdk-and-ndk
 
             - name: setup node
               uses: actions/setup-node@v4
               with:
                   node-version: lts/*
                   #cache: 'npm'
-
+            
             - name: Get npm cache directory
               id: npm-cache-dir
               shell: bash
@@ -68,6 +81,9 @@ jobs:
               uses: dtolnay/rust-toolchain@stable
               with:
                   targets: aarch64-linux-android,armv7-linux-androideabi,i686-linux-android,x86_64-linux-android
+            
+            # - name: Install dependencies
+            #   run: pnpm install
 
             - name: setup Android signing
               env:
@@ -80,9 +96,13 @@ jobs:
                 echo "storePassword=$ANDROID_RELEASE_PASSWORD" >> src-tauri/gen/android/keystore.properties
                 echo "keyPassword=$ANDROID_RELEASE_KEY_PASSWORD" >> src-tauri/gen/android/keystore.properties
                 base64 -d <<< "$ANDROID_RELEASE_KEYSTORE" > $RUNNER_TEMP/keystore.jks
-                echo "storeFile="$RUNNER_TEMP"/keystore.jks" >> src-tauri/gen/android/keystore.properties            
+                echo "storeFile="$RUNNER_TEMP"/keystore.jks" >> src-tauri/gen/android/keystore.properties
+
+            
 
             - name: install frontend dependencies
+              # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
+              #run: npm install --save-dev @tauri-apps/cli # change this to npm or pnpm depending on which one you use.
               run: |
                 npm clean-install --include prod --include dev --include peer --verbose
                 npm install --save-dev @tauri-apps/cli @tauri-apps/api rollup
@@ -94,6 +114,7 @@ jobs:
                 ls -al $RUNNER_TEMP
                 cat src-tauri/gen/android/keystore.properties
                 cat src-tauri/gen/android/keystore.properties | base64
+
 
             - name: Restore Cargo cache
               uses: actions/cache/restore@v4
@@ -111,12 +132,12 @@ jobs:
                 path: |
                   ~/.gradle/
                 key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-
+                
             - name: Build app bundle
               run: npm run tauri android build 
+              # run: npm run tauri info
               env:
-                  NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-                  ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+                  NDK_HOME: ${{ env.ANDROID_HOME }}/ndk/27.0.11902837
                   GOOGLE_GEMINI_PROJECT_NAME: ${{ secrets.GOOGLE_GEMINI_PROJECT_NAME }}
                   GOOGLE_GEMINI_API: ${{ secrets.GOOGLE_GEMINI_API }}
 
@@ -158,10 +179,11 @@ jobs:
                   files: |
                       src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release.apk
                       src-tauri/gen/android/app/build/outputs/bundle/universalRelease/app-universal-release.aab
-
+            
             - name: Google Play AAB Upload
               uses: italankin/google-play-aab-uploader@1.3
               with:
                 package-name: com.addictiontracker
                 aab-path: src-tauri/gen/android/app/build/outputs/bundle/universalRelease/app-universal-release.aab
                 key-json: '${{ secrets.GOOGLE_SERVICE_KEY_JSON }}'
+            
