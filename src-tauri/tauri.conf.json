@@ -6,7 +6,8 @@
     "beforeDevCommand": "npm run start -- --host localhost --public-host localhost",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "npm run build",
-    "frontendDist": "../dist/addiction-tracker/browser"
+    "frontendDist": "../dist/addiction-tracker/browser",
+    "removeUnusedCommands": true
   },
   "app": {
     "windows": [

@@ -25,8 +25,25 @@ tiny_http = "0.12.0"
 local-ip-addr = "0.1.1"
 tauri-plugin-http = "2"
 
-[build]
-rustc-wrapper = "/usr/bin/sccache"
+
+[profile.dev]
+opt-level = 1
+incremental = true
+
+[profile.release]
+codegen-units = 16
+lto = "thin"
+opt-level = "s"
+panic = "abort"
+strip = true
+
+
+[profile.dev.package."*"]
+opt-level = 3
+
+
+# [build]
+# rustc-wrapper = "/usr/bin/sccache"
 
 
 [target.x86_64-unknown-linux-gnu]
@@ -54,10 +71,3 @@ rustflags = [
     # Mold only supports x86_64
     "link-arg=-fuse-ld=/usr/bin/mold",
 ]
-
-
-[profile.dev]
-opt-level = 1
-
-[profile.dev.package."*"]
-opt-level = 3
