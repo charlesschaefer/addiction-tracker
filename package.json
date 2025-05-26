@@ -23,7 +23,7 @@
     "@angular/forms": "^19.2.6",
     "@angular/material": "^19.2.9",
     "@angular/material-luxon-adapter": "^19.2.16",
-    "@angular/platform-browser": "^19.2.6",
+    "@angular/platform-browser": "^19.2.13",
     "@angular/platform-browser-dynamic": "^19.2.6",
     "@angular/router": "^19.2.11",
     "@jsverse/transloco": "^7.5.0",
