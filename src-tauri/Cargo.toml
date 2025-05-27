@@ -1,6 +1,6 @@
 [package]
 name         = "addiction-tracker"
-version = "0.0.12"
+version = "0.0.13"
 description  = "Addiction Tracker - An app for tracking substance addiction and habits (made with Tauri)."
 authors      = ["Charles Schaefer"]
 edition      = "2021"
