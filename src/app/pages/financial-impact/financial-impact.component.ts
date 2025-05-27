@@ -10,6 +10,7 @@ import { ChartModule } from 'primeng/chart';
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { CostDto } from "../../dto/cost.dto";
 import { DateTime } from "luxon";
+import { getDateForChart } from "../../util/date.utils";
 
 @Component({
     selector: "app-financial-impact",
@@ -85,18 +86,7 @@ export class FinancialImpactComponent implements OnInit {
         this.prepareSpendingTrendData(costs).then(trendData => {
             if (trendData.length > 0) {
                 this.spendingTrendData = {
-                    labels: trendData.map(item => {
-                        const date = DateTime.fromFormat(item.date, 'yyyy-MM-dd');
-                        return date.toLocaleString(
-                            {
-                                day: 'numeric',
-                                month: 'short'
-                            }, 
-                            {
-                                locale: locale
-                            }
-                        );
-                    }),
+                    labels: trendData.map(item => getDateForChart(item.date, locale)),
                     datasets: [{
                         label: 'Daily Spending',
                         data: trendData.map(item => item.spending),

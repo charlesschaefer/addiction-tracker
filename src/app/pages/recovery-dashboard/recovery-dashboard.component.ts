@@ -18,6 +18,7 @@ import { TriggerService } from "../../services/trigger.service";
 import { RouterLink } from "@angular/router";
 import { DateTime } from "luxon";
 import { TranslocoAvailableLangs } from "../../app.config";
+import { getDateForChart } from "../../util/date.utils";
 
 @Component({
     selector: "app-recovery-dashboard",
@@ -152,16 +153,7 @@ export class RecoveryDashboardComponent implements OnInit {
                         maxRotation: 45,
                         minRotation: 45,
                         callback: function (value: any) {
-                            const date = DateTime.fromFormat(value.date, 'yyyy-MM-dd');
-                            return date.toLocaleString(
-                                {
-                                    day: 'numeric',
-                                    month: 'short'
-                                }, 
-                                {
-                                    locale: locale
-                                }
-                            );
+                            return getDateForChart(value.date, locale);
                         },
                     },
                 },
@@ -269,16 +261,7 @@ export class RecoveryDashboardComponent implements OnInit {
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
         return usageData.map((item, index) => ({
-            date: DateTime.fromFormat(item.date, 'yyyy-MM-dd')
-                .toLocaleString(
-                    {
-                        day: 'numeric',
-                        month: 'short'
-                    }, 
-                    {
-                        locale: this.locale
-                    }
-                ),
+            date: getDateForChart(item.date, this.locale),
             usage: item.usage,
             mood: moodData[index].sentiment,
             craving: cravingData[index].craving,

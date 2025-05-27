@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, Input } from "@angular/core";
+import { Component, computed, input, Input, signal } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
@@ -8,6 +8,7 @@ import { SentimentService } from "../../services/sentiment.service";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { RouterLink } from "@angular/router";
 import { DateTime } from "luxon";
+import { getDateForChart } from "../../util/date.utils";
 
 @Component({
     selector: "app-substance-analysis-card",
@@ -23,7 +24,7 @@ export class SubstanceAnalysisCardComponent {
     usageBySubstanceData = computed<ChartData>(() => this.prepareUsageBySubstanceData());
     triggerData = computed<ChartData>(() => this.prepareTriggerData());
         
-    selectedAnalysisSubstance = "all";
+    selectedAnalysisSubstance = signal("all");
     COLORS = ["#8B5CF6", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     barOptions: ChartOptions = {
@@ -109,14 +110,14 @@ export class SubstanceAnalysisCardComponent {
     constructor(private translateService: TranslocoService) {}
 
     setSelectedAnalysisSubstance(substance: string) {
-        this.selectedAnalysisSubstance = substance;
+        this.selectedAnalysisSubstance.set(substance);
     }
 
     getFilteredUsageHistory() {
-        if (this.selectedAnalysisSubstance === "all") {
+        if (this.selectedAnalysisSubstance() === "all") {
             return this.usageHistory;
         }
-        const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance);
+        const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance());
         if (!substance) {
             return this.usageHistory;
         }
@@ -264,18 +265,7 @@ export class SubstanceAnalysisCardComponent {
         const locale = this.translateService.getActiveLang().split("-").map((value, idx) => idx === 1 ? value.toUpperCase() : value).join("-");
 
         const chartData =  {
-            labels: usageData.map(item => {
-                const date = DateTime.fromFormat(item.date, 'yyyy-MM-dd');
-                return date.toLocaleString(
-                    {
-                        day: 'numeric',
-                        month: 'short'
-                    }, 
-                    {
-                        locale: locale
-                    }
-                );
-            }),
+            labels: usageData.map(item => getDateForChart(item.date, locale)),
             datasets: [
                 {
                     label: this.translateService.translate('Usage'),
