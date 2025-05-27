@@ -1,9 +1,15 @@
 [package]
-name = "addiction-tracker"
-version = "0.0.11"
-description = "Addiction Tracker"
-authors = ["Charles Schaefer"]
-edition = "2021"
+name         = "addiction-tracker"
+version      = "0.0.11"
+description  = "Addiction Tracker - An app for tracking substance addiction and habits (made with Tauri)."
+authors      = ["Charles Schaefer"]
+edition      = "2021"
+keywords     = ["health", "addiction", "substance abuse", "alcohol", "drugs", "habits", "cigarretes", "smoking", "tauri", "angular", "rust"]
+homepage     = "https://addictiontracker.app"
+license      = "MIT"
+license-file = "../LICENSE"
+readme       = "../README.md"
+repository   = "https://github.com/charlesschaefer/addiction-tracker.git"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
