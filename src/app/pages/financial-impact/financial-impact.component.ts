@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, Inject, LOCALE_ID, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
@@ -7,8 +7,9 @@ import { SubstanceDto } from "../../dto/substance.dto";
 import { FinancialImpactCardComponent } from "../../components/financial-impact-card/financial-impact-card.component";
 import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { CostDto } from "../../dto/cost.dto";
+import { DateTime } from "luxon";
 
 @Component({
     selector: "app-financial-impact",
@@ -28,11 +29,13 @@ export class FinancialImpactComponent implements OnInit {
 
     // New: Store cost table data
     costs = signal<any[]>([]);
+    
 
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
-        private costService: CostService
+        private costService: CostService,
+        private translateService: TranslocoService
     ) {
         this.initChartOptions();
     }
@@ -70,19 +73,29 @@ export class FinancialImpactComponent implements OnInit {
                     }
                 },
                 y: {
-                    beginAtZero: true
+                    beginAtZero: !true
                 }
             }
         };
     }
 
     updateSpendingTrendChart(costs: CostDto[]) {
+        // Convert lower case language format to something like "en-US" or "pt-BR"
+        const locale = this.translateService.getActiveLang().split("-").map((value, idx) => idx === 1 ? value.toUpperCase() : value).join("-");
         this.prepareSpendingTrendData(costs).then(trendData => {
             if (trendData.length > 0) {
                 this.spendingTrendData = {
                     labels: trendData.map(item => {
-                        const date = new Date(item.date);
-                        return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                        const date = DateTime.fromFormat(item.date, 'yyyy-MM-dd');
+                        return date.toLocaleString(
+                            {
+                                day: 'numeric',
+                                month: 'short'
+                            }, 
+                            {
+                                locale: locale
+                            }
+                        );
                     }),
                     datasets: [{
                         label: 'Daily Spending',

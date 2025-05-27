@@ -7,6 +7,7 @@ import { ChartData, ChartOptions } from "chart.js";
 import { SentimentService } from "../../services/sentiment.service";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { RouterLink } from "@angular/router";
+import { DateTime } from "luxon";
 
 @Component({
     selector: "app-substance-analysis-card",
@@ -260,10 +261,20 @@ export class SubstanceAnalysisCardComponent {
         const thirdColor = (firstColor === this.COLORS.length - 1) ? 0 : firstColor + 1;
         const secondColorCode = "#D68303";
 
+        const locale = this.translateService.getActiveLang().split("-").map((value, idx) => idx === 1 ? value.toUpperCase() : value).join("-");
+
         const chartData =  {
             labels: usageData.map(item => {
-                const date = new Date(item.date);
-                return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                const date = DateTime.fromFormat(item.date, 'yyyy-MM-dd');
+                return date.toLocaleString(
+                    {
+                        day: 'numeric',
+                        month: 'short'
+                    }, 
+                    {
+                        locale: locale
+                    }
+                );
             }),
             datasets: [
                 {

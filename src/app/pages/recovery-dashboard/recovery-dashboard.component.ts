@@ -12,10 +12,12 @@ import {
     SobrietyCardComponent,
     SobrietyCardStyle,
 } from "../../components/sobriety/sobriety-card.component";
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { SentimentService } from "../../services/sentiment.service";
 import { TriggerService } from "../../services/trigger.service";
 import { RouterLink } from "@angular/router";
+import { DateTime } from "luxon";
+import { TranslocoAvailableLangs } from "../../app.config";
 
 @Component({
     selector: "app-recovery-dashboard",
@@ -45,14 +47,22 @@ export class RecoveryDashboardComponent implements OnInit {
     moodCravingCorrelation = signal<any[]>([]);
     triggerCravingCorrelation = signal<any[]>([]);
 
+    locale: TranslocoAvailableLangs;
+
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
         private costService: CostService,
         private sentimentService: SentimentService,
-        private triggerService: TriggerService
+        private triggerService: TriggerService,
+        private translateService: TranslocoService
     ) {
         this.initChartOptions();
+        this.locale = this.translateService
+                .getActiveLang()
+                .split("-")
+                .map((value, idx) => idx === 1 ? value.toUpperCase() : value)
+                .join("-") as TranslocoAvailableLangs;
     }
 
     ngOnInit() {
@@ -122,6 +132,7 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     initChartOptions() {
+        const locale = this.locale;
         this.chartOptions = {
             plugins: {
                 legend: {
@@ -141,11 +152,16 @@ export class RecoveryDashboardComponent implements OnInit {
                         maxRotation: 45,
                         minRotation: 45,
                         callback: function (value: any) {
-                            const date = new Date(value);
-                            return date.toLocaleDateString("en-US", {
-                                day: "numeric",
-                                month: "short",
-                            });
+                            const date = DateTime.fromFormat(value.date, 'yyyy-MM-dd');
+                            return date.toLocaleString(
+                                {
+                                    day: 'numeric',
+                                    month: 'short'
+                                }, 
+                                {
+                                    locale: locale
+                                }
+                            );
                         },
                     },
                 },
@@ -253,10 +269,16 @@ export class RecoveryDashboardComponent implements OnInit {
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
         return usageData.map((item, index) => ({
-            date: new Date(item.date).toLocaleDateString("en-US", {
-                day: "numeric",
-                month: "short",
-            }),
+            date: DateTime.fromFormat(item.date, 'yyyy-MM-dd')
+                .toLocaleString(
+                    {
+                        day: 'numeric',
+                        month: 'short'
+                    }, 
+                    {
+                        locale: this.locale
+                    }
+                ),
             usage: item.usage,
             mood: moodData[index].sentiment,
             craving: cravingData[index].craving,

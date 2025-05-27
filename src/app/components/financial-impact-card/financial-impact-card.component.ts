@@ -5,9 +5,10 @@ import { SubstanceService } from "../../services/substance.service";
 import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { TranslocoModule } from "@jsverse/transloco";
+import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { CostDto } from "../../dto/cost.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
+import { getCurrency } from "locale-currency";
 
 @Component({
     selector: "app-financial-impact-card",
@@ -45,8 +46,9 @@ export class FinancialImpactCardComponent implements OnInit {
             },
             datalabels: {
                 formatter: (value: number, _: any) => {
-                    const currency = this.currentLocale == 'pt-BR' ? 'BRL' : 'USD';
-                    const returnVal = Intl.NumberFormat(this.currentLocale, {currency: currency, style: 'currency'}).format(value);
+                    const locale = this.translateService.getActiveLang().split("-").map((value, idx) => idx === 1 ? value.toUpperCase() : value).join("-");
+                    const currency = getCurrency(locale) || 'USD';
+                    const returnVal = Intl.NumberFormat(locale, {currency: currency, style: 'currency'}).format(value);
                     return returnVal;
                 },
                 anchor: 'end',
@@ -58,8 +60,8 @@ export class FinancialImpactCardComponent implements OnInit {
     constructor(
         private usageService: UsageService,
         private substanceService: SubstanceService,
-        private costService: CostService, 
-        @Inject(LOCALE_ID) private currentLocale: string,
+        private costService: CostService,
+        private translateService: TranslocoService,
     ) { }
 
     ngOnInit() {
