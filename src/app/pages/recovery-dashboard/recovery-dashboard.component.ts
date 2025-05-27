@@ -100,9 +100,9 @@ export class RecoveryDashboardComponent implements OnInit {
             const substanceName = this.substances().get(entry.substance)
                 ?.name as string;
             if (substanceCounts[substanceName]) {
-                substanceCounts[substanceName]++;
+                substanceCounts[substanceName] += entry.quantity || 1;
             } else {
-                substanceCounts[substanceName] = 1;
+                substanceCounts[substanceName] = entry.quantity || 1;
             }
         });
         return Object.keys(substanceCounts).map((substance) => ({
@@ -174,7 +174,7 @@ export class RecoveryDashboardComponent implements OnInit {
         filteredHistory.forEach((entry) => {
             const entryDate = new Date(entry.datetime);
             if (usageByDate[entryDate.toISOString()] !== undefined) {
-                usageByDate[entryDate.toISOString()]++;
+                usageByDate[entryDate.toISOString()] += entry.quantity || 1;
             }
         });
         return dates.map((date) => ({

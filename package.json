@@ -1,6 +1,6 @@
 {
   "name": "addiction-tracker",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": {
     "name": "Charles Schaefer"
   },
@@ -11,7 +11,19 @@
   },
   "license": "MIT",
   "homepage": "https://addictiontracker.app",
-  "keywords": ["health", "addiction", "substance abuse", "alcohol", "drugs", "habits", "cigarretes", "smoking", "tauri", "angular", "rust"],
+  "keywords": [
+    "health",
+    "addiction",
+    "substance abuse",
+    "alcohol",
+    "drugs",
+    "habits",
+    "cigarretes",
+    "smoking",
+    "tauri",
+    "angular",
+    "rust"
+  ],
   "icon": "./src-tauri/icons/128x128.png",
   "scripts": {
     "ng": "ng",

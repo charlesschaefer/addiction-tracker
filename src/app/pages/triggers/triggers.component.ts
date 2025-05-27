@@ -200,7 +200,7 @@ export class TriggersComponent implements OnInit {
         filteredHistory.forEach((entry) => {
             (entry.trigger || []).forEach((trigger) => {
                 if (triggerCounts[trigger.name] !== undefined) {
-                    triggerCounts[trigger.name]++;
+                    triggerCounts[trigger.name] += entry.quantity || 1;
                 }
             });
         });
@@ -234,7 +234,7 @@ export class TriggersComponent implements OnInit {
                         triggerBySubstance[substanceName][trigger.name] !==
                             undefined
                     ) {
-                        triggerBySubstance[substanceName][trigger.name]++;
+                        triggerBySubstance[substanceName][trigger.name] += entry.quantity || 1;
                     }
                 });
             }

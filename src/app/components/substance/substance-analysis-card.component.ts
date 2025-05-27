@@ -133,9 +133,9 @@ export class SubstanceAnalysisCardComponent {
         this.usageHistory.forEach((entry) => {
             const substanceName = this.substances().get(entry.substance)?.name as string;
             if (substanceCounts[substanceName]) {
-                substanceCounts[substanceName]++;
+                substanceCounts[substanceName] += entry.quantity || 1;
             } else {
-                substanceCounts[substanceName] = 1;
+                substanceCounts[substanceName] = entry.quantity || 1;
             }
         });
 
@@ -172,7 +172,7 @@ export class SubstanceAnalysisCardComponent {
             const entryDate = new Date(entry.datetime);
             const dateKey = entryDate.toISOString().split('T')[0];
             if (usageByDate[dateKey] !== undefined) {
-                usageByDate[dateKey]++;
+                usageByDate[dateKey] += entry.quantity || 1;
             }
         });
         return dates.map((date) => ({
@@ -323,7 +323,8 @@ export class SubstanceAnalysisCardComponent {
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
             entry.trigger?.forEach((trigger) => {
-                triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
+                //triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
+                triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + (entry.quantity || 1);
             });
         });
 
