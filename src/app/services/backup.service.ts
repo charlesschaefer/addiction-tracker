@@ -9,6 +9,16 @@ import { UsageDto } from '../dto/usage.dto';
 import { UsageService } from './usage.service';
 import { TriggerService } from './trigger.service';
 import { TriggerDto } from '../dto/trigger.dto';
+import { RecommendationDto } from '../dto/recommendation.dto';
+import { AlternativeActivityDto } from '../dto/alternative-activity.dto';
+import { MotivationalFactorDto } from '../dto/motivational-factor.dto';
+import { AchievementDto } from '../dto/achievement.dto';
+import { UsageFillingDto } from '../dto/usage-filling.dto';
+import { RecommendationService } from './recommendation.service';
+import { AlternativeActivityService } from './alternative-activity.service';
+import { MotivationalFactorService } from './motivational-factor.service';
+import { UsageFillingService } from './usage-filling.service';
+import { AchievementService } from './achievement.service';
 
 /**
  * Structure for backup data.
@@ -18,6 +28,11 @@ export interface BackupData {
     substance: SubstanceDto[];
     usage: UsageDto[];
     trigger: TriggerDto[];
+    recommendation: RecommendationDto[];
+    alternative_activity: AlternativeActivityDto[];
+    motivational_factor: MotivationalFactorDto[];
+    usage_filling: UsageFillingDto[];
+    achievement: AchievementDto[];
 }
 
 /**
@@ -38,6 +53,11 @@ export class BackupService {
         private substanceService: SubstanceService,
         private usageService: UsageService,
         private triggerService: TriggerService,
+        private recommendationService: RecommendationService,
+        private alternativeActivityService: AlternativeActivityService,
+        private motivationalFactorService: MotivationalFactorService,
+        private usageFillingService: UsageFillingService,
+        private achievementService: AchievementService,
     ) { }
     
     /**
@@ -51,6 +71,11 @@ export class BackupService {
         this.substanceService.clearCache();
         this.usageService.clearCache();
         this.triggerService.clearCache();
+        this.recommendationService.clearCache();
+        this.alternativeActivityService.clearCache();
+        this.motivationalFactorService.clearCache();
+        this.usageFillingService.clearCache();
+        this.achievementService.clearCache();
 
         const backupSubject$ = new Subject<string>();
 
@@ -59,6 +84,11 @@ export class BackupService {
             substance: this.substanceService.list(),
             usage: this.usageService.list(),
             trigger: this.triggerService.list(),
+            recommendation: this.recommendationService.list(),
+            alternative_activity: this.alternativeActivityService.list(),
+            motivational_factor: this.motivationalFactorService.list(),
+            usage_filling: this.usageFillingService.list(),
+            achievement: this.achievementService.list(),
         });
 
         backupData$.subscribe({
@@ -105,30 +135,44 @@ export class BackupService {
         this.triggerService.clear();
         this.usageService.clear();
         this.substanceService.clear();
-        this.costService.clear();
+        this.costService.clear(); 
+        this.recommendationService.clear();
+        this.alternativeActivityService.clear();
+        this.motivationalFactorService.clear();
+        this.usageFillingService.clear();
+        this.achievementService.clear();
+
+        jsonBackup.substance = jsonBackup.substance ?? [];
+        jsonBackup.trigger = jsonBackup.trigger ?? [];
+        jsonBackup.usage = jsonBackup.usage ?? [];
+        jsonBackup.cost = jsonBackup.cost ?? [];
+        jsonBackup.recommendation = jsonBackup.recommendation ?? [];
+        jsonBackup.alternative_activity = jsonBackup.alternative_activity ?? [];
+        jsonBackup.motivational_factor = jsonBackup.motivational_factor ?? [];
+        jsonBackup.usage_filling = jsonBackup.usage_filling ?? [];
+        jsonBackup.achievement = jsonBackup.achievement ?? [];
 
         const backupResponse$ = new Subject();
 
-        this.substanceService.bulkAdd(jsonBackup.substance).then(() => {
-            console.log("Chamou o next")
-        }).finally(() => {
-                console.log("Adicionou substance")
-                this.triggerService.bulkAdd(jsonBackup.trigger).then(() => {
-                    console.log("Adicionou trigger")
-                    this.usageService.bulkAdd(jsonBackup.usage).then(() => {
-                        console.log("Adicionou usage")
-                        this.costService.bulkAdd(jsonBackup.cost).then(() => {
-                            console.log("Adicionou cost")
-                            backupResponse$.complete();
-                        })
-                    })
-                })
-            }).catch((err) => {
-                console.log("Errro: ", err);
-            });
+        Promise.all([
+            this.substanceService.bulkAdd(jsonBackup.substance),
+            this.triggerService.bulkAdd(jsonBackup.trigger),
+            this.usageService.bulkAdd(jsonBackup.usage),
+            this.costService.bulkAdd(jsonBackup.cost),
+            this.recommendationService.bulkAdd(jsonBackup.recommendation),
+            this.alternativeActivityService.bulkAdd(jsonBackup.alternative_activity),
+            this.motivationalFactorService.bulkAdd(jsonBackup.motivational_factor),
+            this.usageFillingService.bulkAdd(jsonBackup.usage_filling),
+            this.achievementService.bulkAdd(jsonBackup.achievement),
+        ]).then(() => {
+            console.log("All data added successfully.");
+            backupResponse$.complete();
+        }).catch((err) => {
+            console.error("Error adding data in bulk:", err);
+            backupResponse$.error(err);
+        });
 
         return backupResponse$;
-
     }
 
     /**
