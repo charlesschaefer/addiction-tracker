@@ -28,3 +28,14 @@ To start developing, provide the api keys and other information on src/environme
 
 
 ![Main page of the app](images/print-home.png)
+
+
+## Notes for building
+
+### Flatpak
+Before building the flatpak package, instantiate the shared-modules git submodule by running the following code:
+```bash
+git submodule add --force https://github.com/flathub/shared-modules.git
+```
+
+**ATTENTION**: This submodule should not be pushed the github repository, but only be used locally.

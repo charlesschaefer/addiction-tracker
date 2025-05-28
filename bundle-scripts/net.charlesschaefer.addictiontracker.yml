@@ -1,0 +1,40 @@
+id: net.charlesschaefer.addictiontracker
+runtime: org.gnome.Platform
+runtime-version: '46'
+sdk: org.gnome.Sdk
+command: addiction-tracker
+finish-args:
+  - --env=LD_LIBRARY_PATH=/app/lib
+  - --env=FLATPAK_ENV=1
+  - --device=dri
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+  - --share=network # Permission needed to access the network
+  - --talk-name=org.freedesktop.portal.Notification.* # Permission to send notifications
+  - --talk-name=org.freedesktop.Notifications
+  #- --socket=session-bus # Permission needed to access the session DBus bus
+  #- --own-name=org.ayatana.AppIndicator # Se seu app for o provedor do serviço (raro)
+
+modules:
+  - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
+  - shared-modules/libcanberra/libcanberra.json
+  - name: addiction-tracker
+    buildsystem: simple
+    build-commands:
+        - ar -x addictiontracker.deb
+        - tar -xf data.tar.gz
+        - 'install -Dm755 usr/bin/addiction-tracker /app/bin/addiction-tracker'
+        - install -Dm644 usr/share/applications/Addiction\ Tracker.desktop /app/share/applications/net.charlesschaefer.addictiontracker.desktop
+        - sed -i -e "s|Icon=addiction-tracker|Icon=net.charlesschaefer.addictiontracker|g" /app/share/applications/net.charlesschaefer.addictiontracker.desktop
+        - install -Dm644 usr/share/icons/hicolor/32x32/apps/addiction-tracker.png /app/share/icons/hicolor/32x32/apps/net.charlesschaefer.addictiontracker.png
+        - install -Dm644 usr/share/icons/hicolor/128x128/apps/addiction-tracker.png /app/share/icons/hicolor/128x128/apps/net.charlesschaefer.addictiontracker.png
+        - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/addiction-tracker.png /app/share/icons/hicolor/256x256@2/apps/net.charlesschaefer.addictiontracker.png
+        # adding an icon to keep the addiction-tracker name
+        - install -Dm644 usr/share/icons/hicolor/128x128/apps/addiction-tracker.png /app/share/icons/hicolor/128x128/apps/addiction-tracker.png
+        - install -Dm644 usr/share/icons/hicolor/32x32/apps/addiction-tracker.png /app/share/icons/hicolor/32x32/apps/addiction-tracker.png
+        - install -Dm644 usr/share/icons/hicolor/256x256@2/apps/addiction-tracker.png /app/share/icons/hicolor/256x256@2/apps/addiction-tracker.png
+        - install -Dm644 net.charlesschaefer.addictiontracker.metainfo.xml /app/share/metainfo/net.charlesschaefer.addictiontracker.metainfo.xml
+    sources:
+      - type: dir
+        path: .

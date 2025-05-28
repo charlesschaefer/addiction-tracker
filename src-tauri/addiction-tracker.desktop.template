@@ -1,0 +1,14 @@
+[Desktop Entry]
+Categories={{categories}}
+Comment={{comment}}
+Exec={{exec}}
+Icon={{icon}}
+Name={{name}}
+GenericName=Opensource addiction and habits tracker
+Terminal=false
+Type=Application
+MimeType=x-scheme-handler/addictiontracker
+StartupNotify=true
+Keywords=Health;Addiction;Substance Abuse;Smoking;Alcohol
+SingleMainWindow=true
+X-GNOME-UsesNotifications=true

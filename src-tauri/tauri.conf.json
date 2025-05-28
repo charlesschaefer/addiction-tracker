@@ -42,6 +42,34 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true,
+    "category": "Healthcare and Fitness",
+    "homepage": "https://addictiontracker.app/",
+    "licenseFile": "../LICENSE",
+    "license": "MIT",
+    "publisher": "Charles Schaefer",
+    "shortDescription": "Addiction Tracker - An app for tracking substance addiction and habits (made with Tauri)",
+    "longDescription": "Your journey to recovery starts here. Track your progress, identify triggers, and celebrate milestones on your path to a healthier life. \n\n✔ Understand Your Triggers - Feeling blindsided by sudden urges? Identify patterns and triggers that lead to substance use, so you can prepare and respond effectively.\n✔ See the Financial Impact - Shocked by how much money disappears? Track your spending on substances and visualize what you could save for things that truly matter.\n✔ Remember Your Why - Struggling to stay motivated? Store personal motivations and access them instantly when cravings hit to strengthen your resolve."
+  },
+  "plugins": {
+    "deep-link": {
+      "mobile": [
+        { "host": "addictiontracker.app", "pathPrefix": ["/auth"] },
+        { "host": "tauri.localhost" }
+      ],
+      "desktop": {
+        "schemes": ["tauri", "addictiontracker"]
+      }
+    },
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDVDMzhCMDNGMUU5M0IwQTkKUldTcHNKTWVQN0E0WEwwSGdTZ0RFUHVMN1IweE1XanBZcW0wRFpXOE0vSThOMU41MEpMU0FPUG0K",
+      "endpoints": [
+        "https://github.com/charlesschaefer/addiction-tracker/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }

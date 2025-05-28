@@ -48,3 +48,12 @@ Thumbs.db
 src/environments/.env
 src/environments/environment.ts
 src/environments/environment.development.ts
+
+# bundle and packaging files
+latest
+bundle-scripts/latest
+.flatpak
+.flatpak-builder
+*.deb
+*.flatpak
+*.snap
