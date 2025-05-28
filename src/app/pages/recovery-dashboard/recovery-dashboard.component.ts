@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
@@ -19,6 +19,7 @@ import { RouterLink } from "@angular/router";
 import { DateTime } from "luxon";
 import { TranslocoAvailableLangs } from "../../app.config";
 import { getDateForChart } from "../../util/date.utils";
+import { SelectModule } from "primeng/select";
 
 @Component({
     selector: "app-recovery-dashboard",
@@ -30,12 +31,15 @@ import { getDateForChart } from "../../util/date.utils";
         SubstanceAnalysisCardComponent,
         SobrietyCardComponent,
         TranslocoModule,
-        RouterLink
+        RouterLink,
+        SelectModule,
     ],
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
-    selectedAnalysisSubstance = "all";
+    Array = Array;
+
+    selectedAnalysisSubstance = signal(0);
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     usageHistory = signal<UsageDto[]>([]);
@@ -47,6 +51,7 @@ export class RecoveryDashboardComponent implements OnInit {
     triggerData = signal<any[]>([]);
     moodCravingCorrelation = signal<any[]>([]);
     triggerCravingCorrelation = signal<any[]>([]);
+    substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
 
     locale: TranslocoAvailableLangs;
 
@@ -91,8 +96,8 @@ export class RecoveryDashboardComponent implements OnInit {
         this.prepareTriggerCravingCorrelationDataAsync();
     }
 
-    setSelectedAnalysisSubstance(substance: string) {
-        this.selectedAnalysisSubstance = substance;
+    onSelectedAnalysisSubstanceChange() {
+        this.updatePreparedData();
     }
 
     getSubstanceNames(): string[] {
@@ -123,12 +128,12 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     getFilteredUsageHistory() {
-        if (this.selectedAnalysisSubstance === "all") {
+        if (this.selectedAnalysisSubstance() === 0) {
             return this.usageHistory();
         }
         return this.usageHistory().filter(
             (entry) =>
-                entry.substance.toString() === this.selectedAnalysisSubstance
+                entry.substance === this.selectedAnalysisSubstance()
         );
     }
 
@@ -284,24 +289,13 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     /**
-     * Prepares data for Mood vs Craving correlation chart.
-     * Returns array: [{ mood: string, emoji: string, avgCraving: number, count: number }]
-     */
-    prepareMoodCravingCorrelationData() {
-        return this.usageService.getMoodCravingCorrelation(
-            this.usageHistory(),
-            this.sentimentService.getSentimentLabels()
-        );
-    }
-
-    /**
      * Prepares data for Trigger vs Craving correlation chart.
      * Returns array: [{ trigger: string, avgCraving: number, count: number }]
      */
     async prepareTriggerCravingCorrelationDataAsync() {
         const labels = await this.triggerService.getTriggerLabels();
         const data = this.usageService.getTriggerCravingCorrelation(
-            this.usageHistory(),
+            this.getFilteredUsageHistory(),
             labels
         ).sort((a, b) => b.avgCraving > a.avgCraving ? 1 : -1);
         
@@ -312,7 +306,7 @@ export class RecoveryDashboardComponent implements OnInit {
     async prepareMoodCravingCorrelationDataAsync() {
         const labels = this.sentimentService.getSentimentLabels();
         const data = this.usageService.getMoodCravingCorrelation(
-            this.usageHistory(),
+            this.getFilteredUsageHistory(),
             labels
         );
         this.moodCravingCorrelation.set(data);

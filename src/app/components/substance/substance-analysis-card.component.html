@@ -4,10 +4,10 @@
     {{ 'Substance Analysis' | transloco }}
   </h2>
   <!-- Substance Selector Tabs -->
-  <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+  <!-- <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
     <div class="flex flex-wrap -mb-px">
       <button (click)="setSelectedAnalysisSubstance('all')" class="mr-2 inline-block py-2 px-4 text-sm font-medium"
-        [ngClass]="selectedAnalysisSubstance() === 'all' ? 'text-purple-600 dark:text-purple-300 border-b-2 border-purple-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent'">
+        [ngClass]="selectedAnalysisSubstance() === 0 ? 'text-purple-600 dark:text-purple-300 border-b-2 border-purple-600 dark:border-purple-400' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600 border-b-2 border-transparent'">
         {{ 'All Substances' | transloco }}
       </button>
       <button *ngFor="let substance of substanceMap()" (click)="setSelectedAnalysisSubstance(substance.name)"
@@ -16,9 +16,9 @@
         {{ substance.name }}
       </button>
     </div>
-  </div>
+  </div> -->
   <!-- Usage by Substance Chart -->
-  <div *ngIf="selectedAnalysisSubstance() === 'all'" class="mb-8">
+  <div *ngIf="selectedAnalysisSubstance() === 0" class="mb-8">
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">{{ 'Usage by Substance' | transloco }}</h3>
     <div *ngIf="hasUsageData(); else noUsageData" class="h-[350px]">
       <p-chart type="bar" [data]="usageBySubstanceData()" [options]="barOptions" height="300"
@@ -34,8 +34,8 @@
   <!-- Combined Trend Chart -->
   <div class="mb-8">
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">
-      {{ selectedAnalysisSubstance() === 'all' ? ('Overall Trends (Last 14 Days)' | transloco) :
-      (selectedAnalysisSubstance() + ' ' + ('Trends (Last 14 Days)' | transloco)) }}
+      {{ selectedAnalysisSubstance() === 0 ? ('Overall Trends (Last 14 Days)' | transloco) :
+      (substances().get(selectedAnalysisSubstance())?.name + ' ' + ('Trends (Last 14 Days)' | transloco)) }}
     </h3>
     <div *ngIf="hasDataForSelectedSubstance(); else noTrendData" class="h-[350px]">
       <p-chart type="line" [data]="combinedTrendData()" [options]="lineOptions" height="300"
@@ -44,7 +44,7 @@
     <ng-template #noTrendData>
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
         <p class="text-center">
-          {{ selectedAnalysisSubstance() === 'all'
+          {{ selectedAnalysisSubstance() === 0
           ? ('No trend data available yet. Start recording your substance use to see patterns.' | transloco)
           : ('No data available for ' + selectedAnalysisSubstance() + ' yet. Record some usage to see trends.' |
           transloco) }}
@@ -65,7 +65,7 @@
   <!-- Trigger Analysis for Selected Substance -->
   <div>
     <h3 class="text-lg font-medium text-gray-700 dark:text-gray-200 mb-4">
-      {{ selectedAnalysisSubstance() === 'all' ? ('Overall Trigger Analysis' | transloco) : (selectedAnalysisSubstance() + '
+      {{ selectedAnalysisSubstance() === 0 ? ('Overall Trigger Analysis' | transloco) : (substances().get(selectedAnalysisSubstance())?.name + '
       ' + ('Trigger Analysis' | transloco)) }}
     </h3>
     <div *ngIf="hasTriggerData(); else noTriggerData" class="h-[350px]">
@@ -74,7 +74,7 @@
     <ng-template #noTriggerData>
       <div class="h-[350px] flex items-center justify-center text-gray-500 dark:text-gray-400">
         <p class="text-center">
-          {{ selectedAnalysisSubstance() === 'all' 
+          {{ selectedAnalysisSubstance() === 0 
             ? ('No trigger data available yet. Start recording your substance use to see trigger patterns.' | transloco) 
             : ('No trigger data available for ' + selectedAnalysisSubstance() + ' yet. Record some usage to see trigger patterns.' | transloco)
           }}

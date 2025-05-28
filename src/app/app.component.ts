@@ -35,6 +35,8 @@ import {
 } from "./components/sobriety/sobriety-card.component";
 import { AddRecordButtonComponent } from "./components/add-record-button/add-record-button.component";
 
+import { window as TauriWindow } from "@tauri-apps/api";
+
 @Component({
     selector: "app-root",
     standalone: true,
@@ -172,6 +174,8 @@ export class AppComponent implements OnInit {
     currentActivity: any = null;
     sobrietyComponentStyle = SobrietyCardStyle.BADGE;
 
+    showPrivacyOverlay = signal(false);
+
     constructor(
         private themeService: ThemeService,
         private translateService: TranslocoService,
@@ -201,6 +205,8 @@ export class AppComponent implements OnInit {
         if (window?.__TAURI_INTERNALS__?.invoke) {
             invoke("set_frontend_complete");
         }
+
+        this.setupPrivacyOverlay();
 
         this.setupMenu();
 
@@ -514,5 +520,21 @@ export class AppComponent implements OnInit {
 
     toggleTheme() {
         this.themeService.switchTheme();
+    }
+
+    setupPrivacyOverlay() {
+        const currentWindow = TauriWindow.getCurrentWindow();
+        currentWindow.listen('tauri://blur', (event) => {
+            setTimeout(() => {
+                currentWindow.isVisible().then(isVisible => this.showPrivacyOverlay.set(!isVisible));
+                //currentWindow.isVisible
+            }, 2000);
+            console.log("Window blured", event);
+        });
+
+        // TauriWindow.getCurrentWindow().listen('tauri://focus', (event) => {
+        //     this.showPrivacyOverlay.set(false);
+        //     console.log("Window focused", event);
+        // })
     }
 }

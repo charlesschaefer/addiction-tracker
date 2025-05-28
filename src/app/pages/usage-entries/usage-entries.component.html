@@ -18,7 +18,17 @@
         <div class="flex items-center">
           <span class="text-gray-700 dark:text-gray-200 font-medium mr-3">{{ 'Filter by:' | transloco }}</span>
           <form>
-            <select
+            @let options = [{ id: 0, name: ('All Substances' | transloco) }].concat(Array.from(substances.values()));
+            <p-select
+              [options]="options"
+              optionLabel="name"
+              optionValue="id"
+              [(ngModel)]="currentSubstance"
+              name="substance"
+              [style]="{ minWidth: '200px' }"
+              placeholder="{{ 'All Substances' | transloco }}"
+            ></p-select>
+            <!-- <select
                 class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 name="substance"
                 [(ngModel)]="currentSubstance"
@@ -27,7 +37,7 @@
                 <option *ngFor="let substance of substances.values()" [value]="substance.id">
                 {{ substance.name }}
                 </option>
-            </select>
+            </select> -->
           </form>
         </div>
         <div class="flex items-center gap-2">

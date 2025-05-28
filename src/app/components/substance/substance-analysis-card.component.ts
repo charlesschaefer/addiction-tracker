@@ -23,8 +23,8 @@ export class SubstanceAnalysisCardComponent {
     combinedTrendData = computed<ChartData>(() => this.prepareCombinedTrendData());
     usageBySubstanceData = computed<ChartData>(() => this.prepareUsageBySubstanceData());
     triggerData = computed<ChartData>(() => this.prepareTriggerData());
-        
-    selectedAnalysisSubstance = signal("all");
+    selectedAnalysisSubstance = input(0);
+    
     COLORS = ["#8B5CF6", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     barOptions: ChartOptions = {
@@ -110,14 +110,15 @@ export class SubstanceAnalysisCardComponent {
     constructor(private translateService: TranslocoService) {}
 
     setSelectedAnalysisSubstance(substance: string) {
-        this.selectedAnalysisSubstance.set(substance);
+        //this.selectedAnalysisSubstance.set(substance);
     }
 
     getFilteredUsageHistory() {
-        if (this.selectedAnalysisSubstance() === "all") {
+        if (this.selectedAnalysisSubstance() === 0) {
             return this.usageHistory;
         }
-        const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance());
+        //const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance());
+        const substance = Array.from(this.substanceMap()).find(s => s.id === this.selectedAnalysisSubstance());
         if (!substance) {
             return this.usageHistory;
         }

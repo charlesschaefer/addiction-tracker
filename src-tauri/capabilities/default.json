@@ -10,6 +10,9 @@
   "permissions": [
     "core:app:default",
     "notification:default",
-    "http:default"
+    "http:default",
+    "core:event:allow-listen",
+    "core:window:allow-is-focused",
+    "core:window:allow-is-visible"
   ]
 }
