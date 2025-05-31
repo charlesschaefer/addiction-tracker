@@ -14,8 +14,6 @@ finish-args:
   - --socket=fallback-x11
   - --share=ipc
   - --share=network # Permission needed to access the network
-  - --talk-name=org.freedesktop.portal.Notification.* # Permission to send notifications
-  - --talk-name=org.freedesktop.Notifications
 
 modules:
   - name: node22
@@ -23,27 +21,32 @@ modules:
     build-commands:
       - /usr/lib/sdk/node22/install-sdk.sh
 
-  # - name: lib-dependencies
-  #   buildsystem: simple
-  #   build-commands:
-  #     - ls -al .
-  #     #- mkdir -p /run/build/addiction-tracker/addiction-tracker/bundle-scripts/
-  #     #- cp shared-modules /run/build/addiction-tracker/addiction-tracker/bundle-scripts/ -Rf
-  #   sources: 
-  #     # - type: "dir"
-  #     #   path: .
-  #     - type: git
-  #       url: https://github.com/flathub/shared-modules.git
-  #       dest: shared-modules
-  #     - type: patch
-  #       path: libayatana-appindicator-gtk3.json.diff
-  #       options:
-  #         - use-git: true
-  #   modules:
-  #     - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
-  #     - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-  #     #- /run/build/addiction-tracker/addiction-tracker/bundle-scripts/shared-modules/libcanberra/libcanberra.json
-
+  - name: lib-dependencies
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib
+      # - cp /usr/lib/x86_64-linux-gnu/libayatana-appindicator3.so.1.0.0 /app/lib/
+      # - cp /usr/lib/x86_64-linux-gnu/libappindicator.so.1.0.0 /app/lib/
+      # - cp /usr/lib/x86_64-linux-gnu/libcanberra-gtk-module.so /app/lib/
+      # - cp /usr/lib/x86_64-linux-gnu/libcanberra-gtk3-module.so /app/lib/
+      # - cp /usr/lib/x86_64-linux-gnu/libcanberra.so.0.2.5 /app/lib/
+      # - mkdir -p /run/build/addiction-tracker/addiction-tracker/bundle-scripts/
+      # - cp shared-modules /run/build/addiction-tracker/addiction-tracker/bundle-scripts/ -Rf
+      - ls -al /app/
+    sources: 
+      - type: git
+        url: https://github.com/flathub/shared-modules.git
+        dest: shared-modules
+      - type: patch
+        path: libayatana-appindicator-gtk3.json.diff
+        options:
+          - "-p1"
+          # - use-git: true
+    modules:
+      - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
+      - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
+      #- shared-modules/libcanberra/libcanberra.json
+  
   - name: addiction-tracker
     buildsystem: simple
     build-options:
@@ -59,13 +62,12 @@ modules:
         # Sets the directory where Node is located so that npm won't download the headers.
         npm_config_nodedir: /usr/lib/sdk/node22
     build-commands:
-      #- cd /run/build/addiction-tracker &&
       - npm --prefix=addiction-tracker install  --offline &&
         npm --prefix=addiction-tracker run tauri build -- --bundles deb --config src-tauri/flatpak-tauri.conf.json &&
         VERSION=$(npm --prefix=addiction-tracker pkg get version | sed "s/\"//g") &&
-        cp "src-tauri/target/release/bundle/deb/Addiction Tracker_${VERSION}_amd64.deb" addictiontracker.deb &&
+        cp "addiction-tracker/src-tauri/target/release/bundle/deb/Addiction Tracker_${VERSION}_amd64.deb" addictiontracker.deb &&
         ls -al 
-      - ar -x addiction-tracker/addictiontracker.deb
+      - ar -x addictiontracker.deb
       - tar -xf data.tar.gz
       - install -Dm755 usr/bin/addiction-tracker /app/bin/addiction-tracker
       - install -Dm644 usr/share/applications/Addiction\ Tracker.desktop /app/share/applications/net.charlesschaefer.addictiontracker.desktop
@@ -88,11 +90,3 @@ modules:
       #   dest: addiction-tracker
       - cargo-sources.json
       - npm-sources.0.json
-
-  # - name: addiction-tracker
-  #   buildsystem: simple
-  #   build-commands:
-        
-  #   sources:
-  #     - type: dir
-  #       path: .

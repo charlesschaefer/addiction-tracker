@@ -2281,13 +2281,6 @@
     },
     {
         "type": "file",
-        "url": "https://registry.npmjs.org/@tauri-apps/plugin-notification/-/plugin-notification-2.2.2.tgz",
-        "sha512": "77bd6b25db641544dc1b876ac9d9efe9ded9c2535955c763ad538fc1cf46b05eb2f4381537558267d4ffbdb7c3daaac9b257fb6a2fab9cd25ceb64cb2c2d8874",
-        "dest-filename": "6b25db641544dc1b876ac9d9efe9ded9c2535955c763ad538fc1cf46b05eb2f4381537558267d4ffbdb7c3daaac9b257fb6a2fab9cd25ceb64cb2c2d8874",
-        "dest": "flatpak-node/npm-cache/_cacache/content-v2/sha512/77/bd"
-    },
-    {
-        "type": "file",
         "url": "https://registry.npmjs.org/@tufjs/canonical-json/-/canonical-json-2.0.0.tgz",
         "sha512": "c95b55f33b1da3ca851defbfde4c3cd5d48bc85ec3e7be80e5c0850a2e17ec1dfdb564fb49e91a105527be75891f3fbda8eeea2536a1d496eb0e358aa85b5d58",
         "dest-filename": "55f33b1da3ca851defbfde4c3cd5d48bc85ec3e7be80e5c0850a2e17ec1dfdb564fb49e91a105527be75891f3fbda8eeea2536a1d496eb0e358aa85b5d58",
@@ -11035,12 +11028,6 @@
         "contents": "7ff6e85a746a26438b833152ff9a6b99a70872fe\t{\"key\": \"make-fetch-happen:request-cache:https://registry.npmjs.org/cli-spinners/-/cli-spinners-2.9.2.tgz\", \"integrity\": \"sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==\", \"time\": 0, \"size\": 6598, \"metadata\": {\"url\": \"https://registry.npmjs.org/cli-spinners/-/cli-spinners-2.9.2.tgz\", \"reqHeaders\": {}, \"resHeaders\": {}}}",
         "dest-filename": "907e1159054333cb77276661b7eaf861d174eb78ea007f3234672cdfa07e",
         "dest": "flatpak-node/npm-cache/_cacache/index-v5/cd/b5"
-    },
-    {
-        "type": "inline",
-        "contents": "800a7360de843c4021c3eb7aa1859b88cc9da52b\t{\"key\": \"make-fetch-happen:request-cache:https://registry.npmjs.org/@tauri-apps/plugin-notification/-/plugin-notification-2.2.2.tgz\", \"integrity\": \"sha512-d71rJdtkFUTcG4dqydnv6d7ZwlNZVcdjrVOPwc9GsF6y9DgVN1WCZ9T/vbfD2qrJslf7ai+rnNJc62TLLC2IdA==\", \"time\": 0, \"size\": 6365, \"metadata\": {\"url\": \"https://registry.npmjs.org/@tauri-apps/plugin-notification/-/plugin-notification-2.2.2.tgz\", \"reqHeaders\": {}, \"resHeaders\": {}}}",
-        "dest-filename": "0afa752f94a24a1611ad91a892c358d4e80797bfa1bbe6e6635d754c6e4c",
-        "dest": "flatpak-node/npm-cache/_cacache/index-v5/8e/04"
     },
     {
         "type": "inline",

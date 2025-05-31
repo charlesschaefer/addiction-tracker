@@ -107,6 +107,16 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+info "Applying patches to shared-modules $(pwd)"
+#$GIT -C shared-modules apply ../libayatana-appindicator-gtk3.json.diff
+patch -p1 shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json ./libayatana-appindicator-gtk3.json.diff
+if [ $? -ne 0 ]; then
+    error_and_exit "Failed to apply patches to shared-modules."
+    exit 1
+else
+    success "Patches applied successfully to shared-modules."
+fi
+
 # info "Generating libayatana.yaml from ..."
 # $PYTHON flatpak-json2yaml.py ./libayatana-appindicator/libayatana-appindicator-gtk3.json --output="./libayatana-appindicator/libayatana-appindicator-gtk3.yaml" -f
 # if [ $? -ne 0 ]; then
@@ -129,8 +139,6 @@ fi
 #     error_and_exit "Failed to download the Addiction Tracker .deb file."
 #     exit 1
 # fi
-
-
 
 
 info "Calling flatpak-builder to build the flatpak"
