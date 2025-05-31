@@ -24,13 +24,13 @@ pub fn setup_system_tray_icon(app: &mut App) {
                 api.prevent_close();
                 window_hider.hide().unwrap();
                 
-                use tauri_plugin_notification::NotificationExt;
-                window_hider.app_handle().notification()
-                    .builder()
-                    .title("Não fechamos")
-                    .body("O addiction-tracker não fechou, só está oculto na sua bandeja do sistema.")
-                    .show()
-                    .unwrap();
+                // use tauri_plugin_notification::NotificationExt;
+                // window_hider.app_handle().notification()
+                //     .builder()
+                //     .title("Não fechamos")
+                //     .body("O addiction-tracker não fechou, só está oculto na sua bandeja do sistema.")
+                //     .show()
+                //     .unwrap();
             },
             _ => {}
         }

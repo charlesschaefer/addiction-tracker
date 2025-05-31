@@ -23,26 +23,26 @@ modules:
     build-commands:
       - /usr/lib/sdk/node22/install-sdk.sh
 
-  - name: lib-dependencies
-    buildsystem: simple
-    build-commands:
-      - ls -al .
-      #- mkdir -p /run/build/addiction-tracker/addiction-tracker/bundle-scripts/
-      #- cp shared-modules /run/build/addiction-tracker/addiction-tracker/bundle-scripts/ -Rf
-    sources: 
-      # - type: "dir"
-      #   path: .
-      - type: git
-        url: https://github.com/flathub/shared-modules.git
-        dest: shared-modules
-      - type: patch
-        path: libayatana-appindicator-gtk3.json.diff
-        options:
-          - use-git: true
-    modules:
-      - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
-      - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-      #- /run/build/addiction-tracker/addiction-tracker/bundle-scripts/shared-modules/libcanberra/libcanberra.json
+  # - name: lib-dependencies
+  #   buildsystem: simple
+  #   build-commands:
+  #     - ls -al .
+  #     #- mkdir -p /run/build/addiction-tracker/addiction-tracker/bundle-scripts/
+  #     #- cp shared-modules /run/build/addiction-tracker/addiction-tracker/bundle-scripts/ -Rf
+  #   sources: 
+  #     # - type: "dir"
+  #     #   path: .
+  #     - type: git
+  #       url: https://github.com/flathub/shared-modules.git
+  #       dest: shared-modules
+  #     - type: patch
+  #       path: libayatana-appindicator-gtk3.json.diff
+  #       options:
+  #         - use-git: true
+  #   modules:
+  #     - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
+  #     - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
+  #     #- /run/build/addiction-tracker/addiction-tracker/bundle-scripts/shared-modules/libcanberra/libcanberra.json
 
   - name: addiction-tracker
     buildsystem: simple

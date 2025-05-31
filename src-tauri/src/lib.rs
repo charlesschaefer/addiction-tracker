@@ -16,7 +16,7 @@ mod http;
 pub fn run() {
     let mut builder = tauri::Builder::default()
         .plugin(tauri_plugin_http::init())
-        .plugin(tauri_plugin_notification::init())
+        //.plugin(tauri_plugin_notification::init())
         .setup(|app| {
             #[cfg(desktop)]
             desktop::setup_system_tray_icon(app);
@@ -33,7 +33,7 @@ pub fn run() {
             desktop::set_frontend_complete,
             #[cfg(not(desktop))]
             android::save_backup_file,
-            add_notification,
+            //add_notification,
             // get_google_secrets
         ]
     );
@@ -48,18 +48,18 @@ pub fn run() {
 }
 
 
-#[tauri::command]
-fn add_notification(app_handle: tauri::AppHandle, title: String, body: String) {
-    use tauri_plugin_notification::NotificationExt;
-    let _ = app_handle.emit("msg", "Starting to build the notification");
-    let mut builder = app_handle.notification().builder();
-    let _ = app_handle.emit("msg", "Notification built. Let's add title and body");
-    builder = builder.title(title)
-        .body(body);
-    let _ = app_handle.emit("msg", "Notification ready. Let's show it");
-    builder.show()
-        .unwrap();
-}
+// #[tauri::command]
+// fn add_notification(app_handle: tauri::AppHandle, title: String, body: String) {
+//     use tauri_plugin_notification::NotificationExt;
+//     let _ = app_handle.emit("msg", "Starting to build the notification");
+//     let mut builder = app_handle.notification().builder();
+//     let _ = app_handle.emit("msg", "Notification built. Let's add title and body");
+//     builder = builder.title(title)
+//         .body(body);
+//     let _ = app_handle.emit("msg", "Notification ready. Let's show it");
+//     builder.show()
+//         .unwrap();
+// }
 
 #[derive(Deserialize, Serialize)]
 struct Secrets {

@@ -12,11 +12,11 @@ import { TieredMenuModule } from "primeng/tieredmenu";
 import { MenubarModule } from "primeng/menubar";
 import { JoyrideModule } from "ngx-joyride";
 import { CookieService } from "ngx-cookie-service";
-import {
-    isPermissionGranted,
-    requestPermission,
-    sendNotification,
-} from "@tauri-apps/plugin-notification";
+// import {
+//     isPermissionGranted,
+//     requestPermission,
+//     sendNotification,
+// } from "@tauri-apps/plugin-notification";
 
 import { ThemeService } from "./services/theme.service";
 import { invoke } from "@tauri-apps/api/core";
@@ -248,21 +248,21 @@ export class AppComponent implements OnInit {
         // });
     }
 
-    async notify() {
-        let permissionGranted = await isPermissionGranted();
-        if (!permissionGranted) {
-            const permission = await requestPermission();
-            permissionGranted = permission === "granted";
-        }
-        console.log("permission", permissionGranted);
-        if (permissionGranted) {
-            sendNotification("Tauri is awesome");
-            sendNotification({
-                title: "Addiction Tracker",
-                body: "Olá usuário, este é um exemplo de notificação",
-            });
-        }
-    }
+    // async notify() {
+    //     let permissionGranted = await isPermissionGranted();
+    //     if (!permissionGranted) {
+    //         const permission = await requestPermission();
+    //         permissionGranted = permission === "granted";
+    //     }
+    //     console.log("permission", permissionGranted);
+    //     if (permissionGranted) {
+    //         sendNotification("Tauri is awesome");
+    //         sendNotification({
+    //             title: "Addiction Tracker",
+    //             body: "Olá usuário, este é um exemplo de notificação",
+    //         });
+    //     }
+    // }
 
     switchTheme() {
         this.themeService.switchTheme();
