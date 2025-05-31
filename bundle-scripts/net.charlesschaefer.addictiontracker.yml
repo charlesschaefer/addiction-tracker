@@ -37,15 +37,15 @@ modules:
       - type: git
         url: https://github.com/flathub/shared-modules.git
         dest: shared-modules
+        commit: a34a31e4dd50a0b38d1725f6881d1bedb0948b38
       - type: patch
         path: libayatana-appindicator-gtk3.json.diff
         options:
           - "-p1"
           # - use-git: true
     modules:
-      - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
+      # - shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json
       - shared-modules/libappindicator/libappindicator-gtk3-12.10.json
-      #- shared-modules/libcanberra/libcanberra.json
   
   - name: addiction-tracker
     buildsystem: simple
@@ -62,7 +62,7 @@ modules:
         # Sets the directory where Node is located so that npm won't download the headers.
         npm_config_nodedir: /usr/lib/sdk/node22
     build-commands:
-      - npm --prefix=addiction-tracker install  --offline &&
+      - npm --prefix=addiction-tracker install --offline &&
         npm --prefix=addiction-tracker run tauri build -- --bundles deb --config src-tauri/flatpak-tauri.conf.json &&
         VERSION=$(npm --prefix=addiction-tracker pkg get version | sed "s/\"//g") &&
         cp "addiction-tracker/src-tauri/target/release/bundle/deb/Addiction Tracker_${VERSION}_amd64.deb" addictiontracker.deb &&
@@ -83,10 +83,13 @@ modules:
     sources:
       - type: "git"
         url: "https://github.com/charlesschaefer/addiction-tracker.git"
-        branch: "flatpak-build-from-source"
+        #tag: "app-v0.0.15"
+        commit: "089aec3f53b47b10472041bc00edfbcd56563284"
         dest: addiction-tracker
       # - type: dir
       #   path: ../
       #   dest: addiction-tracker
       - cargo-sources.json
       - npm-sources.0.json
+      #- type: file
+        
