@@ -92,7 +92,7 @@ else
 fi
 
 info "Generating node-sources.json from package-lock.json..."
-$PYTHON -m flatpak_node_generator --output="npm-sources.json" -s npm ../package-lock.json
+$PYTHON -m flatpak_node_generator --output="npm-sources.json" --no-trim-index -s npm ../package-lock.json
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to generate node-sources.json."
     exit 1
