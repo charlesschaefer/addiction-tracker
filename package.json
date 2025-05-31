@@ -121,9 +121,6 @@
     },
     "license-webpack-plugin": {
       "webpack-sources": "^3.2.3"
-    },
-    "@angular/core": {
-      "zone.js": "^0.15.1"
     }
   }
 }
