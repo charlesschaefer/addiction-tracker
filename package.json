@@ -121,6 +121,9 @@
     },
     "license-webpack-plugin": {
       "webpack-sources": "^3.2.3"
+    },
+    "@angular/common": {
+      "rxjs": "7.8.2"
     }
   }
 }
