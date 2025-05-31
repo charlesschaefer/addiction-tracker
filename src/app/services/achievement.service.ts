@@ -382,9 +382,10 @@ export class AchievementService extends ServiceAbstract<Achievements> {
      */
     getAchievementsWithIcon(achievements: InputSignal<AchievementDto[]> | WritableSignal<AchievementDto[]>) {
         return resource<SafeIconAchievement[], AchievementDto[]>({
-            request: () => (achievements()),
-            loader: ({request}) => {
-                const achievements = request;
+            
+            params: () => (achievements()),
+            loader: ({params}) => {
+                const achievements = params;
                 let fetchfn;
                 if ((window as any).__TAURI__) {
                     fetchfn = tauriFetch;
