@@ -3,7 +3,7 @@ runtime: org.gnome.Platform
 runtime-version: '48'
 sdk: org.gnome.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.node24
+  - org.freedesktop.Sdk.Extension.node22
   - org.freedesktop.Sdk.Extension.rust-stable
 command: addiction-tracker
 finish-args:
@@ -18,10 +18,10 @@ finish-args:
   - --talk-name=org.freedesktop.Notifications
 
 modules:
-  - name: node24
+  - name: node22
     buildsystem: simple
     build-commands:
-      - /usr/lib/sdk/node24/install-sdk.sh
+      - /usr/lib/sdk/node22/install-sdk.sh
 
   - name: lib-dependencies
     buildsystem: simple
@@ -47,7 +47,7 @@ modules:
   - name: addiction-tracker
     buildsystem: simple
     build-options:
-      append-path: /usr/lib/sdk/rust-stable/bin/:/usr/lib/sdk/node24/bin
+      append-path: /usr/lib/sdk/rust-stable/bin/:/usr/lib/sdk/node22/bin
       env: 
         CARGO_HOME: /run/build/addiction-tracker/cargo
         # Set the cache directory, used to find Electron and some other helper
@@ -57,7 +57,7 @@ modules:
         # Set the npm cache directory, used by npm to find its package metadata.
         npm_config_cache: /run/build/addiction-tracker/flatpak-node/npm-cache
         # Sets the directory where Node is located so that npm won't download the headers.
-        npm_config_nodedir: /usr/lib/sdk/node24
+        npm_config_nodedir: /usr/lib/sdk/node22
     build-commands:
       #- cd /run/build/addiction-tracker &&
       - npm --prefix=addiction-tracker install  --offline &&
