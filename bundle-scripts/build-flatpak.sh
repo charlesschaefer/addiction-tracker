@@ -141,13 +141,25 @@ fi
 # fi
 
 
-info "Calling flatpak-builder to build the flatpak"
-$FLATPAK_BUILDER --arch="x86_64" --delete-build-dirs --force-clean --sandbox --user --install --install-deps-from=flathub --mirror-screenshots-url=https://dl.flathub.org/media/ --ccache --repo=local_repo build-dir net.charlesschaefer.addictiontracker.yml
+# info "Calling flatpak-builder to build the flatpak"
+# $FLATPAK_BUILDER --arch="x86_64" --delete-build-dirs --force-clean --sandbox --user --install --install-deps-from=flathub --mirror-screenshots-url=https://dl.flathub.org/media/ --ccache --repo=local_repo build-dir net.charlesschaefer.addictiontracker.yml
+# if [ $? -ne 0 ]; then
+#     error "Failed to build the flatpak!"
+#     info "Fix the errors described above and try again by running the following command:"
+#     info "\t$FLATPAK_BUILDER --arch=\"x86_64\" --delete-build-dirs --force-clean --sandbox --user --install --install-deps-from=flathub --ccache --repo=local_repo build-dir net.charlesschaefer.addictiontracker.yml"
+#     exit 1
+# fi
+
+info "Copying the flatpak files to the flathub directory"
+cp cargo-sources.json npm-sources.0.json flathub.json \
+   libayatana-appindicator-gtk3.json.diff net.charlesschaefer.addictiontracker.yml \
+   net.charlesschaefer.addictiontracker.metainfo.xml \
+   ../../flathub/ 
 if [ $? -ne 0 ]; then
-    error "Failed to build the flatpak!"
-    info "Fix the errors described above and try again by running the following command:"
-    info "\t$FLATPAK_BUILDER --arch=\"x86_64\" --delete-build-dirs --force-clean --sandbox --user --install --install-deps-from=flathub --ccache --repo=local_repo build-dir net.charlesschaefer.addictiontracker.yml"
+    error_and_exit "Failed to copy the flatpak files to the flathub directory."
     exit 1
+else
+    success "Flatpak files copied successfully to the flathub directory."
 fi
 
 success "Flatpak build completed successfully."

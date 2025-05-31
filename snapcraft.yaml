@@ -1,6 +1,6 @@
 name: addiction-tracker
 base: core22
-version: '0.0.15'
+version: '0.0.16'
 summary: An app to help with your addiction # 79 char long summary
 description: |
   Addiction tracker helps you to stop your addiction by giving you more consciousness over how you 

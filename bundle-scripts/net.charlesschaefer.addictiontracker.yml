@@ -83,8 +83,8 @@ modules:
     sources:
       - type: "git"
         url: "https://github.com/charlesschaefer/addiction-tracker.git"
-        #tag: "app-v0.0.15"
-        commit: "089aec3f53b47b10472041bc00edfbcd56563284"
+        tag: "app-v0.0.16"
+        #commit: "089aec3f53b47b10472041bc00edfbcd56563284"
         dest: addiction-tracker
       # - type: dir
       #   path: ../
