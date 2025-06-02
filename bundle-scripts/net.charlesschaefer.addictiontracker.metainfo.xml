@@ -5,7 +5,7 @@
   <developer_name>Charles Schaefer</developer_name>
 
   <name>Addiction tracker</name>
-  <summary>Addiction Tracker - An app for tracking substance addiction and habits (made with Tauri)</summary>
+  <summary>Addiction Tracker - An app for tracking substance addiction and habits</summary>
   
   <url type="homepage">https://addictiontracker.app/</url>
   <url type="contribute">https://github.com/charlesschaefer/addiction-tracker</url>
