@@ -4,6 +4,7 @@
       "deb": {
         "desktopTemplate": "./addiction-tracker.desktop.template"
       }
-    }
+    },
+    "createUpdaterArtifacts": false
   }
 }
