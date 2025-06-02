@@ -101,7 +101,7 @@ fi
 # fi
 
 info "Copying the flatpak files to the flathub directory"
-cp cargo-sources.json npm-sources.0.json net.charlesschaefer.addictiontracker.metainfo.xml ../../flathub/
+cp cargo-sources.json npm-sources.0.json net.charlesschaefer.addictiontracker.yml ../../flathub/
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to copy the flatpak files to the flathub directory."
     exit 1
