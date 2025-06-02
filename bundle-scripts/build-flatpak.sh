@@ -73,15 +73,6 @@ else
     success "flatpak_node_generator installed successfully."
 fi
 
-# info "Downloading flatpak-json2yaml.py script from flatpak-builder-tools repository..."
-# $CURL --location -o flatpak-json2yaml.py "https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/refs/heads/master/flatpak-json2yaml.py"
-# if [ $? -ne 0 ]; then
-#     error_and_exit "Failed to download flatpak-json2yaml.py."
-#     exit 1
-# else 
-#     success "flatpak-json2yaml.py downloaded successfully."
-# fi
-
 info "Generating cargo-sources.json from Cargo.lock..."
 $PYTHON ./flatpak-cargo-generator.py ../src-tauri/Cargo.lock -o cargo-sources.json 
 if [ $? -ne 0 ]; then
@@ -100,47 +91,6 @@ else
     success "node-sources.json generated successfully."
 fi
 
-info "Installing flathub shared-modules from github"
-rm -Rf shared-modules && $GIT clone https://github.com/flathub/shared-modules.git 
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to clone the flathub shared-modules repository."
-    exit 1
-fi
-
-info "Applying patches to shared-modules $(pwd)"
-#$GIT -C shared-modules apply ../libayatana-appindicator-gtk3.json.diff
-patch -p1 shared-modules/libayatana-appindicator/libayatana-appindicator-gtk3.json ./libayatana-appindicator-gtk3.json.diff
-if [ $? -ne 0 ]; then
-    error_and_exit "Failed to apply patches to shared-modules."
-    exit 1
-else
-    success "Patches applied successfully to shared-modules."
-fi
-
-# info "Generating libayatana.yaml from ..."
-# $PYTHON flatpak-json2yaml.py ./libayatana-appindicator/libayatana-appindicator-gtk3.json --output="./libayatana-appindicator/libayatana-appindicator-gtk3.yaml" -f
-# if [ $? -ne 0 ]; then
-#     error_and_exit "Failed to generate node-sources.json."
-#     exit 1
-# else
-#     success "node-sources.json generated successfully."
-# fi
-
-# $CURL --location -o latest "https://github.com/charlesschaefer/addiction-tracker/releases/latest"
-# if [ $? -ne 0 ]; then
-#     error_and_exit "Failed to fetch the latest release information."
-#     exit 1
-# fi
-# export VERSION=$(cat latest | sed -n -e "/App v/ {s/.*App v\([[:digit:]]\+.[[:digit:]]\+.[[:digit:]]\+\).*/\1/gp;q}");
-# info "Current version of the app is $VERSION"
-# info "Downloading the latest release Addiction.Tracker_"$VERSION"_amd64.deb file"
-# $CURL --location -o addictiontracker.deb "https://github.com/charlesschaefer/addiction-tracker/releases/download/app-v"$VERSION"/Addiction.Tracker_"$VERSION"_amd64.deb"
-# if [ $? -ne 0 ]; then
-#     error_and_exit "Failed to download the Addiction Tracker .deb file."
-#     exit 1
-# fi
-
-
 # info "Calling flatpak-builder to build the flatpak"
 # $FLATPAK_BUILDER --arch="x86_64" --delete-build-dirs --force-clean --sandbox --user --install --install-deps-from=flathub --mirror-screenshots-url=https://dl.flathub.org/media/ --ccache --repo=local_repo build-dir net.charlesschaefer.addictiontracker.yml
 # if [ $? -ne 0 ]; then
@@ -151,10 +101,7 @@ fi
 # fi
 
 info "Copying the flatpak files to the flathub directory"
-cp cargo-sources.json npm-sources.0.json flathub.json \
-   libayatana-appindicator-gtk3.json.diff net.charlesschaefer.addictiontracker.yml \
-   net.charlesschaefer.addictiontracker.metainfo.xml \
-   ../../flathub/ 
+cp cargo-sources.json npm-sources.0.json net.charlesschaefer.addictiontracker.yml ../../flathub/
 if [ $? -ne 0 ]; then
     error_and_exit "Failed to copy the flatpak files to the flathub directory."
     exit 1
