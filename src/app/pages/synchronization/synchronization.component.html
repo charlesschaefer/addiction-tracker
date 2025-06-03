@@ -47,6 +47,7 @@
             [label]="'Make device discoverable' | transloco"
             class="w-full"
             (click)="makeDeviceDiscoverable()"
+            [disabled]="!enableMakeDiscoverableButton"
           ></button>
         </div>
         <div *ngIf="otpData" class="text-center">
@@ -80,16 +81,40 @@
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
           {{ 'Then click the button below to look for the device in the network.' | transloco }}
         </p>
-        <div class="mb-6">
+        <div class="mb-6 flex flex-col gap-2 items-center">
           <button
             pButton
             [label]="'Search devices' | transloco"
             class="w-full"
             [disabled]="!enableDiscoverButton"
             (click)="discoverDevices()"
+            [loading]="loadingDiscover"
           ></button>
+          <div class="flex items-center gap-2 mt-10">
+            <p-checkbox [(ngModel)]="useKnownIp" [binary]="true" inputId="useKnownIp"></p-checkbox>
+            <label for="useKnownIp" class="text-sm">{{ 'Synchronize using known IP' | transloco }}</label>
+          </div>
+          <div *ngIf="useKnownIp" class="flex items-center mt-10">
+            <span class="p-float-label w-full flex items-center ">
+              <p-iftalabel variant="on">
+                <input
+                  id="ipAddress"
+                  type="text"
+                  pInputText
+                  [(ngModel)]="serverIp"
+                  name="ipAddress"
+                  pLabel
+                  class="w-90 flex-1 rounded-lg border-gray-300 dark:border-gray-700 p-3 pt-6 bg-white/60 dark:bg-gray-800 shadow-sm focus:border-purple-500 focus:ring focus:ring-purple-200 focus:ring-opacity-50"
+                  format
+                />
+                <label for="ipAddress" class="">
+                  {{ 'IP Address' | transloco }} 
+                </label>
+              </p-iftalabel>
+            </span>
+          </div>
         </div>
-        <div class="mb-6" *ngIf="showOTPField">
+        <div class="mb-6 flex items-center mt-10 flex-col" *ngIf="showOTPField || useKnownIp">
           <p class="text-sm text-gray-700 dark:text-gray-200 mb-2">
             {{ 'Type the code below' | transloco }}
           </p>
@@ -97,8 +122,21 @@
             <div class="flex justify-center space-x-2 mb-4">
               <p-inputOtp formControlName="otp" [length]="6"></p-inputOtp>
             </div>
-            <div class="flex justify-end">
-              <button pButton [label]="'Send' | transloco" type="submit"></button>
+            <div class="flex justify-center mt-10 text-gray-600 dark:text-gray-400 mb-4">
+              {{ 'Overwrite current data?' | transloco }}
+              <p-toggle-switch 
+                formControlName="overwriteData"
+                class="ml-2"
+              ></p-toggle-switch>
+            </div>
+            <div class="flex mt-10 justify-center">
+              <button 
+                tabindex="0"
+                pButton 
+                [label]="'Send' | transloco" 
+                type="submit"
+                [disabled]="useKnownIp && !isValidIp(serverIp)"
+              ></button>
             </div>
           </form>
         </div>

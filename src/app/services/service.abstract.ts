@@ -62,6 +62,15 @@ export abstract class ServiceAbstract<T> {
     }
 
     /**
+     * Adds or updates an entity.
+     * @param data Entity to add or update
+     */
+    bulkPut(data: T[]) {
+        const promise = this.table.bulkPut(data);
+        return promise;
+    }
+
+    /**
      * Updates an entity by id.
      * @param id Entity id
      * @param data Updated entity
