@@ -10,10 +10,15 @@ import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { PanelModule } from 'primeng/panel';
+import { FormsModule } from '@angular/forms'; // adicione FormsModule para ngModel
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+
 
 import { OtpGeneratorService } from '../../services/otp-generator.service';
 import { BackupService } from '../../services/backup.service';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
     selector: 'app-synchronization',
@@ -26,7 +31,11 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
         InputOtpModule,
         ToastModule,
         TranslocoModule,
-        PanelModule
+        PanelModule,
+        FormsModule,
+        CheckboxModule,
+        IftaLabelModule,
+        ToggleSwitchModule
     ],
     providers: [
         MessageService
@@ -38,15 +47,20 @@ export class SynchronizationComponent {
     getFromOthersVisible = false;
     sendToOthersVisible = false;
 
+    loadingDiscover = false;
+
     otpData!: string;
     serverIp!: string;
 
     enableDiscoverButton = true;
     showOTPField = false;
+    useKnownIp = false; // permite alternar entre busca automática e IP manual
+    enableMakeDiscoverableButton = true;
 
     fb = new FormBuilder();
     otpForm = this.fb.group({
-        otp: ["", Validators.minLength(6)]
+        otp: ["", Validators.minLength(6)],
+        overwriteData: [true, Validators.requiredTrue]
     });
 
     constructor(
@@ -68,6 +82,7 @@ export class SynchronizationComponent {
     }
 
     makeDeviceDiscoverable() {
+        this.enableMakeDiscoverableButton = false;
         // generates OTP code
         const otp = this.otpGenerator.generateOTP();
         this.otpData = otp;
@@ -80,11 +95,13 @@ export class SynchronizationComponent {
 
     discoverDevices() {
         this.enableDiscoverButton = false;
-        this.showOTPField = true;
+        this.loadingDiscover = true;
+        // this.showOTPField = true;
         console.log("Let's search other devices...");
         // get devices with faire opened in the network
         invoke('search_network_sync_services').then(async (ipv4) => {
             console.log("Device found at ", ipv4);
+            this.loadingDiscover = false;
             this.messageService.add({
                 summary: this.translateService.translate("Device found"),
                 detail: this.translateService.translate("Your device was discovered with the IP: ") + ipv4,
@@ -99,7 +116,16 @@ export class SynchronizationComponent {
         console.log("Sending encripted data. OTP: ", this.otpForm.value.otp);
         const otp = this.otpForm.value.otp as unknown as string;
         
-        // encrypts the otp and sends to the server 
+        // Se for modo IP manual, não depende do discoverDevices
+        if (this.useKnownIp && !this.isValidIp(this.serverIp)) {
+            this.messageService.add({
+                summary: this.translateService.translate("Invalid IP"),
+                detail: this.translateService.translate("Please enter a valid IP address."),
+                severity: "error"
+            });
+            return;
+        }
+
         const encryptedOtp = AES.encrypt(otp , otp);
         const options = {
             headers: {
@@ -110,7 +136,12 @@ export class SynchronizationComponent {
 
         this.httpClient.post<string>(`http://${this.serverIp}:9099/handshake`, {}, options).subscribe(backupData => {
             console.log("Data sent and backup received. Restoring backup...")
-            this.backupService.restoreBackup(backupData, otp).subscribe({
+            const backupMethod = (backupData: string, otp: string) => {
+                return this.otpForm.value.overwriteData ? 
+                    this.backupService.restoreBackup(backupData, otp) : 
+                    this.backupService.mergeBackup(backupData, otp);
+            };
+            backupMethod(backupData, otp).subscribe({
                 complete: async () => {
                     console.log("Backup restored. Showing messages");
                     this.messageService.add({
@@ -129,6 +160,17 @@ export class SynchronizationComponent {
                     });
                 }
             });
+        });
+    }
+
+    isValidIp(ip: string): boolean {
+        if (!ip) return false;
+        const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+        if (!ipRegex.test(ip)) return false;
+        const parts = ip.split('.');
+        return parts.every(part => {
+            const num = parseInt(part, 10);
+            return num >= 0 && num <= 255;
         });
     }
 

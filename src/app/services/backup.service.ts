@@ -19,6 +19,7 @@ import { AlternativeActivityService } from './alternative-activity.service';
 import { MotivationalFactorService } from './motivational-factor.service';
 import { UsageFillingService } from './usage-filling.service';
 import { AchievementService } from './achievement.service';
+import { union, unique } from 'underscore';
 
 /**
  * Structure for backup data.
@@ -173,6 +174,65 @@ export class BackupService {
         });
 
         return backupResponse$;
+    }
+
+    /**
+     * Faz merge dos dados do backup com os dados locais usando json-merger.
+     * @param encryptedData Encrypted backup string
+     * @param decryptKey Decryption key
+     * @returns Subject que completa quando o merge termina
+     */
+    mergeBackup(encryptedData: string, decryptKey: string) {
+        let jsonBackup: BackupData;
+        const mergeResponse$ = new Subject();
+
+        try {
+            const decryptedBackup = AES.decrypt(encryptedData, decryptKey);
+            jsonBackup = JSON.parse(decryptedBackup.toString(enc.Utf8)) as BackupData;
+        } catch (error) {
+            console.log("Error trying to decrypt or convert json: ", error);
+            mergeResponse$.error(error);
+            return mergeResponse$;
+        }
+        jsonBackup = this.rehydrateDateFields(jsonBackup);
+
+        // Lista de tabelas e serviços correspondentes
+        const tables: Array<{
+            key: keyof BackupData,
+            service: { list: () => Promise<any[]>, bulkPut: (data: any[]) => Promise<any>, clear: () => Promise<any> }
+        }> = [
+            { key: 'substance', service: this.substanceService },
+            { key: 'trigger', service: this.triggerService },
+            { key: 'usage', service: this.usageService },
+            { key: 'cost', service: this.costService },
+            { key: 'recommendation', service: this.recommendationService },
+            { key: 'alternative_activity', service: this.alternativeActivityService },
+            { key: 'motivational_factor', service: this.motivationalFactorService },
+            { key: 'usage_filling', service: this.usageFillingService },
+            { key: 'achievement', service: this.achievementService },
+        ];
+
+        // Executa o merge em transação sequencial
+        (async () => {
+            try {
+                for (const { key, service } of tables) {
+                    // 1. Consulta os dados locais
+                    const localData = await service.list();
+                    // 2. Faz o merge usando json-merger
+                    const merged = unique([...localData, ...(jsonBackup[key] ?? [])]);
+                    // 3. Limpa a tabela e insere os dados mesclados
+                    await service.clear();
+                    await service.bulkPut(merged as any);
+                    console.log(`Merged data (rows) for ${key}:`, merged?.length);
+                }
+                mergeResponse$.complete();
+            } catch (err) {
+                console.error("Error merging backup data:", err);
+                mergeResponse$.error(err);
+            }
+        })();
+
+        return mergeResponse$;
     }
 
     /**
