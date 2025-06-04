@@ -19,7 +19,7 @@ import { AlternativeActivityService } from './alternative-activity.service';
 import { MotivationalFactorService } from './motivational-factor.service';
 import { UsageFillingService } from './usage-filling.service';
 import { AchievementService } from './achievement.service';
-import { union, unique } from 'underscore';
+import { unique, difference, groupBy, select } from 'underscore';
 
 /**
  * Structure for backup data.
@@ -217,9 +217,11 @@ export class BackupService {
             try {
                 for (const { key, service } of tables) {
                     // 1. Consulta os dados locais
-                    const localData = await service.list();
+                    const localData = this.mapById(await service.list());
+                    const backup = this.mapById(jsonBackup[key] ?? []);
+                    let newData = select(Array.from(localData.values()), (item: CostDto) => !backup.has(item.id))
                     // 2. Faz o merge usando json-merger
-                    const merged = unique([...localData, ...(jsonBackup[key] ?? [])]);
+                    const merged = Array.from(backup.values()).concat(newData);
                     // 3. Limpa a tabela e insere os dados mesclados
                     await service.clear();
                     await service.bulkPut(merged as any);
@@ -249,5 +251,15 @@ export class BackupService {
         });
 
         return jsonBackup;
+    }
+
+    mapById(data: any[]) {
+        const map = new Map();
+        data.forEach(item => {
+            if (item.id) {
+                map.set(item.id, item);
+            }
+        });
+        return map;
     }
 }
