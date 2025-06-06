@@ -8,8 +8,8 @@ pub fn setup_system_tray_icon(app: &mut App) {
     app.get_webview_window("main").unwrap().hide().unwrap();
     app.get_webview_window("splashscreen").unwrap().show().unwrap();
 
-    let item_show = MenuItem::new(app, "Exibir/Ocultar", true, Some("E")).unwrap();
-    let item_quit = MenuItem::new(app, "Sair", true, Some("R")).unwrap();
+    let item_show = MenuItem::new(app, "Show/Hide", true, Some("E")).unwrap();
+    let item_quit = MenuItem::new(app, "Quit", true, Some("R")).unwrap();
     let menu = MenuBuilder::new(app)
         .item(&item_show)
         .item(&item_quit)
