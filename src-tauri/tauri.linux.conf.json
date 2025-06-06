@@ -2,7 +2,10 @@
   "bundle": {
     "linux": {
       "deb": {
-        "desktopTemplate": "./addiction-tracker.desktop.template"
+        "desktopTemplate": "./addiction-tracker.desktop.template",
+        "files": {
+          "/usr/share/icons/hicolor/scalable/apps/addiction-tracker.svg": "./icons/icon.svg"
+        }
       }
     },
     "createUpdaterArtifacts": false
