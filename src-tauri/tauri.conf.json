@@ -33,7 +33,8 @@
       "csp": null
     },
     "trayIcon": {
-      "iconPath": "icons/icon.png"
+      "iconPath": "icons/icon.png",
+      "id": "main"
     }
   },
   "bundle": {
