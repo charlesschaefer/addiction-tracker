@@ -6,6 +6,13 @@ use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 pub fn setup_system_tray_icon(app: &mut App) {
     // hiddens the main window before the app loads
 
+    // FIXME: since we couldn't make it work on flatpak containers, we are removing trayicon from flatpak packages
+    if let Ok(container) = std::env::var("container") {
+        if container.cmp(&"flatpak".to_string()) == std::cmp::Ordering::Equal {
+            return;
+        }
+    }
+
     use std::path::PathBuf;
 
     app.get_webview_window("main").unwrap().hide().unwrap();
@@ -63,6 +70,7 @@ pub fn setup_system_tray_icon(app: &mut App) {
     {
         res_icon_path = Err("Won't load icon on non-Linux OS");
     }
+
 
     let new_icon: tauri::image::Image;
     new_icon = match res_icon_path {
