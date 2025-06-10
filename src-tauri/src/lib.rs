@@ -1,4 +1,3 @@
-use tauri::Emitter;
 use serde::{Deserialize, Serialize};
 use std::env;
 

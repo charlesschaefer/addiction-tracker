@@ -5,9 +5,6 @@ use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
 #[cfg(desktop)]
 pub fn setup_system_tray_icon(app: &mut App) {
     // hiddens the main window before the app loads
-
-    use std::path::PathBuf;
-
     app.get_webview_window("main").unwrap().hide().unwrap();
     app.get_webview_window("splashscreen").unwrap().show().unwrap();
 
@@ -111,6 +108,7 @@ pub fn setup_system_tray_icon(app: &mut App) {
 pub fn set_frontend_complete(
     app: AppHandle,
 ) -> Result<(), ()> {
+
     let splash_window;
     if app.get_webview_window("splashscreen").is_some() {
         splash_window = app.get_webview_window("splashscreen").unwrap();
@@ -119,10 +117,15 @@ pub fn set_frontend_complete(
     }
     let main_window = app.get_webview_window("main").unwrap();
     
-    
+    //main_window.set_enabled(true).unwrap();
     main_window.show().unwrap();
-    splash_window.close().unwrap();
-    dbg!("Closed splash screen's window");
+
+    std::thread::spawn(move || {
+        splash_window.hide().unwrap();
+        std::thread::sleep(std::time::Duration::from_secs(1));
+        splash_window.close().unwrap();
+        dbg!("Closed the splashscreen window!");
+    });
 
     Ok(())
 }
