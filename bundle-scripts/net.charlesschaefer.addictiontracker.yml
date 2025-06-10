@@ -36,10 +36,10 @@ modules:
         TAURI_LINUX_AYATANA_APPINDICATOR: "true"
     build-commands:
       - npm --prefix=addiction-tracker install --offline --verbose &&
-        npm --prefix=addiction-tracker run tauri build -- --debug --bundles deb --config src-tauri/flatpak-tauri.conf.json &&
+        npm --prefix=addiction-tracker run tauri build -- --bundles deb --config src-tauri/flatpak-tauri.conf.json &&
         VERSION=$(npm --prefix=addiction-tracker pkg get version | sed "s/\"//g") &&
         ARCH=$([ $FLATPAK_ARCH == "x86_64" ] && echo "amd64" || echo "arm64") &&
-        cp "addiction-tracker/src-tauri/target/debug/bundle/deb/Addiction Tracker_${VERSION}_${ARCH}.deb" addictiontracker.deb
+        cp "addiction-tracker/src-tauri/target/release/bundle/deb/Addiction Tracker_${VERSION}_${ARCH}.deb" addictiontracker.deb
       - ar -x addictiontracker.deb
       - tar -xf data.tar.gz
       - install -Dm755 usr/bin/addiction-tracker /app/bin/addiction-tracker
@@ -54,11 +54,8 @@ modules:
     sources:
       - type: "git"
         url: "https://github.com/charlesschaefer/addiction-tracker.git"
-        tag: "app-v0.0.17"
+        tag: "app-v0.0.18"
         #commit: "fc1444ff8799c106c02dfed7ce8bce2c09f905f1"
         dest: addiction-tracker
       - cargo-sources.json
       - npm-sources.0.json
-      - type: file
-        path: "desktop.rs"
-        dest: addiction-tracker/src-tauri/src
