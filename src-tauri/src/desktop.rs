@@ -39,56 +39,10 @@ pub fn setup_system_tray_icon(app: &mut App) {
         }
     });
 
-    let res_icon_path: Result<PathBuf, &str>;
-    #[cfg(target_os = "linux")]
-    {
-        let app_name = app.package_info().name.clone();
-        dbg!("App NAME: {}", app_name.clone());
-        let app_id = app.config().identifier.clone();
-        dbg!("App ID: {}", app_id.clone());
-
-        // For Linux, we assume the icon is located in the share directory of the executable
-        let exe_path = std::env::current_exe().expect("Failed to get current executable path");
-        let mut icon_path = exe_path.parent().unwrap().parent().unwrap().join(format!("share/hicolor/128x128/apps/{app_name}.png"));
-        if let Err(_) = std::fs::exists(icon_path.clone()) {
-            dbg!("Icon path does not exist: {:?}", icon_path.clone());
-            // Fallback to another icon path
-            icon_path = exe_path.parent().unwrap().parent().unwrap().join(format!("share/hicolor/128x128/apps/{app_id}.png"));
-        } else {
-            dbg!("Using custom icon path: {:?}", icon_path.clone());
-        }
-        res_icon_path = Ok::<PathBuf, &str>(icon_path);
-    }
-    #[cfg(not(target_os = "linux"))]
-    {
-        res_icon_path = Err("Won't load icon on non-Linux OS");
-    }
-
-    let new_icon: tauri::image::Image;
-    new_icon = match res_icon_path {
-        Ok(icon_path) => {
-            tauri::image::Image::from_path(icon_path.clone()).unwrap_or_else(|_| {
-                app.default_window_icon().unwrap().clone()
-            })
-        },
-        Err(e) => {
-            dbg!("Using default icon due to error: {:?}", e);
-            app.default_window_icon().unwrap().clone()
-        }
-    };
-    dbg!("Path to the png file: ", app.path().resolve("icons/icon.png", tauri::path::BaseDirectory::Resource).unwrap());
-    if std::fs::exists(app.path().resolve("icons/icon.png", tauri::path::BaseDirectory::Resource).unwrap()).unwrap() {
-        dbg!("The png file exists");
-    }
-
-    app.tray_by_id("main")
-        .expect("Failed to get system tray")
-        .set_icon(Some(new_icon.clone()))
-        .expect("Failed to set system tray icon");
-
     let _ = TrayIconBuilder::new()
         .tooltip("Personal Addiction Tracker App")
-        .icon(new_icon)
+        .icon(app.default_window_icon().unwrap().clone())
+        .temp_dir_path(app.path().app_cache_dir().unwrap())
         .menu(&menu)
         .on_tray_icon_event(|tray_icon, event| match event {
             TrayIconEvent::Click {
@@ -166,9 +120,9 @@ pub fn set_frontend_complete(
     let main_window = app.get_webview_window("main").unwrap();
     
     
+    main_window.show().unwrap();
     splash_window.close().unwrap();
     dbg!("Closed splash screen's window");
-    main_window.show().unwrap();
 
     Ok(())
 }
