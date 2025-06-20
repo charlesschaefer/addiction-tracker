@@ -23,14 +23,6 @@ pub fn setup_system_tray_icon(app: &mut App) {
             WindowEvent::CloseRequested { api, .. } => {
                 api.prevent_close();
                 window_hider.hide().unwrap();
-                
-                // use tauri_plugin_notification::NotificationExt;
-                // window_hider.app_handle().notification()
-                //     .builder()
-                //     .title("Não fechamos")
-                //     .body("O addiction-tracker não fechou, só está oculto na sua bandeja do sistema.")
-                //     .show()
-                //     .unwrap();
             },
             _ => {}
         }
@@ -38,8 +30,8 @@ pub fn setup_system_tray_icon(app: &mut App) {
 
     let _ = TrayIconBuilder::new()
         .tooltip("Personal Addiction Tracker App")
-        .icon(app.default_window_icon().unwrap().clone())
         .temp_dir_path(app.path().app_cache_dir().unwrap())
+        .icon(app.default_window_icon().unwrap().clone())
         .menu(&menu)
         .on_tray_icon_event(|tray_icon, event| match event {
             TrayIconEvent::Click {
@@ -51,33 +43,23 @@ pub fn setup_system_tray_icon(app: &mut App) {
             } => {
                 match button {
                     MouseButton::Left => {
-                        /* dbg!("system tray received a left click");
-
-                            let window = tray_icon.app_handle().get_webview_window("main").unwrap();
-                            let _ = window.show().unwrap();
-                            let logical_size = tauri::LogicalSize::<f64> {
-                                width: 1024.00,
-                                height: 768.00,
-                            };
-                            let logical_s = tauri::Size::Logical(logical_size);
-                            let _ = window.set_size(logical_s);
-                            let logical_position = tauri::LogicalPosition::<f64> {
-                                x: position.x - logical_size.width,
-                                y: position.y - logical_size.height - 30.,
-                            };
-                            let logical_pos: tauri::Position =
-                                tauri::Position::Logical(logical_position);
-                            let _ = window.set_position(logical_pos);
-                            let _ = window.set_focus();
-                        },
-                        MouseButton::Right => {*/
                         dbg!("system tray received a right click");
                         let window =
                             tray_icon.app_handle().get_webview_window("main").unwrap();
-                        window.hide().unwrap();
+                        let display = match window.is_visible() {
+                            Ok(visible) => {
+                                if visible {
+                                    window.hide()
+                                } else {
+                                    window.show()
+                                }
+                            },
+                            Err(_) => window.show()
+                        };
+                        //window.hide().unwrap();
+                        display.unwrap();
                     }
                     _ => {
-                        //menu.popup(window_hider);
                         dbg!("system tray received a middle click");
                     }
                 }

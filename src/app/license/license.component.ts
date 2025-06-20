@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
     styles: 'a { color: var(--p-primary-color); }'
 })
 export class LicenseComponent implements OnInit {
-
     licenseText?: string;
 
     constructor(
@@ -18,6 +17,12 @@ export class LicenseComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.http.get('assets/LICENSE', {responseType: 'text'}).subscribe(data => this.licenseText = data);
+        this.http.get('assets/LICENSE', {responseType: 'text'}).subscribe(
+            data => this.licenseText = data.replaceAll(/\s{3,}/g, "<br /><br />")
+        );
+    }
+
+    back() {
+        window.history.back();
     }
 }
