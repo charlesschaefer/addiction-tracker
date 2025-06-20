@@ -566,7 +566,7 @@
   "Registre um novo gasto <a routerLink=\"/cost-add\">por aqui</a>.": "Register a new expense <a routerLink=\"/cost-add\">here</a>.",
   "Vamos começar": "Let's start",
   "Esperamos que goste do app. Não será uma jornada fácil se livrar do seu vício, mas sabemos que as recompensas serão grandes. Vamos começar adicionando a substância, ok?": "We hope you like the app. It won't be an easy journey to get rid of your addiction, but we know the rewards will be great. Let's start by adding the substance, okay?",
-  "Versão:": "Version:",
+  "Version": "Version",
   "Houve um erro ao salvar a substância!": "There was an error saving the substance!",
   "Intervalo de consumo": "Consumption interval",
   "Menu de acesso rápido": "Quick access menu",

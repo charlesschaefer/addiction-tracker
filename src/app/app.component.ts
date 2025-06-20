@@ -34,6 +34,7 @@ import {
     SobrietyCardStyle,
 } from "./components/sobriety/sobriety-card.component";
 import { AddRecordButtonComponent } from "./components/add-record-button/add-record-button.component";
+import { VersionComponent } from './version/version.component';
 
 import { window as TauriWindow } from "@tauri-apps/api";
 
@@ -60,6 +61,7 @@ import { window as TauriWindow } from "@tauri-apps/api";
         AlternativeActivityOverlayComponent,
         SobrietyCardComponent,
         AddRecordButtonComponent,
+        VersionComponent
     ],
     providers: [CookieService, RouterLink, MessageService],
     templateUrl: "./app.component.html",
