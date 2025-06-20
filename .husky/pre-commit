@@ -1,0 +1,1 @@
+npm run ng lint -- --fix --format stylish

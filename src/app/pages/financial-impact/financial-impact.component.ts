@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Inject, LOCALE_ID, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
@@ -9,7 +9,6 @@ import { CostService } from "../../services/cost.service";
 import { ChartModule } from 'primeng/chart';
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { CostDto } from "../../dto/cost.dto";
-import { DateTime } from "luxon";
 import { getDateForChart } from "../../util/date.utils";
 
 @Component({
