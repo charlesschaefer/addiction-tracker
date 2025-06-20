@@ -1,3 +1,28 @@
-<p>{{ "Bem-vindo ao Addiction Tracker®" | transloco }}</p>
-<p></p>
-<p><strong>{{ "Versão: " | transloco }}</strong> <span class="version">{{ version }}</span></p>
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <div class="flex flex-col items-center justify-center">
+    <p class="text-center text-gray-500 dark:text-gray-400 text-sm mb-2">
+      {{ 'Addiction Tracker • Your personal journey to wellness' | transloco }}
+    </p>
+    <div class="text-xs text-gray-400 dark:text-gray-500">
+      {{ 'Remember: Every day is a new opportunity' | transloco }}
+    </div>
+  </div>
+  <div>
+    <p class="text-center text-gray-500 dark:text-gray-400 text-sm mt-2">
+      <span>{{'Version' | transloco}}</span>
+      <a [href]="'https://github.com/charlesschaefer/faire-todo-app/releases/tag/app-v' + version" 
+        target="_blank" 
+        class="p-button p-ripple p-button-text p-button-rounded p-button-help text-blue-400 text-sm"
+      >
+        {{ version }}
+      </a>
+      |
+      <a 
+        routerLink="/license" 
+        class="p-button p-ripple p-button-text p-button-rounded p-button-help text-blue-400 text-sm"
+      >
+        License
+      </a>
+    </p>
+  </div>
+</div>
