@@ -1,2 +1,6 @@
-<a routerLink="/today"><i class="pi pi-arrow-left"></i></a>
-<pre>{{ licenseText }}</pre>
+<div class="text-gray-500 dark:text-gray-300 mb-10 max-w-3xl mx-auto text-justify">
+  <a routerLink="/" (click)="back()">
+    <i class="pi pi-arrow-left"></i>
+  </a>
+  <p [innerHTML]="licenseText" class="mt-4"></p>
+</div>
