@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, Input, signal } from "@angular/core";
+import { Component, computed, input, Input } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
@@ -7,7 +7,6 @@ import { ChartData, ChartOptions } from "chart.js";
 import { SentimentService } from "../../services/sentiment.service";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { RouterLink } from "@angular/router";
-import { DateTime } from "luxon";
 import { getDateForChart } from "../../util/date.utils";
 
 @Component({

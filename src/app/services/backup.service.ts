@@ -19,7 +19,7 @@ import { AlternativeActivityService } from './alternative-activity.service';
 import { MotivationalFactorService } from './motivational-factor.service';
 import { UsageFillingService } from './usage-filling.service';
 import { AchievementService } from './achievement.service';
-import { unique, difference, groupBy, select } from 'underscore';
+import { select } from 'underscore';
 
 /**
  * Structure for backup data.
@@ -197,10 +197,10 @@ export class BackupService {
         jsonBackup = this.rehydrateDateFields(jsonBackup);
 
         // Lista de tabelas e serviços correspondentes
-        const tables: Array<{
+        const tables: {
             key: keyof BackupData,
             service: { list: () => Promise<any[]>, bulkPut: (data: any[]) => Promise<any>, clear: () => Promise<any> }
-        }> = [
+        }[] = [
             { key: 'substance', service: this.substanceService },
             { key: 'trigger', service: this.triggerService },
             { key: 'usage', service: this.usageService },
@@ -219,7 +219,7 @@ export class BackupService {
                     // 1. Consulta os dados locais
                     const localData = this.mapById(await service.list());
                     const backup = this.mapById(jsonBackup[key] ?? []);
-                    let newData = select(Array.from(localData.values()), (item: CostDto) => !backup.has(item.id))
+                    const newData = select(Array.from(localData.values()), (item: CostDto) => !backup.has(item.id))
                     // 2. Faz o merge usando json-merger
                     const merged = Array.from(backup.values()).concat(newData);
                     // 3. Limpa a tabela e insere os dados mesclados
