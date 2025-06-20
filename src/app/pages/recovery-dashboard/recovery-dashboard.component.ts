@@ -16,7 +16,6 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
 import { SentimentService } from "../../services/sentiment.service";
 import { TriggerService } from "../../services/trigger.service";
 import { RouterLink } from "@angular/router";
-import { DateTime } from "luxon";
 import { TranslocoAvailableLangs } from "../../app.config";
 import { getDateForChart } from "../../util/date.utils";
 import { SelectModule } from "primeng/select";

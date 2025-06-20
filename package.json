@@ -35,7 +35,8 @@
     "tauri": "tauri",
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find",
-    "bump-version": "node scripts/version-bumper.js"
+    "bump-version": "node scripts/version-bumper.js",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -97,6 +98,7 @@
     "dotenv": "^16.5.0",
     "eslint": "^9.27.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.7.1",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
