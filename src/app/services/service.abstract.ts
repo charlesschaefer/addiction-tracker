@@ -21,7 +21,9 @@ export abstract class ServiceAbstract<T> {
 
     @Inject(DataUpdatedService) protected dataUpdatedService?: DataUpdatedService;
 
-    constructor() {}
+    constructor() {
+        // Empty constructor for dependency injection
+    }
 
     /**
      * Sets the Dexie table for this service.

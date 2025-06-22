@@ -35,7 +35,7 @@ type Usages = UsageAddDto | UsageDto;
     providedIn: 'root'
 })
 export class UsageService extends ServiceAbstract<Usages> {
-    protected override storeName: 'usage' = 'usage';
+    protected override storeName = 'usage' as const;
 
     sobrietyDaysCache?: number;
     usageHistoryCache?: UsageDto[];

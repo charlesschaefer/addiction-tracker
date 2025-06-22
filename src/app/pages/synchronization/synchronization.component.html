@@ -21,7 +21,9 @@
           [class.bg-gray-100]="!sendToOthersVisible"
           [class.text-gray-700]="!sendToOthersVisible"
           (click)="openToOthers()"
-        ></button>
+        >
+          {{ 'Send data to other device' | transloco }}
+        </button>
         <button
           pButton
           [label]="'Get data from other device' | transloco"
@@ -30,7 +32,9 @@
           [class.bg-gray-100]="!getFromOthersVisible"
           [class.text-gray-700]="!getFromOthersVisible"
           (click)="openFromOthers()"
-        ></button>
+        >
+          {{ 'Get data from other device' | transloco }}
+        </button>
       </div>
 
       <!-- Send Panel -->
@@ -48,7 +52,9 @@
             class="w-full"
             (click)="makeDeviceDiscoverable()"
             [disabled]="!enableMakeDiscoverableButton"
-          ></button>
+          >
+            {{ 'Make device discoverable' | transloco }}
+          </button>
         </div>
         <div *ngIf="otpData" class="text-center">
           <p class="text-sm text-gray-700 dark:text-gray-200 mb-2">
@@ -66,7 +72,9 @@
             [label]="'Cancel' | transloco"
             class="p-button-outlined"
             (click)="closeDialogs()"
-          ></button>
+          >
+            {{ 'Cancel' | transloco }}
+          </button>
         </div>
       </div>
 
@@ -89,7 +97,9 @@
             [disabled]="!enableDiscoverButton"
             (click)="discoverDevices()"
             [loading]="loadingDiscover"
-          ></button>
+          >
+            {{ 'Search devices' | transloco }}
+          </button>
           <div class="flex items-center gap-2 mt-10">
             <p-checkbox [(ngModel)]="useKnownIp" [binary]="true" inputId="useKnownIp"></p-checkbox>
             <label for="useKnownIp" class="text-sm">{{ 'Synchronize using known IP' | transloco }}</label>
@@ -136,7 +146,9 @@
                 [label]="'Send' | transloco" 
                 type="submit"
                 [disabled]="useKnownIp && !isValidIp(serverIp)"
-              ></button>
+              >
+                {{ 'Send' | transloco }}
+              </button>
             </div>
           </form>
         </div>
@@ -146,7 +158,9 @@
             [label]="'Cancel' | transloco"
             class="p-button-outlined"
             (click)="closeDialogs()"
-          ></button>
+          >
+            {{ 'Cancel' | transloco }}
+          </button>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { DbService } from './db.service';
 /**
  * Structure for Google API secret.
  */
-interface ApiSecret {
+interface _ApiSecret {
     project: string,
     api_key: string
 }
@@ -21,7 +21,7 @@ type Recommendations = RecommendationDto | RecommendationAddDto;
     providedIn: 'root'
 })
 export class RecommendationService extends ServiceAbstract<Recommendations> {
-    protected override storeName: 'recommendation' = 'recommendation';
+    protected override storeName = 'recommendation' as const;
 
     /**
      * Injects the database service and sets up the table.

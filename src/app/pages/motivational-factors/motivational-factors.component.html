@@ -137,7 +137,7 @@
     <!-- Add Modal -->
     <div *ngIf="showAddModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 max-w-md w-full border border-gray-100 dark:border-gray-800">
-          <app-motivational-factor-input (add)="addMotivationalFactor($event)" [substance]="selectedSubstance() || 0" (close)="showAddModal = false" />
+          <app-motivational-factor-input (add)="addMotivationalFactor($event)" [substance]="selectedSubstance() || 0" (closed)="showAddModal = false" />
         </div>
     </div>
 
@@ -155,10 +155,10 @@
                 </button>
             </div>
             <form (ngSubmit)="saveEditFactor()">
-                <label class="block text-sm font-medium text-gray-700 mb-1">
+                <label for="editContent" class="block text-sm font-medium text-gray-700 mb-1">
                     {{ 'Your Motivation' | transloco }}
                 </label>
-                <textarea [(ngModel)]="editedContent" name="editContent" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 min-h-[100px]" [placeholder]="'Why do you want to quit this substance?' | transloco"></textarea>
+                <textarea id="editContent" [(ngModel)]="editedContent" name="editContent" class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 min-h-[100px]" [placeholder]="'Why do you want to quit this substance?' | transloco"></textarea>
                 <div class="flex justify-end space-x-3 mt-4">
                     <button type="button" (click)="closeEditModal()" class="px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
                         {{ 'Cancel' | transloco }}

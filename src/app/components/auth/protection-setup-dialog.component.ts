@@ -10,13 +10,13 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./protection-setup-dialog.component.html",
 })
 export class ProtectionSetupDialogComponent {
-    @Output() close = new EventEmitter<void>();
+    @Output() closed = new EventEmitter<void>();
     step = 1;
     password = "";
     confirmPassword = "";
     error = "";
 
-    enableProtection(password: string) {
+    enableProtection(_password: string) {
         // Implement actual protection logic here
     }
     disableProtection() {

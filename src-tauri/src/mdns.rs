@@ -31,7 +31,7 @@ pub async fn discover_service() -> String {
         match event {
             ServiceEvent::ServiceResolved(info) => {
                 dbg!("Resolved a new service: {}", info.get_fullname());
-                let addresses_iter = info.get_addresses().into_iter();
+                let addresses_iter = info.get_addresses().iter();
                 for ip in addresses_iter {
                     if ip.to_string() == my_ip {
                         continue 'outer;

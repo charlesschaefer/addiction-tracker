@@ -25,7 +25,7 @@ type Achievements = AchievementDto | AchievementAddDto;
     providedIn: "root",
 })
 export class AchievementService extends ServiceAbstract<Achievements> {
-    protected override storeName: 'achievement' = 'achievement';
+    protected override storeName = 'achievement' as const;
 
     /**
      * Injects dependencies for achievement logic.

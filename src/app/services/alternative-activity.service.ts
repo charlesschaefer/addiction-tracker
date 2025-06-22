@@ -14,7 +14,7 @@ type AlternativeActivities = AlternativeActivityDto | AlternativeActivityAddDto;
     providedIn: "root",
 })
 export class AlternativeActivityService extends ServiceAbstract<AlternativeActivities> {
-    protected override storeName: 'alternative_activity' = 'alternative_activity';
+    protected override storeName = 'alternative_activity' as const;
 
     /**
      * Injects the database service and sets up the table.

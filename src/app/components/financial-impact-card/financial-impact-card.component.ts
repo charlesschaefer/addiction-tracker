@@ -19,7 +19,7 @@ import { getCurrency } from "locale-currency";
 export class FinancialImpactCardComponent implements OnInit {
     @Input() COLORS: string[] = [];
     @Input() usageCosts!: CostDto[];
-    @Input('substances') allSubstances: Map<number, SubstanceDto>;
+    @Input() allSubstances: Map<number, SubstanceDto>;
     @Input() parent: any;
 
     // Signals for all calculated/prepared values

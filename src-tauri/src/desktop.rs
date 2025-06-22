@@ -19,12 +19,9 @@ pub fn setup_system_tray_icon(app: &mut App) {
     let window = app.get_webview_window("main").unwrap();
     let window_hider = window.clone();
     window.on_window_event(move |event| {
-        match event {
-            WindowEvent::CloseRequested { api, .. } => {
-                api.prevent_close();
-                window_hider.hide().unwrap();
-            },
-            _ => {}
+        if let WindowEvent::CloseRequested { api, .. } = event {
+            api.prevent_close();
+            window_hider.hide().unwrap();
         }
     });
 
