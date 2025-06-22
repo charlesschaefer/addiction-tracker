@@ -323,7 +323,7 @@ export class RecordSubstanceUseComponent implements OnInit {
                 console.error("Error recording usage data", e);
             }
 
-            this.submit.emit(newUsage);
+            this.submitted.emit(newUsage);
 
             this.messageService.add({
                 severity: "success",
@@ -402,7 +402,7 @@ export class RecordSubstanceUseComponent implements OnInit {
      * Records this choice along with motivational factor and alternative activity data.
      */
     handleGiveUpUsage() {
-        this.close.emit();
+        this.closed.emit();
         if (!this.selectedSubstance) return;
         
         // Create a usage-filling record with kept_usage = false
@@ -426,7 +426,7 @@ export class RecordSubstanceUseComponent implements OnInit {
                 });
                 
                 // Close the form
-                this.close.emit();
+                this.closed.emit();
             })
             .catch(error => {
                 console.error("Error recording usage filling:", error);

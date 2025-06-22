@@ -117,8 +117,8 @@
       [motivationalFactorId]="currentMotivationalFactor?.id"
       (closed)="showBreathingPrompt = false"
       (selected)="handleAlternativeSelected($event)" 
-      (onFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
-      (onGiveUpUsage)="handleGiveUpUsage()"
+      (feedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
+      (giveUpUsage)="handleGiveUpUsage()"
     ></app-alternative-activity-overlay>
 
     <router-outlet />
