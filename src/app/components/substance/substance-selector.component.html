@@ -1,0 +1,27 @@
+<!-- Substance Selector -->
+<div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+  <h3 class="text-lg font-semibold  text-gray-700 dark:text-gray-200 mb-4">
+    {{ 'Filter by Substance' | transloco }}
+  </h3>
+  <div class="flex flex-wrap gap-2">
+    <button
+      (click)="currentSubstance.set(0)"
+      [ngClass]="currentSubstance() === 0
+        ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
+        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      class="px-4 py-2 rounded-full text-sm transition-all"
+    >
+      {{ 'All Substances' | transloco }}
+    </button>
+    <button
+      *ngFor="let substance of substances()"
+      (click)="currentSubstance.set(substance.id)"
+      [ngClass]="currentSubstance() === substance.id
+        ? 'bg-gradient-to-r from-purple-500 to-orange-500 text-white shadow-sm'
+        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700'"
+      class="px-4 py-2 rounded-full text-sm transition-all"
+    >
+      {{ substance.name }}
+    </button>
+  </div>
+</div>

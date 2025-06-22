@@ -10,11 +10,12 @@ import { FormsModule } from "@angular/forms";
 import { SelectModule } from "primeng/select";
 import { MessageService } from "primeng/api";
 import { TranslocoModule } from "@jsverse/transloco";
+import { SubstanceSelectorComponent } from "../../components/substance/substance-selector.component";
 
 @Component({
     selector: "app-usage-entries",
     standalone: true,
-    imports: [CommonModule, FormsModule, SelectModule, TranslocoModule],
+    imports: [CommonModule, FormsModule, SelectModule, TranslocoModule, SubstanceSelectorComponent],
     templateUrl: "./usage-entries.component.html",
 })
 export class UsageEntriesComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, model, OnInit } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
@@ -8,17 +8,20 @@ import { TriggerDto } from "../../dto/trigger.dto";
 import { ChartModule } from "primeng/chart";
 import { TriggerService } from "../../services/trigger.service";
 import { TranslocoModule } from "@jsverse/transloco";
+import { SubstanceSelectorComponent } from "../../components/substance/substance-selector.component";
 
 @Component({
     selector: "app-triggers-page",
     standalone: true,
-    imports: [CommonModule, ChartModule, TranslocoModule],
+    imports: [CommonModule, ChartModule, TranslocoModule, SubstanceSelectorComponent],
     templateUrl: "./triggers.component.html",
 })
 export class TriggersComponent implements OnInit {
     usageHistory: UsageDto[] = [];
     substances: SubstanceDto[] = [];
+    substancesMap = new Map<number, SubstanceDto>();
     selectedSubstance = "all";
+    selectedSubstanceId = model<number>(0);
     triggers: TriggerDto[] = [];
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
@@ -43,6 +46,9 @@ export class TriggersComponent implements OnInit {
         });
         this.substanceService.list().then((subs) => {
             this.substances = subs as SubstanceDto[];
+            this.substancesMap = this.substances.reduce(
+                (prev, curr, currIdx) => prev.set(currIdx, curr), new Map<number, SubstanceDto>
+            );
             this.updateCharts();
         });
         this.triggerService.list().then((triggers) => {
@@ -252,6 +258,13 @@ export class TriggersComponent implements OnInit {
 
     setSelectedSubstance(substance: string) {
         this.selectedSubstance = substance;
+        this.selectedSubstanceId.set(this.substances.find((sub => sub.name == substance))?.id || 0);
+        this.updateCharts();
+    }
+    
+    setSelectedSubstanceId(substanceId: number) {
+        this.selectedSubstanceId.set(substanceId);
+        this.selectedSubstance = this.substancesMap.get(substanceId - 1)?.name || 'all';
         this.updateCharts();
     }
 
