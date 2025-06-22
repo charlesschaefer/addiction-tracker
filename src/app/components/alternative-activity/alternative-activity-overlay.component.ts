@@ -65,7 +65,7 @@ export class AlternativeActivityOverlayComponent {
         };
 
         // Emit select event
-        this.onSelect.emit(activityId);
+        this.selected.emit(activityId);
 
         // Hide alternatives list
         this.show = false;
@@ -126,11 +126,11 @@ export class AlternativeActivityOverlayComponent {
             });
 
             // Emit the giveUpUsage event to notify parent component
-            this.onGiveUpUsage.emit();
+            this.giveUpUsage.emit();
         }
 
         // Emit the feedback event
-        this.onFeedback.emit({
+        this.feedback.emit({
             activity: this.selectedActivity,
             wasSuccessful,
             feedback: this.feedbackMessage,
