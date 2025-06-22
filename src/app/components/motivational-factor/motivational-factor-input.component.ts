@@ -16,7 +16,7 @@ export class MotivationalFactorInputComponent {
     @Output() add = new EventEmitter<
         Omit<MotivationalFactorDto, "id" | "createdAt">
     >();
-    @Output() close = new EventEmitter();
+    @Output() closed = new EventEmitter();
 
     type: "text" | "image" | "audio" = "text";
     content = "";
@@ -84,7 +84,7 @@ export class MotivationalFactorInputComponent {
             };
             this.mediaRecorder.start();
             this.isRecording = true;
-        } catch (error) {
+        } catch (_error) {
             alert(
                 "Could not access your microphone. Please check permissions."
             );

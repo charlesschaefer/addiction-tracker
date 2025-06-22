@@ -1,6 +1,6 @@
-const config = require('dotenv').config;
-const fs = require('fs');
-const colors = require('colors');
+import { config } from 'dotenv';
+import * as fs from 'fs';
+import * as colors from 'colors';
 
 function configEnv() {
     config({

@@ -14,7 +14,7 @@ type MotivationalFactors = MotivationalFactorAddDto | MotivationalFactorDto;
     providedIn: "root",
 })
 export class MotivationalFactorService extends ServiceAbstract<MotivationalFactors> {
-    protected override storeName: 'motivational_factor' = 'motivational_factor';
+    protected override storeName = 'motivational_factor' as const;
     
     /**
      * Injects the database service and sets up the table.

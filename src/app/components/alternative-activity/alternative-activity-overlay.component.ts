@@ -16,14 +16,14 @@ export class AlternativeActivityOverlayComponent {
     @Input() show = false;
     @Input() selectedSubstance?: SubstanceDto;
     @Input() motivationalFactorId?: number;
-    @Output() onClose = new EventEmitter<void>();
-    @Output() onSelect = new EventEmitter<number>();
-    @Output() onFeedback = new EventEmitter<{
+    @Output() closed = new EventEmitter<void>();
+    @Output() selected = new EventEmitter<number>();
+    @Output() feedback = new EventEmitter<{
         activity: any;
         wasSuccessful: boolean;
         feedback?: string;
     }>();
-    @Output() onGiveUpUsage = new EventEmitter<void>();
+    @Output() giveUpUsage = new EventEmitter<void>();
 
     personalizedRecommendation?: { name: string; successRate: number };
 

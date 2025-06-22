@@ -1,1 +1,2 @@
 npm run ng lint -- --fix --format stylish
+cd src-tauri && cargo clippy --fix --allow-dirty --allow-staged

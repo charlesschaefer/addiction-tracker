@@ -14,7 +14,7 @@ type Triggers = TriggerDto | TriggerAddDto;
     providedIn: 'root'
 })
 export class TriggerService extends ServiceAbstract<Triggers> {
-    protected override storeName: 'trigger' = 'trigger';
+    protected override storeName = 'trigger' as const;
     
     /**
      * Injects the database service and sets up the table.

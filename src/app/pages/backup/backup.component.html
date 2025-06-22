@@ -21,7 +21,9 @@
           [class.bg-gray-100]="restoreMode"
           [class.text-gray-700]="restoreMode"
           (click)="restoreMode = false"
-        ></button>
+        >
+          {{ 'Gerar Backup' | transloco }}
+        </button>
         <button
           pButton
           [label]="'Restaurar Backup' | transloco"
@@ -30,7 +32,9 @@
           [class.bg-gray-100]="!restoreMode"
           [class.text-gray-700]="!restoreMode"
           (click)="restoreMode = true"
-        ></button>
+        >
+          {{ 'Restaurar Backup' | transloco }}
+        </button>
       </div>
 
       <!-- Generate Backup Panel -->
@@ -60,16 +64,19 @@
               type="submit"
               [label]="'Gerar Backup' | transloco"
               class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-            ></button>
+            >
+              {{ 'Gerar Backup' | transloco }}
+            </button>
           </div>
         </form>
 
         <div *ngIf="encryptedBackup" class="mt-6">
-          <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+          <label for="encriptedBackup" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
             {{ "Seu Backup Criptografado" | transloco }}
           </label>
           <div class="relative">
             <textarea
+              id="encriptedBackup"
               readonly
               name="encripted-backup"
               class="w-full h-32 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm font-mono"
@@ -83,14 +90,18 @@
                 [label]="'Copiar' | transloco"
                 class="p-button-sm"
                 (click)="copyToClipboard(userinput)"
-              ></button>
+              >
+                {{ 'Copiar' | transloco }}
+              </button>
               <button
                 pButton
                 type="button"
                 [label]="'Salvar' | transloco"
                 class="p-button-sm"
                 (click)="saveToFile()"
-              ></button>
+              >
+                {{ 'Salvar' | transloco }}
+              </button>
             </div>
           </div>
           <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -132,10 +143,11 @@
             ></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            <label for="backupFile" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
               {{ "Selecionar Arquivo" | transloco }}
             </label>
             <input
+              id="backupFile"
               name="backup-file"
               type="file"
               (change)="onFileChange($event)"
@@ -152,13 +164,17 @@
               [label]="'Voltar' | transloco"
               class="p-button-outlined"
               (click)="restoreMode = false"
-            ></button>
+            >
+              {{ 'Voltar' | transloco }}
+            </button>
             <button
               pButton
               type="submit"
               [label]="'Restaurar Backup' | transloco"
               class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-            ></button>
+            >
+              {{ 'Restaurar Backup' | transloco }}
+            </button>
           </div>
         </form>
       </div>

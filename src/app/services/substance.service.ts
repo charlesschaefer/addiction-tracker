@@ -12,7 +12,7 @@ export type Substance = SubstanceDto | SubstanceAddDto;
     providedIn: 'root'
 })
 export class SubstanceService extends ServiceAbstract<Substance> {
-    protected override storeName: 'substance' = 'substance';
+    protected override storeName = 'substance' as const;
 
     /**
      * Injects the database service and sets up the table.

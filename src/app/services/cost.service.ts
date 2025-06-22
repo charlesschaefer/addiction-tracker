@@ -16,7 +16,7 @@ type Costs = CostDto | CostAddDto;
     providedIn: 'root'
 })
 export class CostService extends ServiceAbstract<Costs> {
-    protected override storeName: 'cost' = 'cost';
+    protected override storeName = 'cost' as const;
     
     /**
      * Injects dependencies for cost logic.

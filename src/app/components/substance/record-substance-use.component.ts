@@ -53,9 +53,9 @@ export class RecordSubstanceUseComponent implements OnInit {
     @Input() selectedAlternativeActivity?: {id: number, name: string};
 
     /** Emits when the form is submitted. */
-    @Output() submit = new EventEmitter<any>();
+    @Output() submitted = new EventEmitter<any>();
     /** Emits when the popup should be closed. */
-    @Output() close = new EventEmitter<void>();
+    @Output() closed = new EventEmitter<void>();
     /** Emits when a new substance is added. */
     @Output() addSubstance = new EventEmitter<SubstanceDto>();
     /** Emits when a new motivational factor is added. */

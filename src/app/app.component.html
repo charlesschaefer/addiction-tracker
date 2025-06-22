@@ -43,7 +43,7 @@
 
     <!-- Add Usage Record Form Popup -->
     @if (showRecordPopup) {
-    <app-record-substance-use (close)="showRecordPopup = false" [substances]="substances()"
+    <app-record-substance-use (closed)="showRecordPopup = false" [substances]="substances()"
       (addSubstance)="handleAddSubstance($event)" (showAlternatives)="showBreathingPrompt = true"
       (selectAlternative)="handleAlternativeSelected($event.id)" [alternatives]="alternativeActivities"
       (alternativeFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
@@ -115,8 +115,8 @@
       [show]="showBreathingPrompt"
       [selectedSubstance]="selectedSubstance"
       [motivationalFactorId]="currentMotivationalFactor?.id"
-      (onClose)="showBreathingPrompt = false"
-      (onSelect)="handleAlternativeSelected($event)" 
+      (closed)="showBreathingPrompt = false"
+      (selected)="handleAlternativeSelected($event)" 
       (onFeedback)="handleAlternativeFeedback($event.activity, $event.wasSuccessful, $event.feedback)"
       (onGiveUpUsage)="handleGiveUpUsage()"
     ></app-alternative-activity-overlay>

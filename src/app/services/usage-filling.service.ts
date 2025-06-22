@@ -22,8 +22,7 @@ export interface UsageFillingCounts {
     providedIn: "root",
 })
 export class UsageFillingService extends ServiceAbstract<UsageFillings> {
-    protected override storeName: "usage_filling"  =
-        "usage_filling";
+    protected override storeName = 'usage_filling' as const;
 
     /**
      * Injects dependencies for usage filling logic.

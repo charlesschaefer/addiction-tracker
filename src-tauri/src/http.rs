@@ -80,7 +80,7 @@ impl HttpServer {
     fn handshake(&self, request: &Request) -> Option<ResponseBox> {
         let otp_token = request
             .headers()
-            .into_iter()
+            .iter()
             .find_map(|header| {
                 dbg!("Header {:?} with value {:?}", header.field.as_str(), header.value.as_str());
                 if header.field.as_str() == "X-SIGNED-TOKEN" {
@@ -91,12 +91,12 @@ impl HttpServer {
             }).unwrap();
         dbg!("Valor to token: {:?}", &otp_token);
 
-        if otp_token.len() == 0 {
+        if otp_token.is_empty() {
             let response = Response::from_string("Empty token".to_string())
                         .with_status_code(500).boxed();
             return Some(response);
         }
-        self.response_with_cors_headers(&self.json_data.as_str())
+        self.response_with_cors_headers(self.json_data.as_str())
     }
 
     fn response_with_cors_headers(&self, resp: &str) -> Option<ResponseBox> {

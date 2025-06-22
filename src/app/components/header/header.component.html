@@ -80,7 +80,15 @@
   </div>
   <!-- Mobile menu drawer (simplified, add overlay and nav as needed) -->
   <div *ngIf="mobileMenuOpen" class="fixed inset-0 z-40 backdrop-blur-sm h-screen">
-    <div class="absolute inset-0 bg-black opacity-60" (click)="mobileMenuOpen = false"></div>
+    <div 
+      class="absolute inset-0 bg-black opacity-60" 
+      (click)="mobileMenuOpen = false"
+      (keydown.enter)="mobileMenuOpen = false"
+      (keydown.space)="mobileMenuOpen = false"
+      tabindex="0"
+      role="button"
+      aria-label="Close menu">
+    </div>
     <div
       class="absolute top-0 left-0 w-4/5 max-w-sm h-screen bg-white/95 dark:bg-black/95 backdrop-blur-sm shadow-xl flex flex-col">
       <div

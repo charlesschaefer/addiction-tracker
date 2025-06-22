@@ -108,7 +108,7 @@ export class SubstanceAnalysisCardComponent {
 
     constructor(private translateService: TranslocoService) {}
 
-    setSelectedAnalysisSubstance(substance: string) {
+    setSelectedAnalysisSubstance(_substance: string) {
         //this.selectedAnalysisSubstance.set(substance);
     }
 
