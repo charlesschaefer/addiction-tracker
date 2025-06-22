@@ -19,20 +19,22 @@ import { RouterLink } from "@angular/router";
 import { TranslocoAvailableLangs } from "../../app.config";
 import { getDateForChart } from "../../util/date.utils";
 import { SelectModule } from "primeng/select";
+import { SubstanceSelectorComponent } from "../../components/substance/substance-selector.component";
 
 @Component({
     selector: "app-recovery-dashboard",
     standalone: true,
     imports: [
-        CommonModule,
-        FormsModule,
-        FinancialImpactCardComponent,
-        SubstanceAnalysisCardComponent,
-        SobrietyCardComponent,
-        TranslocoModule,
-        RouterLink,
-        SelectModule,
-    ],
+    CommonModule,
+    FormsModule,
+    FinancialImpactCardComponent,
+    SubstanceAnalysisCardComponent,
+    SobrietyCardComponent,
+    TranslocoModule,
+    RouterLink,
+    SelectModule,
+    SubstanceSelectorComponent
+],
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {

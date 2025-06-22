@@ -23,50 +23,11 @@
         </div>
       </div>
 
-      <!-- Filters and Controls -->
-      <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-5 mb-6 border border-gray-100 dark:border-gray-800">
-        <div class="flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center">
-            <span class="text-gray-700 dark:text-gray-200 font-medium mr-3">{{ 'Filter by:' | transloco }}</span>
-            <form>
-              @let options = [{ id: 0, name: ('All Substances' | transloco) }].concat(Array.from(substances().values()));
-              <p-select
-                [options]="options"
-                optionLabel="name"
-                optionValue="id"
-                [(ngModel)]="selectedAnalysisSubstance"
-                name="substance"
-                [style]="{ minWidth: '200px' }"
-                placeholder="{{ 'All Substances' | transloco }}"
-                (onChange)="onSelectedAnalysisSubstanceChange()"
-              ></p-select>
-            </form>
-          </div>
-          <div class="flex items-center gap-2">
-            @if (substanceMap().length === -1) {
-            <button
-              class="bg-purple-50 dark:bg-purple-900/40 hover:bg-purple-100 dark:hover:bg-purple-800 text-purple-700 dark:text-purple-200 px-4 py-2 rounded-lg border border-purple-200 dark:border-purple-800 transition-colors flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-              {{ 'Filter' | transloco }}
-            </button>
-            <button
-              class="bg-orange-50 dark:bg-orange-900/40 hover:bg-orange-100 dark:hover:bg-orange-800 text-orange-700 dark:text-orange-200 px-4 py-2 rounded-lg border border-orange-200 dark:border-orange-800 transition-colors flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              {{ 'Export' | transloco }}
-            </button>
-            }
-          </div>
-        </div>
-      </div>
-
+      <app-substance-selector
+        [currentSubstance]="selectedAnalysisSubstance()"
+        (currentSubstanceChange)="selectedAnalysisSubstance.set($event?.valueOf() || 0); onSelectedAnalysisSubstanceChange()"
+        [substances]="substances().values()"
+      />
       
       <!-- Substance Analysis Section -->
       <app-substance-analysis-card [usageHistory]="usageHistory()"
