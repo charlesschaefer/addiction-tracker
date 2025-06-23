@@ -99,7 +99,7 @@
     "eslint": "^9.27.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "husky": "^9.1.7",
-    "jasmine-core": "~5.7.1",
+    "jasmine-core": "~5.8.0",
     "karma": "~6.4.4",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.1",
