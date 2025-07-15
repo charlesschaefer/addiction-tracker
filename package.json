@@ -68,7 +68,7 @@
     "dexie": "^4.0.11",
     "dexie-observable": "4.0.1-beta.13",
     "locale-currency": "^0.0.4",
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.1",
     "ngx-cookie-service": "^20.0.0",
     "ngx-joyride": "^2.5.0",
     "primeicons": "^7.0.0",
