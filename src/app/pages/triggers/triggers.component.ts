@@ -40,11 +40,11 @@ export class TriggersComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.usageService.list().then((usages) => {
+        this.usageService.listActive().then((usages) => {
             this.usageHistory = usages as UsageDto[];
             this.updateCharts();
         });
-        this.substanceService.list().then((subs) => {
+        this.substanceService.getActiveSubstances().then((subs) => {
             this.substances = subs as SubstanceDto[];
             this.substancesMap = this.substances.reduce(
                 (prev, curr, currIdx) => prev.set(currIdx, curr), new Map<number, SubstanceDto>

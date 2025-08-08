@@ -37,16 +37,20 @@ export class UsageEntriesComponent implements OnInit {
     usageEntries = signal<UsageDto[]>([]);
     usageHistory = computed<UsageDto[]>(() => {
         const substance = this.currentSubstance();
+        const usageEntries = this.usageEntries();
+        
         if (substance > 0) {
-            const usageEntries = this.usageEntries();
+            // Filter by specific substance
             const entries = usageEntries.filter(usageEntry => usageEntry.substance == substance);
-            
-            if (entries.length) {
-                return entries;
-            }
-            return [] as unknown as UsageDto[];
+            return entries.length ? entries : [];
+        } else {
+            // Filter to only show entries for active substances when "All Substances" is selected
+            const activeSubstanceIds = Array.from(this.substances.keys());
+            const filteredEntries = usageEntries.filter(usageEntry => 
+                activeSubstanceIds.includes(usageEntry.substance)
+            );
+            return filteredEntries;
         }
-        return this.usageEntries();
     });
 
     currentEntries = computed<UsageDto[]>(() => {
@@ -114,7 +118,7 @@ export class UsageEntriesComponent implements OnInit {
 
     ngOnInit() {
         this.substanceService
-            .list()
+            .getActiveSubstances()
             .then(
                 (substances) =>
                     (this.substances = this.substanceService.getDataAsMap(
@@ -130,7 +134,7 @@ export class UsageEntriesComponent implements OnInit {
     }
 
     loadUsageEntries() {
-        this.usageService.list().then(async (data) => {
+        this.usageService.listActive().then(async (data) => {
             // sort by date, from newest to oldest
             data.sort((a, b) => {
                 const dateA = DateTime.fromJSDate(a.datetime);

@@ -65,7 +65,7 @@ export class HomeComponent implements OnInit {
             this.achievements = achievements as AchievementDto[];
         });
 
-        this.usageService.list().then((usages) => {
+        this.usageService.listActive().then((usages) => {
             this.usageHistory = usages as UsageDto[];
         });
 

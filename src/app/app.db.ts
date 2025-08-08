@@ -61,7 +61,7 @@ export class AppDb extends Dexie {
                     "++id, title, description, completed, category, icon",
             })
             .upgrade((transaction) => {
-                console.log("Upgrade to version 6");
+                console.log("Upgrade to version 8");
                 try {
                     this.achievement
                         .bulkPut(AchievementData.data);
@@ -73,6 +73,40 @@ export class AppDb extends Dexie {
                     console.log(
                         "Populated achievement, alternative_activity and trigger tables with initial data."
                     );
+                } catch (error) {
+                    transaction.abort();
+                    console.error("Error during upgrade:", error);
+                }
+            });
+
+        this.version(9)
+            .stores({
+                substance: "++id, name, archived, archive_date",
+                usage: "++id, substance, quantity, datetime, sentiment, craving, trigger, cost",
+                trigger: "++id, name",
+                cost: "++id, substance, value, date",
+                recommendation: "++id, trigger, text",
+                motivational_factor:
+                    "++id, substance, type, content, createdAt",
+                usage_filling:
+                    "++id, datetime, substance, motivational_factor, alternative_activity, kept_usage",
+                alternative_activity: "++id, name, description, duration",
+                achievement:
+                    "++id, title, description, completed, category, icon",
+            })
+            .upgrade((transaction) => {
+                console.log("Upgrade to version 9 - Adding archived fields to substance table");
+                try {
+                    // Add default values for existing substances
+                    this.substance.toArray().then((substances) => {
+                        const updatedSubstances = substances.map(substance => ({
+                            ...substance,
+                            archived: 0, // 0 for false, 1 for true
+                            archive_date: null
+                        }));
+                        return this.substance.bulkPut(updatedSubstances);
+                    });
+                    console.log("Added archived fields to substance table");
                 } catch (error) {
                     transaction.abort();
                     console.error("Error during upgrade:", error);

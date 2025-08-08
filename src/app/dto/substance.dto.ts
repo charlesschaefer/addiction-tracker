@@ -34,6 +34,8 @@ export interface SubstanceDto {
     id: number;
     name: string;
     icon?: SubstanceIcon;
+    archived?: number; // 0 for false, 1 for true
+    archive_date?: Date | null;
 }
 
 export type SubstanceAddDto = Pick<SubstanceDto, "name">;

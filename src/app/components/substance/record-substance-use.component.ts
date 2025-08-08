@@ -131,7 +131,7 @@ export class RecordSubstanceUseComponent implements OnInit {
 
     ngOnInit(): void {
         if (!this.substances?.length) {
-            this.substanceService.list().then((subs) => {
+            this.substanceService.getActiveSubstances().then((subs) => {
                 this.substances = subs as SubstanceDto[];
                 if (this.substances && this.substances.length > 0) {
                     this.showAddSubstance = false;

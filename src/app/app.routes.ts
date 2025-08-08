@@ -63,6 +63,13 @@ export const routes: Routes = [
             ),
     },
     { 
+        path: "substances", 
+        loadComponent: () =>
+            import("./pages/substances/substances.component").then(
+                (comp) => comp.SubstancesComponent,
+            ),
+    },
+    { 
         path: "settings", 
         loadComponent: () =>
             import("./pages/settings/settings.component").then(

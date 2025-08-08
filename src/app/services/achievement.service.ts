@@ -44,14 +44,12 @@ export class AchievementService extends ServiceAbstract<Achievements> {
     }
 
     /**
-     * Detects and processes all user achievements.
-     * Checks each achievement criteria against the user's data and updates completion status accordingly.
-     * 
+     * Detects and updates achievement completion status based on user data.
      * @returns Promise<AchievementDto[]> The list of all achievements with updated completion status
      */
     async detectAchievements() {
         const achievements = await this.list() as AchievementDto[];
-        const usages = await this.usageService.list() as UsageDto[];
+        const usages = await this.usageService.listActive() as UsageDto[];
         
         // Sort usages by datetime in ascending order
         usages.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime());

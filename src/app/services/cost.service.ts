@@ -6,6 +6,7 @@ import { Changes, DataUpdatedService } from './data-updated.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
 import { UsageDto } from '../dto/usage.dto';
 import { SubstanceDto } from '../dto/substance.dto';
+import { SubstanceService } from './substance.service';
 
 type Costs = CostDto | CostAddDto;
 
@@ -24,9 +25,28 @@ export class CostService extends ServiceAbstract<Costs> {
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
+        private substanceService: SubstanceService
     ) {
         super();
         this.setTable();
+    }
+
+    /**
+     * Lists all cost entries for active substances only.
+     * @returns Promise<CostDto[]> Array of cost entries for active substances
+     */
+    async listActive(): Promise<CostDto[]> {
+        const [allCosts, activeSubstances] = await Promise.all([
+            this.list(),
+            this.substanceService.getActiveSubstances()
+        ]);
+        
+        const activeSubstanceIds = activeSubstances.map(substance => substance.id);
+        console.log("activeSubstanceIds", activeSubstanceIds);
+        console.log("allCosts", allCosts);
+        return (allCosts as CostDto[]).filter(cost => 
+            activeSubstanceIds.includes(cost.substance)
+        );
     }
 
     /**

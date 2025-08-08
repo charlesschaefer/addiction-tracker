@@ -42,16 +42,16 @@ export class FinancialImpactComponent implements OnInit {
 
     ngOnInit() {
         // Fetch all costs from the cost table
-        this.costService.list().then((costs) => {
+        this.costService.listActive().then((costs) => {
             this.costs.set(costs);
             this.updateSpendingTrendChart(costs as CostDto[]);
         });
-        this.substanceService.list().then((subs) => {
+        this.substanceService.getActiveSubstances().then((subs) => {
             this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
             this.updateSpendingTrendChart(this.costs());
         });
         // Usage history is still fetched for other purposes if needed
-        this.usageService.list().then((usages) => {
+        this.usageService.listActive().then((usages) => {
             this.usageHistory.set(usages as UsageDto[]);
         });
     }

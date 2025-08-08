@@ -73,11 +73,11 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.usageService.list().then((usages) => {
+        this.usageService.listActive().then((usages) => {
             this.usageHistory.set(usages as UsageDto[]);
             this.updatePreparedData();
         });
-        this.substanceService.list().then((subs) => {
+        this.substanceService.getActiveSubstances().then((subs) => {
             this.substances.set(
                 this.substanceService.getDataAsMap(subs, "id") as Map<
                     number,
@@ -113,12 +113,13 @@ export class RecoveryDashboardComponent implements OnInit {
 
     prepareUsageBySubstanceData() {
         const substanceCounts: Record<string, number> = {};
-        this.usageHistory().forEach((entry) => {
+        const filteredHistory = this.getFilteredUsageHistory();
+        filteredHistory.forEach((entry) => {
             const substanceName = this.substances().get(entry.substance)
                 ?.name as string;
-            if (substanceCounts[substanceName]) {
+            if (substanceName && substanceCounts[substanceName]) {
                 substanceCounts[substanceName] += entry.quantity || 1;
-            } else {
+            } else if (substanceName) {
                 substanceCounts[substanceName] = entry.quantity || 1;
             }
         });
@@ -130,7 +131,11 @@ export class RecoveryDashboardComponent implements OnInit {
 
     getFilteredUsageHistory() {
         if (this.selectedAnalysisSubstance() === 0) {
-            return this.usageHistory();
+            // Filter to only show entries for active substances when "All Substances" is selected
+            const activeSubstanceIds = Array.from(this.substances().keys());
+            return this.usageHistory().filter(usageEntry => 
+                activeSubstanceIds.includes(usageEntry.substance)
+            );
         }
         return this.usageHistory().filter(
             (entry) =>

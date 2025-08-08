@@ -1,0 +1,203 @@
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-gray-50 to-orange-50 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900 text-gray-800 dark:text-gray-100 transition-all duration-300">
+  <main class="max-w-5xl mx-auto px-4 py-8 relative">
+    <!-- Page Title -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent text-center">
+        {{ 'Substances' | transloco }}
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400 text-center">
+        {{ 'Manage your substances and their settings' | transloco }}
+      </p>
+    </div>
+
+    <!-- Active Substances -->
+    <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+          {{ 'Active Substances' | transloco }}
+        </h3>
+        <button 
+          (click)="showArchived.set(!showArchived())"
+          class="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          {{ showArchived() ? ('Hide Archived' | transloco) : ('Show Archived' | transloco) }}
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div *ngFor="let substance of substances()" 
+             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 hover:shadow-md transition-all duration-200">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3">
+              <div class="bg-gradient-to-br from-purple-500 to-orange-500 text-white p-3 rounded-lg shadow-sm">
+                <i [class]="getSubstanceIconClass(substance)"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-lg text-gray-800 dark:text-gray-200">
+                  {{ substance.name }}
+                </h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ 'Active' | transloco }}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-2">
+            <button 
+              (click)="editSubstance(substance)"
+              class="px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+            >
+              {{ 'Edit' | transloco }}
+            </button>
+            <button 
+              (click)="archiveSubstance(substance)"
+              class="px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm"
+            >
+              {{ 'Archive' | transloco }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="substances().length === 0" class="text-center py-8">
+        <div class="text-gray-400 dark:text-gray-600 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400">{{ 'No active substances found' | transloco }}</p>
+      </div>
+    </div>
+
+    <!-- Archived Substances -->
+    <div *ngIf="showArchived()" class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+      <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-6">
+        {{ 'Archived Substances' | transloco }}
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div *ngFor="let substance of archivedSubstances()" 
+             class="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 opacity-75">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center space-x-3">
+              <div class="bg-gray-400 text-white p-3 rounded-lg shadow-sm">
+                <i [class]="getSubstanceIconClass(substance)"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-lg text-gray-600 dark:text-gray-400">
+                  {{ substance.name }}
+                </h4>
+                <p class="text-sm text-gray-500 dark:text-gray-500">
+                  {{ 'Archived' | transloco }}
+                  <span *ngIf="substance.archive_date">
+                    - {{ substance.archive_date | date:'shortDate' }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-2">
+            <button 
+              (click)="editSubstance(substance)"
+              class="px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+            >
+              {{ 'Edit' | transloco }}
+            </button>
+            <button 
+              (click)="unarchiveSubstance(substance)"
+              class="px-3 py-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm"
+            >
+              {{ 'Unarchive' | transloco }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="archivedSubstances().length === 0" class="text-center py-8">
+        <div class="text-gray-400 dark:text-gray-600 mb-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-14 0h14" />
+          </svg>
+        </div>
+        <p class="text-gray-500 dark:text-gray-400">{{ 'No archived substances found' | transloco }}</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Edit Dialog -->
+<p-dialog 
+  [(visible)]="showEditDialog" 
+  [header]="'Edit Substance' | transloco" 
+  [modal]="true" 
+  [style]="{width: '500px'}"
+  [draggable]="false" 
+  [resizable]="false"
+>
+  <div class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        {{ 'Name' | transloco }}
+      </label>
+      <input 
+        type="text" 
+        [(ngModel)]="editForm.name"
+        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
+        placeholder="{{ 'Enter substance name' | transloco }}"
+      >
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        {{ 'Icon' | transloco }}
+      </label>
+      <div class="flex flex-col gap-4">
+        <app-substance-icon-select 
+          [(ngModel)]="editForm.icon"
+          [currentIcon]="editingSubstance ? (editingSubstance.icon || null) : null"
+          class="mb-4 w-full"
+        ></app-substance-icon-select>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        {{ 'Archive Substance' | transloco }}
+      </label>
+      <div class="flex items-center space-x-3">
+        <p-toggleButton 
+          [(ngModel)]="archivedToggle"
+          [onLabel]="'Archived' | transloco"
+          [offLabel]="'Active' | transloco"
+          offIcon="pi pi-check"
+          [onIcon]="'pi pi-archive'"
+          class="w-full"
+        ></p-toggleButton>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+        {{ 'Archived substances will not appear in analyses or the "Add substance usage" popup.' | transloco }}
+      </p>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="flex justify-end space-x-2">
+      <button 
+        (click)="cancelEdit()"
+        class="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+      >
+        {{ 'Cancel' | transloco }}
+      </button>
+      <button 
+        (click)="saveSubstance()"
+        class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+      >
+        {{ 'Save Changes' | transloco }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

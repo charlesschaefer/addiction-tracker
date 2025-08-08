@@ -232,7 +232,7 @@ export class AppComponent implements OnInit {
         this.dataUpdatedService.subscribe("motivational_factor", detectAchievements);
         this.dataUpdatedService.subscribe("usage_filling", detectAchievements);
 
-        this.substanceService.list().then((substances) => {
+        this.substanceService.getActiveSubstances().then((substances) => {
             this.substances.set(substances as SubstanceDto[]);
             if (!substances.length) {
                 this.showAddSubstance = true;

@@ -53,7 +53,7 @@ export class MotivationalFactorsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.substanceService.list().then(async (subs) => {
+        this.substanceService.getActiveSubstances().then(async (subs) => {
             this.substances = subs as SubstanceDto[];
             if (this.substances.length > 0) {
                 this.selectedSubstance.set(this.substances[0].id);

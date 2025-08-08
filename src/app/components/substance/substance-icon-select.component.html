@@ -15,16 +15,16 @@
   <div class="flex flex-row items-center gap-2 flex-wrap">
     @for (icon of icons; track icon) {
       <div 
-        class="hover:bg-purple-300 dark:hover:bg-purple-700 p-2" 
+        class="hover:bg-purple-300 dark:hover:bg-purple-700 p-2 rounded-lg transition-all duration-200 cursor-pointer" 
         (click)="onInputChange(icon)"
         (keydown.enter)="onInputChange(icon)"
         (keydown.space)="onInputChange(icon)"
         tabindex="0"
         role="button"
         [attr.aria-label]="'Select icon ' + icon"
-        [ngClass]="(value === icon ? 'bg-purple-200 dark:bg-purple-800' : '') + ' ' + colorClass">
+        [ngClass]="getIconClasses(icon)">
         <!-- <fa-icon [icon]="getIcon(icon)" class="text-2xl" /> -->
-         <i class="pi pi-{{getIcon(icon)}}"></i>
+         <i class="pi pi-{{getIcon(icon)}} text-lg"></i>
       </div>
     }
   </div>

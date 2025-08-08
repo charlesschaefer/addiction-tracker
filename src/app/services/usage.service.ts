@@ -6,6 +6,7 @@ import { DbService } from './db.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
 import { Changes, DataUpdatedService } from './data-updated.service';
 import { CostAddDto } from '../dto/cost.dto';
+import { SubstanceService } from './substance.service';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -47,9 +48,28 @@ export class UsageService extends ServiceAbstract<Usages> {
     constructor(
         protected override dbService: DbService,
         protected override dataUpdatedService: DataUpdatedService,
+        private substanceService: SubstanceService,
     ) {
         super();
         this.setTable();
+    }
+
+    /**
+     * Lists all usage entries for active substances only.
+     * @returns Promise<UsageDto[]> Array of usage entries for active substances
+     */
+    async listActive(): Promise<UsageDto[]> {
+        // TODO: improve this by getting only the active substances from the database and then filtering the usages
+        // in the usages query, instead of bringing all usages and then filtering
+        const [allUsages, activeSubstances] = await Promise.all([
+            this.list(),
+            this.substanceService.getActiveSubstances()
+        ]);
+        
+        const activeSubstanceIds = activeSubstances.map(substance => substance.id);
+        return (allUsages as UsageDto[]).filter(usage => 
+            activeSubstanceIds.includes(usage.substance)
+        );
     }
 
     /**
@@ -206,7 +226,7 @@ export class UsageService extends ServiceAbstract<Usages> {
         if (!usageHistory || !usageHistory.length) {
             if (!this.usageHistoryCache && !this.loadingHistory) {
                 this.loadingHistory = true;
-                this.list().then(usages => {
+                this.listActive().then(usages => {
                     this.usageHistoryCache = usages as UsageDto[]
                     this.loadingHistory = false;
                 });

@@ -1,4 +1,4 @@
-import { Component, forwardRef, Input } from "@angular/core";
+import { Component, forwardRef, Input, OnInit } from "@angular/core";
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { SelectModule } from "primeng/select";
 import { SubstanceIcon } from "../../dto/substance.dto";
@@ -17,7 +17,7 @@ console.log("Chegou no SubanceIconSelectComponent");
         useExisting: forwardRef(() => SubstanceIconSelectComponent),
     }]
 })
-export class SubstanceIconSelectComponent implements ControlValueAccessor {
+export class SubstanceIconSelectComponent implements ControlValueAccessor, OnInit {
     protected icons = Object.keys(SubstanceIcon);
     protected names: string[] = Object.keys(SubstanceIcon);
     
@@ -26,6 +26,7 @@ export class SubstanceIconSelectComponent implements ControlValueAccessor {
     protected value: any;
 
     @Input() colorClass = "";
+    @Input() currentIcon: SubstanceIcon | null = null;
 
     constructor() {
         //const iconList = Object.keys(SubstanceIcon);
@@ -35,9 +36,30 @@ export class SubstanceIconSelectComponent implements ControlValueAccessor {
         // });
     }
 
+    ngOnInit() {
+        // If no value is set but we have a currentIcon, use it as the initial value
+        if (!this.value && this.currentIcon) {
+            this.value = this.currentIcon;
+            if (this.onChange) {
+                this.onChange(this.currentIcon);
+            }
+        }
+    }
+
     getIcon(key: string) {
         const icon = SubstanceIcon[key as keyof typeof SubstanceIcon];
         return icon;
+    }
+
+    getIconClasses(icon: string): string {
+        const isSelected = this.value === icon || (this.currentIcon && this.currentIcon === icon && !this.value);
+        const baseClasses = 'hover:bg-purple-300 dark:hover:bg-purple-700 p-2 rounded-lg transition-all duration-200 cursor-pointer';
+        
+        if (isSelected) {
+            return `${baseClasses} bg-purple-200 dark:bg-purple-800 ring-2 ring-purple-500 dark:ring-purple-400 ${this.colorClass}`;
+        } else {
+            return `${baseClasses} bg-gray-100 dark:bg-gray-700 ${this.colorClass}`;
+        }
     }
 
     registerOnChange(fn: any): void {

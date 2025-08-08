@@ -77,7 +77,7 @@ export class FinancialImpactCardComponent implements OnInit {
         if (this.allSubstances && this.allSubstances.size > 0) {
             this.substances.set(this.allSubstances);
         } else {
-            this.substanceService.list().then((subs) => {
+            this.substanceService.getActiveSubstances().then((subs) => {
                 this.substances.set(this.substanceService.getDataAsMap(subs, 'id') as Map<number, SubstanceDto>);
                 this.calculateAll();
             });
