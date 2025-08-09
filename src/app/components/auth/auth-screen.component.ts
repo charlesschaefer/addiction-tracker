@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { Router } from "@angular/router";
 
 // You should implement/use an AuthService with login() and isAuthenticated() methods.
@@ -14,16 +14,13 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./auth-screen.component.html",
 })
 export class AuthScreenComponent implements OnInit {
+    private router = inject(Router);
+
     password = "";
     error = "";
     isLoading = false;
     showSuccess = false;
     auth!: any;
-
-    constructor(
-        //private auth: AuthService, 
-        private router: Router
-    ) {}
 
     ngOnInit() {
         if (this.auth.isAuthenticated() && this.showSuccess) {

@@ -137,11 +137,13 @@
   [resizable]="false"
 >
   <div class="space-y-4">
+    <form>
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="name">
         {{ 'Name' | transloco }}
       </label>
       <input 
+        name="name"
         type="text" 
         [(ngModel)]="editForm.name"
         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-800 dark:text-white"
@@ -150,7 +152,7 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="icon">
         {{ 'Icon' | transloco }}
       </label>
       <div class="flex flex-col gap-4">
@@ -163,11 +165,12 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" for="archived">
         {{ 'Archive Substance' | transloco }}
       </label>
       <div class="flex items-center space-x-3">
         <p-toggleButton 
+          name="archived"
           [(ngModel)]="archivedToggle"
           [onLabel]="'Archived' | transloco"
           [offLabel]="'Active' | transloco"
@@ -180,6 +183,7 @@
         {{ 'Archived substances will not appear in analyses or the "Add substance usage" popup.' | transloco }}
       </p>
     </div>
+    </form>
   </div>
 
   <ng-template pTemplate="footer">

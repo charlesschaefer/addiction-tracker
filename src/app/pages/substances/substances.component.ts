@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { SubstanceService } from "../../services/substance.service";
@@ -36,6 +36,9 @@ import { SubstanceIconSelectComponent } from "../../components/substance/substan
     templateUrl: "./substances.component.html",
 })
 export class SubstancesComponent implements OnInit {
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+
     substances = signal<SubstanceDto[]>([]);
     archivedSubstances = signal<SubstanceDto[]>([]);
     showArchived = signal(false);
@@ -65,11 +68,6 @@ export class SubstancesComponent implements OnInit {
     get currentIcon(): SubstanceIcon | null {
         return this.editingSubstance?.icon || null;
     }
-
-    constructor(
-        private substanceService: SubstanceService,
-        private messageService: MessageService
-    ) {}
 
     ngOnInit() {
         this.loadSubstances();

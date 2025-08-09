@@ -80,7 +80,7 @@ export const appConfig: ApplicationConfig = {
     },
     {
       provide: TranslocoHttpLoader,
-      useFactory: (http: HttpClient) => new TranslocoHttpLoader(http),
+      useFactory: () => new TranslocoHttpLoader(),
       deps: [HttpClient]
     }
   ],

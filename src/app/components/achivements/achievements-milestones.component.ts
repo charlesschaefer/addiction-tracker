@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Output, EventEmitter, OnInit, inject } from "@angular/core";
 import {
     AchievementsDisplayComponent,
 } from "./achievements-display.component";
@@ -14,13 +14,11 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./achievements-milestones.component.html",
 })
 export class AchievementsMilestonesComponent implements OnInit {
+    protected achievementService = inject(AchievementService);
+
     @Output() viewAll = new EventEmitter<void>();
     achievements: AchievementDto[] = [];
     loading = true;
-
-    constructor(
-        protected achievementService: AchievementService,
-    ) {}
 
     ngOnInit() {
         this.loadAchievements();

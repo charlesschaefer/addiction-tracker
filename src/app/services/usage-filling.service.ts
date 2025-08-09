@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { UsageFillingAddDto, UsageFillings } from "../dto/usage-filling.dto";
 import { ServiceAbstract } from "./service.abstract";
 import { DbService } from "./db.service";
@@ -22,15 +22,15 @@ export interface UsageFillingCounts {
     providedIn: "root",
 })
 export class UsageFillingService extends ServiceAbstract<UsageFillings> {
+    protected override dbService = inject(DbService);
+    protected override dataUpdatedService = inject(DataUpdatedService);
+
     protected override storeName = 'usage_filling' as const;
 
     /**
      * Injects dependencies for usage filling logic.
      */
-    constructor(
-        protected override dbService: DbService,
-        protected override dataUpdatedService: DataUpdatedService,
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

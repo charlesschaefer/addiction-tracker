@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { PanelModule } from 'primeng/panel';
@@ -38,6 +38,11 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
     providers: [MessageService]
 })
 export class CostComponent extends PaginatedComponent<CostDto> implements OnInit {
+    private costService = inject(CostService);
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+    private translateService = inject(TranslocoService);
+
     DateTime = DateTime
     // substance_id and total_cost
     calculatedCosts = new Map<number, number>();
@@ -47,17 +52,6 @@ export class CostComponent extends PaginatedComponent<CostDto> implements OnInit
         animation: true
     };
     chartData: ChartData;
-
-
-
-    constructor(
-        private costService: CostService,
-        private substanceService: SubstanceService,
-        private messageService: MessageService,
-        private translateService: TranslocoService,
-    ) {
-        super();
-    }
     
     ngOnInit() {
         this.substanceService.list().then(results => {

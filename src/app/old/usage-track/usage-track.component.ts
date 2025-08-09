@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ChartModule } from 'primeng/chart';
@@ -51,6 +51,12 @@ type SubstanceTriggerUsage = Map<number, TriggerUsage[]>;
     styleUrl: './usage-track.component.scss'
 })
 export class UsageTrackComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private recommendationService = inject(RecommendationService);
+    private route = inject(Router);
+    private translateService = inject(TranslocoService);
+
     usageChartData: UsageChart[];
     triggerChartData = new Map<number, ChartData>();
     substances = new Map<number, SubstanceDto>();
@@ -69,14 +75,6 @@ export class UsageTrackComponent implements OnInit {
     options = {
         animation: true
     };
-
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private recommendationService: RecommendationService,
-        private route: Router,
-        private translateService: TranslocoService
-    ) {}
 
     ngOnInit() {
         this.usageService.clearCache();

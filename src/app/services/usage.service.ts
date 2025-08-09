@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { DateTime } from 'luxon';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
@@ -36,6 +36,10 @@ type Usages = UsageAddDto | UsageDto;
     providedIn: 'root'
 })
 export class UsageService extends ServiceAbstract<Usages> {
+    protected override dbService = inject(DbService);
+    protected override dataUpdatedService = inject(DataUpdatedService);
+    private substanceService = inject(SubstanceService);
+
     protected override storeName = 'usage' as const;
 
     sobrietyDaysCache?: number;
@@ -45,11 +49,7 @@ export class UsageService extends ServiceAbstract<Usages> {
     /**
      * Injects dependencies for usage logic.
      */
-    constructor(
-        protected override dbService: DbService,
-        protected override dataUpdatedService: DataUpdatedService,
-        private substanceService: SubstanceService,
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

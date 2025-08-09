@@ -66,6 +66,16 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
     providers: [MessageService]
 })
 export class UsageAddComponent implements OnInit {
+    private substanceService = inject(SubstanceService);
+    private triggerService = inject(TriggerService);
+    private triggerAddService = inject(TriggerService);
+    private usageService = inject(UsageService);
+    private usageAddService = inject(UsageService);
+    private messageService = inject(MessageService);
+    protected router = inject(Router);
+    private activatedRoute = inject(ActivatedRoute);
+    private translateService = inject(TranslocoService);
+
     private fb = inject(FormBuilder);
     usageForm = this.fb.group({
         substance: [0, Validators.min(1)],
@@ -87,18 +97,6 @@ export class UsageAddComponent implements OnInit {
     sentiments: {name: string, id: number}[] = [];
 
     showRespirationExerciseDialog = true;
-    
-    constructor(
-        private substanceService: SubstanceService,
-        private triggerService: TriggerService,
-        private triggerAddService: TriggerService,
-        private usageService: UsageService,
-        private usageAddService: UsageService,
-        private messageService: MessageService,
-        protected router: Router,
-        private activatedRoute: ActivatedRoute,
-        private translateService: TranslocoService
-    ) {}
     
     ngOnInit(): void {
         const returning = this.activatedRoute.snapshot.queryParamMap.get('returning');

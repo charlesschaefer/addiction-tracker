@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, inject } from "@angular/core";
 import { AchievementsDisplayComponent } from "../../components/achivements/achievements-display.component";
 import { AchievementDto, SafeIconAchievement } from "../../dto/achievement.dto";
 import { AchievementService } from "../../services/achievement.service";
@@ -13,6 +13,10 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
     templateUrl: "./achievements.component.html",
 })
 export class AchievementsComponent implements OnInit {
+    private achievementService = inject(AchievementService);
+    private sanitizer = inject(DomSanitizer);
+    private translateService = inject(TranslocoService);
+
     achievements = signal<AchievementDto[]>([]);
     loading = true;
 
@@ -57,12 +61,6 @@ export class AchievementsComponent implements OnInit {
             .sort((a, b) => a.sort - b.sort)
             .map(({value}) => value).slice(0, 3) as SafeIconAchievement[];
     });
-
-    constructor(
-        private achievementService: AchievementService,
-        private sanitizer: DomSanitizer,
-        private translateService: TranslocoService,
-    ) { }
 
     ngOnInit() {
         this.loadAchievements();

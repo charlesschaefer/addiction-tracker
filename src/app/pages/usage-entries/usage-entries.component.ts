@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, inject } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceService } from "../../services/substance.service";
@@ -19,6 +19,10 @@ import { SubstanceSelectorComponent } from "../../components/substance/substance
     templateUrl: "./usage-entries.component.html",
 })
 export class UsageEntriesComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+
     console = console;
     DateTime = DateTime;
     dateFormat = {
@@ -109,12 +113,6 @@ export class UsageEntriesComponent implements OnInit {
 
     entryToDelete?: number;
     showDeleteConfirmation = signal(false);
-
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private messageService: MessageService,
-    ) {}
 
     ngOnInit() {
         this.substanceService

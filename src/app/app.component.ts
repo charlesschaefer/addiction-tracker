@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterOutlet, RouterLink, Router } from "@angular/router";
 import { MatMenuModule } from "@angular/material/menu";
@@ -68,6 +68,14 @@ import { window as TauriWindow } from "@tauri-apps/api";
     styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
+    private themeService = inject(ThemeService);
+    private translateService = inject(TranslocoService);
+    private router = inject(Router);
+    private dataUpdatedService = inject(DataUpdatedService);
+    private achievementService = inject(AchievementService);
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+
     isProtected: any = false;
     isAuthenticated: any = false;
     navLinks: any;
@@ -178,15 +186,9 @@ export class AppComponent implements OnInit {
 
     showPrivacyOverlay = signal(false);
 
-    constructor(
-        private themeService: ThemeService,
-        private translateService: TranslocoService,
-        private router: Router,
-        private dataUpdatedService: DataUpdatedService,
-        private achievementService: AchievementService,
-        private substanceService: SubstanceService,
-        private messageService: MessageService
-    ) {
+    constructor() {
+        const translateService = this.translateService;
+
         translateService.setDefaultLang("en");
         let userLanguage = localStorage.getItem("language");
         if (!userLanguage) {

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, Input } from "@angular/core";
+import { Component, computed, input, Input, inject } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";
@@ -16,6 +16,8 @@ import { getDateForChart } from "../../util/date.utils";
     templateUrl: "./substance-analysis-card.component.html",
 })
 export class SubstanceAnalysisCardComponent {
+    private translateService = inject(TranslocoService);
+
     @Input() usageHistory: UsageDto[] = [];
     substances = input<Map<number, SubstanceDto>>(new Map<number, SubstanceDto>());
     substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
@@ -105,8 +107,6 @@ export class SubstanceAnalysisCardComponent {
             }
         }
     };
-
-    constructor(private translateService: TranslocoService) {}
 
     setSelectedAnalysisSubstance(_substance: string) {
         //this.selectedAnalysisSubstance.set(substance);

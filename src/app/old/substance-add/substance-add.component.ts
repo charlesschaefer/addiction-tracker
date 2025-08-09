@@ -36,19 +36,17 @@ import { SubstanceService } from '../../services/substance.service';
     providers: [MessageService]
 })
 export class SubstanceAddComponent {
+    private substanceService = inject(SubstanceService);
+    private snackBar = inject(MatSnackBar);
+    private router = inject(Router);
+    private messageService = inject(MessageService);
+    private translateService = inject(TranslocoService);
+
     private fb = inject(FormBuilder);
     substanceForm = this.fb.group({
         name: [null, Validators.required],
     });
     formSubmitted = false;
-    
-    constructor(
-        private substanceService: SubstanceService,
-        private snackBar: MatSnackBar,
-        private router: Router,
-        private messageService: MessageService,
-        private translateService: TranslocoService,
-    ) {}
     
     async onSubmit() {
         this.formSubmitted = true;

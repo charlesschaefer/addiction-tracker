@@ -1,5 +1,5 @@
 import { AES, enc } from 'crypto-js';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { CostService } from './cost.service';
 import { CostDto } from '../dto/cost.dto';
@@ -43,23 +43,18 @@ export interface BackupData {
     providedIn: 'root'
 })
 export class BackupService {
+    private costService = inject(CostService);
+    private substanceService = inject(SubstanceService);
+    private usageService = inject(UsageService);
+    private triggerService = inject(TriggerService);
+    private recommendationService = inject(RecommendationService);
+    private alternativeActivityService = inject(AlternativeActivityService);
+    private motivationalFactorService = inject(MotivationalFactorService);
+    private usageFillingService = inject(UsageFillingService);
+    private achievementService = inject(AchievementService);
+
     /** Holds the encrypted backup string. */
     encryptedBackup: string;
-
-    /**
-     * Injects required services for backup/restore.
-     */
-    constructor(
-        private costService: CostService,
-        private substanceService: SubstanceService,
-        private usageService: UsageService,
-        private triggerService: TriggerService,
-        private recommendationService: RecommendationService,
-        private alternativeActivityService: AlternativeActivityService,
-        private motivationalFactorService: MotivationalFactorService,
-        private usageFillingService: UsageFillingService,
-        private achievementService: AchievementService,
-    ) { }
     
     /**
      * Creates a backup of all user data, encrypts it, and returns a Subject with the encrypted string.

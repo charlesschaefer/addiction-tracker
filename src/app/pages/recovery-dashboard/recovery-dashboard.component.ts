@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
@@ -38,6 +38,13 @@ import { SubstanceSelectorComponent } from "../../components/substance/substance
     templateUrl: "./recovery-dashboard.component.html",
 })
 export class RecoveryDashboardComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private costService = inject(CostService);
+    private sentimentService = inject(SentimentService);
+    private triggerService = inject(TriggerService);
+    private translateService = inject(TranslocoService);
+
     Array = Array;
 
     selectedAnalysisSubstance = signal(0);
@@ -56,14 +63,7 @@ export class RecoveryDashboardComponent implements OnInit {
 
     locale: TranslocoAvailableLangs;
 
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private costService: CostService,
-        private sentimentService: SentimentService,
-        private triggerService: TriggerService,
-        private translateService: TranslocoService
-    ) {
+    constructor() {
         this.initChartOptions();
         this.locale = this.translateService
                 .getActiveLang()

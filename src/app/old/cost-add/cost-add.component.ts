@@ -41,6 +41,12 @@ import { CostService } from '../../services/cost.service';
     styleUrl: './cost-add.component.scss'
 })
 export class CostAddComponent implements OnInit {
+    private substanceService = inject(SubstanceService);
+    private costAddService = inject(CostService);
+    private messageService = inject(MessageService);
+    private router = inject(Router);
+    private translateService = inject(TranslocoService);
+
     private fb = inject(FormBuilder);
     costForm = this.fb.group({
         substance: [null, Validators.required],
@@ -48,14 +54,6 @@ export class CostAddComponent implements OnInit {
         date: [null, Validators.required],
     })
     substances: SubstanceDto[];
-
-    constructor(
-        private substanceService: SubstanceService,
-        private costAddService: CostService,
-        private messageService: MessageService,
-        private router: Router,
-        private translateService: TranslocoService,
-    ) {}
     
     ngOnInit() {
         this.substanceService.list().then(substances => this.substances = substances as SubstanceDto[]);

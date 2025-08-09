@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component,Output, EventEmitter, input, computed, signal } from "@angular/core";
+import { Component, Output, EventEmitter, input, computed, signal, inject } from "@angular/core";
 import { AchievementDto, SafeIconAchievement } from "../../dto/achievement.dto";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { ButtonModule } from "primeng/button";
@@ -14,6 +14,9 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./achievements-display.component.html",
 })
 export class AchievementsDisplayComponent {
+    private sanitizer = inject(DomSanitizer);
+    private achievementService = inject(AchievementService);
+
     achievements = input<AchievementDto[]>([]);
     @Output() viewAll = new EventEmitter<void>();
 
@@ -148,11 +151,6 @@ export class AchievementsDisplayComponent {
             color: "bg-green-100 text-green-700",
         },
     ];
-
-    constructor(
-        private sanitizer: DomSanitizer,
-        private achievementService: AchievementService,
-    ) { }
 
     setCategory(cat: string) {
         this.selectedCategory.set(cat);

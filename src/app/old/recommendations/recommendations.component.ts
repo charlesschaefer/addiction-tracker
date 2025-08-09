@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, NgComponentOutlet } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
@@ -28,14 +28,12 @@ import { RecommendationComponent } from '../recommendation/recommendation.compon
     styleUrl: './recommendations.component.scss'
 })
 export class RecommendationsComponent implements OnInit {
+    private triggerService = inject(TriggerService);
+    private translateService = inject(TranslocoService);
+
 
     triggers: TriggerDto[];
     trigger: string;
-    
-    constructor(
-        private triggerService: TriggerService,
-        private translateService: TranslocoService,
-    ) {}
 
     ngOnInit(): void {
         this.triggerService.list().then(triggers => {

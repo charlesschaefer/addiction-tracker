@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { TranslocoLoader } from '@jsverse/transloco';
 import { Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranslocoHttpLoader implements TranslocoLoader {
-    constructor(private http: HttpClient) {}
+    private http = inject(HttpClient);
+
 
     getTranslation(lang: string): Observable<any> {
         lang = lang.toLowerCase();

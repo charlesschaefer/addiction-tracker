@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { CostAddDto, CostDto } from '../dto/cost.dto';
 import { DbService } from './db.service';
@@ -22,11 +22,7 @@ export class CostService extends ServiceAbstract<Costs> {
     /**
      * Injects dependencies for cost logic.
      */
-    constructor(
-        protected override dbService: DbService,
-        protected override dataUpdatedService: DataUpdatedService,
-        private substanceService: SubstanceService
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

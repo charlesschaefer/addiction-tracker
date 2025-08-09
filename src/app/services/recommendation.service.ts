@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { RecommendationDto, RecommendationAddDto } from '../dto/recommendation.dto';
 //import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -21,14 +21,14 @@ type Recommendations = RecommendationDto | RecommendationAddDto;
     providedIn: 'root'
 })
 export class RecommendationService extends ServiceAbstract<Recommendations> {
+    protected override dbService = inject(DbService);
+
     protected override storeName = 'recommendation' as const;
 
     /**
      * Injects the database service and sets up the table.
      */
-    constructor(
-        protected override dbService: DbService
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

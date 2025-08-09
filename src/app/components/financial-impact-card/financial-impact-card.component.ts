@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit, signal } from "@angular/core";
+import { Component, Input, OnInit, signal, inject } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { CostService } from "../../services/cost.service";
@@ -17,6 +17,11 @@ import { getCurrency } from "locale-currency";
     templateUrl: "./financial-impact-card.component.html",
 })
 export class FinancialImpactCardComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private costService = inject(CostService);
+    private translateService = inject(TranslocoService);
+
     @Input() COLORS: string[] = [];
     @Input() usageCosts!: CostDto[];
     @Input() allSubstances: Map<number, SubstanceDto>;
@@ -56,13 +61,6 @@ export class FinancialImpactCardComponent implements OnInit {
             }
         }
     };
-
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private costService: CostService,
-        private translateService: TranslocoService,
-    ) { }
 
     ngOnInit() {
         // Load costs and substances if not provided

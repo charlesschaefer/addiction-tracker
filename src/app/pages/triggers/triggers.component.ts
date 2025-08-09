@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, model, OnInit } from "@angular/core";
+import { Component, model, OnInit, inject } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
@@ -17,6 +17,10 @@ import { SubstanceSelectorComponent } from "../../components/substance/substance
     templateUrl: "./triggers.component.html",
 })
 export class TriggersComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private triggerService = inject(TriggerService);
+
     usageHistory: UsageDto[] = [];
     substances: SubstanceDto[] = [];
     substancesMap = new Map<number, SubstanceDto>();
@@ -31,11 +35,7 @@ export class TriggersComponent implements OnInit {
     pieChartOptions: any;
     barChartOptions: any;
 
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private triggerService: TriggerService
-    ) {
+    constructor() {
         this.initChartOptions();
     }
 

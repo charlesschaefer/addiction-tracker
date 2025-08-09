@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -31,12 +31,12 @@ import { isMobile } from '../util/functions';
     `
 })
 export class VersionComponent implements OnInit {
+    private confirmationService = inject(ConfirmationService);
+    private messageService = inject(MessageService);
+
     version = '';
 
-    constructor(
-        private confirmationService: ConfirmationService,
-        private messageService: MessageService
-    ) {
+    constructor() {
         this.version = packageJson.version
     }
 

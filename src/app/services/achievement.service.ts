@@ -1,4 +1,4 @@
-import { Injectable, InputSignal, resource, WritableSignal } from '@angular/core';
+import { Injectable, InputSignal, resource, WritableSignal, inject } from '@angular/core';
 import { AchievementAddDto, AchievementDto, SafeIconAchievement } from '../dto/achievement.dto';
 import { ServiceAbstract } from './service.abstract';
 import { DbService } from './db.service';
@@ -25,20 +25,20 @@ type Achievements = AchievementDto | AchievementAddDto;
     providedIn: "root",
 })
 export class AchievementService extends ServiceAbstract<Achievements> {
+    protected override dbService = inject(DbService);
+    private usageService = inject(UsageService);
+    private triggerService = inject(TriggerService);
+    private motivationalFactorService = inject(MotivationalFactorService);
+    private alternativeActivityService = inject(AlternativeActivityService);
+    private sanitizer = inject(DomSanitizer);
+    private translate = inject(TranslocoService);
+
     protected override storeName = 'achievement' as const;
 
     /**
      * Injects dependencies for achievement logic.
      */
-    constructor(
-        protected override dbService: DbService,
-        private usageService: UsageService,
-        private triggerService: TriggerService,
-        private motivationalFactorService: MotivationalFactorService,
-        private alternativeActivityService: AlternativeActivityService,
-        private sanitizer: DomSanitizer,
-        private translate: TranslocoService,
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

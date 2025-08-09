@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MessageService } from "primeng/api";
 import { DATABASE_NAME } from "../../app.db";
@@ -13,6 +13,9 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
     templateUrl: "./settings.component.html",
 })
 export class SettingsComponent {
+    private messageService = inject(MessageService);
+    private translateService = inject(TranslocoService);
+
     
     isProtected = false;
     password = "";
@@ -28,10 +31,7 @@ export class SettingsComponent {
     darkMode = false;
     language = 'en';
 
-    constructor(
-        private messageService: MessageService,
-        private translateService: TranslocoService
-    ) {
+    constructor() {
         // Load theme and language from localStorage if available
         if (typeof window !== 'undefined') {
             const storedTheme = localStorage.getItem('theme');

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal, inject } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { ThemeService } from "../../services/theme.service";
 import { LockButtonComponent } from "../auth/lock-button.component";
@@ -18,6 +18,10 @@ interface AppMenuItem {
     templateUrl: "./header.component.html",
 })
 export class HeaderComponent implements OnInit {
+    private router = inject(Router);
+    themeService = inject(ThemeService);
+    private translateService = inject(TranslocoService);
+
     mobileMenuOpen = false;
     mobileSettingsOpen = false;
 
@@ -27,12 +31,6 @@ export class HeaderComponent implements OnInit {
     settingsMenuOpen = false;
 
     theme = signal("light");
-
-    constructor(
-        private router: Router, 
-        public themeService: ThemeService,
-        private translateService: TranslocoService,
-    ) { }
 
     ngOnInit(): void {
         this.theme.set(this.themeService.getCurrentTheme()());

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, EventEmitter, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsageFillingService } from "../../services/usage-filling.service";
 import { UsageFillingAddDto } from "../../dto/usage-filling.dto";
@@ -13,6 +13,9 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
     templateUrl: "./alternative-activity-overlay.component.html",
 })
 export class AlternativeActivityOverlayComponent {
+    private usageFillingService = inject(UsageFillingService);
+    private translateService = inject(TranslocoService);
+
     @Input() show = false;
     @Input() selectedSubstance?: SubstanceDto;
     @Input() motivationalFactorId?: number;
@@ -51,11 +54,6 @@ export class AlternativeActivityOverlayComponent {
 
     /** Reference to Math for use in template */
     Math = Math;
-
-    constructor(
-        private usageFillingService: UsageFillingService,
-        private translateService: TranslocoService
-    ) {}
 
     select(activityId: number) {
         // Find the activity object from the ID (assuming it's passed from parent)

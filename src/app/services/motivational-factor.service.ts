@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { ServiceAbstract } from "./service.abstract";
 import { MotivationalFactorAddDto, MotivationalFactorDto } from "../dto/motivational-factor.dto";
 import { DbService } from "./db.service";
@@ -14,14 +14,14 @@ type MotivationalFactors = MotivationalFactorAddDto | MotivationalFactorDto;
     providedIn: "root",
 })
 export class MotivationalFactorService extends ServiceAbstract<MotivationalFactors> {
+    protected override dbService = inject(DbService);
+
     protected override storeName = 'motivational_factor' as const;
     
     /**
      * Injects the database service and sets up the table.
      */
-    constructor(
-        protected override dbService: DbService
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

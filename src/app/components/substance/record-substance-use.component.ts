@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { SubstanceService } from "../../services/substance.service";
 import {
@@ -41,6 +41,14 @@ import { CalendarModule } from "primeng/calendar";
     templateUrl: "./record-substance-use.component.html",
 })
 export class RecordSubstanceUseComponent implements OnInit {
+    private substanceService = inject(SubstanceService);
+    private usageService = inject(UsageService);
+    private motivationalFactorService = inject(MotivationalFactorService);
+    private triggerService = inject(TriggerService);
+    private costService = inject(CostService);
+    private messageService = inject(MessageService);
+    private usageFillingService = inject(UsageFillingService);
+
     /** List of available substances. */
     @Input() substances?: SubstanceDto[] | null = [];
     /** Currently selected substance name. */
@@ -118,16 +126,6 @@ export class RecordSubstanceUseComponent implements OnInit {
 
     /** Reference to the Math object for use in the template. */
     Math = Math;
-
-    constructor(
-        private substanceService: SubstanceService,
-        private usageService: UsageService,
-        private motivationalFactorService: MotivationalFactorService,
-        private triggerService: TriggerService,
-        private costService: CostService,
-        private messageService: MessageService,
-        private usageFillingService: UsageFillingService
-    ) {}
 
     ngOnInit(): void {
         if (!this.substances?.length) {

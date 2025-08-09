@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { TriggerAddDto, TriggerDto } from '../dto/trigger.dto';
 import { DbService } from './db.service';
@@ -14,15 +14,15 @@ type Triggers = TriggerDto | TriggerAddDto;
     providedIn: 'root'
 })
 export class TriggerService extends ServiceAbstract<Triggers> {
+    protected override dbService = inject(DbService);
+    private translateService = inject(TranslocoService);
+
     protected override storeName = 'trigger' as const;
     
     /**
      * Injects the database service and sets up the table.
      */
-    constructor(
-        protected override dbService: DbService,
-        private translateService: TranslocoService,
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

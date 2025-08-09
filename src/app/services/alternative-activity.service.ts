@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, inject } from "@angular/core";
 import { DbService } from "./db.service";
 import { ServiceAbstract } from "./service.abstract";
 import { AlternativeActivityAddDto, AlternativeActivityDto } from "../dto/alternative-activity.dto";
@@ -14,15 +14,15 @@ type AlternativeActivities = AlternativeActivityDto | AlternativeActivityAddDto;
     providedIn: "root",
 })
 export class AlternativeActivityService extends ServiceAbstract<AlternativeActivities> {
+    protected override dbService = inject(DbService);
+    private translateService = inject(TranslocoService);
+
     protected override storeName = 'alternative_activity' as const;
 
     /**
      * Injects the database service and sets up the table.
      */
-    constructor(
-        protected override dbService: DbService,
-        private translateService: TranslocoService,
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

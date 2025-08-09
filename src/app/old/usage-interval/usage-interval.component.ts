@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
@@ -26,6 +26,11 @@ interface UsageInterval {
     styleUrl: './usage-interval.component.scss'
 })
 export class UsageIntervalComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private route = inject(Router);
+    private translateService = inject(TranslocoService);
+
     substances = new Map<number, string>();
 
     usageIntervals: Map<number, UsageInterval[]>;
@@ -34,13 +39,6 @@ export class UsageIntervalComponent implements OnInit {
     options = {
         animation: true
     };
-
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private route: Router,
-        private translateService: TranslocoService
-    ) {}
 
     ngOnInit(): void {
         this.substanceService.list().then(results => {

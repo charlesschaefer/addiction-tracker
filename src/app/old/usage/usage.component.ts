@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -49,6 +49,13 @@ interface SubstanceUsage {
     providers: [MessageService]
 })
 export class UsageComponent extends PaginatedComponent<UsageDto> implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+    private recommendationService = inject(RecommendationService);
+    private route = inject(Router);
+    private translateService = inject(TranslocoService);
+
     substances = new Map<number, string>();
     sentiments = new Map<number, string>([
         [1, '😔'],
@@ -71,17 +78,6 @@ export class UsageComponent extends PaginatedComponent<UsageDto> implements OnIn
         'info',
         'danger',
     ];
-
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private messageService: MessageService,
-        private recommendationService: RecommendationService,
-        private route: Router,
-        private translateService: TranslocoService
-    ) {
-        super();
-    }
     
     ngOnInit(): void {
         this.substanceService.list().then(results => {

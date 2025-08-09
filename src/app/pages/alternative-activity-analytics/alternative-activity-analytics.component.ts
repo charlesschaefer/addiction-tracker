@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, inject } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { UsageFillingCounts, UsageFillingService } from "../../services/usage-filling.service";
 import { AlternativeActivityService } from "../../services/alternative-activity.service";
@@ -13,6 +13,9 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./alternative-activity-analytics.component.html",
 })
 export class AlternativeActivityAnalyticsComponent implements OnInit {
+    private usageFillingService = inject(UsageFillingService);
+    private alternativeActivityService = inject(AlternativeActivityService);
+
     alternativeActivitiesCounts = signal<UsageFillingCounts[]>([]);
     alternativeActivities = new Map<number, AlternativeActivityDto>();
     loading = true;
@@ -34,11 +37,6 @@ export class AlternativeActivityAnalyticsComponent implements OnInit {
         const total = this.totalUsed();
         return total > 0 ? (totalSuccess / total) * 100 : 0;
     });
-
-    constructor(
-        private usageFillingService: UsageFillingService,
-        private alternativeActivityService: AlternativeActivityService,
-    ) { }
 
     ngOnInit() {
         // Simulate loading from localStorage

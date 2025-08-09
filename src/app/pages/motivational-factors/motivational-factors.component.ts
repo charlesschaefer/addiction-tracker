@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal } from "@angular/core";
+import { Component, computed, OnInit, signal, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { MotivationalFactorService } from "../../services/motivational-factor.service";
@@ -25,6 +25,10 @@ import { TranslocoModule } from "@jsverse/transloco";
     templateUrl: "./motivational-factors.component.html",
 })
 export class MotivationalFactorsComponent implements OnInit {
+    private motivationalFactorService = inject(MotivationalFactorService);
+    private substanceService = inject(SubstanceService);
+    private messageService = inject(MessageService);
+
     substances: SubstanceDto[] = [];
     selectedSubstance = signal<number | null>(null);
     substancesMotivationalFactors = signal<
@@ -45,12 +49,6 @@ export class MotivationalFactorsComponent implements OnInit {
     showDeleteConfirm: number | null = null;
     editingFactor: MotivationalFactorDto | null = null;
     editedContent = "";
-
-    constructor(
-        private motivationalFactorService: MotivationalFactorService,
-        private substanceService: SubstanceService,
-        private messageService: MessageService
-    ) {}
 
     ngOnInit() {
         this.substanceService.getActiveSubstances().then(async (subs) => {

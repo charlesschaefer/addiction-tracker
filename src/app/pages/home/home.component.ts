@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
 import { JoyrideService } from "ngx-joyride";
 import { UsageService } from "../../services/usage.service";
@@ -37,6 +37,14 @@ import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
     styleUrl: "./home.component.scss",
 })
 export class HomeComponent implements OnInit {
+    private joyrideService = inject(JoyrideService);
+    private cookieService = inject(CookieService);
+    private achievementService = inject(AchievementService);
+    private substanceService = inject(SubstanceService);
+    private usageService = inject(UsageService);
+    private motivationalFactorService = inject(MotivationalFactorService);
+    private translateService = inject(TranslocoService);
+
     showOnboardingFlow = true;
     usageHistory: UsageDto[] = [];
     motivationalFactors: MotivationalFactorDto[] = [];
@@ -47,16 +55,6 @@ export class HomeComponent implements OnInit {
     cards: any = [];
 
     sobrietyComponentStyle = SobrietyCardStyle.YEAR_COMPLETION;
-
-    constructor(
-        private joyrideService: JoyrideService,
-        private cookieService: CookieService,
-        private achievementService: AchievementService,
-        private substanceService: SubstanceService,
-        private usageService: UsageService,
-        private motivationalFactorService: MotivationalFactorService,
-        private translateService: TranslocoService,
-    ) {}
 
     ngOnInit(): void {
         this.showOnboardingFlow = !localStorage.getItem("onboardingCompleted");

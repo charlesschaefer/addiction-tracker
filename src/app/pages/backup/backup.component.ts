@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
@@ -43,6 +43,15 @@ interface SaveFileResult {
     styleUrl: "./backup.component.scss",
 })
 export class BackupComponent {
+    private costService = inject(CostService);
+    private substanceService = inject(SubstanceService);
+    private usageService = inject(UsageService);
+    private triggerService = inject(TriggerService);
+    private messageService = inject(MessageService);
+    private confirmationService = inject(ConfirmationService);
+    private backupService = inject(BackupService);
+    private translateService = inject(TranslocoService);
+
     encryptKey: string;
     encryptedBackup: string;
 
@@ -54,17 +63,6 @@ export class BackupComponent {
     filePointer: any;
 
     restoreMode = false;
-
-    constructor(
-        private costService: CostService,
-        private substanceService: SubstanceService,
-        private usageService: UsageService,
-        private triggerService: TriggerService,
-        private messageService: MessageService,
-        private confirmationService: ConfirmationService,
-        private backupService: BackupService,
-        private translateService: TranslocoService
-    ) {}
 
     generateBackup() {
         if (!this.encryptKey || this.encryptKey.length < 6) {

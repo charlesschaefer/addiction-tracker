@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, inject } from "@angular/core";
 import { UsageDto } from "../../dto/usage.dto";
 import { UsageService } from "../../services/usage.service";
 import { TranslocoModule, TranslocoService } from "@jsverse/transloco";
@@ -16,16 +16,14 @@ export enum SobrietyCardStyle {
     templateUrl: "./sobriety-card.component.html",
 })
 export class SobrietyCardComponent {
+    private usageService = inject(UsageService);
+    private translocoService = inject(TranslocoService);
+
     @Input() componentStyle = SobrietyCardStyle.SIMPLE_DAYS;
     @Input() usageHistory: UsageDto[] = [];
     @Input() useCache = true;
 
     styles = SobrietyCardStyle;
-
-    constructor(
-        private usageService: UsageService,
-        private translocoService: TranslocoService
-    ) {}
 
     calculateSobrietyDays(): number {
         return this.usageService.calculateSobrietyDays(this.usageHistory, this.useCache);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceAbstract } from './service.abstract';
 import { SubstanceAddDto, SubstanceDto } from '../dto/substance.dto';
 import { DbService } from './db.service';
@@ -12,14 +12,14 @@ export type Substance = SubstanceDto | SubstanceAddDto;
     providedIn: 'root'
 })
 export class SubstanceService extends ServiceAbstract<Substance> {
+    protected override dbService = inject(DbService);
+
     protected override storeName = 'substance' as const;
 
     /**
      * Injects the database service and sets up the table.
      */
-    constructor(
-        protected override dbService: DbService
-    ) {
+    constructor() {
         super();
         this.setTable();
     }

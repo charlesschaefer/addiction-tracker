@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, inject } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -15,18 +15,16 @@ import { RecommendationService } from '../../services/recommendation.service';
     styleUrl: './recommendation.component.scss'
 })
 export class RecommendationComponent implements OnChanges {
+    private usageService = inject(UsageService);
+    private recommendationService = inject(RecommendationService);
+    private translateService = inject(TranslocoService);
+
 
     //@Input() usages: UsageDto[];
     @Input() trigger: string;
 
     recommendationText: string;
     showRecommendationDialog = false;
-
-    constructor(
-        private usageService: UsageService,
-        private recommendationService: RecommendationService,
-        private translateService: TranslocoService,
-    ) {}
 
 
     async getRecommendation(trigger: string) {

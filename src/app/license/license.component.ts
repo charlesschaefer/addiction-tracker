@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,11 +10,9 @@ import { RouterLink } from '@angular/router';
     styles: 'a { color: var(--p-primary-color); }'
 })
 export class LicenseComponent implements OnInit {
-    licenseText?: string;
+    private http = inject(HttpClient);
 
-    constructor(
-        private http: HttpClient,
-    ) {}
+    licenseText?: string;
 
     ngOnInit(): void {
         this.http.get('assets/LICENSE', {responseType: 'text'}).subscribe(

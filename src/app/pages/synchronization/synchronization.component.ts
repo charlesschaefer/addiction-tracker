@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { invoke } from '@tauri-apps/api/core';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -44,6 +44,12 @@ import { CheckboxModule } from 'primeng/checkbox';
     styleUrl: './synchronization.component.scss'
 })
 export class SynchronizationComponent {
+    private otpGenerator = inject(OtpGeneratorService);
+    private backupService = inject(BackupService);
+    private httpClient = inject(HttpClient);
+    private messageService = inject(MessageService);
+    private translateService = inject(TranslocoService);
+
     getFromOthersVisible = false;
     sendToOthersVisible = false;
 
@@ -62,14 +68,6 @@ export class SynchronizationComponent {
         otp: ["", Validators.minLength(6)],
         overwriteData: [true, Validators.requiredTrue]
     });
-
-    constructor(
-        private otpGenerator: OtpGeneratorService,
-        private backupService: BackupService,
-        private httpClient: HttpClient,
-        private messageService: MessageService,
-        private translateService: TranslocoService,
-    ) {}
 
     openFromOthers() {
         this.getFromOthersVisible = true;

@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, signal, inject } from "@angular/core";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
 import { UsageDto } from "../../dto/usage.dto";
@@ -18,6 +18,11 @@ import { getDateForChart } from "../../util/date.utils";
     templateUrl: "./financial-impact.component.html",
 })
 export class FinancialImpactComponent implements OnInit {
+    private usageService = inject(UsageService);
+    private substanceService = inject(SubstanceService);
+    private costService = inject(CostService);
+    private translateService = inject(TranslocoService);
+
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
     usageHistory = signal<UsageDto[]>([]);
@@ -31,12 +36,7 @@ export class FinancialImpactComponent implements OnInit {
     costs = signal<any[]>([]);
     
 
-    constructor(
-        private usageService: UsageService,
-        private substanceService: SubstanceService,
-        private costService: CostService,
-        private translateService: TranslocoService
-    ) {
+    constructor() {
         this.initChartOptions();
     }
 

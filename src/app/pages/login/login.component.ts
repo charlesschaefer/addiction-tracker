@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthScreenComponent } from "../../components/auth/auth-screen.component";
 
@@ -12,11 +12,9 @@ import { AuthScreenComponent } from "../../components/auth/auth-screen.component
     templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnInit {
+    private router = inject(Router);
+
     auth!: any;
-    constructor(
-        //private auth: AuthService,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         // Redirect to home if already authenticated or if protection is not enabled
