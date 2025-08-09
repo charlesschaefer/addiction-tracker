@@ -17,6 +17,10 @@ type Costs = CostDto | CostAddDto;
     providedIn: 'root'
 })
 export class CostService extends ServiceAbstract<Costs> {
+    protected override dbService = inject(DbService);
+    protected override dataUpdatedService = inject(DataUpdatedService);
+    private substanceService = inject(SubstanceService);
+
     protected override storeName = 'cost' as const;
     
     /**
@@ -38,11 +42,10 @@ export class CostService extends ServiceAbstract<Costs> {
         ]);
         
         const activeSubstanceIds = activeSubstances.map(substance => substance.id);
-        console.log("activeSubstanceIds", activeSubstanceIds);
-        console.log("allCosts", allCosts);
-        return (allCosts as CostDto[]).filter(cost => 
+        const _return = (allCosts as CostDto[]).filter(cost => 
             activeSubstanceIds.includes(cost.substance)
         );
+        return _return;
     }
 
     /**
@@ -65,7 +68,8 @@ export class CostService extends ServiceAbstract<Costs> {
      * Returns the total spent across all costs.
      */
     getTotalSpent() {
-        return this.table.toArray().then(data => {
+        //return this.table.toArray().then(data => {
+        return this.listActive().then(data => {
             return data.reduce((acc, item) => {    
                 return acc + item.value;
             }, 0);

@@ -67,7 +67,7 @@ export class FinancialImpactCardComponent implements OnInit {
         if (this.usageCosts && this.usageCosts.length > 0) {
             this.costs.set(this.usageCosts);
         } else {
-            this.costService.list().then((costs) => {
+            this.costService.listActive().then((costs) => {
                 this.costs.set(costs as CostDto[]);
                 this.calculateAll();
             });

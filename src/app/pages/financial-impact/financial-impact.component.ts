@@ -43,6 +43,7 @@ export class FinancialImpactComponent implements OnInit {
     ngOnInit() {
         // Fetch all costs from the cost table
         this.costService.listActive().then((costs) => {
+            console.log("Costs fetched:", costs);
             this.costs.set(costs);
             this.updateSpendingTrendChart(costs as CostDto[]);
         });
