@@ -26,16 +26,16 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div *ngFor="let trigger of triggers()" 
-             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 hover:shadow-md transition-all duration-200">
+             class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 hover:shadow-md transition-all duration-200 flex flex-row justify-between">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center space-x-3">
               <div>
                 <h4 class="font-semibold text-lg text-gray-800 dark:text-gray-200">
                   {{ trigger.name }}
                 </h4>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <!-- <p class="text-sm text-gray-500 dark:text-gray-400">
                   {{ 'Active' | transloco }}
-                </p>
+                </p> -->
               </div>
             </div>
           </div>
@@ -68,14 +68,14 @@
     </div>
 
     <!-- Archived Triggers -->
-    <div *ngIf="showArchived()" class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800">
+    <div *ngIf="showArchived()" class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm rounded-2xl shadow-md p-6 mb-8 border border-gray-100 dark:border-gray-800 ">
       <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-6">
         {{ 'Archived Triggers' | transloco }}
       </h3>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div *ngFor="let trigger of archivedTriggers()" 
-             class="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 opacity-75">
+             class="bg-gray-50 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 opacity-75 flex flex-row justify-between">
           <div class="flex items-center justify-between mb-3">
             <div class="flex items-center space-x-3">
               <div>
@@ -83,9 +83,9 @@
                   {{ trigger.name }}
                 </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-500">
-                  {{ 'Archived' | transloco }}
+                  {{ 'Archived at' | transloco }}
                   <span *ngIf="trigger.archive_date">
-                    - {{ trigger.archive_date | date:'shortDate' }}
+                  {{ trigger.archive_date | date:'shortDate' }}
                   </span>
                 </p>
               </div>

@@ -20,6 +20,7 @@ export class SubstanceAnalysisCardComponent {
 
     @Input() usageHistory: UsageDto[] = [];
     substances = input<Map<number, SubstanceDto>>(new Map<number, SubstanceDto>());
+    activeTriggers = input<string[]>([]);
     substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
     combinedTrendData = computed<ChartData>(() => this.prepareCombinedTrendData());
     usageBySubstanceData = computed<ChartData>(() => this.prepareUsageBySubstanceData());
@@ -321,9 +322,13 @@ export class SubstanceAnalysisCardComponent {
      */
     prepareTriggerData(): ChartData {
         const triggerCounts: Record<string, number> = {};
+        const activeTriggers = this.activeTriggers();
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
             entry.trigger?.forEach((trigger) => {
+                if (!activeTriggers.includes(trigger.name)) {
+                    return;
+                }
                 //triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + 1;
                 triggerCounts[trigger.name] = (triggerCounts[trigger.name] || 0) + (entry.quantity || 1);
             });

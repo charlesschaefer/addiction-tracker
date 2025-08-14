@@ -60,6 +60,7 @@ export class RecoveryDashboardComponent implements OnInit {
     moodCravingCorrelation = signal<any[]>([]);
     triggerCravingCorrelation = signal<any[]>([]);
     substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
+    activeTriggerNames = signal<string[]>([]);
 
     locale: TranslocoAvailableLangs;
 
@@ -85,6 +86,10 @@ export class RecoveryDashboardComponent implements OnInit {
                 >
             );
             this.updatePreparedData();
+        });
+
+        this.triggerService.getActiveTriggers().then((triggers) => {
+            this.activeTriggerNames.set((triggers as any[]).map(trigger => trigger.name));
         });
     }
 

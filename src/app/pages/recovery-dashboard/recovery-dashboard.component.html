@@ -31,7 +31,9 @@
       
       <!-- Substance Analysis Section -->
       <app-substance-analysis-card [usageHistory]="usageHistory()"
-        [substances]="substances()" [selectedAnalysisSubstance]="selectedAnalysisSubstance()"></app-substance-analysis-card>
+        [activeTriggers]="activeTriggerNames()" 
+        [substances]="substances()" 
+        [selectedAnalysisSubstance]="selectedAnalysisSubstance()"></app-substance-analysis-card>
 
       @if (selectedAnalysisSubstance() !== 0) {
         <!-- Mood vs Craving Correlation -->

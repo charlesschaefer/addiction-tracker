@@ -112,7 +112,7 @@ export class UsageAddComponent implements OnInit {
             this.substances = substances;
         });
 
-        this.triggerService.list().then(results => {
+        this.triggerService.getActiveTriggers().then(results => {
             const triggers = results as TriggerDto[];
             this.triggers = triggers;
             this.filteredTriggers = triggers;

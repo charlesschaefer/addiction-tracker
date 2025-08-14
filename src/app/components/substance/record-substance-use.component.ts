@@ -144,7 +144,7 @@ export class RecordSubstanceUseComponent implements OnInit {
         const now = new Date();
         this.datetime = now;
 
-        this.triggerService.list().then((triggers) => {
+        this.triggerService.getActiveTriggers().then((triggers) => {
             this.triggers = triggers as TriggerDto[];
             console.log("Triggers:", this.triggers);
         });

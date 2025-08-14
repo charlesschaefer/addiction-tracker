@@ -51,7 +51,7 @@ export class TriggersComponent implements OnInit {
             );
             this.updateCharts();
         });
-        this.triggerService.list().then((triggers) => {
+        this.triggerService.getActiveTriggers().then((triggers) => {
             this.triggers = triggers as TriggerDto[];
             this.updateCharts();
         });

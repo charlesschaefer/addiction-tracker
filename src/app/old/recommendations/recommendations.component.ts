@@ -36,7 +36,7 @@ export class RecommendationsComponent implements OnInit {
     trigger: string;
 
     ngOnInit(): void {
-        this.triggerService.list().then(triggers => {
+        this.triggerService.getActiveTriggers().then(triggers => {
             this.triggers = triggers as TriggerDto[];
         });
     }
