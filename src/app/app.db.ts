@@ -113,6 +113,29 @@ export class AppDb extends Dexie {
                 }
             });
 
+        this.version(10)
+            .stores({
+                trigger: "++id, name, archived, archive_date",
+            })
+            .upgrade((transaction) => {
+                console.log("Upgrade to version 10 - Adding archived fields to trigger table");
+                try {
+                    // Add default values for existing substances
+                    this.trigger.toArray().then((triggers) => {
+                        const updatedTrigger = triggers.map(trigger => ({
+                            ...trigger,
+                            archived: 0, // 0 for false, 1 for true
+                            archive_date: null
+                        }));
+                        return this.trigger.bulkPut(updatedTrigger);
+                    });
+                    console.log("Added archived fields to trigger table");
+                } catch (error) {
+                    transaction.abort();
+                    console.error("Error during upgrade:", error);
+                }
+            });
+
         this.on("populate", (trans) => this.populate(trans));
     }
 

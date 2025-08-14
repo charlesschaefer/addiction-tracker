@@ -63,6 +63,13 @@ export const routes: Routes = [
             ),
     },
     { 
+        path: "settings", 
+        loadComponent: () =>
+            import("./pages/settings/settings.component").then(
+                (comp) => comp.SettingsComponent,
+            ),
+    },
+    { 
         path: "substances", 
         loadComponent: () =>
             import("./pages/substances/substances.component").then(
@@ -70,10 +77,10 @@ export const routes: Routes = [
             ),
     },
     { 
-        path: "settings", 
+        path: "triggers/management", 
         loadComponent: () =>
-            import("./pages/settings/settings.component").then(
-                (comp) => comp.SettingsComponent,
+            import("./pages/triggers/trigger_management.component").then(
+                (comp) => comp.TriggerManagementComponent,
             ),
     },
     { 

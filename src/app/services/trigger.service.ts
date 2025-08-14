@@ -43,4 +43,48 @@ export class TriggerService extends ServiceAbstract<Triggers> {
     async getTriggerLabels(): Promise<string[]> {
         return this.list().then(triggers => triggers.map(trigger => this.translateService.translate(trigger.name)));
     }
+
+    /**
+     * Gets all active (non-archived) triggers.
+     */
+    getActiveTriggers(): Promise<TriggerDto[]> {
+        return this.table.toArray().then((triggers) => {
+            return triggers.filter((trigger: any) => !trigger.archived || trigger.archived === undefined || trigger.archived === null || trigger.archived === 0) as TriggerDto[];
+        });
+    }
+
+    /**
+     * Archives a trigger by setting archived to 1 and archive_date to current date.
+     * @param id Trigger ID to archive
+     */
+    async archiveTrigger(id: number): Promise<void> {
+        const trigger = await this.get(id) as TriggerDto;
+        if (trigger) {
+            trigger.archived = 1;
+            trigger.archive_date = new Date();
+            await this.edit(id, trigger);
+        }
+    }
+
+    /**
+     * Unarchives a trigger by setting archived to 0 and clearing archive_date.
+     * @param id Trigger ID to unarchive
+     */
+    async unarchiveTrigger(id: number): Promise<void> {
+        const trigger = await this.get(id) as TriggerDto;
+        if (trigger) {
+            trigger.archived = 0;
+            trigger.archive_date = null;
+            await this.edit(id, trigger);
+        }
+    }
+
+    /**
+     * Gets all archived triggers.
+     */
+    getArchivedTriggers(): Promise<TriggerDto[]> {
+        return this.table.toArray().then((triggers) => {
+            return triggers.filter((trigger: any) => trigger.archived === 1) as TriggerDto[];
+        });
+    }
 }

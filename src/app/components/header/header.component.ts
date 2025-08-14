@@ -40,14 +40,15 @@ export class HeaderComponent implements OnInit {
                 { href: "/", label: this.translateService.translate("Home"), icon: false },
                 // { href: "/usage-entries", label: this.translateService.translate("Entries"), icon: false },
                 // { href: "/recovery-dashboard", label: this.translateService.translate("Dashboard"), icon: false },
-                { href: "/substances", label: this.translateService.translate("Substances"), icon: false },
                 { href: "/triggers", label: this.translateService.translate("Triggers"), icon: false },
                 { href: "/financial-impact", label: this.translateService.translate("Finances"), icon: false },
                 //{ href: "/settings", label: this.translateService.translate("Settings"), icon: true },
             ];
-
+            
             this.settingsLinks = [
                 { href: "/settings", label: this.translateService.translate("App Settings"), icon: false },
+                { href: "/substances", label: this.translateService.translate("Substances"), icon: false },
+                { href: "/triggers/management", label: this.translateService.translate("Triggers"), icon: false },
                 { href: "/settings/backup", label: this.translateService.translate("Backup"), icon: false },
                 { href: "/settings/sync", label: this.translateService.translate("Sync"), icon: false },
                 { href: "/about", label: this.translateService.translate("About"), icon: false },
