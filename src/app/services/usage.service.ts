@@ -72,6 +72,15 @@ export class UsageService extends ServiceAbstract<Usages> {
         );
     }
 
+    async filterActiveByRange(dateRange: Date[]): Promise<Usages[]> {
+        const dateFrom = DateTime.fromJSDate(dateRange[0]).startOf('day').toJSDate();
+        const dateTo = DateTime.fromJSDate(dateRange[1]).endOf('day').toJSDate();
+        const activeSubstances = await this.substanceService.getActiveSubstances();
+        return this.table.where('datetime').between(dateFrom, dateTo, true, true).and(usage => {
+            return activeSubstances.some(substance => substance.id === usage.substance);
+        }).toArray();
+    }
+
     /**
      * Adds a usage entry and notifies data update service.
      * @param usage Usage entry to add

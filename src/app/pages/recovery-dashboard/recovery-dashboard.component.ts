@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, OnInit, signal, inject } from "@angular/core";
+import { Component, computed, OnInit, signal, inject, Signal, effect } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { UsageService } from "../../services/usage.service";
 import { SubstanceService } from "../../services/substance.service";
@@ -50,7 +50,11 @@ export class RecoveryDashboardComponent implements OnInit {
     selectedAnalysisSubstance = signal(0);
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
-    usageHistory = signal<UsageDto[]>([]);
+    theUsageHistory = signal<UsageDto[]>([]);
+    
+    selectedAnalysisDateRange = signal<Date[]|null>(null);
+    usageHistory!: Signal<UsageDto[]>;
+    
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
     chartOptions: any;
     sobrietyComponentStyle = SobrietyCardStyle.SIMPLE_DAYS;
@@ -71,13 +75,15 @@ export class RecoveryDashboardComponent implements OnInit {
                 .split("-")
                 .map((value, idx) => idx === 1 ? value.toUpperCase() : value)
                 .join("-") as TranslocoAvailableLangs;
+        
+        this.usageHistory = this.usageHistorySignal(this.selectedAnalysisDateRange);
     }
 
     ngOnInit() {
-        this.usageService.listActive().then((usages) => {
-            this.usageHistory.set(usages as UsageDto[]);
-            this.updatePreparedData();
-        });
+        // this.usageService.listActive().then((usages) => {
+        //     this.usageHistory.set(usages as UsageDto[]);
+        //     this.updatePreparedData();
+        // });
         this.substanceService.getActiveSubstances().then((subs) => {
             this.substances.set(
                 this.substanceService.getDataAsMap(subs, "id") as Map<
@@ -93,9 +99,28 @@ export class RecoveryDashboardComponent implements OnInit {
         });
     }
 
-    updatePreparedData() {
+    private usageHistorySignal(dateRange: Signal<Date[]|null>): Signal<UsageDto[]> {
+        const resultSignal = signal<UsageDto[]>([]);
+        effect(() => {
+            if (!dateRange()) {
+                this.usageService.listActive().then((usages) => {
+                    resultSignal.set(usages as UsageDto[]);
+                    console.log("Filtered usage history:", usages);
+                    // this.updatePreparedData(usages as UsageDto[]);
+                });
+                return;
+            }
+            this.usageService.filterActiveByRange(dateRange() as Date[]).then((usages) => {
+                resultSignal.set(usages as UsageDto[]);
+                console.log("Filtered usage history:", usages);
+                // this.updatePreparedData(usages as UsageDto[]);
+            });
+        });
+        return resultSignal.asReadonly();
+    }
+    updatePreparedData(usageHistory: UsageDto[] | null = null) {
         // Only update if both usageHistory and substances are loaded
-        if (!this.usageHistory() || !this.substances()) return;
+        if (!usageHistory || !this.substances()) return;
         this.usageBySubstance.set(this.prepareUsageBySubstanceData());
         this.triggerData.set(this.prepareTriggerData());
         this.prepareMoodCravingCorrelationDataAsync();
