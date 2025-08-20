@@ -133,7 +133,7 @@ export class RecoveryDashboardComponent implements OnInit {
 
     onSelectedAnalysisDateRangeChange(dateRange: Date[]|null) {
         console.log("Selected date range:", dateRange);
-        if (dateRange?.length == 2) {
+        if (dateRange?.length == 2 && dateRange[0] !== null && dateRange[1] !== null) {
             this.usageService.filterActiveByRange(dateRange as Date[]).then((usages) => {
                 this.usageHistory.set(usages as UsageDto[]);
                 console.log("New Filtered usage history:", usages);
