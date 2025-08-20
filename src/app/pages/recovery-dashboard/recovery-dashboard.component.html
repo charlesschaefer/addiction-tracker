@@ -28,7 +28,9 @@
         (currentSubstanceChange)="selectedAnalysisSubstance.set($event?.valueOf() || 0); onSelectedAnalysisSubstanceChange()"
         [substances]="substances().values()"
         [showIntervalSelector]="true"
-        [(dateRange)]="selectedAnalysisDateRange"
+        [dateRange]="selectedAnalysisDateRange()"
+        (dateRangeChange)="onSelectedAnalysisDateRangeChange($event)"
+
       />
       
       <!-- Substance Analysis Section -->

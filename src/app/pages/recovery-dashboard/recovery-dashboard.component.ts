@@ -50,10 +50,10 @@ export class RecoveryDashboardComponent implements OnInit {
     selectedAnalysisSubstance = signal(0);
     COLORS = ["#8B5CF6", "#F97316", "#6366F1", "#FB923C", "#A855F7", "#FDBA74"];
 
-    theUsageHistory = signal<UsageDto[]>([]);
+    usageHistory = signal<UsageDto[]>([]);
     
     selectedAnalysisDateRange = signal<Date[]|null>(null);
-    usageHistory!: Signal<UsageDto[]>;
+    theUsageHistory!: Signal<UsageDto[]>;
     
     substances = signal<Map<number, SubstanceDto>>(new Map([]));
     chartOptions: any;
@@ -76,14 +76,14 @@ export class RecoveryDashboardComponent implements OnInit {
                 .map((value, idx) => idx === 1 ? value.toUpperCase() : value)
                 .join("-") as TranslocoAvailableLangs;
         
-        this.usageHistory = this.usageHistorySignal(this.selectedAnalysisDateRange);
+        //this.theUsageHistory = this.usageHistorySignal(this.selectedAnalysisDateRange);
     }
 
     ngOnInit() {
-        // this.usageService.listActive().then((usages) => {
-        //     this.usageHistory.set(usages as UsageDto[]);
-        //     this.updatePreparedData();
-        // });
+        this.usageService.listActive().then((usages) => {
+            this.usageHistory.set(usages as UsageDto[]);
+            this.updatePreparedData();
+        });
         this.substanceService.getActiveSubstances().then((subs) => {
             this.substances.set(
                 this.substanceService.getDataAsMap(subs, "id") as Map<
@@ -129,6 +129,23 @@ export class RecoveryDashboardComponent implements OnInit {
 
     onSelectedAnalysisSubstanceChange() {
         this.updatePreparedData();
+    }
+
+    onSelectedAnalysisDateRangeChange(dateRange: Date[]|null) {
+        console.log("Selected date range:", dateRange);
+        if (dateRange?.length == 2) {
+            this.usageService.filterActiveByRange(dateRange as Date[]).then((usages) => {
+                this.usageHistory.set(usages as UsageDto[]);
+                console.log("New Filtered usage history:", usages);
+                this.updatePreparedData();
+            });
+            return;
+        }
+        this.usageService.listActive().then((usages) => {
+            this.usageHistory.set(usages as UsageDto[]);
+            console.log("New Filtered usage history:", usages);
+            this.updatePreparedData(usages as UsageDto[]);
+        });
     }
 
     getSubstanceNames(): string[] {
