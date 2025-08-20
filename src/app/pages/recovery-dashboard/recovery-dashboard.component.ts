@@ -118,9 +118,9 @@ export class RecoveryDashboardComponent implements OnInit {
         });
         return resultSignal.asReadonly();
     }
-    updatePreparedData(usageHistory: UsageDto[] | null = null) {
+    updatePreparedData() {
         // Only update if both usageHistory and substances are loaded
-        if (!usageHistory || !this.substances()) return;
+        if (!this.usageHistory() || !this.substances()) return console.log("Sem usageHistory");
         this.usageBySubstance.set(this.prepareUsageBySubstanceData());
         this.triggerData.set(this.prepareTriggerData());
         this.prepareMoodCravingCorrelationDataAsync();
@@ -144,7 +144,7 @@ export class RecoveryDashboardComponent implements OnInit {
         this.usageService.listActive().then((usages) => {
             this.usageHistory.set(usages as UsageDto[]);
             console.log("New Filtered usage history:", usages);
-            this.updatePreparedData(usages as UsageDto[]);
+            this.updatePreparedData();
         });
     }
 
