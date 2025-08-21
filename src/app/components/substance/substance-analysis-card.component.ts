@@ -18,7 +18,7 @@ import { getDateForChart } from "../../util/date.utils";
 export class SubstanceAnalysisCardComponent {
     private translateService = inject(TranslocoService);
 
-    @Input() usageHistory: UsageDto[] = [];
+    usageHistory = input<UsageDto[]>([]);
     substances = input<Map<number, SubstanceDto>>(new Map<number, SubstanceDto>());
     activeTriggers = input<string[]>([]);
     substanceMap = computed<SubstanceDto[]>(() => Array.from(this.substances().values()));
@@ -115,14 +115,14 @@ export class SubstanceAnalysisCardComponent {
 
     getFilteredUsageHistory() {
         if (this.selectedAnalysisSubstance() === 0) {
-            return this.usageHistory;
+            return this.usageHistory();
         }
         //const substance = Array.from(this.substanceMap()).find(s => s.name === this.selectedAnalysisSubstance());
         const substance = Array.from(this.substanceMap()).find(s => s.id === this.selectedAnalysisSubstance());
         if (!substance) {
-            return this.usageHistory;
+            return this.usageHistory();
         }
-        return this.usageHistory.filter(
+        return this.usageHistory().filter(
             (entry) => entry.substance === substance.id
         );
     }
@@ -133,7 +133,7 @@ export class SubstanceAnalysisCardComponent {
      */
     prepareUsageBySubstanceData(): ChartData {
         const substanceCounts: Record<string, number> = {};
-        this.usageHistory.forEach((entry) => {
+        this.usageHistory().forEach((entry) => {
             const substanceName = this.substances().get(entry.substance)?.name as string;
             if (substanceCounts[substanceName]) {
                 substanceCounts[substanceName] += entry.quantity || 1;
