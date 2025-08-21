@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, computed, input, Input, inject } from "@angular/core";
+import { Component, computed, input, inject } from "@angular/core";
 import { ChartModule } from 'primeng/chart';
 import { UsageDto } from "../../dto/usage.dto";
 import { SubstanceDto } from "../../dto/substance.dto";

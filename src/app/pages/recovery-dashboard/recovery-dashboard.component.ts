@@ -119,7 +119,6 @@ export class RecoveryDashboardComponent implements OnInit {
         return resultSignal.asReadonly();
     }
     updatePreparedData() {
-        console.log("Calling updatePreparedData()");
         // Only update if both usageHistory and substances are loaded
         if (!this.usageHistory() || !this.substances()) return console.log("Sem usageHistory");
         this.usageBySubstance.set(this.prepareUsageBySubstanceData());
@@ -129,12 +128,10 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     onSelectedAnalysisSubstanceChange() {
-        console.log("Calling onSelectedAnalysisSubstanceChange()");
         this.updatePreparedData();
     }
 
     onSelectedAnalysisDateRangeChange(dateRange: Date[]|null) {
-        console.log("Calling onSelectedAnalysisDateRangeChange()");
         console.log("Selected date range:", dateRange);
         if (dateRange?.length == 2 && dateRange[0] !== null && dateRange[1] !== null) {
             this.usageService.filterActiveByRange(dateRange as Date[]).then((usages) => {
@@ -152,19 +149,16 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     getSubstanceNames(): string[] {
-        console.log("Calling getSubstanceNames()");
         return Array.from(this.substances().values()).map(
             (substance) => substance.name
         );
     }
 
     calculateSobrietyDays(): number {
-        console.log("Calling calculateSobrietyDays()");
         return this.usageService.calculateSobrietyDays(this.usageHistory());
     }
 
     prepareUsageBySubstanceData() {
-        console.log("Calling prepareUsageBySubstanceData()");
         const substanceCounts: Record<string, number> = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
@@ -183,7 +177,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     getFilteredUsageHistory() {
-        console.log("Calling getFilteredUsageHistory()");
         if (this.selectedAnalysisSubstance() === 0) {
             // Filter to only show entries for active substances when "All Substances" is selected
             const activeSubstanceIds = Array.from(this.substances().keys());
@@ -198,7 +191,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     initChartOptions() {
-        console.log("Calling initChartOptions()");
         const locale = this.locale;
         this.chartOptions = {
             plugins: {
@@ -235,7 +227,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareSubstanceUsageData() {
-        console.log("Calling prepareSubstanceUsageData()");
         const usageByDate: Record<string, number> = {};
         const dates: Date[] = [];
         const today = new Date();
@@ -259,7 +250,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareMoodTrendData() {
-        console.log("Calling prepareMoodTrendData()");
         const moodByDate: Record<string, { total: number; count: number }> =
             {};
         const moodValues: Record<string, number> = {
@@ -297,7 +287,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareCravingTrendData() {
-        console.log("Calling prepareCravingTrendData()");
         const cravingByDate: Record<string, { total: number; count: number }> = {};
         const dates: Date[] = [];
         const today = new Date();
@@ -326,7 +315,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareCombinedTrendData() {
-        console.log("Calling prepareCombinedTrendData()");
         const usageData = this.prepareSubstanceUsageData();
         const moodData = this.prepareMoodTrendData();
         const cravingData = this.prepareCravingTrendData();
@@ -339,7 +327,6 @@ export class RecoveryDashboardComponent implements OnInit {
     }
 
     prepareTriggerData() {
-        console.log("Calling prepareTriggerData()");
         const triggerCounts: Record<string, number> = {};
         const filteredHistory = this.getFilteredUsageHistory();
         filteredHistory.forEach((entry) => {
@@ -359,7 +346,6 @@ export class RecoveryDashboardComponent implements OnInit {
      * Returns array: [{ trigger: string, avgCraving: number, count: number }]
      */
     async prepareTriggerCravingCorrelationDataAsync() {
-        console.log("Calling prepareTriggerCravingCorrelationDataAsync()");
         const labels = await this.triggerService.getTriggerLabels();
         const data = this.usageService.getTriggerCravingCorrelation(
             this.getFilteredUsageHistory(),
@@ -371,7 +357,6 @@ export class RecoveryDashboardComponent implements OnInit {
 
     // Change these to async if needed (for trigger labels)
     async prepareMoodCravingCorrelationDataAsync() {
-        console.log("Calling prepareMoodCravingCorrelationDataAsync()");
         const labels = this.sentimentService.getSentimentLabels();
         const data = this.usageService.getMoodCravingCorrelation(
             this.getFilteredUsageHistory(),
