@@ -10,7 +10,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DialogModule } from "primeng/dialog";
 import { InputTextModule } from "primeng/inputtext";
-import { DropdownModule } from "primeng/dropdown";
+import { SelectModule } from "primeng/select";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { TranslocoModule } from "@jsverse/transloco";
 import { SubstanceIconSelectComponent } from "../../components/substance/substance-icon-select.component";
@@ -27,7 +27,7 @@ import { SubstanceIconSelectComponent } from "../../components/substance/substan
         CardModule,
         DialogModule,
         InputTextModule,
-        DropdownModule,
+        SelectModule,
         ToggleButtonModule,
         TranslocoModule,
         SubstanceIconSelectComponent

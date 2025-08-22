@@ -21,7 +21,7 @@ import { MessageService } from "primeng/api";
 import { UsageFillingService } from "../../services/usage-filling.service";
 import { UsageFillingAddDto } from "../../dto/usage-filling.dto";
 import { TranslocoModule } from "@jsverse/transloco";
-import { CalendarModule } from "primeng/calendar";
+import { DatePickerModule } from "primeng/datepicker";
 
 /**
  * Angular component for recording substance use.
@@ -35,7 +35,7 @@ import { CalendarModule } from "primeng/calendar";
         FormsModule,
         SelectModule,
         SubstanceIconSelectComponent,
-        CalendarModule,
+        DatePickerModule,
         TranslocoModule
     ],
     templateUrl: "./record-substance-use.component.html",

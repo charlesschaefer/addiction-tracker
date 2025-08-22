@@ -21,14 +21,18 @@ export const AppTheme = definePreset(Aura, {
         menu: {
             colorScheme: {
                 light: {
-                    root: {
-                        submenuLabelColor: '{text.muted.color}'
+                    submenuLabel: {
+                        color: '{text.muted.color}'
                     }
                 }
             }
         },
         inputtext: {
-            smFontSize: '0.8rem'
+            root: {
+                sm: {
+                    fontSize: '0.8rem'
+                }
+            }
         }
     }
 });

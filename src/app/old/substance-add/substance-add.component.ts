@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
@@ -24,7 +24,7 @@ import { SubstanceService } from '../../services/substance.service';
         PanelModule,
         InputTextModule,
         ButtonModule,
-        MessagesModule,
+        MessageModule,
         FloatLabelModule,
         ToastModule,
         TooltipModule,

@@ -7,7 +7,7 @@
     <p-toast />
     <form [formGroup]="costForm" novalidate (ngSubmit)="onSubmit()">
       <div class="field">
-        <p-dropdown 
+        <p-select 
         [options]="substances"
         optionLabel="name"
         optionValue="id"
@@ -22,7 +22,7 @@
       </div>
       <div class="field">
         <p-floatLabel>
-          <p-calendar
+          <p-datePicker
             inputId="date" 
             formControlName="date" />
           <label for="date">{{ 'Data da compra' | transloco }}</label>

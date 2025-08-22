@@ -10,8 +10,8 @@ import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -20,7 +20,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SliderModule } from 'primeng/slider';
 import { ListboxModule } from 'primeng/listbox';
-import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
 import { JoyrideModule } from 'ngx-joyride';
 
@@ -46,10 +46,10 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
         PanelModule,
         InputTextModule,
         ButtonModule,
-        MessagesModule,
+        MessageModule,
         FloatLabelModule,
-        DropdownModule,
-        CalendarModule,
+        SelectModule,
+        DatePickerModule,
         AutoCompleteModule,
         DialogModule,
         ConfirmDialogModule,

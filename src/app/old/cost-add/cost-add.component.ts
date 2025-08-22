@@ -5,8 +5,8 @@ import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { SelectModule } from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 import { ToastModule } from 'primeng/toast';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -28,8 +28,8 @@ import { CostService } from '../../services/cost.service';
         InputTextModule,
         ButtonModule,
         FloatLabelModule,
-        DropdownModule,
-        CalendarModule,
+        SelectModule,
+        DatePickerModule,
         ToastModule,
         InputNumberModule,
         InputMaskModule,
