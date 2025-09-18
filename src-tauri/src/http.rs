@@ -1,6 +1,5 @@
 use std::thread;
-use tiny_http::{Request, Response, ResponseBox, Header};
-
+use tiny_http::{Header, Request, Response, ResponseBox};
 
 #[tauri::command]
 pub fn start_http_server(otp_code: String, backup_data: String) {
@@ -19,10 +18,10 @@ impl HttpServer {
     fn new() -> Self {
         Self {
             otp_code: String::new(),
-            json_data: String::new()
+            json_data: String::new(),
         }
     }
-    
+
     fn start_server(&mut self, otp_code: String, backup_data: String) {
         self.otp_code = otp_code;
         self.json_data = backup_data;
@@ -39,14 +38,14 @@ impl HttpServer {
                         continue;
                     }
                     req
-                },
+                }
                 Err(_err) => {
                     dbg!("Couldn't receive the request.");
-                    return ;
+                    return;
                 }
             };
             let response = self.handle_incoming_request(&request);
-            
+
             if let Some(response) = response {
                 let _ = request.respond(response);
                 continue;
@@ -64,7 +63,7 @@ impl HttpServer {
             dbg!("Returned the response");
             return response;
         }
-        
+
         if request.url() == "/handshake" {
             dbg!("Received a POST method on /handshake url");
             return self.handshake(request);
@@ -82,18 +81,24 @@ impl HttpServer {
             .headers()
             .iter()
             .find_map(|header| {
-                dbg!("Header {:?} with value {:?}", header.field.as_str(), header.value.as_str());
+                dbg!(
+                    "Header {:?} with value {:?}",
+                    header.field.as_str(),
+                    header.value.as_str()
+                );
                 if header.field.as_str() == "X-SIGNED-TOKEN" {
                     dbg!("Returned the header {:?}", header.value.as_str());
                     return Some(header.value.as_str());
                 }
                 None
-            }).unwrap();
+            })
+            .unwrap();
         dbg!("Valor to token: {:?}", &otp_token);
 
         if otp_token.is_empty() {
             let response = Response::from_string("Empty token".to_string())
-                        .with_status_code(500).boxed();
+                .with_status_code(500)
+                .boxed();
             return Some(response);
         }
         self.response_with_cors_headers(self.json_data.as_str())

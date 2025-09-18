@@ -44,8 +44,7 @@ pub fn setup_system_tray_icon(app: &mut App) {
                 match button {
                     MouseButton::Left => {
                         dbg!("system tray received a right click");
-                        let window =
-                            tray_icon.app_handle().get_webview_window("main").unwrap();
+                        let window = tray_icon.app_handle().get_webview_window("main").unwrap();
                         let display = match window.is_visible() {
                             Ok(visible) => {
                                 if visible {
@@ -53,8 +52,8 @@ pub fn setup_system_tray_icon(app: &mut App) {
                                 } else {
                                     window.show()
                                 }
-                            },
-                            Err(_) => window.show()
+                            }
+                            Err(_) => window.show(),
                         };
                         //window.hide().unwrap();
                         display.unwrap();
@@ -87,10 +86,7 @@ pub fn setup_system_tray_icon(app: &mut App) {
 
 #[cfg(desktop)]
 #[tauri::command]
-pub fn set_frontend_complete(
-    app: AppHandle,
-) -> Result<(), ()> {
-
+pub fn set_frontend_complete(app: AppHandle) -> Result<(), ()> {
     let splash_window;
     if app.get_webview_window("splashscreen").is_some() {
         splash_window = app.get_webview_window("splashscreen").unwrap();
@@ -98,7 +94,7 @@ pub fn set_frontend_complete(
         return Err(());
     }
     let main_window = app.get_webview_window("main").unwrap();
-    
+
     //main_window.set_enabled(true).unwrap();
     main_window.show().unwrap();
 

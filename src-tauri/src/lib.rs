@@ -1,15 +1,14 @@
 use serde::{Deserialize, Serialize};
 use std::env;
 
-
 #[cfg(desktop)]
 mod desktop;
 
 #[cfg(not(desktop))]
 mod android;
 
-mod mdns;
 mod http;
+mod mdns;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -39,7 +38,6 @@ pub fn run() {
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
-
 
 #[derive(Deserialize, Serialize)]
 struct Secrets {
