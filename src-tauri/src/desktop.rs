@@ -1,12 +1,15 @@
-use tauri::{App, AppHandle, WindowEvent, Manager};
 use tauri::menu::{MenuBuilder, MenuItem};
 use tauri::tray::{MouseButton, TrayIconBuilder, TrayIconEvent};
+use tauri::{App, AppHandle, Manager, WindowEvent};
 
 #[cfg(desktop)]
 pub fn setup_system_tray_icon(app: &mut App) {
     // hiddens the main window before the app loads
     app.get_webview_window("main").unwrap().hide().unwrap();
-    app.get_webview_window("splashscreen").unwrap().show().unwrap();
+    app.get_webview_window("splashscreen")
+        .unwrap()
+        .show()
+        .unwrap();
 
     let item_show = MenuItem::new(app, "Show/Hide", true, Some("E")).unwrap();
     let item_quit = MenuItem::new(app, "Quit", true, Some("R")).unwrap();

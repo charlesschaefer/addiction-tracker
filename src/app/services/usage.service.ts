@@ -1,12 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-import { ServiceAbstract } from './service.abstract';
+import { TranslocoService } from '@jsverse/transloco';
 import { DateTime } from 'luxon';
+import { ServiceAbstract } from './service.abstract';
 import { UsageAddDto, UsageDto } from '../dto/usage.dto';
 import { DbService } from './db.service';
 import { DatabaseChangeType } from 'dexie-observable/api';
 import { Changes, DataUpdatedService } from './data-updated.service';
 import { CostAddDto } from '../dto/cost.dto';
 import { SubstanceService } from './substance.service';
+import { TriggerDto } from '../dto/trigger.dto';
 
 export const DATE_FORMAT = 'yyyy-mm-dd HH:MM:ss';
 
@@ -39,6 +41,7 @@ export class UsageService extends ServiceAbstract<Usages> {
     protected override dbService = inject(DbService);
     protected override dataUpdatedService = inject(DataUpdatedService);
     private substanceService = inject(SubstanceService);
+    private translateService = inject(TranslocoService);
 
     protected override storeName = 'usage' as const;
 
@@ -294,27 +297,28 @@ export class UsageService extends ServiceAbstract<Usages> {
      * @returns Array of { trigger, avgCraving, count }
      */
     getTriggerCravingCorrelation(
-        usageHistory: UsageDto[],
-        triggerLabels: string[]
+        usageHistory: (UsageDto & {trigger: TriggerDto[]})[],
+        //triggerLabels: string[]
+        triggerLabels: TriggerDto[]
     ): { trigger: string; avgCraving: number; count: number }[] {
         const result: Record<string, { total: number; count: number }> = {};
-        triggerLabels.forEach(label => {
-            result[label] = { total: 0, count: 0 };
+        triggerLabels.forEach(trigger => {
+            result[trigger.id] = { total: 0, count: 0 };
         });
         usageHistory.forEach(entry => {
             if (Array.isArray(entry.trigger)) {
                 entry.trigger.forEach(trigger => {
-                    if (trigger && result[trigger.name] !== undefined && typeof entry.craving === "number") {
-                        result[trigger.name].total += entry.craving;
-                        result[trigger.name].count += 1;
+                    if (trigger && result[trigger.id] !== undefined && typeof entry.craving === "number") {
+                        result[trigger.id].total += entry.craving;
+                        result[trigger.id].count += 1;
                     }
                 });
             }
         });
         return triggerLabels.map(trigger => ({
-            trigger,
-            avgCraving: result[trigger].count > 0 ? result[trigger].total / result[trigger].count : 0,
-            count: result[trigger].count
+            trigger: trigger.name,
+            avgCraving: result[trigger.id].count > 0 ? result[trigger.id].total / result[trigger.id].count : 0,
+            count: result[trigger.id].count
         }));
     }
 }

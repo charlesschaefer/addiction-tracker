@@ -20,6 +20,7 @@ import { TranslocoAvailableLangs } from "../../app.config";
 import { getDateForChart } from "../../util/date.utils";
 import { SelectModule } from "primeng/select";
 import { SubstanceSelectorComponent } from "../../components/substance/substance-selector.component";
+import { TriggerDto } from "../../dto/trigger.dto";
 
 @Component({
     selector: "app-recovery-dashboard",
@@ -346,9 +347,9 @@ export class RecoveryDashboardComponent implements OnInit {
      * Returns array: [{ trigger: string, avgCraving: number, count: number }]
      */
     async prepareTriggerCravingCorrelationDataAsync() {
-        const labels = await this.triggerService.getTriggerLabels();
+        const labels = await this.triggerService.getActiveTriggers();
         const data = this.usageService.getTriggerCravingCorrelation(
-            this.getFilteredUsageHistory(),
+            this.getFilteredUsageHistory() as (UsageDto & {trigger: TriggerDto[]})[],
             labels
         ).sort((a, b) => b.avgCraving > a.avgCraving ? 1 : -1);
         

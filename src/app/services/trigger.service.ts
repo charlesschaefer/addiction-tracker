@@ -41,7 +41,7 @@ export class TriggerService extends ServiceAbstract<Triggers> {
      * In a real app, this could fetch from DB or config.
      */
     async getTriggerLabels(): Promise<string[]> {
-        return this.list().then(triggers => triggers.map(trigger => this.translateService.translate(trigger.name)));
+        return this.getActiveTriggers().then(triggers => triggers.map(trigger => this.translateService.translate(trigger.name)));
     }
 
     /**
@@ -49,7 +49,14 @@ export class TriggerService extends ServiceAbstract<Triggers> {
      */
     getActiveTriggers(): Promise<TriggerDto[]> {
         return this.table.toArray().then((triggers) => {
-            return triggers.filter((trigger: any) => !trigger.archived || trigger.archived === undefined || trigger.archived === null || trigger.archived === 0) as TriggerDto[];
+            return triggers
+                .filter(
+                    (trigger: any) => 
+                        !trigger.archived || trigger.archived === undefined || trigger.archived === null || trigger.archived === 0
+                ).map(trigger => ({
+                    ...trigger,
+                    name: this.translateService.translate(trigger.name)
+                })) as TriggerDto[];
         });
     }
 
