@@ -5,6 +5,9 @@
     <!-- AndroidTV support -->
     <uses-feature android:name="android.software.leanback" android:required="false" />
 
+    <!-- Permission to record audio -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
