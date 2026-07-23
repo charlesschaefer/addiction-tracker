@@ -54,7 +54,7 @@
     "@jsverse/transloco": "^7.6.1",
     "@primeng/themes": "20.0.1",
     "@tailwindcss/postcss": "^4.1.11",
-    "@tauri-apps/api": "^2.5.0",
+    "@tauri-apps/api": "^2.11",
     "@tauri-apps/plugin-dialog": "^2.3.0",
     "@tauri-apps/plugin-fs": "^2.4.0",
     "@tauri-apps/plugin-global-shortcut": "^2.3.0",
