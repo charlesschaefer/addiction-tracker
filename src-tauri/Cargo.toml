@@ -24,7 +24,7 @@ tauri-build = { version = "2", features = [] }
 tauri                     = { version = "2", features = ["tray-icon", "image-png", "devtools"] }
 serde                     = { version = "1", features = ["derive"] }
 serde_json                = { version = "1", features = ["std"] }
-mdns-sd                   = "0.14"
+mdns-sd                   = "0.15"
 hostname = "0.4.1"
 tiny_http = "0.12.0"
 local-ip-addr = "0.1.1"
